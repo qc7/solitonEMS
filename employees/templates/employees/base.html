@@ -37,20 +37,20 @@
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item {{ dashboard }}">
+          <li class="nav-item {{ dashboard_page }}">
             <a class="nav-link" href="{% url 'dashboard_page' %}">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
      
-          <li class="nav-item  {{ employees }}">
+          <li class="nav-item  {{ employees_page }}">
             <a class="nav-link" href="{% url 'employees_page' %}">
               <i class="material-icons">content_paste</i>
               <p>Employees</p>
             </a>
           </li>
-          <li class="nav-item {{ payroll }}">
+          <li class="nav-item {{ payroll_page }}">
             <a class="nav-link" href="{% url 'payroll_page' %}">
               <i class="material-icons">library_books</i>
               <p>Payroll</p>

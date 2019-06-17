@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
+from .models import Employee
 # Create your views here.
 
 # Authentication
@@ -16,22 +17,24 @@ def dashboard_page(request):
     #     return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "dashboard": "active"
+        "dashboard_page": "active"
     }
     return render(request,'employees/dashboard.html', context) 
 
-
+@login_required
 def employees_page(request):
     # The line requires the user to be authenticated before accessing the view responses. 
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page 
         return render(request,'registration/login.html',{"message":None})
     context = {
-        "employees": "active"
+        "employees_page": "active",
+        "employees": Employee.objects.all()
+
     }
     return render(request,'employees/employees.html', context)
 
-
+@login_required
 def payroll_page(request):
     # The line requires the user to be authenticated before accessing the view responses. 
     if not request.user.is_authenticated:
@@ -39,7 +42,7 @@ def payroll_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "payroll": "active"
+        "payroll_page": "active"
     }
     return render(request,'employees/payroll.html', context)
 
@@ -65,5 +68,7 @@ def login_page(request):
 def logout_view(request):
     logout(request)
     return render(request, "registration/login.html", {"message":"Logged Out","info":"info"})
+
+
 
 

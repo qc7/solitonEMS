@@ -23,20 +23,25 @@
             <th>Gender</th>
           </thead>
           <tbody>
+            {% for employee in employees  %}
             <a href="https://facebook.com">
             <tr>
-              <td>1</td>
-              <td>Dakota Rice</td>
-              <td>Niger</td>
-              <td>Oud-Turnhout</td>
-              <td>$36,738</td>
+              <td>{{employee.id}}</td>
+              <td>{{employee.first_name}} {{employee.last_name}}</td>
+              <td>{{employee.start_date}}</td>
+              <td>{{employee.telephone_no}}</td>
+              <td>{{employee.national_id}}</td>
+              <td>{{employee.gender}}</td>
             </tr>
             </a>
+            
+            {% endfor %}
               
                 
                          
           </tbody>
         </table>
+        
       </div>
     </div>
   </div>
