@@ -36,14 +36,16 @@ def employees_page(request):
 
 
 @login_required
-def employee_page(request):
+def employee_page(request,id):
     # The line requires the user to be authenticated before accessing the view responses. 
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page 
         return render(request,'registration/login.html',{"message":None})
-
+    
+    employee = Employee.objects.get(pk=id)
     context = {
-        "employees_page": "active"
+        "employees_page": "active",
+        "employee": employee
     }
     return render(request,'employees/employee.html', context)
 

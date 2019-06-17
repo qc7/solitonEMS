@@ -5,7 +5,7 @@ from django.db import models
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    position = models.CharField(max_length=30)
+    position = models.CharField(max_length=30, default="")
     gender = models.CharField(max_length=10)
     start_date    = models.DateField()
     marital_status = models.CharField(max_length=10)

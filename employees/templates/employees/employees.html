@@ -27,7 +27,7 @@
             
             <tr>
               <td>{{employee.id}}</td>
-              <td><a href="{% url 'employee_page'%}">{{employee.first_name}} {{employee.last_name}}</a></td>
+              <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}} {{employee.last_name}}</a></td>
               <td>{{employee.start_date}}</td>
               <td>{{employee.telephone_no}}</td>
               <td>{{employee.national_id}}</td>

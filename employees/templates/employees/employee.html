@@ -6,7 +6,7 @@
 {%block page_title %}
 <span>
   <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons" >keyboard_backspace</i></a>
-  <h3>Employee</h3>
+  <h3>{{employee.first_name}} {{employee.last_name}}</h3>
 </span>
 {%endblock%}
 
@@ -14,7 +14,7 @@
    <div class="content">
      <div class="container-fluid">
        <div class="row">
-                   <div class="col-md-6">
+                   <div class="col-md-12">
               <div class="card card-profile">
                 <div class="card-avatar">
                   <a href="#pablo">
@@ -22,7 +22,7 @@
                   </a>
                 </div>
                 <div class="card-body">
-                  <h6 class="card-category text-gray">Position</h6>
+                  <h6 class="card-category text-gray">{{employee.position}}</h6>
                   <h4 class="card-title">Bio Data</h4>
                   
                   <div class="card-description">
@@ -32,51 +32,51 @@
                       
                       <tr>
                         <td>Name</td>
-                        <td>Mark</td>
+                        <td>{{employee.first_name}} {{employee.last_name}}</td>
                       </tr>
                       <tr>
                         <th scope="row">Position</th>
-                        <td>Jacob</td>
+                        <td>{{employee.position}} </td>
                       </tr>
                       <tr>
                         <th scope="row">Gender</th>
-                        <td>Larry</td>
+                        <td>{{employee.gender}}</td>
                       </tr>
                       <tr>
                         <th scope="row">Start Date</th>
-                        <td>Larry</td>
+                        <td>{{employee.start_date}}</td>
                       </tr>
                       <tr>
                         <th scope="row">Marital Status</th>
-                        <td>Larry</td>
+                        <td>{{employee.marital_status}}</td>
                       </tr>
                       <tr>
                         <th scope="row">Date Of Birth</th>
-                        <td>Larry</td>
+                        <td>{{employee.dob}}</td>
                       </tr>
                       <tr>
                         <th scope="row">Nationality</th>
-                        <td>Larry</td>
+                        <td>{{employee.nationality}}</td>
                       </tr>
                       <tr>
                         <th scope="row">NSSF Number</th>
-                        <td>Larry</td>
+                        <td>{{employee.nssf_no}}</td>
                       </tr>
                       <tr>
                         <th scope="row">Telephone</th>
-                        <td>Larry</td>
+                        <td>{{employee.telephone_no}}</td>
                       </tr>
                       <tr>
                         <th scope="row">Residence Address</th>
-                        <td>Larry</td>
+                        <td>{{employee.residence_address}}</td>
                       </tr>
                       <tr>
                         <th scope="row">National ID NUMBER</th>
-                        <td>Larry</td>
+                        <td>{{employee.national_id}}</td>
                       </tr>
                       <tr>
                         <th scope="row">URA TIN</th>
-                        <td>Larry</td>
+                        <td>{{employee.ura_tin}}</td>
                       </tr>
                     </table>
 
@@ -84,7 +84,7 @@
 
 
 
-                  <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
+                  <a href="#" class="btn btn-primary btn-round">Contact</a>
                 </div>
               </div>
             </div>
