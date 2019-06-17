@@ -31,6 +31,16 @@ def employees_page(request):
     }
     return render(request,'employees/employees.html', context)
 
+def leave_page(request):
+    # The line requires the user to be authenticated before accessing the view responses. 
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page 
+        return render(request,'registration/login.html',{"message":None})
+    context = {
+        "leave": "active"
+    }
+    return render(request,'employees/leave.html', context)
+
 
 def payroll_page(request):
     # The line requires the user to be authenticated before accessing the view responses. 

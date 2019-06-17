@@ -50,6 +50,12 @@
               <p>Employees</p>
             </a>
           </li>
+          <li class="nav-item  {{ leave }}">
+            <a class="nav-link" href="{% url 'leave_page' %}">
+              <i class="material-icons">event</i>
+              <p>Leave</p>
+            </a>
+          </li>
           <li class="nav-item {{ payroll }}">
             <a class="nav-link" href="{% url 'payroll_page' %}">
               <i class="material-icons">library_books</i>
