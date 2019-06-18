@@ -23,7 +23,7 @@ class Employee(models.Model):
 
     
 class Leave(models.Model):
-    Employee_Name =models.CharField(max_length=60)
+    Employee =models.ForeignKey(Employee, on_delete = models.CASCADE)
     designation = models.CharField(max_length=20)
     nin = models.CharField(max_length=30)
     department=models.CharField(max_length=15)
