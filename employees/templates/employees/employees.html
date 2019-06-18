@@ -23,20 +23,27 @@
             <th>Gender</th>
           </thead>
           <tbody>
-            <a href="https://facebook.com">
+            {% for employee in employees  %}
+            
             <tr>
-              <td>1</td>
-              <td>Dakota Rice</td>
-              <td>Niger</td>
-              <td>Oud-Turnhout</td>
-              <td>$36,738</td>
+              <td>{{employee.id}}</td>
+              <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}} {{employee.last_name}}</a></td>
+              <td>{{employee.start_date}}</td>
+              <td>{{employee.telephone_no}}</td>
+              <td>{{employee.national_id}}</td>
+              <td>{{employee.gender}}</td>
+              <td><i class="fa fa-edit"></i></td>
+              <td><i class="fa fa-trash"></i></td>
             </tr>
-            </a>
+            
+            
+            {% endfor %}
               
                 
                          
           </tbody>
         </table>
+        
       </div>
     </div>
   </div>
@@ -44,7 +51,7 @@
 
 <!-- Modal: modalCart -->
 <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+  aria-hidden="true" style="overflow-y: auto !important">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <!--Header-->

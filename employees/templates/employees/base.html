@@ -37,19 +37,20 @@
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item {{ dashboard }}">
+          <li class="nav-item {{ dashboard_page }}">
             <a class="nav-link" href="{% url 'dashboard_page' %}">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
      
-          <li class="nav-item  {{ employees }}">
+          <li class="nav-item  {{ employees_page }}">
             <a class="nav-link" href="{% url 'employees_page' %}">
               <i class="material-icons">content_paste</i>
               <p>Employees</p>
             </a>
           </li>
+<<<<<<< HEAD
           <li class="nav-item  {{ leave }}">
             <a class="nav-link" href="{% url 'leave_page' %}">
               <i class="material-icons">event</i>
@@ -57,6 +58,9 @@
             </a>
           </li>
           <li class="nav-item {{ payroll }}">
+=======
+          <li class="nav-item {{ payroll_page }}">
+>>>>>>> 0a59ae2558782175d98f184ca182faecab50d58c
             <a class="nav-link" href="{% url 'payroll_page' %}">
               <i class="material-icons">library_books</i>
               <p>Payroll</p>
@@ -118,7 +122,7 @@
             <script>
               document.write(new Date().getFullYear())
             </script>, 
-            <a href="#" target="_blank">SOLITON TELMEC (U) LTD</a> 
+            SOLITON TELMEC (U) LTD
           </div>
         </div>
       </footer>
