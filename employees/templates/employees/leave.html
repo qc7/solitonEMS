@@ -2,3 +2,140 @@
       {%block page_title %}
         Leave
       {%endblock%}
+{%block content%}
+<div class="content">
+  <div class="container-fluid">
+ <!-- Button trigger modal-->
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCart">Apply For Leave</button>
+
+ <div class="col-md-12">      
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="">
+            <th>Date</th>
+            <th>Type</th>
+            <th>Year</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>No. of Days</th>
+            <th>Supervisor</th>
+            <th>HOD</th>
+            <th>CEO</th>
+          </thead>
+          <tbody>
+            <a href="https://facebook.com">
+            <tr>
+              <td>2019-06-17</td>
+              <td>Paternity</td>
+              <td>2019</td>
+              <td>2019-06-17</td>
+              <td>2019-06-20</td>
+              <td>4</td>
+              <td>Approved</td>
+              <td>Pending</td>
+              <td>Pending</td>
+            </tr>
+            </a>
+              
+                
+                         
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Modal: modalCart -->
+<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Leave Application</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <!--Body-->
+    <div class="modal-body">
+       
+     <form>        
+        <div class="form-group">
+          <label>Apply Date</label>
+          <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
+        </div>
+
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-3 pt-0">Type:</legend>
+      <div class="col-sm-12">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gridRadios1" id="gridRadios1" value="option1" checked>
+          <label class="form-check-label" for="gridRadios1">
+            Annaul
+          </label>
+        </div>
+        
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gridRadios2" id="gridRadios2" value="option2">
+          <label class="form-check-label" for="gridRadios2">
+            Maternity
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gridRadios3" id="gridRadios3" value="option3">
+          <label class="form-check-label" for="gridRadios3">
+            Paternity
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gridRadios4" id="gridRadios4" value="option3">
+          <label class="form-check-label" for="gridRadios4">
+            Compassionate
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+        
+        <div class="form-group">
+          <input type="number" class="form-control" 
+           placeholder="Year" name = "_year"> 
+        </div>
+
+        <div class="form-group">
+          <label>Start Date (Inclusive):</label>
+          <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
+        </div>
+
+        <div class="form-group">
+          <label>End Date (Inclusive):</label>
+          <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
+        </div>
+
+        <div class="form-group">
+          <input type="text" class="form-control" 
+           placeholder="No. of Days" name = "ndays"> 
+        </div>
+      
+      {% comment %} <button type="submit" class="btn btn-primary">Submit</button> {% endcomment %}
+  
+      </div>
+      <!--Footer-->
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="submit">Apply</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>        
+      </div>
+      </form> 
+
+    </div>
+  </div>
+</div>
+<!-- Modal: modalCart -->
+     
+  </div>
+</div>
+{%endblock content%}
