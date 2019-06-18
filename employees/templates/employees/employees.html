@@ -1,158 +1,142 @@
 {%extends './base.html'%}
-      
+
 {%block page_title %}
-  Employees
+Employees
 {%endblock%}
 
 {%block content%}
 <div class="content">
   <div class="container-fluid">
- <!-- Button trigger modal-->
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCart">Add New Employee +</button>
+    <!-- Button trigger modal-->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_employee">Add New
+      Employee
+      +</button>
 
- <div class="col-md-12">      
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead class="">
-            <th>ID</th>
-            <th>Name</th>
-            <th>Start Date</th>
-            <th>Telephone</th>
-            <th>National ID</th>
-            <th>Gender</th>
-          </thead>
-          <tbody>
-            {% for employee in employees  %}
-            
-            <tr>
-              <td>{{employee.id}}</td>
-              <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}} {{employee.last_name}}</a></td>
-              <td>{{employee.start_date}}</td>
-              <td>{{employee.telephone_no}}</td>
-              <td>{{employee.national_id}}</td>
-              <td>{{employee.gender}}</td>
-              <td><i class="fa fa-edit"></i></td>
-              <td><i class="fa fa-trash"></i></td>
-            </tr>
-            
-            
-            {% endfor %}
-              
-                
-                         
-          </tbody>
-        </table>
-        
+    <div class="col-md-12">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="">
+              <th>ID</th>
+              <th>Name</th>
+              <th>Start Date</th>
+              <th>Telephone</th>
+              <th>National ID</th>
+              <th>Gender</th>
+            </thead>
+            <tbody>
+              {% for employee in employees  %}
+              <tr>
+                <td>{{employee.id}}</td>
+                <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}}
+                    {{employee.last_name}}</a></td>
+                <td>{{employee.start_date}}</td>
+                <td>{{employee.telephone_no}}</td>
+                <td>{{employee.national_id}}</td>
+                <td>{{employee.gender}}</td>
+                <td><a href="{%url 'edit_employee_page' employee.id %}" style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                <td><i class="fa fa-trash"></i></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
+
+    <!-- Modal: modalAddNewEmployee -->
+    <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Add Employee Bio Data</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <!--Body-->
+          <div class="modal-body">
+
+            <form>
+              <div class="form-group">
+                <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter first name"
+                  name="first_name">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter last name"
+                  name="last_name" name="last_name">
+              </div>
+              <div class="form-group">
+                <label for="sel1">Gender:</label>
+                <select class="form-control" id="sel1" name="gender">
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sel1">Marital Status:</label>
+                <select class="form-control" id="sel1" name="marital_status">
+                  <option>Single</option>
+                  <option>Married</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Start Date</label>
+                <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
+              </div>
+
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter Nationality" name="nationality">
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Enter NSSF Number" name="nssf_no">
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Enter URA TIN" name="ura_tin">
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Enter National ID Number" name="national_id">
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Enter Telephone Number" name="telephone">
+              </div>
+
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter Residence Address" name="residence_address">
+              </div>
+
+              <div class="form-group">
+                <label>Date of Birth</label>
+                <input class="form-control" type="date" value="1992-08-19" name="dob">
+              </div>
+
+              {% comment %} <button type="submit" class="btn btn-primary">Submit</button> {% endcomment %}
 
 
-<!-- Modal: modalCart -->
-<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true" style="overflow-y: auto !important">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <!--Header-->
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Add Employee Bio Data</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
+
+
+
+
+          </div>
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+            <button class="btn btn-danger" type="submit">Save</button>
+          </div>
+          </form>
+
+        </div>
       </div>
-      <!--Body-->
-    <div class="modal-body">
-       
-     <form>
-        <div class="form-group">
-          <input type="text" class="form-control" 
-          aria-describedby="emailHelp" placeholder="Enter first name" name="first_name"> 
-        </div>
-        
-
-        <div class="form-group">
-          <input type="text" class="form-control" 
-          aria-describedby="emailHelp" placeholder="Enter last name" name="last_name" name = "last_name"> 
-        </div>
-        
-
-        <div class="form-group">
-          <label for="sel1">Gender:</label>
-          <select class="form-control" id="sel1" name="gender">
-          <option>Male</option>
-          <option>Female</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="sel1">Marital Status:</label>
-          <select class="form-control" id="sel1" name="marital_status">
-          <option>Single</option>
-          <option>Married</option>
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <label>Start Date</label>
-          <input class="form-control" type="date" value="2011-08-19" id="example-date-input">
-        </div>
-
-        <div class="form-group">
-          <input type="text" class="form-control" 
-           placeholder="Enter Nationality" name = "nationality"> 
-        </div>
-
-        <div class="form-group">
-          <input type="number" class="form-control" 
-           placeholder="Enter NSSF Number" name = "nssf_no"> 
-        </div>
-
-        <div class="form-group">
-          <input type="number" class="form-control" 
-           placeholder="Enter URA TIN" name = "ura_tin"> 
-        </div>
-
-        <div class="form-group">
-          <input type="number" class="form-control" 
-           placeholder="Enter National ID Number" name = "national_id"> 
-        </div>
-
-        <div class="form-group">
-          <input type="number" class="form-control" 
-           placeholder="Enter Telephone Number" name = "telephone"> 
-        </div>
-
-        <div class="form-group">
-          <input type="text" class="form-control" 
-           placeholder="Enter Residence Address" name = "residence_address"> 
-        </div>
-
-        <div class="form-group">
-          <label>Date of Birth</label>
-          <input class="form-control" type="date" value="1992-08-19" name="dob">
-        </div>
-      
-      {% comment %} <button type="submit" class="btn btn-primary">Submit</button> {% endcomment %}
-  
-      
-
-
-
-
-      </div>
-      <!--Footer-->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
-        <button class="btn btn-danger" type="submit">Save</button>
-      </div>
-      </form> 
-
     </div>
-  </div>
-</div>
-<!-- Modal: modalCart -->
-     
+    <!-- Modal: modalAddNewEmployee -->
+
   </div>
 </div>
 {%endblock content%}

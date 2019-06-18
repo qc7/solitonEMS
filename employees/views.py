@@ -33,7 +33,8 @@ def employees_page(request):
 
     }
     return render(request,'employees/employees.html', context)
-
+    
+@login_required
 def leave_page(request):
     # The line requires the user to be authenticated before accessing the view responses. 
     if not request.user.is_authenticated:
@@ -70,6 +71,19 @@ def payroll_page(request):
         "payroll_page": "active"
     }
     return render(request,'employees/payroll.html', context)
+
+@login_required
+def edit_employee_page(request,id):
+    # The line requires the user to be authenticated before accessing the view responses. 
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page 
+        return render(request,'registration/login.html',{"message":None})
+    employee = Employee.objects.get(pk=id)
+    context = {
+        "employees_page": "active",
+        "employee": employee
+    }
+    return render(request,'employees/edit_employee.html', context)
 
 # The login view authenticates the user
 # The view also renders the login page
