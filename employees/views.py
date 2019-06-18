@@ -40,7 +40,7 @@ def leave_page(request):
         # if the user is not authenticated it renders a login page 
         return render(request,'registration/login.html',{"message":None})
     context = {
-        "leave": "active"
+        "leave_page": "active"
     }
     return render(request,'employees/leave.html', context)
 
