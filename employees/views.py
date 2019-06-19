@@ -110,4 +110,75 @@ def logout_view(request):
 
 
 
+# Process
+@login_required
+def add_new_employee(request):
+    if request.method == 'POST':
+        # Fetching data from the add new employee form
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        position  = request.POST['position']
+        gender = request.POST['gender']
+        marital_status = request.POST['marital_status']
+        start_date = request.POST['start_date']
+        nationality = request.POST['nationality']
+        nssf_no    = request.POST['nssf_no']
+        ura_tin = request.POST['ura_tin']
+        national_id = request.POST['national_id']
+        telephone = request.POST['telephone']
+        residence_address = request.POST['residence_address']
+        dob = request.POST['dob']
 
+        try:
+            # Creating instance of Employee
+            employee = Employee(first_name=first_name,last_name=last_name,position=position,gender=gender,
+            marital_status= marital_status, start_date=start_date,nationality=nationality,nssf_no=nssf_no,
+            ura_tin=ura_tin,national_id=national_id,telephone_no=telephone,residence_address=residence_address,
+            dob=dob)
+            # Saving the employee instance
+            employee.save()
+            context = {
+                "employees_page": "active",
+                "success_msg": "You have successfully added %s to the employees"%(employee.first_name)
+            }
+
+            return render(request,'employees/success.html',context)
+
+        except:
+            context ={
+                "employees_page": "active",
+                "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
+            }
+            return render(request,"employees/failed.html",context)
+ 
+    else :
+        context ={
+                "employees_page": "active",
+                "failed_msg": "Failed! You performed a GET request"
+            }
+            
+        return render(request,"employees/failed.html",context)
+            
+@login_required
+def delete_employee(request,id):
+    try:
+    # Grab the employee
+        employee = Employee.objects.get(pk=id)
+
+        name = employee.first_name + " "+ employee.last_name
+    # Delete the employee
+        employee.delete()
+
+    except Employee.DoesNotExist:
+        context = {
+        "employees_page": "active",
+        "deleted_msg": "The employee no longer exists on the system"
+        }
+
+        return render(request, 'employees/deleted.html',context)
+
+    context = {
+        "employees_page": "active",
+        "deleted_msg": "You have deleted %s from employees"%(name)
+    } 
+    return render(request, 'employees/deleted.html',context)

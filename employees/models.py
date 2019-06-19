@@ -16,7 +16,7 @@ class Employee(models.Model):
     residence_address = models.CharField(max_length=20)
     national_id   = models.CharField(max_length=20)
     ura_tin = models.CharField(max_length=20)
-    image_url = models.CharField(max_length=20)
+    image_url = models.CharField(max_length=20, default="")
 
     def __str__(self):
         return self.first_name + " " + self.last_name

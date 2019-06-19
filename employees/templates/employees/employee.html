@@ -15,7 +15,11 @@
                 <div class="card card-profile">
                     <div class="card-avatar">
                         <a href="#pablo">
-                            <img class="img" src="{% static '/assets/img/faces/marc.jpg' %}" />
+                            {%if employee.gender == "Male"%}
+                            <img class="img" src="{% static '/assets/img/faces/male_avatar.png' %}" />
+                            {%else%}
+                            <img class="img" src="{% static '/assets/img/faces/female_avatar.jpg' %}" />
+                            {%endif%}
                         </a>
                     </div>
                     <div class="card-body">

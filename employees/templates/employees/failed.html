@@ -1,0 +1,25 @@
+{%extends './base.html'%} {%load static %}
+{%block page_title %}
+<span >
+    <i class="material-icons" style="font-size: 3em">hightlight_off</i>
+    <h1>Failed!!</h1>
+</span>
+
+{%endblock%}
+
+
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 style="padding-top:20px">{{failed_msg}}</h3>
+                <a href="{%url 'employees_page'%}"><button class="btn btn-outline-danger">Back</button></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{%endblock content%}
