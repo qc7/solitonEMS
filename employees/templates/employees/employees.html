@@ -35,7 +35,7 @@ Employees
                 <td>{{employee.national_id}}</td>
                 <td>{{employee.gender}}</td>
                 <td><a href="{%url 'edit_employee_page' employee.id %}" style="color:inherit"><i class="fa fa-edit"></i></a></td>
-                <td><i class="fa fa-trash"></i></td>
+                <td><a  href = "https://google.com" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i class="fa fa-trash"></i></a></td>
               </tr>
               {% endfor %}
             </tbody>
