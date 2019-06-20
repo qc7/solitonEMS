@@ -1,14 +1,12 @@
-{%extends './base.html'%} {%load static %}
+{%extends './base.html'%}
+{%load static %}
 {%block page_title %}
-<span >
+<span>
     <i class="fa fa-trash-o" style="font-size: 3em"></i>
-
     <h1>Deleted!!</h1>
 </span>
 {%endblock%}
-
 {% block content %}
-
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -17,8 +15,6 @@
                 <a href="{%url 'employees_page'%}"><button class="btn btn-outline-danger">Back</button></a>
             </div>
         </div>
-
     </div>
 </div>
-
 {%endblock content%}
