@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Employee
+from .models import Employee,HomeAddress
 # Create your views here.
 
 # Authentication
@@ -117,8 +117,9 @@ def logout_view(request):
     logout(request)
     return render(request, "registration/login.html", {"message": "Logged Out", "info": "info"})
 
-
-# Process
+###################################################################
+# Processes
+###################################################################
 @login_required
 def add_new_employee(request):
     if request.method == 'POST':
@@ -222,6 +223,95 @@ def edit_employee(request, id):
 
             return render(request, 'employees/success.html', context)
 
+        except:
+            context = {
+                "employees_page": "active",
+                "failed_msg": "Something went wrong. Contact Bright and Hakim"
+            }
+            return render(request, "employees/failed.html", context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+@login_required
+def add_new_home_address(request):
+    if request.method == 'POST':
+        # Fetching data from the add new home address form
+        employee_id = request.POST['employee_id']
+        division = request.POST['division']
+        district = request.POST['district']
+        county = request.POST['county']
+        sub_county = request.POST['sub_county']
+        parish = request.POST['parish']
+        village = request.POST['village']
+        address = request.POST['address']
+        telephone = request.POST['telephone']
+        try:
+            employee= Employee.objects.get(pk=employee_id)
+            # Creating instance of Home Address
+            homeaddress = HomeAddress(employee=employee,district=district,division=division,county=county,sub_county=sub_county,
+            parish=parish,village=village,address=address,telephone=telephone)
+            # Saving the Home Address instance
+            homeaddress.save()
+            context = {
+                "employees_page": "active",
+                "success_msg": "You have successfully added Home Address to the %s's details" % (employee.first_name)
+            }
+
+            return render(request, 'employees/success.html', context)
+
+        except:
+            context = {
+                "employees_page": "active",
+                "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
+            }
+            return render(request, "employees/failed.html", context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+@login_required
+def edit_home_address(request):
+    if request.method == 'POST':
+        # Fetching data from the edit home address form
+        try:
+            # Fetch the employee 
+            employee_id = request.POST['employee_id']
+            employee = Employee.objects.get(pk=employee_id)
+            # Grab the home address
+            home_address = HomeAddress.objects.get(employee=employee)
+
+            home_address.district = request.POST['district']
+            home_address.division = request.POST['division']
+            home_address.county = request.POST['county']
+            home_address.sub_county = request.POST['sub_county']
+            home_address.parish = request.POST['parish']
+            home_address.village = request.POST['village']
+            home_address.address = request.POST['address']
+            home_address.telephone = request.POST['telephone']
+          
+            
+            # Saving the home address instance
+            home_address.save()
+            context = {
+                "employees_page": "active",
+                "success_msg": "You have successfully updated %s's home address" % (employee.first_name) 
+            }
+
+            return render(request, 'employees/success.html', context)
+        
         except:
             context = {
                 "employees_page": "active",

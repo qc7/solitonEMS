@@ -14,8 +14,10 @@ urlpatterns = [
     path('add_new_employee/', views.add_new_employee, name="add_new_employee"),
     path('delete_employee/<int:id>',views.delete_employee, name="delete_employee"),
     path('edit_employee/<int:id>',views.edit_employee, name="edit_employee"),
+    path('add_new_home_address/', views.add_new_home_address, name="add_new_home_address"),
+    path('edit_home_address/', views.edit_home_address, name="edit_home_address"),
     # Authentication
     path('accounts/login/', views.login_page, name="loginAccounts"),
     path('login/', views.login_view, name="login"),
     path('logout/', views.logout_view, name="logout"),
-] 
+]

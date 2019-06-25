@@ -13,7 +13,7 @@
                 <div class="card card-profile">
                     <div class="card-avatar">
                         <a href="#pablo">
-                            {%if employee.gender == "Male"%}
+                            {%if employee.gender == "Male" %}
                             <img class="img" src="{% static '/assets/img/faces/male_avatar.png' %}" />
                             {%else%}
                             <img class="img" src="{% static '/assets/img/faces/female_avatar.jpg' %}" />
@@ -66,7 +66,7 @@
                                 <td>{{employee.residence_address}}</td>
                             </tr>
                             <tr>
-                                <th scope="row">National ID NUMBER</th>
+                                <th scope="row">National ID</th>
                                 <td>{{employee.national_id}}</td>
                             </tr>
                             <tr>
@@ -85,43 +85,48 @@
                         <h4 class="card-title">Home Address</h4>
 
                         <div class="card-description">
-
+                            {%if employee.homeaddress%}
                             <table class="table">
                                 <tr>
                                     <td>District</td>
-                                    <td>Wakiso</td>
+                                    <td>{{employee.homeaddress.district}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Division</th>
-                                    <td>Nabweru</td>
+                                    <td>{{employee.homeaddress.division}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">County</th>
-                                    <td>Mawokota</td>
+                                    <td>{{employee.homeaddress.county}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Sub County</th>
-                                    <td>Nsangi</td>
+                                    <td>{{employee.homeaddress.sub_county}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Parish</th>
-                                    <td>Wakiso</td>
+                                    <td>{{employee.homeaddress.parish}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Village</th>
-                                    <td>Nansana West Ward</td>
+                                    <td>{{employee.homeaddress.village}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Address</th>
-                                    <td>Nansana rd, Plot 100</td>
+                                    <td>{{employee.homeaddress.address}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Telephone</th>
-                                    <td>+256 770490000</td>
+                                    <td>{{employee.homeaddress.telephone}}</td>
                                 </tr>
                             </table>
+                            <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
+                                data-target="#modal_edit_home_address"> <i class="fa fa-edit"></i> Edit</a>
+                            {%else%}
+                            <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
+                                data-target="#modal_add_home_address"> <i class="fa fa-plus"></i></a>
+                            {%endif%}
                         </div>
-                        <a href="#" class="btn btn-primary btn-round">Contact</a>
                     </div>
                 </div>
             </div>
@@ -335,6 +340,138 @@
                 </div>
             </div>
         </div>
+        <!-- Modal: modalAddNewEmployee -->
+        <div class="modal fade" id="modal_edit_home_address" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Edit {{employee.first_name}}'s Home Address</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+
+                        <form method="POST" action="{%url 'edit_home_address'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <label>District</label>
+                                <input type="text" class="form-control" placeholder="Enter home district"
+                                    name="district" value="{{employee.homeaddress.district}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Division</label>
+                                <input type="text" class="form-control" placeholder="Enter home division"
+                                    value="{{employee.homeaddress.division}}" name="division" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">County</label>
+                                <input type="text" class="form-control" placeholder="Enter home county" name="county"
+                                    value="{{employee.homeaddress.county}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Sub County</label>
+                                <input type="text" class="form-control" placeholder="Enter home sub county"
+                                    value="{{employee.homeaddress.sub_county}}" name="sub_county" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Parish</label>
+                                <input type="text" class="form-control" placeholder="Enter parish" name="parish"
+                                    value="{{employee.homeaddress.parish}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Village</label>
+                                <input type="text" class="form-control" placeholder="Enter village" name="village"
+                                    value="{{employee.homeaddress.village}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Address</label>
+                                <input type="text" class="form-control" placeholder="Enter address" name="address"
+                                    value="{{employee.homeaddress.address}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Telephone</label>
+                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone"
+                                    value="{{employee.homeaddress.telephone}}" required>
+                            </div>
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: modalAddNewEmployee -->
+        <div class="modal fade" id="modal_add_home_address" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Home Address</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+
+                        <form method="POST" action="{%url 'add_new_home_address'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter home district"
+                                    name="district" value="{{employee.homeaddress.district}}" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter home division"
+                                    value="{{employee.homeaddress.division}}" name="division" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter home county" name="county"
+                                    value="{{employee.homeaddress.county}}" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter home sub county"
+                                    value="{{employee.homeaddress.sub_county}}" name="sub_county" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter parish" name="parish"
+                                    value="{{employee.homeaddress.parish}}" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter village" name="village"
+                                    value="{{employee.homeaddress.village}}" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter address" name="address"
+                                    value="{{employee.homeaddress.address}}" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone"
+                                    value="{{employee.homeaddress.telephone}}" required>
+                            </div>
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

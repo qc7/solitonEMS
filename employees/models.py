@@ -1,7 +1,6 @@
 from django.db import models
 
 # Create your models here.
-
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -21,7 +20,28 @@ class Employee(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
-    
+
+class HomeAddress(models.Model):
+    employee = models.OneToOneField(Employee,on_delete=models.CASCADE,primary_key=True)
+    district = models.CharField(max_length=20)
+    division = models.CharField(max_length=20)
+    county =   models.CharField(max_length=20)
+    sub_county = models.CharField(max_length=20)
+    parish = models.CharField(max_length=20)
+    village = models.CharField(max_length=20)
+    address = models.CharField(max_length=20)
+    telephone = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.district
+
+class Certification(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    institution = models.CharField(max_length=20)
+    name = models.CharField(max_length=20)
+    year_completed = models.CharField(max_length=4)
+    grade = models.CharField(max_length=20)
+
 class Leave(models.Model):
     Employee_Name =models.CharField(max_length=60)
     designation = models.CharField(max_length=20)
@@ -35,3 +55,5 @@ class Leave(models.Model):
     sup_Status=models.CharField(max_length=15)
     hod=models.CharField(max_length=45)
     hod_status = models.CharField(max_length=15)
+
+
