@@ -37,10 +37,49 @@ class HomeAddress(models.Model):
 
 class Certification(models.Model):
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
-    institution = models.CharField(max_length=20)
-    name = models.CharField(max_length=20)
+    institution = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     year_completed = models.CharField(max_length=4)
     grade = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+class EmergencyContact(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
+    relationship = models.CharField(max_length=40)
+    mobile_number = models.CharField(max_length=50)
+    email = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+class Beneficiary(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
+    relationship = models.CharField(max_length=40)
+    mobile_number = models.CharField(max_length=40)
+    percentage = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+
+class Spouse(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
+    national_id = models.CharField(max_length=40)
+    dob     = models.DateField()
+    occupation = models.CharField(max_length=40)
+    telephone = models.CharField(max_length=40)
+    nationality = models.CharField(max_length=40)
+    passport_number = models.CharField(max_length=40)
+    alien_certificate_number = models.CharField(max_length=40)
+    immigration_file_number = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
 
 class Leave(models.Model):
     Employee_Name =models.CharField(max_length=60)

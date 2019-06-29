@@ -31,7 +31,7 @@
                             </tr>
                             <tr>
                                 <th scope="row">Position</th>
-                                <td>{{employee.position}} </td>
+                                <td>{{employee.position}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Gender</th>
@@ -138,12 +138,15 @@
                         <i class="material-icons" style="font-size: 3em; float:left; margin-right:20px">school</i>
                         <h4 class="card-title ">
                             Education</h4>
-                        <p class="card-category"> Here is a subtitle for this table</p>
                     </div>
                     <div class="card-body">
+                        <button class="btn-outline-danger" data-toggle="modal"
+                            data-target="#modal_add_certification">Add a certification</button>
+                        {%if certifications %}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class=" text-primary">
+
                                     <th>
                                         Institution
                                     </th>
@@ -156,17 +159,29 @@
                                     <th>
                                         Grade
                                     </th>
+
                                 </thead>
                                 <tbody>
+                                    {%for certification in certifications%}
                                     <tr>
-                                        <td>Makerere University</td>
-                                        <td>2010</td>
-                                        <td>Bachelor of Commerce</td>
-                                        <td>Second Class Upper</td>
+                                        <td>{{certification.institution}}</td>
+                                        <td>{{certification.year_completed}}</td>
+                                        <td>{{certification.name}}</td>
+                                        <td>{{certification.grade}}</td>
+                                        <td><a href="{%url 'edit_certification_page' certification.id %}"
+                                                style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                                        <td><a href="{%url 'delete_certification' certification.id %}"
+                                                style="color: inherit" ...
+                                                onclick="return confirm('Are you sure you want to delete this certification from {{employee.first_name}}?')"><i
+                                                    class="fa fa-trash"></i></a></td>
                                     </tr>
+                                    {%endfor%}
                                 </tbody>
                             </table>
                         </div>
+                        {%else%}
+                        <h1>No certifications </h1>
+                        {%endif%}
                     </div>
                 </div>
             </div>
@@ -178,9 +193,10 @@
                         <i class="material-icons"
                             style="font-size: 3em; float:left; margin-right:20px">local_hospital</i>
                         <h4 class="card-title ">Emergency Contacts</h4>
-                        <p class="card-category"> Here is a subtitle for this table</p>
                     </div>
                     <div class="card-body">
+                        <button class="btn-outline-danger" data-toggle="modal"
+                            data-target="#modal_add_emergency_contact">Add an emergency contact</button>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-danger">
@@ -198,12 +214,25 @@
                                     </th>
                                 </thead>
                                 <tbody>
+                                    {%for emergency_contact in emergency_contacts%}
                                     <tr>
-                                        <td>Tony Stark</td>
-                                        <td>Father</td>
-                                        <td>077784993</td>
-                                        <td>stark@something.com</td>
+                                        <td>{{emergency_contact.name}}</td>
+                                        <td>{{emergency_contact.relationship}}</td>
+                                        <td>{{emergency_contact.mobile_number}}</td>
+                                        <td>{{emergency_contact.email}}</td>
+                                        <td><a href="{%url 'edit_emergency_contact_page' emergency_contact.id %}"
+                                                style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                                        <td>
+                                            <a style="color: inherit"
+                                                href="{%url 'delete_emergency_contact' emergency_contact.id %}"
+                                                onclick="return confirm('Are you sure you want to delete this emergency contact from {{employee.first_name}}?')">
+
+                                                <i class="fa fa-trash"></i>
+
+                                            </a>
+                                        </td>
                                     </tr>
+                                    {%endfor%}
                                 </tbody>
                             </table>
                         </div>
@@ -214,9 +243,10 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title ">Beneficiaries</h4>
-                        <p class="card-category"> Here is a subtitle for this table</p>
                     </div>
                     <div class="card-body">
+                        <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_beneficiary">Add
+                            a beneficiary</button>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -234,11 +264,23 @@
                                     </th>
                                 </thead>
                                 <tbody>
+                                    {%for beneficiary in beneficiaries%}
                                     <tr>
-                                        <td>Tony Stark</td>
-                                        <td>Father</td>
-                                        <td>077784993</td>
-                                        <td>stark@something.com</td>
+                                        <td>{{beneficiary.name}}</td>
+                                        <td>{{beneficiary.relationship}}</td>
+                                        <td>{{beneficiary.mobile_number}}</td>
+                                        <td>{{beneficiary.percentage}}</td>
+                                        <td><a href="{%url 'edit_beneficiary_page' beneficiary.id%}"
+                                                style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                                        <td>
+                                            <a style="color: inherit" href="{%url 'delete_beneficiary' beneficiary.id%}"
+                                                onclick="return confirm('Are you sure you want to delete this beneficiary from {{employee.first_name}}?')">
+
+                                                <i class="fa fa-trash"></i>
+
+                                            </a>
+                                        </td>
+                                        {%endfor%}
                                     </tr>
                                 </tbody>
                             </table>
@@ -253,9 +295,10 @@
                     <div class="card-header card-header-primary">
                         <i class="fas fa-ring" style="font-size: 3em; float:left; margin-right:20px"></i>
                         <h4 class="card-title ">Spouse Details</h4>
-                        <p class="card-category"> Here is a subtitle for this table</p>
                     </div>
                     <div class="card-body">
+                        <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_spouse">Add a
+                            spouse</button>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-primary">
@@ -291,12 +334,29 @@
                                     </th>
                                 </thead>
                                 <tbody>
+                                    {%for spouse in spouses%}
                                     <tr>
-                                        <td>Tony Stark</td>
-                                        <td>Father</td>
-                                        <td>077784993</td>
-                                        <td>stark@something.com</td>
+                                        <td>{{spouse.name}}</td>
+                                        <td>{{spouse.national_id}}</td>
+                                        <td>{{spouse.dob}}</td>
+                                        <td>{{spouse.occupation}}</td>
+                                        <td>{{spouse.telephone}}</td>
+                                        <td>{{spouse.nationality}}</td>
+                                        <td>{{spouse.passport_number}}</td>
+                                        <td>{{spouse.alien_certificate_number}}</td>
+                                        <td>{{spouse.immigration_file_number}}</td>
+                                        <td><a href="{%url 'edit_spouse' spouse.id%}"
+                                                style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                                        <td>
+                                            <a style="color: inherit" href="{%url 'delete_spouse' spouse.id%}"
+                                                onclick="return confirm('Are you sure you want to delete this spouse from {{employee.first_name}}?')">
+
+                                                <i class="fa fa-trash"></i>
+
+                                            </a>
+                                        </td>
                                     </tr>
+                                    {%endfor%}
                                 </tbody>
                             </table>
                         </div>
@@ -310,7 +370,6 @@
                     <div class="card-header card-header-danger">
                         <i class="material-icons" style="font-size: 3em; float:left; margin-right:20px">child_care</i>
                         <h4 class="card-title ">Dependents</h4>
-                        <p class="card-category"> Here is a subtitle for this table</p>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -410,7 +469,7 @@
             </div>
         </div>
 
-        <!-- Modal: modalAddNewEmployee -->
+        <!-- modal Add Home Address -->
         <div class="modal fade" id="modal_add_home_address" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
@@ -464,6 +523,209 @@
                     <!--Footer-->
                     <div class="modal-footer">
                         <button class="btn btn-outline-danger" type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- modal Add a certification -->
+        <div class="modal fade" id="modal_add_certification" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Certification</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+
+                        <form method="POST" action="{%url 'add_certification'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter institution"
+                                    name="institution" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Enter year completed"
+                                    name="year_completed" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter certification"
+                                    name="certification" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter grade" name="grade" required>
+                            </div>
+
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- modal Add  an emergency contact-->
+        <div class="modal fade" id="modal_add_emergency_contact" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Emergency Contact</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+
+                        <form method="POST" action="{%url 'add_emergency_contact'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter name " name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter relationship"
+                                    name="relationship" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter mobile number"
+                                    name="mobile_number" required>
+                            </div>
+
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- modal Add  a beneficiary-->
+        <div class="modal fade" id="modal_add_beneficiary" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s beneficiary</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+
+                        <form method="POST" action="{%url 'add_beneficiary'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter name " name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter relationship"
+                                    name="relationship" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter mobile number"
+                                    name="mobile_number" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter percentage" name="percentage"
+                                    required>
+                            </div>
+
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- modal Add  a spouse-->
+        <div class="modal fade" id="modal_add_spouse" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Spouse</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+
+                        <form method="POST" action="{%url 'add_spouse'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter name " name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter national ID"
+                                    name="national_id" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input class="form-control" type="date" value="1992-08-19" name="dob">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter occupation" name="occupation"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter nationality"
+                                    name="nationality" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter passport number"
+                                    name="passport_number" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter alien certificate number"
+                                    name="alien_certificate_number" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter immigration file number"
+                                    name="immigration_file_number" required>
+                            </div>
+
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
                         <button class="btn btn-danger" type="submit">Save</button>
                     </div>
                     </form>
