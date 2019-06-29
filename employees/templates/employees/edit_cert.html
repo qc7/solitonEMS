@@ -1,0 +1,50 @@
+{%extends './base.html'%}
+{%block page_title %}
+<span>
+    <a href="{%url 'employee_page' certification.employee.id%}"style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
+    <h3><i class="fa fa-edit"></i> Edit  Certification</h3>
+</span>
+{%endblock page_title%}
+{%block content%} 
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-body">
+                    <form method="POST" action="{%url 'edit_certification'%}">
+                        {%csrf_token%}
+                        <div class="form-group">
+                            <label>Institution</label>
+                            <input type="text" class="form-control" aria-describedby="emailHelp"
+                                placeholder="Enter first name" name="institution" value="{{certification.institution}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Year Completed</label>
+                            <input type="text" class="form-control" aria-describedby="emailHelp"
+                                placeholder="Enter last name" name="year_completed"
+                                value={{certification.year_completed}}>
+                        </div>
+                        <div class="form-group">
+                            <label>Certification</label>
+                            <input type="text" class="form-control" placeholder="Enter certification name"
+                                name="name" value="{{certification.name}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Grade</label>
+                            <input type="text" class="form-control" placeholder="Enter certification grade"
+                                name="grade" value="{{certification.grade}}" required>
+                        </div>
+                </div>
+                <input type="hidden" name="cert_id" value={{certification.id}}>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <a href="{%url 'employee_page' certification.employee.id%}"><button type="button" class="btn btn-outline-danger">Back</button></a> 
+                    <button class="btn btn-danger" type="submit">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

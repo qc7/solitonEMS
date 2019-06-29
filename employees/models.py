@@ -1,10 +1,10 @@
 from django.db import models
 
 # Create your models here.
-
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    position = models.CharField(max_length=30, default="")
     gender = models.CharField(max_length=10)
     start_date    = models.DateField()
     marital_status = models.CharField(max_length=10)
@@ -15,10 +15,84 @@ class Employee(models.Model):
     residence_address = models.CharField(max_length=20)
     national_id   = models.CharField(max_length=20)
     ura_tin = models.CharField(max_length=20)
-    image_url = models.CharField(max_length=20)
+    image_url = models.CharField(max_length=20, default="")
 
     def __str__(self):
         return self.first_name + " " + self.last_name
 
-    
-    
+
+class HomeAddress(models.Model):
+    employee = models.OneToOneField(Employee,on_delete=models.CASCADE,primary_key=True)
+    district = models.CharField(max_length=20)
+    division = models.CharField(max_length=20)
+    county =   models.CharField(max_length=20)
+    sub_county = models.CharField(max_length=20)
+    parish = models.CharField(max_length=20)
+    village = models.CharField(max_length=20)
+    address = models.CharField(max_length=20)
+    telephone = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.district
+
+class Certification(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    institution = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    year_completed = models.CharField(max_length=4)
+    grade = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+class EmergencyContact(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
+    relationship = models.CharField(max_length=40)
+    mobile_number = models.CharField(max_length=50)
+    email = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+class Beneficiary(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
+    relationship = models.CharField(max_length=40)
+    mobile_number = models.CharField(max_length=40)
+    percentage = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+
+class Spouse(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
+    national_id = models.CharField(max_length=40)
+    dob     = models.DateField()
+    occupation = models.CharField(max_length=40)
+    telephone = models.CharField(max_length=40)
+    nationality = models.CharField(max_length=40)
+    passport_number = models.CharField(max_length=40)
+    alien_certificate_number = models.CharField(max_length=40)
+    immigration_file_number = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+class Leave(models.Model):
+    Employee_Name =models.CharField(max_length=60)
+    designation = models.CharField(max_length=20)
+    nin = models.CharField(max_length=30)
+    department=models.CharField(max_length=15)
+    apply_date=models.DateField()
+    _year=models.CharField(max_length=4)
+    start_date = models.DateField()
+    end_date=models.DateField()
+    supervisor=models.CharField(max_length=45)
+    sup_Status=models.CharField(max_length=15)
+    hod=models.CharField(max_length=45)
+    hod_status = models.CharField(max_length=15)
+
+
