@@ -1,0 +1,74 @@
+{%extends './base.html'%}
+{%block page_title %}
+<span>
+    <a style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
+    <h3><i class="fa fa-edit"></i> Edit Spouse</h3>
+</span>
+{%endblock page_title%}
+{%block content%} 
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-body">
+                    <form method="POST" action="{%url 'edit_spouse'%}">
+                        {%csrf_token%}
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" aria-describedby="emailHelp"
+                                placeholder="Enter name" name="name" value="{{spouse.name}}">
+                        </div>
+                        <div class="form-group">
+                            <label>National ID</label>
+                            <input type="text" class="form-control" aria-describedby="emailHelp"
+                                placeholder="Enter national ID" name="national_id"
+                                value={{spouse.national_id}}>
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Birth</label>
+                            <input class="form-control" type="date" value="{{spouse.dob.isoformat}}" name="dob">
+                          </div>
+                        <div class="form-group">
+                            <label>Occupation</label>
+                            <input type="text" class="form-control" placeholder="Enter the occupation"
+                                name="occupation" value="{{spouse.occupation}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telephone</label>
+                            <input type="text" class="form-control" placeholder="Enter telephone"
+                                name="telephone" value="{{spouse.telephone}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nationality</label>
+                            <input type="text" class="form-control" placeholder="Enter nationality"
+                                name="nationality" value="{{spouse.nationality}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Passport Number</label>
+                            <input type="text" class="form-control" placeholder="Enter passport number"
+                                name="passport_number" value="{{spouse.passport_number}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Alien Certifiacte Number</label>
+                            <input type="text" class="form-control" placeholder="Enter alien cerficate number"
+                                name="alien_certificate_number" value="{{spouse.alien_certificate_number}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Immigration File Number</label>
+                            <input type="text" class="form-control" placeholder="Enter immigration number"
+                                name="immigration_file_number" value="{{spouse.immigration_file_number}}" required>
+                        </div>
+                </div>
+                <input type="hidden" name="spouse_id" value={{spouse.id}}>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <a><button type="button" class="btn btn-outline-danger">Back</button></a> 
+                    <button class="btn btn-danger" type="submit">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

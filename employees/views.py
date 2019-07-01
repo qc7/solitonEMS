@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse
+from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant
 # Create your views here.
 
 # Authentication
@@ -62,7 +62,8 @@ def employee_page(request, id):
         "certifications": employee.certification_set.all(),
         "emergency_contacts": employee.emergencycontact_set.all(),
         "beneficiaries": employee.beneficiary_set.all(),
-        "spouses": employee.spouse_set.all()
+        "spouses": employee.spouse_set.all(),
+        "dependants": employee.dependant_set.all()
     }
     return render(request, 'employees/employee.html', context)
 
@@ -143,6 +144,41 @@ def edit_beneficiary_page(request, id):
     }
 
     return render(request, 'employees/edit_beneficiary.html', context)
+
+@login_required
+def edit_spouse_page(request,id):
+     # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'registration/login.html', {"message": None})
+
+    spouse = Spouse.objects.get(pk=id)
+    context = {
+        "employees_page":"active",
+        "spouse": spouse
+    }
+    spouse.save()
+    context = {
+            "employees_page": "active",
+            "spouse":spouse
+    }
+    return render(request,'employees/edit_spouse.html',context)
+
+@login_required
+def edit_dependant_page(request,id):
+        # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'registration/login.html', {"message": None})
+
+    dependant = Dependant.objects.get(pk=id)
+    context = {
+        "employees_page":"active",
+        "dependant": dependant
+    }
+
+    return render(request,'employees/edit_dependant.html',context)
+
 
 
 def login_view(request):
@@ -734,28 +770,156 @@ def add_spouse(request):
         return render(request, "employees/failed.html", context)
 
 
-def delete_spouse(request):
+def delete_spouse(request,id):
     try:
-        # Grab the Beneficiary
-        beneficiary = Beneficiary.objects.get(pk=id)
+        # Grab the Spouse
+        spouse = Spouse.objects.get(pk=id)
 
-        name = beneficiary.name
-    # Delete the Beneficiary
-        beneficiary.delete()
+        name = spouse.name
+    # Delete the Spouse
+        spouse.delete()
 
-    except Beneficiary.DoesNotExist:
+    except Spouse.DoesNotExist:
         context = {
             "employees_page": "active",
-            "deleted_msg": "The beneficiary no longer exists on the system"
+            "deleted_msg": "The spouse no longer exists on the system"
         }
 
         return render(request, 'employees/deleted.html', context)
 
     context = {
         "employees_page": "active",
-        "deleted_msg": "You have deleted %s from beneficiaries" % (name)
+        "deleted_msg": "You have deleted %s from the spouses" % (name)
     }
     return render(request, 'employees/deleted.html', context)
 
 def edit_spouse(request):
-    pass
+    if request.method == 'POST':
+        # Fetch the spouse id
+        spouse_id = request.POST['spouse_id']
+
+        # Grab the Spouse
+        spouse = Spouse.objects.get(pk=spouse_id)
+
+        spouse.name = request.POST['name']
+        spouse.national_id= request.POST['national_id']
+        spouse.dob = request.POST['dob']
+        spouse.occupation = request.POST['occupation']
+        spouse.telephone = request.POST['telephone']
+        spouse.nationality = request.POST['nationality']
+        spouse.passport_number = request.POST['passport_number']
+        spouse.alien_certificate_number = request.POST['alien_certificate_number']
+        spouse.immigration_file_number = request.POST['immigration_file_number']
+
+   
+        # Saving the Spouse instance
+        spouse.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully updated %s's spouse details" % (spouse.employee.first_name)
+        }
+
+        return render(request, 'employees/success.html', context)
+
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+  
+
+
+
+def add_dependant(request):
+
+    if request.method == 'POST':
+        # Fetching data from the add dependants' form
+        name = request.POST['name']
+        dob = request.POST['dob']
+        gender = request.POST['gender']
+   
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+
+        # Creating instance of Dependent
+        dependant = Dependant(employee=employee, name=name, dob=dob, gender=gender)
+
+        # Saving the Dependant instance
+        dependant.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the dependants" % (dependant.name)
+        }
+
+        return render(request, 'employees/success.html', context)
+
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+def edit_dependant(request):
+    if request.method == 'POST':
+        # Fetch the dependant id
+        dependant_id = request.POST['dependant_id']
+
+        # Grab the Dependant
+        dependant = Dependant.objects.get(pk=dependant_id)
+
+        dependant.name = request.POST['name']
+        dependant.dob= request.POST['dob']
+        dependant.gender = request.POST['gender']
+
+        # Saving the Dependant instance
+        dependant.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully updated %s's dependant details" % (dependant.employee.first_name)
+        }
+
+        return render(request, 'employees/success.html', context)
+
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+
+def delete_dependant(request,id):
+    try:
+        # Grab the Dependant
+        dependant = Dependant.objects.get(pk=id)
+
+        name = dependant.name
+        # Delete the Dependent
+        dependant.delete()
+
+    except Dependant.DoesNotExist:
+        context = {
+            "employees_page": "active",
+            "deleted_msg": "The dependant no longer exists on the system"
+        }
+
+        return render(request, 'employees/deleted.html', context)
+
+    context = {
+        "employees_page": "active",
+        "deleted_msg": "You have deleted %s from the dependents" % (name)
+    }
+    return render(request, 'employees/deleted.html', context)
+
+    
+    

@@ -81,6 +81,15 @@ class Spouse(models.Model):
     def __str__(self):
         return self.name
 
+class Dependant(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
+    dob = models.DateField()
+    gender = models.CharField(max_length=40, default="")
+
+    def __str__(self):
+        return self.name
+
 class Leave(models.Model):
     Employee_Name =models.CharField(max_length=60)
     designation = models.CharField(max_length=20)

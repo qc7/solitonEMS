@@ -13,6 +13,8 @@ urlpatterns = [
     path('edit_certification_page/<int:id>/', views.edit_certification_page, name="edit_certification_page"),
     path('edit_emergency_contact_page/<int:id>/',views.edit_emergency_contact_page, name="edit_emergency_contact_page"),
     path('edit_beneficiary_page/<int:id>/',views.edit_beneficiary_page, name="edit_beneficiary_page"),
+    path('edit_spouse_page/<int:id>/',views.edit_spouse_page, name="edit_spouse_page"),
+    path('edit_dependant_page/<int:id>/',views.edit_dependant_page, name="edit_dependant_page"),
     # Process
     path('add_new_employee/', views.add_new_employee, name="add_new_employee"),
     path('delete_employee/<int:id>',views.delete_employee, name="delete_employee"),
@@ -30,7 +32,10 @@ urlpatterns = [
     path('delete_beneficiary/<int:id>/', views.delete_beneficiary, name="delete_beneficiary"),
     path('add_spouse/', views.add_spouse, name="add_spouse"),
     path('edit_spouse/', views.edit_spouse, name="edit_spouse"),
-    path('delete_spouse/', views.delete_spouse, name="delete_spouse"),
+    path('delete_spouse/<int:id>', views.delete_spouse, name="delete_spouse"),
+    path('add_dependant/', views.add_dependant, name="add_dependant"),
+    path('edit_dependant/', views.edit_dependant, name="edit_dependant"),
+    path('delete_dependant/<int:id>', views.delete_dependant, name="delete_dependant"),
     # Authentication
     path('accounts/login/', views.login_page, name="loginAccounts"),
     path('login/', views.login_view, name="login"),
