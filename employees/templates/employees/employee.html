@@ -31,6 +31,14 @@
                                 <td>{{employee.position}}</td>
                             </tr>
                             <tr>
+                                <th scope="row">Grade</th>
+                                <td>{{employee.grade}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Bank Account</th>
+                                <td>{{employee.bank_account}}</td>
+                            </tr>
+                            <tr>
                                 <th scope="row">Gender</th>
                                 <td>{{employee.gender}}</td>
                             </tr>
@@ -332,9 +340,7 @@
                                                     class="fa fa-edit"></i></a></td>
                                         <td>
                                             <a style="color: inherit" href="{%url 'delete_spouse' spouse.id%}" onclick="return confirm('Are you sure you want to delete this spouse from {{employee.first_name}}?')">
-
                                                 <i class="fa fa-trash"></i>
-
                                             </a>
                                         </td>
                                     </tr>
@@ -394,7 +400,8 @@
                 </div>
             </div>
         </div>
-        <!-- Modal: modalAddNewEmployee -->
+        
+        <!-- Modal: modalEditHomeAddress-->
         <div class="modal fade" id="modal_edit_home_address" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -407,7 +414,6 @@
                     </div>
                     <!--Body-->
                     <div class="modal-body">
-
                         <form method="POST" action="{%url 'edit_home_address'%}"> {%csrf_token%}
                             <div class="form-group">
                                 <label>District</label>
@@ -446,7 +452,7 @@
                     </div>
                     <!--Footer-->
                     <div class="modal-footer">
-                        <button class="btn btn-outline-danger" type="reset">Close</button>
+                        <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger" type="reset">Close</button>
                         <button class="btn btn-danger" type="submit">Save</button>
                     </div>
                     </form>
@@ -476,7 +482,6 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Enter home division" value="{{employee.homeaddress.division}}" name="division" required>
                             </div>
-
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Enter home county" name="county" value="{{employee.homeaddress.county}}" required>
                             </div>
@@ -499,7 +504,7 @@
                     </div>
                     <!--Footer-->
                     <div class="modal-footer">
-                        <button class="btn btn-outline-danger" type="reset">Close</button>
+                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close" type="reset">Close</button>
                         <button class="btn btn-danger" type="submit">Save</button>
                     </div>
                     </form>

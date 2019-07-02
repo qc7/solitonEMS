@@ -1,7 +1,7 @@
 {%extends './base.html'%}
 {%block page_title %}
 <span>
-    <a style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
+    <a href="{%url 'employee_page' emergency_contact.employee.id%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
     <h3><i class="fa fa-edit"></i> Edit Emergency Contact</h3>
 </span>
 {%endblock page_title%}
@@ -16,7 +16,7 @@
                         <div class="form-group">
                             <label>Name</label>
                             <input type="text" class="form-control" aria-describedby="emailHelp"
-                                placeholder="Enter name" name="name" value={{emergency_contact.name}}>
+                                placeholder="Enter name" name="name" value="{{emergency_contact.name}}">
                         </div>
                         <div class="form-group">
                             <label>Relationship</label>
@@ -38,7 +38,7 @@
                 <input type="hidden" name="emergency_id" value={{emergency_contact.id}}>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    <a><button type="button" class="btn btn-outline-danger">Back</button></a>
+                    <a href="{%url 'employee_page' emergency_contact.employee.id%}"><button type="button" class="btn btn-outline-danger">Back</button></a>
                     <a href="{%url 'edit_emergency_contact'%}"><button class="btn btn-danger" type="submit">Save</button></a> 
                 </div>
                 </form>

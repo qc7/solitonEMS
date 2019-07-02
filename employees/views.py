@@ -215,6 +215,8 @@ def add_new_employee(request):
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         position = request.POST['position']
+        bank_account = request.POST['bank_account']
+        grade = request.POST['grade']
         gender = request.POST['gender']
         marital_status = request.POST['marital_status']
         start_date = request.POST['start_date']
@@ -228,7 +230,7 @@ def add_new_employee(request):
 
         try:
             # Creating instance of Employee
-            employee = Employee(first_name=first_name, last_name=last_name, position=position, gender=gender,
+            employee = Employee(first_name=first_name, last_name=last_name,bank_account=bank_account,grade=grade, position=position, gender=gender,
                                 marital_status=marital_status, start_date=start_date, nationality=nationality, nssf_no=nssf_no,
                                 ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, residence_address=residence_address,
                                 dob=dob)
@@ -236,7 +238,8 @@ def add_new_employee(request):
             employee.save()
             context = {
                 "employees_page": "active",
-                "success_msg": "You have successfully added %s to the employees" % (employee.first_name)
+                "success_msg": "You have successfully added %s to the employees" % (employee.first_name),
+                "employee": employee
             }
 
             return render(request, 'employees/success.html', context)
@@ -273,7 +276,7 @@ def delete_employee(request, id):
             "deleted_msg": "The employee no longer exists on the system"
         }
 
-        return render(request, 'employees/deleted.html', context)
+        return render(request, 'employees/deleted_employee.html', context)
 
     context = {
         "employees_page": "active",
@@ -291,6 +294,8 @@ def edit_employee(request, id):
             employee.first_name = request.POST['first_name']
             employee.last_name = request.POST['last_name']
             employee.position = request.POST['position']
+            employee.grade = request.POST['grade']
+            employee.bank_account = request.POST['bank_account']
             employee.gender = request.POST['gender']
             employee.marital_status = request.POST['marital_status']
             employee.start_date = request.POST['start_date']
@@ -374,37 +379,38 @@ def add_new_home_address(request):
 def edit_home_address(request):
     if request.method == 'POST':
         # Fetching data from the edit home address form
-        try:
-            # Fetch the employee
-            employee_id = request.POST['employee_id']
-            employee = Employee.objects.get(pk=employee_id)
-            # Grab the home address
-            home_address = HomeAddress.objects.get(employee=employee)
+        
+        # Fetch the employee
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+        # Grab the home address
+        home_address = HomeAddress.objects.get(employee=employee)
 
-            home_address.district = request.POST['district']
-            home_address.division = request.POST['division']
-            home_address.county = request.POST['county']
-            home_address.sub_county = request.POST['sub_county']
-            home_address.parish = request.POST['parish']
-            home_address.village = request.POST['village']
-            home_address.address = request.POST['address']
-            home_address.telephone = request.POST['telephone']
+        home_address.district = request.POST['district']
+        home_address.division = request.POST['division']
+        home_address.county = request.POST['county']
+        home_address.sub_county = request.POST['sub_county']
+        home_address.parish = request.POST['parish']
+        home_address.village = request.POST['village']
+        home_address.address = request.POST['address']
+        home_address.telephone = request.POST['telephone']
 
-            # Saving the home address instance
-            home_address.save()
-            context = {
-                "employees_page": "active",
-                "success_msg": "You have successfully updated %s's home address" % (employee.first_name)
-            }
+        # Saving the home address instance
+        home_address.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully updated %s's home address" % (employee.first_name),
+            "employee": employee
+        }
 
-            return render(request, 'employees/success.html', context)
+        return render(request, 'employees/success.html', context)
 
-        except:
-            context = {
-                "employees_page": "active",
-                "failed_msg": "Something went wrong. Contact Bright and Hakim"
-            }
-            return render(request, "employees/failed.html", context)
+        
+        # context = {
+        #     "employees_page": "active",
+        #     "failed_msg": "Something went wrong. Contact Bright and Hakim"
+        # }
+        # return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -427,26 +433,21 @@ def add_certification(request):
 
         employee = Employee.objects.get(pk=employee_id)
 
-        try:
-            # Creating instance of Certification
-            certification = Certification(employee=employee, institution=institution, year_completed=year_completed, name=certification,
-                                          grade=grade)
-            # Saving the certification instance
-            certification.save()
-            context = {
-                "employees_page": "active",
-                "success_msg": "You have successfully added %s to the certifications" % (certification.name)
-            }
+        
+        # Creating instance of Certification
+        certification = Certification(employee=employee, institution=institution, year_completed=year_completed, name=certification,
+                                        grade=grade)
+        # Saving the certification instance
+        certification.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the certifications" % (certification.name),
+            "employee": employee
+        }
 
-            return render(request, 'employees/success.html', context)
+        return render(request, 'employees/success.html', context)
 
-        except:
-            context = {
-                "employees_page": "active",
-                "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-                "back"
-            }
-            return render(request, "employees/failed.html", context)
+
 
     else:
         context = {
@@ -474,7 +475,8 @@ def edit_certification(request):
         certification.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's certification" % (certification.employee.first_name)
+            "success_msg": "You have successfully updated %s's certification" % (certification.employee.first_name),
+            "employee": certification.employee
         }
 
         return render(request, 'employees/success.html', context)
@@ -500,19 +502,23 @@ def delete_certification(request, id):
         certification = Certification.objects.get(pk=id)
 
         name = certification.name
+        employee = certification.employee
     # Delete the certification
         certification.delete()
 
     except Certification.DoesNotExist:
         context = {
             "employees_page": "active",
-            "deleted_msg": "The certification no longer exists on the system"
+            "employee": employee,
+            "deleted_msg": "The certification no longer exists on the system",
+            
         }
 
         return render(request, 'employees/deleted.html', context)
 
     context = {
         "employees_page": "active",
+        "employee": employee,
         "deleted_msg": "You have deleted %s from certifications" % (name)
     }
     return render(request, 'employees/deleted.html', context)
@@ -536,18 +542,11 @@ def add_emergency_contact(request):
         emergency_contact.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully added %s to the emergency contacts" % (emergency_contact.name)
+            "success_msg": "You have successfully added %s to the emergency contacts" % (emergency_contact.name),
+            "employee":employee
         }
 
         return render(request, 'employees/success.html', context)
-
-        context = {
-            "employees_page": "active",
-            "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-            "back"
-        }
-
-        return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -563,22 +562,24 @@ def delete_emergency_contact(request, id):
     try:
         # Grab the emergency contact
         emergency_contact = EmergencyContact.objects.get(pk=id)
-
         name = emergency_contact.name
-    # Delete the certification
+        employee = emergency_contact.employee
+        # Delete the certification
         emergency_contact.delete()
 
     except EmergencyContact.DoesNotExist:
         context = {
             "employees_page": "active",
-            "deleted_msg": "The emergency contact no longer exists on the system"
+            "deleted_msg": "The emergency contact no longer exists on the system",
+            "employee": employee
         }
 
         return render(request, 'employees/deleted.html', context)
 
     context = {
         "employees_page": "active",
-        "deleted_msg": "You have deleted %s from emergency contacts" % (name)
+        "deleted_msg": "You have deleted %s from emergency contacts" % (name),
+        "employee":employee
     }
     return render(request, 'employees/deleted.html', context)
 
@@ -601,16 +602,11 @@ def edit_emergency_contact(request):
         emergency_contact.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's emergency contact" % (emergency_contact.employee.first_name)
+            "success_msg": "You have successfully updated %s's emergency contact" % (emergency_contact.employee.first_name),
+            "employee": emergency_contact.employee
         }
 
         return render(request, 'employees/success.html', context)
-
-        context = {
-            "employees_page": "active",
-            "failed_msg": "Something went wrong. Contact Bright and Hakim"
-        }
-        return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -635,22 +631,16 @@ def add_beneficiary(request):
         # Creating instance of Beneficiary
         beneficiary = Beneficiary(employee=employee, name=name, relationship=relationship,
                                              mobile_number=mobile_number, percentage=percentage)
+   
         # Saving the certification instance
         beneficiary.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully added %s to the emergency beneficiaries" % (beneficiary.name)
+            "success_msg": "You have successfully added %s to the emergency beneficiaries" % (beneficiary.name),
+            "employee": employee
         }
 
         return render(request, 'employees/success.html', context)
-
-        context = {
-            "employees_page": "active",
-            "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-            "back"
-        }
-
-        return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -679,16 +669,11 @@ def edit_beneficiary(request):
         beneficiary.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's beneficiary details" % (beneficiary.employee.first_name)
+            "success_msg": "You have successfully updated %s's beneficiary details" % (beneficiary.employee.first_name),
+            "employee": beneficiary.employee
         }
 
         return render(request, 'employees/success.html', context)
-
-        context = {
-            "employees_page": "active",
-            "failed_msg": "Something went wrong. Contact Bright and Hakim"
-        }
-        return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -706,7 +691,8 @@ def delete_beneficiary(request, id):
         beneficiary = Beneficiary.objects.get(pk=id)
 
         name = beneficiary.name
-    # Delete the Beneficiary
+        employee = beneficiary.employee
+        # Delete the Beneficiary
         beneficiary.delete()
 
     except Beneficiary.DoesNotExist:
@@ -719,7 +705,8 @@ def delete_beneficiary(request, id):
 
     context = {
         "employees_page": "active",
-        "deleted_msg": "You have deleted %s from beneficiaries" % (name)
+        "deleted_msg": "You have deleted %s from beneficiaries" % (name),
+        "employee": employee
     }
     return render(request, 'employees/deleted.html', context)
 
@@ -748,7 +735,8 @@ def add_spouse(request):
         spouse.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully added %s to the spouses" % (spouse.name)
+            "success_msg": "You have successfully added %s to the spouses" % (spouse.name),
+            "employee": employee
         }
 
         return render(request, 'employees/success.html', context)
@@ -776,7 +764,8 @@ def delete_spouse(request,id):
         spouse = Spouse.objects.get(pk=id)
 
         name = spouse.name
-    # Delete the Spouse
+        employee = spouse.employee
+        # Delete the Spouse
         spouse.delete()
 
     except Spouse.DoesNotExist:
@@ -789,7 +778,8 @@ def delete_spouse(request,id):
 
     context = {
         "employees_page": "active",
-        "deleted_msg": "You have deleted %s from the spouses" % (name)
+        "deleted_msg": "You have deleted %s from the spouses" % (name),
+        "employee": employee
     }
     return render(request, 'employees/deleted.html', context)
 
@@ -800,7 +790,6 @@ def edit_spouse(request):
 
         # Grab the Spouse
         spouse = Spouse.objects.get(pk=spouse_id)
-
         spouse.name = request.POST['name']
         spouse.national_id= request.POST['national_id']
         spouse.dob = request.POST['dob']
@@ -816,7 +805,8 @@ def edit_spouse(request):
         spouse.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's spouse details" % (spouse.employee.first_name)
+            "success_msg": "You have successfully updated %s's spouse details" % (spouse.employee.first_name),
+            "employee": spouse.employee
         }
 
         return render(request, 'employees/success.html', context)
@@ -851,7 +841,8 @@ def add_dependant(request):
         dependant.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully added %s to the dependants" % (dependant.name)
+            "success_msg": "You have successfully added %s to the dependants" % (dependant.name),
+            "employee": employee
         }
 
         return render(request, 'employees/success.html', context)
@@ -882,7 +873,8 @@ def edit_dependant(request):
         dependant.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's dependant details" % (dependant.employee.first_name)
+            "success_msg": "You have successfully updated %s's dependant details" % (dependant.employee.first_name),
+            "employee": dependant.employee
         }
 
         return render(request, 'employees/success.html', context)
@@ -904,6 +896,7 @@ def delete_dependant(request,id):
         dependant = Dependant.objects.get(pk=id)
 
         name = dependant.name
+        employee = dependant.employee
         # Delete the Dependent
         dependant.delete()
 
@@ -917,7 +910,8 @@ def delete_dependant(request,id):
 
     context = {
         "employees_page": "active",
-        "deleted_msg": "You have deleted %s from the dependents" % (name)
+        "deleted_msg": "You have deleted %s from the dependents" % (name),
+        "employee": employee
     }
     return render(request, 'employees/deleted.html', context)
 
