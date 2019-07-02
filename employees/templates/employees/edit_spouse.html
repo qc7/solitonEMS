@@ -1,7 +1,7 @@
 {%extends './base.html'%}
 {%block page_title %}
 <span>
-    <a style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
+    <a href="{%url 'employee_page' spouse.employee.id%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
     <h3><i class="fa fa-edit"></i> Edit Spouse</h3>
 </span>
 {%endblock page_title%}
@@ -62,7 +62,7 @@
                 <input type="hidden" name="spouse_id" value={{spouse.id}}>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    <a><button type="button" class="btn btn-outline-danger">Back</button></a> 
+                    <a href="{%url 'employee_page' spouse.employee.id %}"><button type="button" class="btn btn-outline-danger">Back</button></a> 
                     <button class="btn btn-danger" type="submit">Save</button>
                 </div>
                 </form>

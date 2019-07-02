@@ -26,8 +26,19 @@
                                 value={{employee.last_name}}>
                         </div>
                         <div class="form-group">
+                            <label for="">Position</label>
                             <input type="text" class="form-control" placeholder="Enter employee Position"
                                 name="position" value="{{employee.position}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Grade</label>
+                            <input type="text" class="form-control" placeholder="Enter employee grade"
+                                name="grade" value="{{employee.grade}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Bank Account</label>
+                            <input type="text" class="form-control" placeholder="Enter employee Bank Account"
+                                name="bank_account" value="{{employee.bank_account}}" required>
                         </div>
                         <div class="form-group">
                             <label for="sel1">Gender:</label>
@@ -96,7 +107,7 @@
                 </div>
                 <!--Footer-->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                    <a href="{%url 'employee_page' employee.id%}"><button type="button" class="btn btn-outline-danger" >Back</button></a>
                     <button class="btn btn-danger" type="submit">Save</button>
                 </div>
                 </form>
