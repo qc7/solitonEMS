@@ -68,17 +68,7 @@ def employee_page(request, id):
     return render(request, 'employees/employee.html', context)
 
 
-@login_required
-def payroll_page(request):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
 
-    context = {
-        "payroll_page": "active"
-    }
-    return render(request, 'employees/payroll.html', context)
 
 
 @login_required
@@ -267,7 +257,7 @@ def delete_employee(request, id):
         employee = Employee.objects.get(pk=id)
 
         name = employee.first_name + " " + employee.last_name
-    # Delete the employee
+        # Delete the employee
         employee.delete()
 
     except Employee.DoesNotExist:
