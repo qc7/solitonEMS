@@ -1,3 +1,24 @@
 from django.db import models
-
+from employees.models import Employee
 # Create your models here.
+
+class PayrollRecord(models.Model):
+    year = models.CharField(max_length=20)
+    month = models.CharField(max_length=20)
+    
+    def __str__(self):
+        return self.month + " " + self.year
+        
+class Payroll(models.Model):
+    employee   =    models.ForeignKey(Employee,on_delete=models.CASCADE,default="")
+    payroll_record = models.OneToOneField(PayrollRecord,on_delete=models.CASCADE,primary_key=True)
+    employee_nssf =  models.CharField(max_length=15)
+    employer_nssf =  models.CharField(max_length=15)
+    gross_pay    =   models.CharField(max_length=15)
+    basic_pay    =   models.CharField(max_length=20)
+    net_pay      =   models.CharField(max_length=15)
+    meal_allowance = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.employee.first_name + " " + self.employee.last_name
+

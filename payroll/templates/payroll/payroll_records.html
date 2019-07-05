@@ -1,0 +1,176 @@
+{%extends './base.html'%}
+      
+{%block page_title %}
+  <h1>Payroll</h1>
+{%endblock%}
+
+{%block content%}
+<div class="content">
+  <div class="container-fluid">
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_period">Create Period</button>
+    <h4>Payroll Records</h4>
+    <table class="table">
+       <tr>
+         <th>Payroll Record ID</th>
+         <th>Month</th>
+         <th>Year</th>
+       </tr>
+       {%for payroll_record in payroll_records%}
+       <tr>
+         <td>{{payroll_record.id}}</td>
+         <td><a href="{%url 'payroll_record_page'%}" style="color: inherit">{{payroll_record.month}}</a></td>
+         <td>{{payroll_record.year}}</td>
+         <td><a href="{%url 'edit_period_page' payroll_record.id%}" style="color:inherit"><i class="fa fa-edit"></i></a></td>
+         <td><a  href = "{%url 'delete_period' payroll_record.id%}" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete payroll record {{payroll_record.id}}?')"><i class="fa fa-trash"></i></a></td>
+       </tr>
+       {%endfor%}
+    </table>
+  </div>
+</div>
+
+<!-- Modals -->
+     <!-- Modal: modal-->
+     <div class="modal fade" id="modal_add_period" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Add Period</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+                    <form method="POST" action="{%url 'add_period'%}"> {%csrf_token%}
+                        <div class="form-group">
+                          <label for="month">Month</label>
+                            <select class="form-control" id="month" name="month" required>
+                                <option>January</option>
+                                <option>February</option>
+                                <option>March</option>
+                                <option>April</option>
+                                <option>May</option>
+                                <option>June</option>
+                                <option>July</option>
+                                <option>August</option>
+                                <option>September</option>
+                                <option>October</option>
+                                <option>November</option>
+                                <option>December</option>
+                            </select>
+                        </div>
+                      
+                        <div class="form-group">
+                            <label for="">Year</label>
+                            <select class="form-control" id="year" name="year" required>
+                                <option>2019</option>
+                                <option>2020</option>
+                                <option>2021</option>
+                                <option>2022</option>
+                                <option>2023</option>
+                                <option>2024</option>
+                                <option>2025</option>
+                                <option>2026</option>
+                                <option>2027</option>
+                                <option>2028</option>
+                                <option>2029</option>
+                                <option>2030</option>
+                                <option>2031</option>
+                                <option>2032</option>
+                                <option>2033</option>
+                                <option>2034</option>
+                                <option>2035</option>
+                                <option>2036</option>
+                                <option>2037</option>
+                                <option>2038</option>
+                                <option>2039</option>
+                                <option>2040</option>
+                            </select>
+                        </div> 
+                </div>
+                <!--Footer-->
+                <div class="modal-footer">
+                    <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger" type="reset">Close</button>
+                    <button class="btn btn-danger" type="submit">Save</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+     <!-- Modal: modal-->
+     <div class="modal fade" id="modal_add_period" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <!--Header-->
+              <div class="modal-header">
+                  <h4 class="modal-title" id="myModalLabel">Add Period</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+              <!--Body-->
+              <div class="modal-body">
+                  <form method="POST" action="{%url 'add_period'%}"> {%csrf_token%}
+                      <div class="form-group">
+                        <label for="month">Month</label>
+                          <select class="form-control" id="month" name="month" required>
+                              <option>January</option>
+                              <option>February</option>
+                              <option>March</option>
+                              <option>April</option>
+                              <option>May</option>
+                              <option>June</option>
+                              <option>July</option>
+                              <option>August</option>
+                              <option>September</option>
+                              <option>October</option>
+                              <option>November</option>
+                              <option>December</option>
+                          </select>
+                      </div>
+                    
+                      <div class="form-group">
+                          <label for="">Year</label>
+                          <select class="form-control" id="year" name="year" required>
+                              <option>2019</option>
+                              <option>2020</option>
+                              <option>2021</option>
+                              <option>2022</option>
+                              <option>2023</option>
+                              <option>2024</option>
+                              <option>2025</option>
+                              <option>2026</option>
+                              <option>2027</option>
+                              <option>2028</option>
+                              <option>2029</option>
+                              <option>2030</option>
+                              <option>2031</option>
+                              <option>2032</option>
+                              <option>2033</option>
+                              <option>2034</option>
+                              <option>2035</option>
+                              <option>2036</option>
+                              <option>2037</option>
+                              <option>2038</option>
+                              <option>2039</option>
+                              <option>2040</option>
+                          </select>
+                      </div> 
+              </div>
+              <!--Footer-->
+              <div class="modal-footer">
+                  <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger" type="reset">Close</button>
+                  <button class="btn btn-danger" type="submit">Save</button>
+              </div>
+              </form>
+
+          </div>
+      </div>
+  </div>
+
+
+{%endblock content%}

@@ -1,0 +1,36 @@
+{%extends './base.html'%}
+
+      
+{%block page_title %}
+<span>
+  <a href="{%url 'payroll_records_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
+  <h1>Payroll Record of Employees</h1>
+</span> 
+{%endblock%}
+
+{%block content%}
+<div class="content">
+        <div class="container-fluid">
+                <div class="period">
+                        <h3>July - 2019</h3>
+                    </div>
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>NSSF Contribution</th>
+        <th>Employer NSSF contribution</th>
+        <th>Gross Pay</th>
+        <th>Basic Pay</th>
+        <th>Net Pay</th>
+    </tr>
+    <tr>
+        <td>Fred Nsimbi</td>
+        <td>UGX 200,000</td>
+        <td>UGX 400,000</td>
+        <td>4,000,000</td>
+        <td>3,300,000</td>
+    </tr>
+</table>
+</div>
+</div>
+{%endblock%}

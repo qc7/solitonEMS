@@ -33,12 +33,12 @@
       <div class="logo">
         <center>
           <img src=" {% static 'registration/images/icons/logo.svg'  %} " style='width:50%' class="logo-normal"/>
-        <a href="#" class="simple-text logo-normal">
-            
+        <a href="#" class="simple-text logo-normal"> 
           SOLITON TELMEC EMS
         </a>
       </center>
       </div>
+      
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item {{ dashboard_page }}">
@@ -63,7 +63,7 @@
           </li>
         
           <li class="nav-item  {{ payroll_page }}">
-            <a class="nav-link" href="{% url 'payroll_page' %}">
+            <a class="nav-link" href="{% url 'payroll_records_page' %}">
               <i class="material-icons">library_books</i>
               <p>Payroll</p>
             </a>
