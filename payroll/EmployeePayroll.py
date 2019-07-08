@@ -19,5 +19,4 @@ class EmployeePayroll:
     def add_bonus(self,amount):
         self.gross_salary = self.gross_salary + amount
 
-employee = EmployeePayroll(1000000)
-print(employee.net_salary)
+

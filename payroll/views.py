@@ -56,7 +56,20 @@ def edit_period_page(request,id):
 
     return render(request,'payroll/edit_payroll.html',context)
 
+@login_required
+def payslip_page(request,id):
+    # Get the payroll
+    payroll = Payroll.objects.get(pk=id)
 
+    context = {
+        "payroll_page": "active",
+        "payroll": payroll,
+        "month": payroll.payroll_record.month,
+        "year": payroll.payroll_record.year,
+        "name_of_employee":"{} {}".format(payroll.employee.first_name,payroll.employee.last_name)
+    }
+
+    return render(request,'payroll/payslip.html',context)
 
 ###############################################################
 # Processes
@@ -109,11 +122,13 @@ def generate_payroll(request,id):
         gross_salary   = employee_payroll.gross_salary
         paye      = employee_payroll.paye
         net_salary = employee_payroll.net_salary
-
+        total_nssf_contrib = int(employee_nssf) + int(employer_nssf)
+        total_statutory = total_nssf_contrib + int(paye)
 
         # Create payroll object
         payroll = Payroll(employee=employee,payroll_record=payroll_record,employee_nssf=employee_nssf,
-        employer_nssf=employer_nssf,gross_salary=gross_salary,paye=paye,net_salary=net_salary)
+        employer_nssf=employer_nssf,gross_salary=gross_salary,paye=paye,net_salary=net_salary,
+          total_nssf_contrib=total_nssf_contrib,total_statutory=total_statutory)
 
         # Save payroll object
         payroll.save()

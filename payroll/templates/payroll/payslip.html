@@ -1,0 +1,91 @@
+{%extends './base.html'%}
+{% load humanize %}
+      
+{%block page_title %}
+<span>
+    <a href="{%url 'payroll_record_page' payroll.payroll_record.id%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
+    <h1>Employee Payslip of {{name_of_employee}}</h1>
+</span> 
+{%endblock%}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="period">
+            <h3>{{month}} - {{year}}</h3>
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-category text-gray">{{name_of_employee}}</h6>
+                    <h4 class="card-title">Payslip</h4>
+                    <table class="table">
+                        <tr>
+                            <th>Name</td>
+                            <th>{{name_of_employee}}</td>
+                        </tr>
+                        <tr>
+                            <th>Employee NSSF Contribution</td>
+                            <td> UGX {{payroll.employee_nssf | intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <th>Employer NSSF Contribution</td>
+                            <td> UGX {{payroll.employer_nssf | intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <th>Total NSSF Contribution</td>
+                            <th> UGX {{payroll.total_nssf_contrib | intcomma}}</th>
+                        </tr>
+                        <tr>
+                            <th>PAYE</td>
+                            <td> UGX {{payroll.paye | intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <th>Total Statutory Deductions</td>
+                            <th> UGX {{payroll.total_statutory | intcomma}}</th>
+                        </tr>
+                        <tr>
+                            <th>Meal Allowance</td>
+                            <td> UGX 150,000</td>
+                        </tr>
+                        <tr>
+                            <th>Overtime</td>
+                            <td> UGX 0.0</td>
+                        </tr>
+                        <tr>
+                            <th>Bonus</td>
+                            <td> UGX 0.0</td>
+                        </tr>
+                        <tr>
+                            <th>Sacco Deduction</td>
+                            <td> UGX 0.0</td>
+                        </tr>
+                        <tr>
+                            <th>Damage Deduction</td>
+                            <td> UGX 0.0</td>
+                        </tr>
+                        <tr>
+                            <th>Prorate</td>
+                            <th> UGX 0.0</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th>BASIC SALARY</td>
+                            <th> UGX {{payroll.employee.basic_salary | intcomma}}</th>
+                        </tr>
+                        <tr>
+                            <th>GROSS SALARY</td>
+                            <th> UGX {{payroll.gross_salary | intcomma}}</th>
+                        </tr>
+                        <tr>
+                            <th>NET SALARY</td>
+                            <th> UGX {{payroll.net_salary | intcomma}}</th>
+                        </tr>
+                    </table>
+                </div> 
+            </div>
+            
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -17,6 +17,8 @@ class Payroll(models.Model):
     gross_salary    =   models.CharField(max_length=15,default="")
     net_salary      =   models.CharField(max_length=15,default="")
     paye = models.CharField(max_length=20)
+    total_nssf_contrib = models.CharField(max_length=20, default="")
+    total_statutory   = models.CharField(max_length=20,default="")
 
     def __str__(self):
         return self.employee.first_name + " " + self.employee.last_name
