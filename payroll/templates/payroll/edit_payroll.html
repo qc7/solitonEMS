@@ -7,7 +7,7 @@
 {%block content%}
 <div class="content">
     <div class="container-fluid">
-        <form action="edit_period" method="post">
+        <form action="{%url 'edit_period' %}" method="post">
             {%csrf_token%}
             <div class="form-group">
                 <label for="month">Month</label>
@@ -17,7 +17,7 @@
                 <label for="year">Year</label>
                 <input type="number" name="year" id="year" class="form-control" value="{{payroll_record.year}}">
             </div>
-            <input type="hidden" name="payroll_record_id" value="payroll_record.id">
+            <input type="hidden" name="payroll_record_id" value="{{payroll_record.id}}">
 
             <button type="submit" class="btn btn-danger">Save</button>
         </form>

@@ -6,6 +6,7 @@ class Employee(models.Model):
     last_name = models.CharField(max_length=30)
     position = models.CharField(max_length=30, default="")
     bank_account = models.CharField(max_length=30,default="")
+    basic_salary    =   models.CharField(max_length=20,default="")
     grade = models.CharField(max_length=3,default="")
     gender = models.CharField(max_length=10)
     start_date    = models.DateField()

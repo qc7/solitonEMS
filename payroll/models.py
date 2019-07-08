@@ -14,9 +14,8 @@ class Payroll(models.Model):
     payroll_record = models.OneToOneField(PayrollRecord,on_delete=models.CASCADE,primary_key=True)
     employee_nssf =  models.CharField(max_length=15)
     employer_nssf =  models.CharField(max_length=15)
-    gross_pay    =   models.CharField(max_length=15)
-    basic_pay    =   models.CharField(max_length=20)
-    net_pay      =   models.CharField(max_length=15)
+    gross_salary    =   models.CharField(max_length=15,default="")
+    net_salary      =   models.CharField(max_length=15,default="")
     meal_allowance = models.CharField(max_length=20)
 
     def __str__(self):

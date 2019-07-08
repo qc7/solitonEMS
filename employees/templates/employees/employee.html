@@ -1,4 +1,5 @@
-{%extends './base.html'%} {%load static %} {%block page_title %}
+{%extends './base.html'%} {%load static %} 
+{%block page_title %}
 <span>
     <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
     <h3>{{employee.first_name}} {{employee.last_name}}</h3>
@@ -37,6 +38,10 @@
                             <tr>
                                 <th scope="row">Bank Account</th>
                                 <td>{{employee.bank_account}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Basic Salary</th>
+                                <td>UGX {{employee.basic_salary}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Gender</th>

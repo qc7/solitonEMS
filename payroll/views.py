@@ -23,11 +23,14 @@ def payroll_records_page(request):
 
 @login_required
 def payroll_record_page(request):
-   return render(request,'payroll/payroll_record.html') 
+    context = {
+        "payroll_page": "active"
+    }
+    return render(request,'payroll/payroll_record.html',context) 
 
 @login_required
 def edit_period_page(request,id):
-    # fetch PayrollRecord
+    # fetch PayrollRecordRequest 
     payroll_record = PayrollRecord.objects.get(pk=id)
 
     context = {
@@ -52,20 +55,29 @@ def add_period(request):
     # Save payroll
     payroll_record.save()
 
-    return HttpResponseRedirect(reverse('payroll_page'))
+    return HttpResponseRedirect(reverse('payroll_records_page'))
     
 def delete_period(request,id):
     # Grab the payroll record
     payroll_record = PayrollRecord.objects.get(pk=id)
-
     # Delete the payrool_record
     payroll_record.delete()
-
-    return HttpResponseRedirect(reverse(payroll_page))
+    return HttpResponseRedirect(reverse('payroll_records_page'))
 
 def edit_period(request):
     # Fetch values
     payroll_record_id = request.POST['payroll_record_id']
     month = request.POST['month']
     year = request.POST['year']
+    # Fetch the PayrollRecord
+    payroll_record = PayrollRecord(pk=payroll_record_id)
+    # Overwrite old values
+    payroll_record.month = month
+    payroll_record.year = year
+    # Save payroll record
+    payroll_record.save()
+
+    return HttpResponseRedirect(reverse('payroll_records_page'))
+
+
     
