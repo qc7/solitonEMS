@@ -1,5 +1,5 @@
 {%extends './base.html'%}
-
+{% load humanize %}
       
 {%block page_title %}
 <span>
@@ -12,8 +12,11 @@
 <div class="content">
         <div class="container-fluid">
                 <div class="period">
-                        <h3>July - 2019</h3>
+                        <h3>{{month}} - {{year}}</h3>
                     </div>
+                    {%if not payrolls%}
+                     <a href="{%url 'generate_payroll' payroll_record.id %}"><button class="btn btn-danger">Generate Initial Payroll</button></a>
+                    {%endif%}
 <table class="table">
     <tr>
         <th>Name</th>
@@ -23,13 +26,16 @@
         <th>Basic Pay</th>
         <th>Net Pay</th>
     </tr>
+    {%for payroll in payrolls%}
     <tr>
-        <td>Fred Nsimbi</td>
-        <td>UGX 200,000</td>
-        <td>UGX 400,000</td>
-        <td>4,000,000</td>
-        <td>3,300,000</td>
+        <td>{{payroll.employee.first_name}} {{payroll.employee.last_name}}</td>
+        <td>UGX {{payroll.employee_nssf | intcomma}}</td>
+        <td>UGX {{payroll.employer_nssf | intcomma}}</td>
+        <td>UGX {{payroll.gross_salary | intcomma}}</td>
+        <td>UGX {{payroll.employee.basic_salary | intcomma}}</td>
+        <td>UGX {{payroll.net_salary | intcomma }}</td>
     </tr>
+    {%endfor%}
 </table>
 </div>
 </div>

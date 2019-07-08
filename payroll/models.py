@@ -11,12 +11,12 @@ class PayrollRecord(models.Model):
         
 class Payroll(models.Model):
     employee   =    models.ForeignKey(Employee,on_delete=models.CASCADE,default="")
-    payroll_record = models.OneToOneField(PayrollRecord,on_delete=models.CASCADE,primary_key=True)
+    payroll_record = models.ForeignKey(PayrollRecord,on_delete=models.CASCADE, default="")
     employee_nssf =  models.CharField(max_length=15)
     employer_nssf =  models.CharField(max_length=15)
     gross_salary    =   models.CharField(max_length=15,default="")
     net_salary      =   models.CharField(max_length=15,default="")
-    meal_allowance = models.CharField(max_length=20)
+    paye = models.CharField(max_length=20)
 
     def __str__(self):
         return self.employee.first_name + " " + self.employee.last_name
