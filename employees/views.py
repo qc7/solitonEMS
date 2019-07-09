@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant
+from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction
 # Create your views here.
 
 # Authentication
@@ -63,7 +63,8 @@ def employee_page(request, id):
         "emergency_contacts": employee.emergencycontact_set.all(),
         "beneficiaries": employee.beneficiary_set.all(),
         "spouses": employee.spouse_set.all(),
-        "dependants": employee.dependant_set.all()
+        "dependants": employee.dependant_set.all(),
+        "deductions": employee.deduction_set.all(),
     }
     return render(request, 'employees/employee.html', context)
 
@@ -256,10 +257,11 @@ def delete_employee(request, id):
     try:
         # Grab the employee
         employee = Employee.objects.get(pk=id)
-
+       
         name = employee.first_name + " " + employee.last_name
         # Delete the employee
-        employee.delete()
+        employee_to_delete = employee
+        employee_to_delete.delete()
 
     except Employee.DoesNotExist:
         context = {
@@ -271,9 +273,10 @@ def delete_employee(request, id):
 
     context = {
         "employees_page": "active",
-        "deleted_msg": "You have deleted %s from employees" % (name)
+        "deleted_msg": "You have deleted %s from employees" % (name),
+        
     }
-    return render(request, 'employees/deleted.html', context)
+    return render(request, 'employees/deleted_employee.html', context)
 
 
 @login_required
@@ -902,5 +905,60 @@ def delete_dependant(request,id):
     }
     return render(request, 'employees/deleted.html', context)
 
+
+
+def add_deduction(request):
+
+    if request.method == 'POST':
+        # Fetching data from the add deductions' form
+        name = request.POST['deduction_name']
+        amount = request.POST['deduction_amount']
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+
+        # Creating instance of Deduction
+        deduction = Deduction(employee=employee, name=name, amount=amount)
+
+        # Saving the Deduction instance
+        deduction.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the non statutory deductions" % (deduction.name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
     
-    
+def delete_deduction(request,id):
+    try:
+        # Grab the Deduction
+        deduction = Deduction.objects.get(pk=id)
+
+        name = deduction.name
+        employee = deduction.employee
+        # Delete the deduction
+        deduction.delete()
+
+    except Deduction.DoesNotExist:
+        context = {
+            "employees_page": "active",
+            "deleted_msg": "The deduction no longer exists on the system"
+        }
+
+        return render(request, 'employees/deleted.html', context)
+
+    context = {
+        "employees_page": "active",
+        "deleted_msg": "You have deleted %s from the deductions" % (name),
+        "employee": employee
+    }
+    return render(request, 'employees/deleted.html', context)

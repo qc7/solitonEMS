@@ -35,6 +35,8 @@ urlpatterns = [
     path('add_dependant/', views.add_dependant, name="add_dependant"),
     path('edit_dependant/', views.edit_dependant, name="edit_dependant"),
     path('delete_dependant/<int:id>', views.delete_dependant, name="delete_dependant"),
+    path('add_deduction/', views.add_deduction,name="add_deduction"),
+    path('delete_deduction/<int:id>',views.delete_deduction,name="delete_deduction"),
     # Authentication
     path('accounts/login/', views.login_page, name="loginAccounts"),
     path('login/', views.login_view, name="login"),

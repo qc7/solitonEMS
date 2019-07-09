@@ -7,7 +7,6 @@ urlpatterns = [
     path('edit_period_page/<int:id>/',views.edit_period_page,name="edit_period_page"),
     path('payroll_record_page/<int:id>/',views.payroll_record_page,name="payroll_record_page"),
     path('payslip_page/<int:id>',views.payslip_page,name='payslip_page'),
-    
     # Processing
     path('add_period/', views.add_period, name="add_period"),
     path('delete_period/<int:id>/',views.delete_period,name="delete_period"),
