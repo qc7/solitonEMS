@@ -7,6 +7,7 @@ from django.urls import reverse
 from .EmployeePayroll import EmployeePayroll
 from employees.models import Employee
 from django.db.models import Sum
+from .procedures import get_total_deduction
 # Create your views here.
 # Pages
 ###############################################################
@@ -119,7 +120,7 @@ def generate_payroll(request,id):
        
         sacco_deduction = "0.0"
         damage_deduction ="0.0"
-        total_deduction = 0
+        
         if employee.deduction_set.filter(name="Sacco"):
             deduction = employee.deduction_set.filter(name="Sacco").first()
             sacco_deduction = str(deduction.amount)
@@ -127,10 +128,9 @@ def generate_payroll(request,id):
         if employee.deduction_set.filter(name="Damage"):
             deduction = employee.deduction_set.filter(name="Damage").first()
             damage_deduction = str(deduction.amount)
-
-        if employee.deduction_set.all():
-            sum = employee.deduction_set.aggregate(Sum('amount'))
-            total_deduction = sum['amount__sum']
+   
+        # Get total deduction
+        total_deduction = get_total_deduction(employee)
 
         employee_payroll = EmployeePayroll(int(employee.basic_salary))
         employee_payroll.deduct(total_deduction)
@@ -153,3 +153,133 @@ def generate_payroll(request,id):
         payroll.save()
 
     return HttpResponseRedirect(reverse('payroll_record_page', args=[payroll_record.id]))
+
+
+def add_prorate(request):
+    # Fetch values from the form
+    num_of_days_worked = request.POST['no_of_days_worked']
+    payroll_id = request.POST['payroll_id']
+
+    # Grab the Payroll object
+    payroll = Payroll.objects.get(pk=payroll_id)
+
+    # Grab the basic salary
+    basic_salary = payroll.employee.basic_salary
+
+    # Create the EmployeePayroll object
+    employee_payroll = EmployeePayroll(basic_salary)
+
+    # Add prorate to the employee payroll object
+    employee_payroll.add_prorate(num_of_days_worked)
+
+    # Subtract the deductions
+    employee = payroll.employee
+
+    total_deduction = get_total_deduction(employee)
+
+    employee_payroll.deduct(total_deduction)
+
+    # Update the payroll object
+    payroll.prorate = employee_payroll.prorate
+    payroll.employee_nssf = int(employee_payroll.nssf_contrib)
+    payroll.employer_nssf = int(employee_payroll.employer_nssf_contrib)
+    payroll.gross_salary   = int(employee_payroll.gross_salary)
+    payroll.paye      = int(employee_payroll.paye)
+    payroll.net_salary = int(employee_payroll.net_salary)
+    payroll.total_nssf_contrib = int(payroll.employee_nssf) + int(payroll.employer_nssf)
+    payroll.total_statutory = payroll.total_nssf_contrib + int(payroll.paye)
+    
+    # Save the payroll object
+    payroll.save()
+
+    return HttpResponseRedirect(reverse('payslip_page', args=[payroll.id]))
+
+def add_bonus(request):
+    # Fetch values from the form
+    bonus = request.POST['bonus']
+    payroll_id = request.POST['payroll_id']
+
+    # Grab the Payroll object
+    payroll = Payroll.objects.get(pk=payroll_id)
+
+    # Grab the basic salary
+    basic_salary = payroll.employee.basic_salary
+
+    # Create the EmployeePayroll object
+    employee_payroll = EmployeePayroll(basic_salary)
+
+    # Add bonus to the employee payroll object
+    employee_payroll.add_bonus(bonus)
+
+    # Subtract the deductions
+    employee = payroll.employee
+
+    total_deduction = get_total_deduction(employee)
+
+    employee_payroll.deduct(total_deduction)
+
+    # Update the payroll object
+    payroll.bonus = employee_payroll.bonus
+    payroll.employee_nssf = int(employee_payroll.nssf_contrib)
+    payroll.employer_nssf = int(employee_payroll.employer_nssf_contrib)
+    payroll.gross_salary   = int(employee_payroll.gross_salary)
+    payroll.paye      = int(employee_payroll.paye)
+    payroll.net_salary = int(employee_payroll.net_salary)
+    payroll.total_nssf_contrib = int(payroll.employee_nssf) + int(payroll.employer_nssf)
+    payroll.total_statutory = payroll.total_nssf_contrib + int(payroll.paye)
+    
+    # Save the payroll object
+    payroll.save()
+
+    return HttpResponseRedirect(reverse('payslip_page', args=[payroll.id]))
+
+def add_overtime(request):
+    # Fetch values from the form
+    number_of_hours_normal = request.POST['number_of_hours_normal']
+    number_of_hours_holidays = request.POST['number_of_hours_holidays']
+    payroll_id = request.POST['payroll_id']
+
+    # Grab the Payroll object
+    payroll = Payroll.objects.get(pk=payroll_id)
+
+    # Grab the basic salary
+    basic_salary = payroll.employee.basic_salary
+
+    # Create the EmployeePayroll object
+    employee_payroll = EmployeePayroll(basic_salary)
+
+    # Add overtime to the employee payroll object
+    total_overtime = 0
+    total_gross_salary = 0
+    if number_of_hours_normal:
+        overtime = employee_payroll.add_overtime(int(number_of_hours_normal),False)
+        total_overtime = total_overtime + overtime
+        
+
+    if number_of_hours_holidays:
+        overtime = employee_payroll.add_overtime(int(number_of_hours_holidays),True)
+        total_overtime = total_overtime + overtime
+    
+    total_gross_salary =total_overtime + employee_payroll.gross_salary
+    
+    # Subtract the deductions
+    employee = payroll.employee
+
+    total_deduction = get_total_deduction(employee)
+
+    employee_payroll.deduct(total_deduction)
+
+    # Update the payroll object
+    payroll.overtime = int(total_overtime)
+    payroll.employee_nssf = int(employee_payroll.get_nssf_contrib(total_gross_salary))
+    payroll.employer_nssf = int(employee_payroll.get_employer_nssf_contrib(total_gross_salary))
+    payroll.gross_salary   = int(total_gross_salary)
+    payroll.paye      = int(employee_payroll.get_paye(total_gross_salary))
+    payroll.net_salary = int(employee_payroll.get_net_salary(total_gross_salary))
+    payroll.total_nssf_contrib = int(payroll.employee_nssf) + int(payroll.employer_nssf)
+    payroll.total_statutory = payroll.total_nssf_contrib + int(payroll.paye)
+    
+    # Save the payroll object
+    payroll.save()
+
+    return HttpResponseRedirect(reverse('payslip_page', args=[payroll.id]))
