@@ -1,0 +1,56 @@
+{%extends './base.html'%}
+{% load humanize %}
+      
+{%block page_title %}
+<span>
+  <a href="{%url 'payroll_records_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
+  <h1>Payroll Record of Employees</h1>
+</span> 
+{%endblock%}
+
+{%block content%}
+<div class="content">
+        <div class="container-fluid">
+            
+                <div class="period">
+                        <h3>{{month}} - {{year}}</h3>
+                    </div>
+                    {%if not payrolls%}
+                     <a href="{%url 'generate_payroll' payroll_record.id %}"><button class="btn btn-danger">Generate Initial Payroll</button></a>
+                     <div class="instructions">
+                         <h4>Initial Payroll</h4>
+                         <ul>
+                             <li>It considers a meal allowance of UGX 150,000 for each employee on the gross pay</li>
+                             <li>It does not consider overtime and bonuses</li>
+                             <li>It considers statutory deductions from the gross pay to generate a net pay</li>
+                         </ul>
+                     </div>
+                    {%else%}
+<div class="card">
+<table class="table">
+    <tr>
+        <th>Emp. ID</th>
+        <th>Name</th>
+        <th>NSSF Contribution</th>
+        <th>PAYE</th>
+        <th>Gross Pay</th>
+        <th>Basic Pay</th>
+        <th>Net Pay</th>
+    </tr>
+    {%for payroll in payrolls%}
+    <tr>
+        <td>{{payroll.employee.id}}</td>
+        <td><a href="{%url 'payslip_page' payroll.id%}" style="color: inherit">{{payroll.employee.first_name}} {{payroll.employee.last_name}}</a></td>
+        <td>UGX {{payroll.total_nssf_contrib | intcomma}}</td>
+        <td>UGX {{ payroll.paye| intcomma}}</td>
+        <td>UGX {{payroll.gross_salary | intcomma}}</td>
+        <td>UGX {{payroll.employee.basic_salary | intcomma}}</td>
+        <td>UGX {{payroll.net_salary | intcomma }}</td>
+    </tr>
+    {%endfor%}
+</table>
+</div>
+{%endif%}
+</div>
+</div>
+{%endblock%}

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant
+from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction
 # Create your views here.
 
 # Authentication
@@ -63,22 +63,13 @@ def employee_page(request, id):
         "emergency_contacts": employee.emergencycontact_set.all(),
         "beneficiaries": employee.beneficiary_set.all(),
         "spouses": employee.spouse_set.all(),
-        "dependants": employee.dependant_set.all()
+        "dependants": employee.dependant_set.all(),
+        "deductions": employee.deduction_set.all(),
     }
     return render(request, 'employees/employee.html', context)
 
 
-@login_required
-def payroll_page(request):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
 
-    context = {
-        "payroll_page": "active"
-    }
-    return render(request, 'employees/payroll.html', context)
 
 
 @login_required
@@ -217,6 +208,7 @@ def add_new_employee(request):
         position = request.POST['position']
         bank_account = request.POST['bank_account']
         grade = request.POST['grade']
+        basic_salary = request.POST['basic_salary']
         gender = request.POST['gender']
         marital_status = request.POST['marital_status']
         start_date = request.POST['start_date']
@@ -230,7 +222,7 @@ def add_new_employee(request):
 
         try:
             # Creating instance of Employee
-            employee = Employee(first_name=first_name, last_name=last_name,bank_account=bank_account,grade=grade, position=position, gender=gender,
+            employee = Employee(first_name=first_name, last_name=last_name,bank_account=bank_account,grade=grade,basic_salary=basic_salary, position=position, gender=gender,
                                 marital_status=marital_status, start_date=start_date, nationality=nationality, nssf_no=nssf_no,
                                 ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, residence_address=residence_address,
                                 dob=dob)
@@ -265,10 +257,11 @@ def delete_employee(request, id):
     try:
         # Grab the employee
         employee = Employee.objects.get(pk=id)
-
+       
         name = employee.first_name + " " + employee.last_name
-    # Delete the employee
-        employee.delete()
+        # Delete the employee
+        employee_to_delete = employee
+        employee_to_delete.delete()
 
     except Employee.DoesNotExist:
         context = {
@@ -280,48 +273,45 @@ def delete_employee(request, id):
 
     context = {
         "employees_page": "active",
-        "deleted_msg": "You have deleted %s from employees" % (name)
+        "deleted_msg": "You have deleted %s from employees" % (name),
+        
     }
-    return render(request, 'employees/deleted.html', context)
+    return render(request, 'employees/deleted_employee.html', context)
 
 
 @login_required
 def edit_employee(request, id):
     if request.method == 'POST':
         # Fetching data from the add new employee form
-        try:
-            employee = Employee.objects.get(pk=id)
-            employee.first_name = request.POST['first_name']
-            employee.last_name = request.POST['last_name']
-            employee.position = request.POST['position']
-            employee.grade = request.POST['grade']
-            employee.bank_account = request.POST['bank_account']
-            employee.gender = request.POST['gender']
-            employee.marital_status = request.POST['marital_status']
-            employee.start_date = request.POST['start_date']
-            employee.nationality = request.POST['nationality']
-            employee.nssf_no = request.POST['nssf_no']
-            employee.ura_tin = request.POST['ura_tin']
-            employee.national_id = request.POST['national_id']
-            employee.telephone_no = request.POST['telephone']
-            employee.residence_address = request.POST['residence_address']
-            employee.dob = request.POST['dob']
+        employee = Employee.objects.get(pk=id)
+        employee.first_name = request.POST['first_name']
+        employee.last_name = request.POST['last_name']
+        employee.position = request.POST['position']
+        employee.grade = request.POST['grade']
+        employee.basic_salary = request.POST['basic_salary']
+        employee.bank_account = request.POST['bank_account']
+        employee.gender = request.POST['gender']
+        employee.marital_status = request.POST['marital_status']
+        employee.start_date = request.POST['start_date']
+        employee.nationality = request.POST['nationality']
+        employee.nssf_no = request.POST['nssf_no']
+        employee.ura_tin = request.POST['ura_tin']
+        employee.national_id = request.POST['national_id']
+        employee.telephone_no = request.POST['telephone']
+        employee.residence_address = request.POST['residence_address']
+        employee.dob = request.POST['dob']
 
-            # Saving the employee instance
-            employee.save()
-            context = {
-                "employees_page": "active",
-                "success_msg": "You have successfully updated %s's bio data" % (employee.first_name)
-            }
+        # Saving the employee instance
+        employee.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully updated %s's bio data" % (employee.first_name),
+            "employee": employee
+        }
 
-            return render(request, 'employees/success.html', context)
+        return render(request, 'employees/success.html', context)
 
-        except:
-            context = {
-                "employees_page": "active",
-                "failed_msg": "Something went wrong. Contact Bright and Hakim"
-            }
-            return render(request, "employees/failed.html", context)
+        
 
     else:
         context = {
@@ -915,5 +905,60 @@ def delete_dependant(request,id):
     }
     return render(request, 'employees/deleted.html', context)
 
+
+
+def add_deduction(request):
+
+    if request.method == 'POST':
+        # Fetching data from the add deductions' form
+        name = request.POST['deduction_name']
+        amount = request.POST['deduction_amount']
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+
+        # Creating instance of Deduction
+        deduction = Deduction(employee=employee, name=name, amount=amount)
+
+        # Saving the Deduction instance
+        deduction.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the non statutory deductions" % (deduction.name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
     
-    
+def delete_deduction(request,id):
+    try:
+        # Grab the Deduction
+        deduction = Deduction.objects.get(pk=id)
+
+        name = deduction.name
+        employee = deduction.employee
+        # Delete the deduction
+        deduction.delete()
+
+    except Deduction.DoesNotExist:
+        context = {
+            "employees_page": "active",
+            "deleted_msg": "The deduction no longer exists on the system"
+        }
+
+        return render(request, 'employees/deleted.html', context)
+
+    context = {
+        "employees_page": "active",
+        "deleted_msg": "You have deleted %s from the deductions" % (name),
+        "employee": employee
+    }
+    return render(request, 'employees/deleted.html', context)

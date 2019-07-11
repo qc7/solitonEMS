@@ -1,0 +1,28 @@
+{%extends './base.html'%}
+
+{%block page_title %}
+<h1>Edit Payroll Period</h1>
+{%endblock%}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <form action="{%url 'edit_period' %}" method="post">
+            {%csrf_token%}
+            <div class="form-group">
+                <label for="month">Month</label>
+                <input type="text" name="month" id="month" class="form-control" value={{payroll_record.month}}>
+            </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" name="year" id="year" class="form-control" value="{{payroll_record.year}}">
+            </div>
+            <input type="hidden" name="payroll_record_id" value="{{payroll_record.id}}">
+
+            <button type="submit" class="btn btn-danger">Save</button>
+        </form>
+        <a href="{%url 'payroll_records_page'%}"><button class="btn btn-primary">Back</button></a>
+    </div>
+</div>
+
+{%endblock%}

@@ -7,7 +7,6 @@ urlpatterns = [
     path('', views.dashboard_page, name="dashboard_page"),
     path('employees/', views.employees_page, name="employees_page"),
     path('leave/', views.leave_page, name="leave_page"),
-    path('payroll/', views.payroll_page, name="payroll_page"),
     path('employee/<int:id>/', views.employee_page, name="employee_page"),
     path('edit_employee_page/<int:id>/', views.edit_employee_page, name="edit_employee_page"),
     path('edit_certification_page/<int:id>/', views.edit_certification_page, name="edit_certification_page"),
@@ -36,6 +35,8 @@ urlpatterns = [
     path('add_dependant/', views.add_dependant, name="add_dependant"),
     path('edit_dependant/', views.edit_dependant, name="edit_dependant"),
     path('delete_dependant/<int:id>', views.delete_dependant, name="delete_dependant"),
+    path('add_deduction/', views.add_deduction,name="add_deduction"),
+    path('delete_deduction/<int:id>',views.delete_deduction,name="delete_deduction"),
     # Authentication
     path('accounts/login/', views.login_page, name="loginAccounts"),
     path('login/', views.login_view, name="login"),
