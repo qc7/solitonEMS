@@ -9,7 +9,22 @@
 {%endblock%}
 
 {%block content%}
+<style>
+    td,th 
+        {
+    text-align: center; 
+    vertical-align: middle;
+      }
+    th[colspan] 
+        {
+    text-align: right; 
+    vertical-align: middle;
+      }  
+
+</style>
+
 <div class="content">
+    
         <div class="container-fluid">
             
                 <div class="period">
@@ -48,6 +63,14 @@
         <td>UGX {{payroll.net_salary | intcomma }}</td>
     </tr>
     {%endfor%}
+    <tr>	
+        <th colspan="2">TOTAL</th>
+        <th>UGX {{total_nssf_contribution|intcomma}}</th>
+        <th>UGX {{total_paye|intcomma}}</th>
+        <th>UGX {{total_gross_pay|intcomma}}</th>
+        <th>UGX {{total_basic_pay|intcomma}}</th>
+        <th>UGX {{total_net_pay|intcomma}}</th>
+    </tr>
 </table>
 </div>
 {%endif%}

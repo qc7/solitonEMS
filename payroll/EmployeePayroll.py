@@ -2,7 +2,7 @@
 class EmployeePayroll:
     #
     lunch_allowance = 150000
-    
+    prorate = 0
     def __init__(self,basic_salary):
         self.basic_salary = basic_salary
         self.get_gross_salary()
@@ -30,7 +30,7 @@ class EmployeePayroll:
         return self.paye
 
     def get_net_salary(self,gross_salary):
-        self.net_salary = gross_salary - (self.nssf_contrib + self.paye)
+        self.net_salary = int(gross_salary) - (self.nssf_contrib + self.paye)
         return self.net_salary
 
     def get_hourly_rate(self,gross_salary):
@@ -44,11 +44,17 @@ class EmployeePayroll:
         self.gross_salary = self.gross_salary + amount
 
     def deduct(self,amount):
-        self.net_salary = self.net_salary - amount
+        if amount is None:
+            amount = 0
+
+        self.net_salary = int(self.net_salary) - int(amount)
 
     def add_bonus(self,amount):
         self.bonus = amount
         self.gross_salary = int(self.gross_salary) + int(self.bonus)
+        if self.prorate:
+            self.gross_salary = self.prorate
+
         self.get_nssf_contrib(self.gross_salary)
         self.get_employer_nssf_contrib(self.gross_salary)
         self.get_paye(self.gross_salary)
@@ -59,6 +65,9 @@ class EmployeePayroll:
     def add_half_bonus(self):
         self.bonus = 0.5 * self.basic_salary
 
+    def add_overtime_amount(self,amount):
+        self.overtime = int(amount)
+        self.gross_salary = self.gross_salary + self.overtime
 
     def add_overtime(self,hours_worked,holiday):
         if holiday:
@@ -69,6 +78,9 @@ class EmployeePayroll:
             self.overtime = hours_worked * 1.5 * self.hourly_rate
             self.gross_salary = float(self.gross_salary) + hours_worked * 1.5 * self.hourly_rate
             return self.overtime
+    
+    def add_prorate_amount(self,amount):
+        self.prorate = float(amount)
 
     def add_prorate(self,days_worked):
         self.prorate = float(days_worked) * self.daily_rate
@@ -79,6 +91,9 @@ class EmployeePayroll:
             self.paye = 0
 
         self.get_net_salary(self.gross_salary)
+
+    def set_gross_salary(self,amount):
+        self.gross_salary = int(amount)
 
 # employee_payroll = EmployeePayroll(1000000)
 # employee_payroll.add_bonus(600000)
