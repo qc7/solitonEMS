@@ -32,4 +32,3 @@ def get_total_net_pay(payrolls):
     net_salary = sum['net_salary__sum']
     return net_salary
 
-

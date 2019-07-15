@@ -95,6 +95,11 @@ class EmployeePayroll:
     def set_gross_salary(self,amount):
         self.gross_salary = int(amount)
 
+    def get_half_bonus(self):
+        half_bonus = 0.5 * int(self.gross_salary)
+        self.gross_salary = self.gross_salary + half_bonus
+        return half_bonus
+
 # employee_payroll = EmployeePayroll(1000000)
 # employee_payroll.add_bonus(600000)
 # print(employee_payroll.net_salary)

@@ -162,6 +162,55 @@ def generate_payroll(request,id):
 
     return HttpResponseRedirect(reverse('payroll_record_page', args=[payroll_record.id]))
 
+def generate_payroll_with_bonus(request,id):
+    # Get Payroll record
+    payroll_record = PayrollRecord.objects.get(pk=id)
+    # Get all employees
+    employees = Employee.objects.all()
+    # Loop through all employees
+    for employee in employees:
+        
+        sacco_deduction = "0.0"
+        damage_deduction ="0.0"
+        
+        if employee.deduction_set.filter(name="Sacco"):
+            deduction = employee.deduction_set.filter(name="Sacco").first()
+            sacco_deduction = str(deduction.amount)
+
+        if employee.deduction_set.filter(name="Damage"):
+            deduction = employee.deduction_set.filter(name="Damage").first()
+            damage_deduction = str(deduction.amount)
+
+        # Get total deduction
+        total_deduction = get_total_deduction(employee)
+
+        employee_payroll = EmployeePayroll(int(employee.basic_salary))
+        
+        bonus  = employee_payroll.get_half_bonus()
+
+        employee_nssf = employee_payroll.get_nssf_contrib(employee_payroll.gross_salary)
+        employer_nssf = employee_payroll.get_employer_nssf_contrib(employee_payroll.gross_salary)
+        gross_salary   = employee_payroll.gross_salary
+        paye      = employee_payroll.get_paye(employee_payroll.gross_salary)
+        employee_payroll.get_net_salary(employee_payroll.gross_salary)
+        employee_payroll.deduct(total_deduction)
+        net_salary = employee_payroll.net_salary
+        total_nssf_contrib = int(employee_nssf) + int(employer_nssf)
+        total_statutory = total_nssf_contrib + int(paye)
+        
+        
+
+        # Create payroll object
+        payroll = Payroll(employee=employee,payroll_record=payroll_record,employee_nssf=employee_nssf,
+        employer_nssf=employer_nssf,gross_salary=gross_salary,paye=paye,net_salary=net_salary,
+            total_nssf_contrib=total_nssf_contrib,total_statutory=total_statutory,
+            sacco_deduction=sacco_deduction,damage_deduction=damage_deduction,bonus=bonus)
+
+        # Save payroll object
+        payroll.save()
+
+    return HttpResponseRedirect(reverse('payroll_record_page', args=[payroll_record.id]))
+
 
 def add_prorate(request):
     # Fetch values from the form
@@ -228,7 +277,7 @@ def add_bonus(request):
 
     # Check if the overtime is set
     if payroll.overtime:
-        employee_payroll.add_overtime_amount(int(payroll.overtime))
+        employee_payroll.add_overtime_amount(float(payroll.overtime))
 
     # Add bonus to the employee payroll object
     employee_payroll.add_bonus(bonus)
@@ -250,7 +299,7 @@ def add_bonus(request):
     payroll.total_nssf_contrib = int(payroll.employee_nssf) + int(payroll.employer_nssf)
     payroll.total_statutory = payroll.total_nssf_contrib + int(payroll.paye)
     
-    # Save the payroll object
+    # Save the payroll object 
     payroll.save()
 
     return HttpResponseRedirect(reverse('payslip_page', args=[payroll.id]))
