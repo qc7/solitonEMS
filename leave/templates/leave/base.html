@@ -10,15 +10,17 @@
   <title>
     SOLITON TELMEC EMS
   </title>
-  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+    name='viewport' />
   <!--     Fonts and icons     -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-  
+  <link rel="stylesheet" type="text/css"
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+
   <script src="https://kit.fontawesome.com/9bce6be5f4.js"></script>
   <!-- CSS Files -->
-  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}" />
   <link href="{% static 'assets/css/material-dashboard.css' %}" rel="stylesheet" />
- 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
 </head>
 
@@ -32,6 +34,7 @@
     -->
       <div class="logo">
         <center>
+<<<<<<< HEAD:leave/templates/leave/base.html
           <img src=" {% static 'registration/images/icons/logo.svg'  %} " style='width:50%' class="logo-normal"/>
         <a href="#" class="simple-text logo-normal">
             
@@ -39,6 +42,15 @@
         </a>
       </center>
       </div>
+=======
+          <img src=" {% static 'registration/images/icons/logo.svg'  %} " style='width:50%' class="logo-normal" />
+          <a href="#" class="simple-text logo-normal">
+            SOLITON TELMEC EMS
+          </a>
+        </center>
+      </div>
+
+>>>>>>> 03132e55368743f71d4402bb373eed87a15aa6d2:payroll/templates/payroll/base.html
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item {{ leave_dashboard_page }}">
@@ -47,9 +59,15 @@
               <p>Dashboard</p>
             </a>
           </li>
+<<<<<<< HEAD:leave/templates/leave/base.html
      
           <li class="nav-item {{ apply_leave_page }}">
             <a class="nav-link" href="{% url 'apply_leave_page' %}">
+=======
+
+          <li class="nav-item  {{ employees_page }}">
+            <a class="nav-link" href="{% url 'employees_page' %}">
+>>>>>>> 03132e55368743f71d4402bb373eed87a15aa6d2:payroll/templates/payroll/base.html
               <i class="material-icons">content_paste</i>
               <p>Apply For Leave</p>
             </a>
@@ -68,9 +86,15 @@
               <p>Approval Path</p>
             </a>
           </li>
+<<<<<<< HEAD:leave/templates/leave/base.html
         
           <li class="nav-item  {{ holidays_page }}">
             <a class="nav-link" href="{% url 'holidays_page' %}">
+=======
+
+          <li class="nav-item  {{ payroll_page }}">
+            <a class="nav-link" href="{% url 'payroll_records_page' %}">
+>>>>>>> 03132e55368743f71d4402bb373eed87a15aa6d2:payroll/templates/payroll/base.html
               <i class="material-icons">library_books</i>
               <p>Holidays</p>
             </a>
@@ -125,14 +149,15 @@
           <div class="navbar-wrapper">
             <a class="navbar-brand" href="#pablo"><b>{% block page_title %}{% endblock %}</b></a>
           </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
+            aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end">
-     
+
 
           </div>
         </div>
@@ -163,7 +188,7 @@
             &copy;
             <script>
               document.write(new Date().getFullYear())
-            </script>, 
+            </script>,
             SOLITON TELMEC (U) LTD
           </div>
         </div>
@@ -205,7 +230,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
   <!-- Library for adding dinamically elements -->
   <script src="{% static 'assets/js/plugins/arrive.min.js' %}"></script>
- 
+
   <!-- Chartist JS -->
   <script src="{% static 'assets/js/plugins/chartist.min.js'"></script>
   <!--  Notifications Plugin    -->
@@ -214,8 +239,8 @@
   <script src="{% static 'assets/js/material-dashboard.js' %}" type="text/javascript"></script>
 
   <script>
-    $(document).ready(function() {
-      $().ready(function() {
+    $(document).ready(function () {
+      $().ready(function () {
         $sidebar = $('.sidebar');
 
         $sidebar_img_container = $sidebar.find('.sidebar-background');
@@ -235,7 +260,7 @@
 
         }
 
-        $('.fixed-plugin a').click(function(event) {
+        $('.fixed-plugin a').click(function (event) {
           // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
           if ($(this).hasClass('switch-trigger')) {
             if (event.stopPropagation) {
@@ -246,7 +271,7 @@
           }
         });
 
-        $('.fixed-plugin .active-color span').click(function() {
+        $('.fixed-plugin .active-color span').click(function () {
           $full_page_background = $('.full-page-background');
 
           $(this).siblings().removeClass('active');
@@ -267,7 +292,7 @@
           }
         });
 
-        $('.fixed-plugin .background-color .badge').click(function() {
+        $('.fixed-plugin .background-color .badge').click(function () {
           $(this).siblings().removeClass('active');
           $(this).addClass('active');
 
@@ -278,7 +303,7 @@
           }
         });
 
-        $('.fixed-plugin .img-holder').click(function() {
+        $('.fixed-plugin .img-holder').click(function () {
           $full_page_background = $('.full-page-background');
 
           $(this).parent('li').siblings().removeClass('active');
@@ -288,7 +313,7 @@
           var new_image = $(this).find("img").attr('src');
 
           if ($sidebar_img_container.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
-            $sidebar_img_container.fadeOut('fast', function() {
+            $sidebar_img_container.fadeOut('fast', function () {
               $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
               $sidebar_img_container.fadeIn('fast');
             });
@@ -297,7 +322,7 @@
           if ($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
             var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
 
-            $full_page_background.fadeOut('fast', function() {
+            $full_page_background.fadeOut('fast', function () {
               $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
               $full_page_background.fadeIn('fast');
             });
@@ -316,7 +341,7 @@
           }
         });
 
-        $('.switch-sidebar-image input').change(function() {
+        $('.switch-sidebar-image input').change(function () {
           $full_page_background = $('.full-page-background');
 
           $input = $(this);
@@ -348,7 +373,7 @@
           }
         });
 
-        $('.switch-sidebar-mini input').change(function() {
+        $('.switch-sidebar-mini input').change(function () {
           $body = $('body');
 
           $input = $(this);
@@ -363,7 +388,7 @@
 
             $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar('destroy');
 
-            setTimeout(function() {
+            setTimeout(function () {
               $('body').addClass('sidebar-mini');
 
               md.misc.sidebar_mini_active = true;
@@ -371,12 +396,12 @@
           }
 
           // we simulate the window Resize so the charts will get updated in realtime.
-          var simulateWindowResize = setInterval(function() {
+          var simulateWindowResize = setInterval(function () {
             window.dispatchEvent(new Event('resize'));
           }, 180);
 
           // we stop the simulation of Window Resize after the animations are completed
-          setTimeout(function() {
+          setTimeout(function () {
             clearInterval(simulateWindowResize);
           }, 1000);
 
@@ -385,13 +410,13 @@
     });
   </script>
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
 
     });
   </script>
- 
+
 </body>
 
 </html>
