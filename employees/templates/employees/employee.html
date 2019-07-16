@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-{% extends './base.html'%} {% load static %} {% block page_title %}
-=======
-{%extends './base.html'%} {%load static %} 
-{%block page_title %}
->>>>>>> f41631664c907e59cf70ec33a516fb333d7404cc
+{% extends './base.html'%} {% load static %} 
+
+{% block page_title %}
 <span>
     <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
     <h3>{{employee.first_name}} {{employee.last_name}}</h3>
