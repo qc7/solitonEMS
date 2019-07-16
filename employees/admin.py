@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Employee,HomeAddress,Certification,EmergencyContact,Beneficiary,Spouse,Dependant
+from .models import Employee,HomeAddress,Certification,EmergencyContact,Beneficiary,Spouse,Dependant,Deduction
 
 admin.site.register(Employee)
 admin.site.register(HomeAddress)
@@ -10,3 +10,4 @@ admin.site.register(EmergencyContact)
 admin.site.register(Beneficiary)
 admin.site.register(Spouse)
 admin.site.register(Dependant)
+admin.site.register(Deduction)
