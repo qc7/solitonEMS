@@ -1,0 +1,119 @@
+{% extends './base.html' %}
+{% block page_title %}
+<h1>Job Titles</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <!-- Button trigger modal-->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_job">
+      Add Job Title +
+    </button>
+    <div class="col-md-12">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <th>ID</th>
+              <th>Title</th>
+              <th>No.of Positions</th>
+              <th colspan=2>#</th>
+            </thead>
+            <tbody>
+              {% for job in titles  %}
+              <tr>
+                <td>{{ job.id }}</td>
+                <td><a href="#" style="color: inherit">{{ job.title }}</a></td>
+                <td>{{ job.positions }}</td>
+                <td><a href="#" style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                <td>
+                <a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
+                </a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: modalAddNewHoliday -->
+    <div class="modal fade" id="modal_add_new_job" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Add Job Title</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+         
+          <!-- Body -->
+          <div class="modal-body">
+            <form method="POST" action="{% url 'add_new_title' %}"> {% csrf_token %}
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Job Title"
+                  name="job_title" required>
+              </div> 
+              <div class="form-group">
+                <input type="text" class="form-control"  placeholder="No.of Positions"
+                  name="positions" required>
+              </div>          
+
+          <!--Footer-->
+          <div class="modal-footer">
+            <button class="btn btn-danger" type="submit">Save</button>
+            <button class="btn btn-outline-danger" type="reset">Close</button>
+          </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- Modal: modalAddNewHoliday -->
+
+    {% comment %} <div class="modal fade" id="modal_edit_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Edit Leave Types</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+         
+          <!-- Body -->
+          <div class="modal-body">
+            <form method="POST" action="{% url 'edit_leave_type_page' leave.id %}"> {% csrf_token %}
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Type"
+                  name="e_leave_type" value={{leave.type}} required>
+              </div>
+              <div class="form-group">
+                <input type="number" class="form-control"  placeholder="No. Of Days"
+                  name="e_leave_days" value={{ leave.leave_days }} required>
+              </div>  
+              <div class="form-group">
+                <input type="text" class="form-control"  placeholder="Description"
+                  name="e_desc" value={{ leave.desc }} required>
+              </div> 
+              
+          <!--Footer-->
+          <div class="modal-footer">
+            <button class="btn btn-danger" type="submit">Save</button>
+            <button class="btn btn-outline-danger" type="reset">Close</button>
+          </div>
+          </form>
+
+        </div>
+      </div>
+    </div> {% endcomment %}
+    <!-- Modal: modalAddNewHoliday -->
+  </div>
+</div>
+{% endblock content %} 

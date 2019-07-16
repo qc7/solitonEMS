@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  {%load static %}
+  {% load static %}
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/apple-icon.png' %}">
   <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}">
@@ -29,11 +29,20 @@
     <div class="sidebar" data-color="danger" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-
+        
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo">
         <center>
+<<<<<<< HEAD:leave/templates/leave/base.html
+          <img src=" {% static 'registration/images/icons/logo.svg'  %} " style='width:50%' class="logo-normal"/>
+        <a href="#" class="simple-text logo-normal">
+            
+          SOLITON TELMEC EMS
+        </a>
+      </center>
+      </div>
+=======
           <img src=" {% static 'registration/images/icons/logo.svg'  %} " style='width:50%' class="logo-normal" />
           <a href="#" class="simple-text logo-normal">
             SOLITON TELMEC EMS
@@ -41,34 +50,86 @@
         </center>
       </div>
 
+>>>>>>> 03132e55368743f71d4402bb373eed87a15aa6d2:payroll/templates/payroll/base.html
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item {{ dashboard_page }}">
-            <a class="nav-link" href="{% url 'dashboard_page' %}">
+          <li class="nav-item {{ leave_dashboard_page }}">
+            <a class="nav-link" href="{% url 'leave_dashboard_page' %}">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
+<<<<<<< HEAD:leave/templates/leave/base.html
+     
+          <li class="nav-item {{ apply_leave_page }}">
+            <a class="nav-link" href="{% url 'apply_leave_page' %}">
+=======
 
           <li class="nav-item  {{ employees_page }}">
             <a class="nav-link" href="{% url 'employees_page' %}">
+>>>>>>> 03132e55368743f71d4402bb373eed87a15aa6d2:payroll/templates/payroll/base.html
               <i class="material-icons">content_paste</i>
-              <p>Employees</p>
+              <p>Apply For Leave</p>
             </a>
           </li>
 
-          <li class="nav-item  {{ leave_page }}">
-            <a class="nav-link" href="{% url 'leave_page' %}">
+          <li class="nav-item  {{ leave_types_page }}">
+            <a class="nav-link" href="{% url 'leave_types_page' %}">
               <i class="material-icons">event</i>
-              <p>Leave</p>
+              <p>Leave Types</p>
             </a>
           </li>
+
+          <li class="nav-item  {{ path_page }}">
+            <a class="nav-link" href="{% url 'path_page' %}">
+              <i class="material-icons">`check_circle</i>
+              <p>Approval Path</p>
+            </a>
+          </li>
+<<<<<<< HEAD:leave/templates/leave/base.html
+        
+          <li class="nav-item  {{ holidays_page }}">
+            <a class="nav-link" href="{% url 'holidays_page' %}">
+=======
 
           <li class="nav-item  {{ payroll_page }}">
             <a class="nav-link" href="{% url 'payroll_records_page' %}">
+>>>>>>> 03132e55368743f71d4402bb373eed87a15aa6d2:payroll/templates/payroll/base.html
               <i class="material-icons">library_books</i>
-              <p>Payroll</p>
+              <p>Holidays</p>
             </a>
+          </li>
+            <!--  Plugin for Sweet Alert -->
+            <script src="{% static 'assets/js/plugins/sweetalert2.js' %}"></script>
+            <!-- Forms Validations Plugin -->
+            <script src="{% static 'assets/js/plugins/jquery.validate.min.js' %}"></script>
+            <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+            <script src="{% static 'assets/js/plugins/jquery.bootstrap-wizard.js' %}"></script>
+            <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+            <script src="{% static 'assets/js/plugins/bootstrap-selectpicker.js' %}"></script>
+            <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
+            <script src="{% static 'assets/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
+            <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
+            <script src="{% static 'assets/js/plugins/jquery.dataTables.min.js' %}"></script>
+            <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+            <script src="{% static 'assets/js/plugins/bootstrap-tagsinput.js' %}"></script>
+            <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+            <script src="{% static 'assets/js/plugins/jasny-bootstrap.min.js' %}"></script>
+            <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
+            <script src="{% static 'assets/js/plugins/fullcalendar.min.js' %}"></script>
+            <!-- Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ -->
+            <script src="{% static 'assets/js/plugins/jquery-jvectormap.js' %}"></script>
+            <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+            <script src="{% static 'assets/js/plugins/nouislider.min.js'%}"></script>
+          
+            <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+            <!-- Library for adding dinamically elements -->
+            <script src="{% static 'assets/js/plugins/arrive.min.js' %}"></script>
+           
+            <!-- Chartist JS -->
+            <script src="{% static 'assets/js/plugins/chartist.min.js'%}"></script>
+            <!--  Notifications Plugin    -->
           </li>
 
           <li class="nav-item ">
@@ -86,7 +147,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo"><b>{%block page_title %}{%endblock%}</b></a>
+            <a class="navbar-brand" href="#pablo"><b>{% block page_title %}{% endblock %}</b></a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -103,8 +164,8 @@
       </nav>
       <!-- End Navbar -->
       <!-- Content here -->
-      {%block content%}
-      {%endblock%}
+      {% block content%}
+      {% endblock %}
 
       <!-- Content ends here       -->
       <footer class="footer">
