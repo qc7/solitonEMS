@@ -1,0 +1,20 @@
+{%extends './base.html'%}
+{%load static %}
+{%block page_title %}
+<span>
+    <i class="fa fa-trash-o" style="font-size: 3em"></i>
+    <h1>Deleted!!</h1>
+</span>
+{%endblock%}
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 style="padding-top:20px">{{deleted_msg}}</h3>
+                <a href="{%url 'employee_page' employee.id %}"><button class="btn btn-outline-danger">Back</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock content%}
