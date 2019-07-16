@@ -1,18 +1,18 @@
-{%extends './base.html'%}
-{%block page_title %}
+{% extends './base.html'%}
+{% block page_title %}
 <span>
     <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
     <h3><i class="fa fa-edit"></i> Edit {{employee.first_name}}'s Bio data</h3>
 </span>
-{%endblock page_title%}
+{% endblock page_title%}
 
-{%block content%}
+{% block content%}
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-body">
-                    <form method="POST" action="{%url 'edit_employee' employee.id %}">
+                    <form method="POST" action="{% url 'edit_employee' employee.id %}">
                         {%csrf_token%}
                         <div class="form-group">
                             <label>First Name</label>
@@ -26,14 +26,35 @@
                                 value={{employee.last_name}}>
                         </div>
                         <div class="form-group">
+                            <label for="">Department</label>
+                            <select class="form-control" id="position" name="dep" required>                                
+                                {% for dep in deps %}                                    
+                                    {% if employee.department == dep %}
+                                        <option selected value="{{dep.pk}}">{{dep.name }}</option>
+                                    {% else %}
+                                        <option value="{{dep.pk}}">{{dep.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="">Position</label>
-                            <input type="text" class="form-control" placeholder="Enter employee Position"
-                                name="position" value="{{employee.position}}" required>
+                            {% comment %} <input type="text" class="form-control" placeholder="Enter employee Position"
+                                name="position" value="{{employee.position}}" required> {% endcomment %}
+                            <select class="form-control" id="position" name="position" required>                                
+                                {% for pos in titles %}                                    
+                                    {% if employee.position == pos %}
+                                        <option selected value="{{pos.pk}}">{{pos.title }}</option>
+                                    {% else %}
+                                        <option value="{{pos.pk}}">{{pos.title }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="">Grade</label>
                             <input type="text" class="form-control" placeholder="Enter employee grade"
-                                name="grade" value="{{employee.grade}}" required>
+                                name="grade" value="{{employee.grade}}" required>                            
                         </div>
                         <div class="form-group">
                             <label for="">Bank Account</label>
@@ -43,26 +64,26 @@
                         <div class="form-group">
                             <label for="sel1">Gender:</label>
                             <select class="form-control" id="sel1" name="gender">
-                                {%if employee.gender == "Female"%}
+                                {% if employee.gender == "Female" %}
                                 <option>Male</option>
                                 <option selected>Female</option>
-                                {%else%}
+                                {% else%}
                                 <option selected>Male</option>
                                 <option>Female</option>
-                                {%endif%}
+                                {% endif%}
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="sel1">Marital Status:</label>
                             <select class="form-control" id="sel1" name="marital_status"
                                 value="{{employee.marital_status}}">
-                                {%if employee.marital_status == "Single"%}
+                                {% if employee.marital_status == "Single"%}
                                 <option selected value="Single">Single</option>
                                 <option>Married</option>
-                                {%else%}
+                                {% else%}
                                 <option>Single</option>
                                 <option selected value="Married">Married</option>
-                                {%endif%}
+                                {% endif%}
                             </select>
                         </div>
                         <div class="form-group">

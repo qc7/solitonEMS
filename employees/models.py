@@ -1,10 +1,33 @@
 from django.db import models
 
 # Create your models here.
+class Departments(models.Model):
+    name = models.CharField(max_length=45)
+    hod = models.CharField(max_length=45)
+    status = models.CharField(max_length=15, default="Active")
+
+    def __str__(self):
+        return self.name
+
+class Teams(models.Model):
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE)
+    name = models.CharField(max_length=45)
+    supervisors = models.CharField(max_length=45)
+    status = models.CharField(max_length=15,default="Active")
+
+class Job_Titles(models.Model):
+    title = models.CharField(max_length=45)
+    positions = models.IntegerField()
+
+    def __str__(self):
+        return self.title
+
+
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    position = models.CharField(max_length=30, default="")
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1)
+    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1)
     bank_account = models.CharField(max_length=30,default="")
     grade = models.CharField(max_length=3,default="")
     gender = models.CharField(max_length=10)
@@ -17,6 +40,7 @@ class Employee(models.Model):
     residence_address = models.CharField(max_length=20)
     national_id   = models.CharField(max_length=20)
     ura_tin = models.CharField(max_length=20)
+    team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1)
     image_url = models.CharField(max_length=20, default="")
 
     def __str__(self):
@@ -91,19 +115,3 @@ class Dependant(models.Model):
 
     def __str__(self):
         return self.name
-
-class Leave(models.Model):
-    Employee_Name =models.CharField(max_length=60)
-    designation = models.CharField(max_length=20)
-    nin = models.CharField(max_length=30)
-    department=models.CharField(max_length=15)
-    apply_date=models.DateField()
-    _year=models.CharField(max_length=4)
-    start_date = models.DateField()
-    end_date=models.DateField()
-    supervisor=models.CharField(max_length=45)
-    sup_Status=models.CharField(max_length=15)
-    hod=models.CharField(max_length=45)
-    hod_status = models.CharField(max_length=15)
-
-

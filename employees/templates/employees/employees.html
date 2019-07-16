@@ -1,22 +1,20 @@
-{%extends './base.html'%}
-{%block page_title %}
-Employees
-{%endblock%}
+{% extends './base.html' %}
+{% block page_title %}
+<h1>Employees</h1>
+{% endblock %}
 
-{%block content%}
+{% block content %}
 <div class="content">
   <div class="container-fluid">
     <!-- Button trigger modal-->
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_employee">
       Add New Employee +
     </button>
-
     <div class="col-md-12">
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-hover">
             <thead class="">
-              <th>ID</th>
               <th>Name</th>
               <th>Start Date</th>
               <th>Telephone</th>
@@ -26,15 +24,14 @@ Employees
             <tbody>
               {% for employee in employees  %}
               <tr>
-                <td>{{employee.id}}</td>
                 <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}}
                     {{employee.last_name}}</a></td>
                 <td>{{employee.start_date}}</td>
                 <td>{{employee.telephone_no}}</td>
                 <td>{{employee.national_id}}</td>
                 <td>{{employee.gender}}</td>
-                <td><a href="{%url 'edit_employee_page' employee.id %}" style="color:inherit"><i class="fa fa-edit"></i></a></td>
-                <td><a  href = "{%url 'delete_employee' employee.id %}" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i class="fa fa-trash"></i></a></td>
+                <td><a href="{% url 'edit_employee_page' employee.id %}" style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                <td><a  href = "{% url 'delete_employee' employee.id %}" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i class="fa fa-trash"></i></a></td>
               </tr>
               {% endfor %}
             </tbody>
@@ -57,7 +54,6 @@ Employees
           </div>
           <!--Body-->
           <div class="modal-body">
-          
             <form method="POST" action="{%url 'add_new_employee'%}"> {%csrf_token%}
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Enter first name"
@@ -68,9 +64,27 @@ Employees
                   name="last_name" required>
               </div>
               <div class="form-group">
+                <label for="Dep">Department:</label>
+                <select class="form-control" id="depl" name="depart" required>
+                  <option>==Select Department==</option>
+                  {% for dep in deps %}
+                  <option value="{{dep.pk}}">{{dep.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>   
+              <div class="form-group">
+                <label for="Pos">Employee Position:</label>
+                <select class="form-control" id="position" name="position" required>
+                  <option>==Select Title==</option>
+                  {% for tt in titles %}
+                  <option value="{{tt.pk}}">{{tt.title }}</option>
+                  {% endfor %}
+                </select>
+              </div>                  
+              {% comment %} <div class="form-group">
                 <input type="text" class="form-control" placeholder="Enter employee Position"
                   name="position" required>
-              </div>
+              </div> {% endcomment %}
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Enter employee grade"
                   name="grade" required>

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  {%load static %}
+  {% load static %}
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/apple-icon.png' %}">
   <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}">
@@ -27,7 +27,7 @@
     <div class="sidebar" data-color="danger" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-
+        
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo">
@@ -41,45 +41,38 @@
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item {{ dashboard_page }}">
-            <a class="nav-link" href="{% url 'dashboard_page' %}">
+          <li class="nav-item {{ leave_dashboard_page }}">
+            <a class="nav-link" href="{% url 'leave_dashboard_page' %}">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
      
-          <li class="nav-item  {{ employees_page }}">
-            <a class="nav-link" href="{% url 'employees_page' %}">
+          <li class="nav-item {{ apply_leave_page }}">
+            <a class="nav-link" href="{% url 'apply_leave_page' %}">
               <i class="material-icons">content_paste</i>
-              <p>Employees</p>
+              <p>Apply For Leave</p>
             </a>
           </li>
 
-          <li class="nav-item  {{ departments_page }}">
-            <a class="nav-link" href="{% url 'departments_page' %}">
-              <i class="material-icons">account_balance</i>
-              <p>Manage Departments</p>
-            </a>
-          </li>
-
-          <li class="nav-item  {{ job_titles_page }}">
-            <a class="nav-link" href="{% url 'job_titles_page' %}">
-              <i class="material-icons">supervisor_account</i>
-              <p>Job Titles</p>
-            </a>
-          </li>
-
-          <li class="nav-item  {{ leave_dashboard_page }}">
-            <a class="nav-link" href="{% url 'leave_dashboard_page' %}">
+          <li class="nav-item  {{ leave_types_page }}">
+            <a class="nav-link" href="{% url 'leave_types_page' %}">
               <i class="material-icons">event</i>
-              <p>Leave</p>
+              <p>Leave Types</p>
+            </a>
+          </li>
+
+          <li class="nav-item  {{ path_page }}">
+            <a class="nav-link" href="{% url 'path_page' %}">
+              <i class="material-icons">`check_circle</i>
+              <p>Approval Path</p>
             </a>
           </li>
         
-          <li class="nav-item  {{ payroll_page }}">
-            <a class="nav-link" href="{% url 'payroll_page' %}">
+          <li class="nav-item  {{ holidays_page }}">
+            <a class="nav-link" href="{% url 'holidays_page' %}">
               <i class="material-icons">library_books</i>
-              <p>Payroll</p>
+              <p>Holidays</p>
             </a>
           </li>
             <!--  Plugin for Sweet Alert -->
@@ -111,7 +104,7 @@
             <script src="{% static 'assets/js/plugins/arrive.min.js' %}"></script>
            
             <!-- Chartist JS -->
-            <script src="{% static 'assets/js/plugins/chartist.min.js'"></script>
+            <script src="{% static 'assets/js/plugins/chartist.min.js'%}"></script>
             <!--  Notifications Plugin    -->
           </li>
 
@@ -130,7 +123,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo"><b>{%block page_title %}{%endblock%}</b></a>
+            <a class="navbar-brand" href="#pablo"><b>{% block page_title %}{% endblock %}</b></a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -146,8 +139,8 @@
       </nav>
       <!-- End Navbar -->
       <!-- Content here -->
-      {%block content%}
-      {%endblock%}
+      {% block content%}
+      {% endblock %}
 
       <!-- Content ends here       -->
       <footer class="footer">
