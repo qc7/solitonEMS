@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-<<<<<<< HEAD
 from .models import (
     Employee,
     HomeAddress,
@@ -17,9 +16,7 @@ from .models import (
     Teams,
     Job_Titles
 )
-=======
 from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction
->>>>>>> f41631664c907e59cf70ec33a516fb333d7404cc
 # Create your views here.
 
 # Authentication
@@ -75,12 +72,9 @@ def employee_page(request, id):
     return render(request, 'employees/employee.html', context)
 
 
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> f41631664c907e59cf70ec33a516fb333d7404cc
 @login_required
 def edit_employee_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
@@ -235,19 +229,12 @@ def add_new_employee(request):
 
         try:
             # Creating instance of Employee
-<<<<<<< HEAD
-            employee = Employee(first_name=first_name, last_name=last_name, bank_account=bank_account, 
+            employee = Employee(first_name=first_name, last_name=last_name, bank_account=bank_account, basic_salary=basic_salary,
                                 grade=grade, department_id=dep, position_id=position, gender=gender,
                                 marital_status=marital_status, start_date=start_date, 
                                 nationality=nationality, nssf_no=nssf_no,
                                 ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, 
                                 residence_address=residence_address,dob=dob)
-=======
-            employee = Employee(first_name=first_name, last_name=last_name,bank_account=bank_account,grade=grade,basic_salary=basic_salary, position=position, gender=gender,
-                                marital_status=marital_status, start_date=start_date, nationality=nationality, nssf_no=nssf_no,
-                                ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, residence_address=residence_address,
-                                dob=dob)
->>>>>>> f41631664c907e59cf70ec33a516fb333d7404cc
             # Saving the employee instance
             employee.save()
             context = {
@@ -282,12 +269,8 @@ def delete_employee(request, id):
        
         name = employee.first_name + " " + employee.last_name
         # Delete the employee
-<<<<<<< HEAD
-        employee.delete()
-=======
         employee_to_delete = employee
         employee_to_delete.delete()
->>>>>>> f41631664c907e59cf70ec33a516fb333d7404cc
 
     except Employee.DoesNotExist:
         context = {
@@ -309,42 +292,17 @@ def delete_employee(request, id):
 def edit_employee(request, id):
     if request.method == 'POST':
         # Fetching data from the add new employee form
-<<<<<<< HEAD
-        try:
-            employee = Employee.objects.get(pk=id)
-            employee.first_name = request.POST['first_name']
-            employee.last_name = request.POST['last_name']
-
-            employee.department=Departments.objects.get(pk=request.POST['dep'])
-            employee.position = Job_Titles.objects.get(pk=request.POST['position'])
-
-            employee.grade = request.POST['grade']
-            employee.bank_account = request.POST['bank_account']
-            employee.gender = request.POST['gender']
-            employee.marital_status = request.POST['marital_status']
-            employee.start_date = request.POST['start_date']
-            employee.nationality = request.POST['nationality']
-            employee.nssf_no = request.POST['nssf_no']
-            employee.ura_tin = request.POST['ura_tin']
-            employee.national_id = request.POST['national_id']
-            employee.telephone_no = request.POST['telephone']
-            employee.residence_address = request.POST['residence_address']
-            employee.dob = request.POST['dob']
-
-            # Saving the employee instance
-            employee.save()
-            context = {
-                "employees_page": "active",
-                "success_msg": "You have successfully updated %s's bio data" % (employee.first_name)
-            }
-=======
+    
         employee = Employee.objects.get(pk=id)
         employee.first_name = request.POST['first_name']
         employee.last_name = request.POST['last_name']
-        employee.position = request.POST['position']
+
+        employee.department=Departments.objects.get(pk=request.POST['dep'])
+        employee.position = Job_Titles.objects.get(pk=request.POST['position'])
+
         employee.grade = request.POST['grade']
-        employee.basic_salary = request.POST['basic_salary']
         employee.bank_account = request.POST['bank_account']
+        employee.basic_salary = request.POST['basic_salary']
         employee.gender = request.POST['gender']
         employee.marital_status = request.POST['marital_status']
         employee.start_date = request.POST['start_date']
@@ -360,10 +318,8 @@ def edit_employee(request, id):
         employee.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's bio data" % (employee.first_name),
-            "employee": employee
+            "success_msg": "You have successfully updated %s's bio data" % (employee.first_name)
         }
->>>>>>> f41631664c907e59cf70ec33a516fb333d7404cc
 
         return render(request, 'employees/success.html', context)
 

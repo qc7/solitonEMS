@@ -38,16 +38,13 @@ urlpatterns = [
     path('add_dependant/', views.add_dependant, name="add_dependant"),
     path('edit_dependant/', views.edit_dependant, name="edit_dependant"),
     path('delete_dependant/<int:id>', views.delete_dependant, name="delete_dependant"),
-<<<<<<< HEAD
 
      path('add_new_deparment/', views.add_new_department, name="add_new_department"),
      path('add_new_team/', views.add_new_team, name="add_new_team"),
      path('add_new_title/', views.add_new_title, name="add_new_title"),
 
-=======
     path('add_deduction/', views.add_deduction,name="add_deduction"),
     path('delete_deduction/<int:id>',views.delete_deduction,name="delete_deduction"),
->>>>>>> f41631664c907e59cf70ec33a516fb333d7404cc
     # Authentication
     path('accounts/login/', views.login_page, name="loginAccounts"),
     path('login/', views.login_view, name="login"),
