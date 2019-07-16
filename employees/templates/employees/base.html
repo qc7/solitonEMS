@@ -55,8 +55,22 @@
             </a>
           </li>
 
-          <li class="nav-item  {{ leave_page }}">
-            <a class="nav-link" href="{% url 'leave_page' %}">
+          <li class="nav-item  {{ departments_page }}">
+            <a class="nav-link" href="{% url 'departments_page' %}">
+              <i class="material-icons">account_balance</i>
+              <p>Manage Departments</p>
+            </a>
+          </li>
+
+          <li class="nav-item  {{ job_titles_page }}">
+            <a class="nav-link" href="{% url 'job_titles_page' %}">
+              <i class="material-icons">supervisor_account</i>
+              <p>Job Titles</p>
+            </a>
+          </li>
+
+          <li class="nav-item  {{ leave_dashboard_page }}">
+            <a class="nav-link" href="{% url 'leave_dashboard_page' %}">
               <i class="material-icons">event</i>
               <p>Leave</p>
             </a>

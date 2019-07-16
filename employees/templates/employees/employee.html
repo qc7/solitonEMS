@@ -1,9 +1,10 @@
-{%extends './base.html'%} {%load static %} 
-{%block page_title %}
+{% extends './base.html'%} {% load static %} 
+{% block page_title %}
 <span>
     <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
     <h3>{{employee.first_name}} {{employee.last_name}}</h3>
-</span> {%endblock%} {% block content %}
+</span> {% endblock %} 
+{% block content %}
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -11,11 +12,11 @@
                 <div class="card card-profile">
                     <div class="card-avatar">
                         <a href="#pablo">
-                            {%if employee.gender == "Male" %}
+                            {% if employee.gender == "Male" %}
                             <img class="img" src="{% static '/assets/img/faces/male_avatar.png' %}" />
-                            {%else%}
+                            {% else%}
                             <img class="img" src="{% static '/assets/img/faces/female_avatar.jpg' %}" />
-                            {%endif%}
+                            {% endif%}
                         </a>
                     </div>
                     <div class="card-body">
@@ -95,7 +96,7 @@
                         <h4 class="card-title">Home Address</h4>
 
                         <div class="card-description">
-                            {%if employee.homeaddress%}
+                            {% if employee.homeaddress %}
                             <table class="table">
                                 <tr>
                                     <td>District</td>
@@ -131,9 +132,9 @@
                                 </tr>
                             </table>
                             <a href="#" class="btn btn-primary btn-round" data-toggle="modal" data-target="#modal_edit_home_address"> <i class="fa fa-edit"></i> Edit</a>
-                            {%else%}
+                            {% else %}
                             <a href="#" class="btn btn-danger btn-round" data-toggle="modal" data-target="#modal_add_home_address"> <i class="fa fa-plus"></i></a>
-                            {%endif%}
+                            {% endif%}
                         </div>
                     </div>
                 </div>
@@ -168,7 +169,7 @@
 
                                 </thead>
                                 <tbody>
-                                    {%for certification in certifications%}
+                                    {% for certification in certifications%}
                                     <tr>
                                         <td>{{certification.institution}}</td>
                                         <td>{{certification.year_completed}}</td>
@@ -178,7 +179,7 @@
                                         <td><a href="{%url 'delete_certification' certification.id %}" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete this certification from {{employee.first_name}}?')"><i
                                                     class="fa fa-trash"></i></a></td>
                                     </tr>
-                                    {%endfor%}
+                                    {% endfor%}
                                 </tbody>
                             </table>
                         </div>

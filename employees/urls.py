@@ -6,7 +6,6 @@ urlpatterns = [
     # Pages
     path('', views.dashboard_page, name="dashboard_page"),
     path('employees/', views.employees_page, name="employees_page"),
-    path('leave/', views.leave_page, name="leave_page"),
     path('employee/<int:id>/', views.employee_page, name="employee_page"),
     path('edit_employee_page/<int:id>/', views.edit_employee_page, name="edit_employee_page"),
     path('edit_certification_page/<int:id>/', views.edit_certification_page, name="edit_certification_page"),
@@ -14,6 +13,10 @@ urlpatterns = [
     path('edit_beneficiary_page/<int:id>/',views.edit_beneficiary_page, name="edit_beneficiary_page"),
     path('edit_spouse_page/<int:id>/',views.edit_spouse_page, name="edit_spouse_page"),
     path('edit_dependant_page/<int:id>/',views.edit_dependant_page, name="edit_dependant_page"),
+    path('departments/', views.departments_page, name="departments_page"),
+    path('teams/<int:id>/', views.teams_page, name="teams_page"),
+    path('jobs/', views.job_titles_page, name="job_titles_page"),
+
     # Process
     path('add_new_employee/', views.add_new_employee, name="add_new_employee"),
     path('delete_employee/<int:id>',views.delete_employee, name="delete_employee"),
@@ -35,6 +38,11 @@ urlpatterns = [
     path('add_dependant/', views.add_dependant, name="add_dependant"),
     path('edit_dependant/', views.edit_dependant, name="edit_dependant"),
     path('delete_dependant/<int:id>', views.delete_dependant, name="delete_dependant"),
+
+     path('add_new_deparment/', views.add_new_department, name="add_new_department"),
+     path('add_new_team/', views.add_new_team, name="add_new_team"),
+     path('add_new_title/', views.add_new_title, name="add_new_title"),
+
     path('add_deduction/', views.add_deduction,name="add_deduction"),
     path('delete_deduction/<int:id>',views.delete_deduction,name="delete_deduction"),
     # Authentication

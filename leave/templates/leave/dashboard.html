@@ -1,0 +1,102 @@
+      {% extends './base.html' %}
+      {% block page_title %}
+      <h1>Leave Dashboard</h1>
+      {% endblock %}
+
+      {% block content %}
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">pregnant_woman</i>
+                  </div>
+                  <p class="card-category">Maternity</p>
+                  <h3 class="card-title">20 
+                      
+                  </h3>
+                </div>
+                <div class="card-footer">
+                  
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">note_add</i>
+                  </div>
+                  <p class="card-category">Sick</p>
+                  <h3 class="card-title">2
+                      
+                  </h3>
+                </div>
+                <div class="card-footer">
+                </div>
+              </div>
+            </div> 
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">perm_identity</i>
+                  </div>
+                  <p class="card-category">Paternity</p>
+                  <h3 class="card-title">2
+                      
+                  </h3>
+                </div>
+                <div class="card-footer">
+                </div>
+              </div>
+            </div> 
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">hourglass_empty</i>
+                  </div>
+                  <p class="card-category">Compassionate</p>
+                  <h3 class="card-title">2
+                      
+                  </h3>
+                </div>
+                
+                <div class="card-footer">
+                </div>
+              </div>
+            </div>                
+          </div>
+          <div class="col-md-12">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover thead-dark">
+            <thead class="">
+              <th>No. of Days</th>
+              <th>Applicant</th>
+              <th>Leave Type</th>
+              <th>Balance</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              {% comment %} {% for employee in employees  %} {% endcomment %}
+              <tr>
+                <td><a href="#" style="color: inherit">10</a></td>
+                <td>Bright Kanyange<br>04/07/2019 to 14/07/2019</td>
+                <td>Annual</td>
+                <td>10</td>
+                <td><a href="#" style="color:inherit"><i class="fa fa-check-square"></i></a></td>
+                <td><a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i class="fa fa-close"></i></a></td>
+              </tr>
+              {% comment %} {% endfor %} {% endcomment %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+        </div>
+      </div>
+      {% endblock content %}

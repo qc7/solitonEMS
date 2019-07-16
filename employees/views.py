@@ -1,8 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from .models import (
+    Employee,
+    HomeAddress,
+    Certification,
+    EmergencyContact,
+    Beneficiary,
+    Spouse,
+    Dependant,
+    Departments,
+    Teams,
+    Job_Titles
+)
 from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction
 # Create your views here.
 
@@ -30,22 +43,11 @@ def employees_page(request):
         return render(request, 'registration/login.html', {"message": None})
     context = {
         "employees_page": "active",
-        "employees": Employee.objects.all()
-
+        "employees": Employee.objects.all(),
+        "deps": Departments.objects.all(),
+        "titles": Job_Titles.objects.all()
     }
     return render(request, 'employees/employees.html', context)
-
-
-@login_required
-def leave_page(request):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
-    context = {
-        "leave_page": "active"
-    }
-    return render(request, 'employees/leave.html', context)
 
 
 @login_required
@@ -56,6 +58,7 @@ def employee_page(request, id):
         return render(request, 'registration/login.html', {"message": None})
 
     employee = Employee.objects.get(pk=id)
+
     context = {
         "employees_page": "active",
         "employee": employee,
@@ -81,7 +84,9 @@ def edit_employee_page(request, id):
     employee = Employee.objects.get(pk=id)
     context = {
         "employees_page": "active",
-        "employee": employee
+        "employee": employee,
+        "deps": Departments.objects.all(),
+        "titles": Job_Titles.objects.all()
     }
     return render(request, 'employees/edit_employee.html', context)
 
@@ -136,8 +141,9 @@ def edit_beneficiary_page(request, id):
 
     return render(request, 'employees/edit_beneficiary.html', context)
 
+
 @login_required
-def edit_spouse_page(request,id):
+def edit_spouse_page(request, id):
      # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
@@ -145,18 +151,19 @@ def edit_spouse_page(request,id):
 
     spouse = Spouse.objects.get(pk=id)
     context = {
-        "employees_page":"active",
+        "employees_page": "active",
         "spouse": spouse
     }
     spouse.save()
     context = {
             "employees_page": "active",
-            "spouse":spouse
+            "spouse": spouse
     }
-    return render(request,'employees/edit_spouse.html',context)
+    return render(request, 'employees/edit_spouse.html', context)
+
 
 @login_required
-def edit_dependant_page(request,id):
+def edit_dependant_page(request, id):
         # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
@@ -164,12 +171,11 @@ def edit_dependant_page(request,id):
 
     dependant = Dependant.objects.get(pk=id)
     context = {
-        "employees_page":"active",
+        "employees_page": "active",
         "dependant": dependant
     }
 
-    return render(request,'employees/edit_dependant.html',context)
-
+    return render(request, 'employees/edit_dependant.html', context)
 
 
 def login_view(request):
@@ -205,7 +211,10 @@ def add_new_employee(request):
         # Fetching data from the add new employee form
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
-        position = request.POST['position']
+
+        dep = Departments.objects.get(pk=request.POST['depart']).id
+        position = Job_Titles.objects.get(pk=request.POST['position']).id
+
         bank_account = request.POST['bank_account']
         grade = request.POST['grade']
         basic_salary = request.POST['basic_salary']
@@ -220,28 +229,30 @@ def add_new_employee(request):
         residence_address = request.POST['residence_address']
         dob = request.POST['dob']
 
-        try:
-            # Creating instance of Employee
-            employee = Employee(first_name=first_name, last_name=last_name,bank_account=bank_account,grade=grade,basic_salary=basic_salary, position=position, gender=gender,
-                                marital_status=marital_status, start_date=start_date, nationality=nationality, nssf_no=nssf_no,
-                                ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, residence_address=residence_address,
-                                dob=dob)
-            # Saving the employee instance
-            employee.save()
-            context = {
-                "employees_page": "active",
-                "success_msg": "You have successfully added %s to the employees" % (employee.first_name),
-                "employee": employee
-            }
+        #try:
+        # Creating instance of Employee
+        employee = Employee(first_name=first_name, last_name=last_name, bank_account=bank_account, basic_salary=basic_salary,
+                            grade=grade, department_id=dep, position_id=position, gender=gender,
+                            marital_status=marital_status, start_date=start_date, 
+                            nationality=nationality, nssf_no=nssf_no,
+                            ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, 
+                            residence_address=residence_address,dob=dob)
+        # Saving the employee instance
+        employee.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the employees" % (employee.first_name),
+            "employee": employee
+        }
 
-            return render(request, 'employees/success.html', context)
+        return render(request, 'employees/success.html', context)
 
-        except:
-            context = {
-                "employees_page": "active",
-                "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-            }
-            return render(request, "employees/failed.html", context)
+        # except:
+        #     context = {
+        #         "employees_page": "active",
+        #         "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
+        #     }
+        #     return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -283,13 +294,17 @@ def delete_employee(request, id):
 def edit_employee(request, id):
     if request.method == 'POST':
         # Fetching data from the add new employee form
+    
         employee = Employee.objects.get(pk=id)
         employee.first_name = request.POST['first_name']
         employee.last_name = request.POST['last_name']
-        employee.position = request.POST['position']
+
+        employee.department=Departments.objects.get(pk=request.POST['dep'])
+        employee.position = Job_Titles.objects.get(pk=request.POST['position'])
+
         employee.grade = request.POST['grade']
-        employee.basic_salary = request.POST['basic_salary']
         employee.bank_account = request.POST['bank_account']
+        employee.basic_salary = request.POST['basic_salary']
         employee.gender = request.POST['gender']
         employee.marital_status = request.POST['marital_status']
         employee.start_date = request.POST['start_date']
@@ -305,8 +320,7 @@ def edit_employee(request, id):
         employee.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's bio data" % (employee.first_name),
-            "employee": employee
+            "success_msg": "You have successfully updated %s's bio data" % (employee.first_name)
         }
 
         return render(request, 'employees/success.html', context)
@@ -369,7 +383,7 @@ def add_new_home_address(request):
 def edit_home_address(request):
     if request.method == 'POST':
         # Fetching data from the edit home address form
-        
+
         # Fetch the employee
         employee_id = request.POST['employee_id']
         employee = Employee.objects.get(pk=employee_id)
@@ -395,7 +409,6 @@ def edit_home_address(request):
 
         return render(request, 'employees/success.html', context)
 
-        
         # context = {
         #     "employees_page": "active",
         #     "failed_msg": "Something went wrong. Contact Bright and Hakim"
@@ -423,7 +436,6 @@ def add_certification(request):
 
         employee = Employee.objects.get(pk=employee_id)
 
-        
         # Creating instance of Certification
         certification = Certification(employee=employee, institution=institution, year_completed=year_completed, name=certification,
                                         grade=grade)
@@ -436,8 +448,6 @@ def add_certification(request):
         }
 
         return render(request, 'employees/success.html', context)
-
-
 
     else:
         context = {
@@ -501,7 +511,7 @@ def delete_certification(request, id):
             "employees_page": "active",
             "employee": employee,
             "deleted_msg": "The certification no longer exists on the system",
-            
+
         }
 
         return render(request, 'employees/deleted.html', context)
@@ -533,7 +543,7 @@ def add_emergency_contact(request):
         context = {
             "employees_page": "active",
             "success_msg": "You have successfully added %s to the emergency contacts" % (emergency_contact.name),
-            "employee":employee
+            "employee": employee
         }
 
         return render(request, 'employees/success.html', context)
@@ -569,7 +579,7 @@ def delete_emergency_contact(request, id):
     context = {
         "employees_page": "active",
         "deleted_msg": "You have deleted %s from emergency contacts" % (name),
-        "employee":employee
+        "employee": employee
     }
     return render(request, 'employees/deleted.html', context)
 
@@ -621,7 +631,7 @@ def add_beneficiary(request):
         # Creating instance of Beneficiary
         beneficiary = Beneficiary(employee=employee, name=name, relationship=relationship,
                                              mobile_number=mobile_number, percentage=percentage)
-   
+
         # Saving the certification instance
         beneficiary.save()
         context = {
@@ -748,7 +758,7 @@ def add_spouse(request):
         return render(request, "employees/failed.html", context)
 
 
-def delete_spouse(request,id):
+def delete_spouse(request, id):
     try:
         # Grab the Spouse
         spouse = Spouse.objects.get(pk=id)
@@ -773,6 +783,7 @@ def delete_spouse(request,id):
     }
     return render(request, 'employees/deleted.html', context)
 
+
 def edit_spouse(request):
     if request.method == 'POST':
         # Fetch the spouse id
@@ -781,7 +792,7 @@ def edit_spouse(request):
         # Grab the Spouse
         spouse = Spouse.objects.get(pk=spouse_id)
         spouse.name = request.POST['name']
-        spouse.national_id= request.POST['national_id']
+        spouse.national_id = request.POST['national_id']
         spouse.dob = request.POST['dob']
         spouse.occupation = request.POST['occupation']
         spouse.telephone = request.POST['telephone']
@@ -790,7 +801,6 @@ def edit_spouse(request):
         spouse.alien_certificate_number = request.POST['alien_certificate_number']
         spouse.immigration_file_number = request.POST['immigration_file_number']
 
-   
         # Saving the Spouse instance
         spouse.save()
         context = {
@@ -801,7 +811,6 @@ def edit_spouse(request):
 
         return render(request, 'employees/success.html', context)
 
-
     else:
         context = {
             "employees_page": "active",
@@ -809,8 +818,6 @@ def edit_spouse(request):
         }
 
         return render(request, "employees/failed.html", context)
-  
-
 
 
 def add_dependant(request):
@@ -820,12 +827,13 @@ def add_dependant(request):
         name = request.POST['name']
         dob = request.POST['dob']
         gender = request.POST['gender']
-   
+
         employee_id = request.POST['employee_id']
         employee = Employee.objects.get(pk=employee_id)
 
         # Creating instance of Dependent
-        dependant = Dependant(employee=employee, name=name, dob=dob, gender=gender)
+        dependant = Dependant(employee=employee, name=name,
+                              dob=dob, gender=gender)
 
         # Saving the Dependant instance
         dependant.save()
@@ -836,7 +844,6 @@ def add_dependant(request):
         }
 
         return render(request, 'employees/success.html', context)
-
 
     else:
         context = {
@@ -856,7 +863,7 @@ def edit_dependant(request):
         dependant = Dependant.objects.get(pk=dependant_id)
 
         dependant.name = request.POST['name']
-        dependant.dob= request.POST['dob']
+        dependant.dob = request.POST['dob']
         dependant.gender = request.POST['gender']
 
         # Saving the Dependant instance
@@ -869,7 +876,6 @@ def edit_dependant(request):
 
         return render(request, 'employees/success.html', context)
 
-
     else:
         context = {
             "employees_page": "active",
@@ -879,8 +885,7 @@ def edit_dependant(request):
         return render(request, "employees/failed.html", context)
 
 
-
-def delete_dependant(request,id):
+def delete_dependant(request, id):
     try:
         # Grab the Dependant
         dependant = Dependant.objects.get(pk=id)
@@ -906,6 +911,129 @@ def delete_dependant(request,id):
     return render(request, 'employees/deleted.html', context)
 
 
+def departments_page(request):
+     # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'registration/login.html', {"message": None})
+        
+    context = {
+        "departments_page": "active",
+        "departs": Departments.objects.all(),
+        "emps":Employee.objects.all()
+    }
+
+    return render(request, "employees/departments.html", context)
+
+
+def add_new_department(request):
+    if request.method == "POST":
+        dep_name = request.POST["dep_name"]
+        hod = request.POST["hod"]
+
+    try:
+        depat = Departments(name=dep_name, hod=hod)
+
+        depat.save()
+
+        messages.success(request, f'Info Successfully Saved')
+        return redirect('departments_page')
+
+    except:
+         messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
+
+         return redirect('departments_page')
+
+
+def teams_page(request, id):
+     # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'registration/login.html', {"message": None})
+
+    ts = Teams.objects.filter(department=id)
+
+    context = {
+        "departments_page": "active",
+        "teams": ts,
+        "dep": Departments.objects.get(pk=id),
+        "emps":Employee.objects.all(),
+        #"team_emps": ts.employee_set.all()
+    }
+
+    return render(request, "employees/teams.html", context)
+
+
+def add_new_team(request):
+    if request.method == "POST":
+        team_name = request.POST["team_name"]
+        sup = request.POST["sups"]
+        dpt = request.POST["dept"]
+
+    try:
+        team = Teams(department_id = dpt, name=team_name, supervisors=sup)
+
+        team.save()
+
+        messages.success(request, f'Info Successfully Saved')
+        return redirect("teams_page")
+
+    except:
+        messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
+
+        return redirect('teams_page') 
+
+def job_titles_page(request):
+     # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'registration/login.html', {"message": None})
+        
+    context = {
+        "job_titles_page": "active",
+        "titles": Job_Titles.objects.all()
+    }
+
+    return render(request, "employees/job_titles.html", context)
+
+
+def add_new_title(request):
+    if request.method == "POST":
+        job_title = request.POST["job_title"]
+        pos = request.POST["positions"]
+
+    try:
+        job = Job_Titles(title=job_title, positions=pos)
+
+        job.save()
+
+        messages.success(request, f'Info Successfully Saved')
+        return redirect('job_titles_page')
+
+    except:
+         messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
+
+         return redirect('job_titles_page')
+
+@login_required
+def employee_team_page(request, id):
+    # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'registration/login.html', {"message": None})
+
+    employee = Employee.objects.get(pk=id)
+
+    context = {
+        "employees_page": "active",
+        "employee": employee,
+        "certifications": employee.certification_set.all(),
+        "emergency_contacts": employee.emergencycontact_set.all(),
+        "beneficiaries": employee.beneficiary_set.all(),
+        "spouses": employee.spouse_set.all(),
+        "dependants": employee.dependant_set.all()
+    }
+    return render(request, 'employees/employee.html', context)
 
 def add_deduction(request):
 
