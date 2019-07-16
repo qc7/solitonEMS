@@ -1,195 +1,210 @@
 {%extends './base.html'%}
 {% load humanize %}
-      
+
 {%block page_title %}
 <span>
-    <a href="{%url 'payroll_record_page' payroll.payroll_record.id%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
-    <h1>Employee Payslip for {{name_of_employee}}</h1>
-</span> 
+    <a href="{%url 'payroll_record_page' payroll.payroll_record.id%}" style="color: inherit;"><i
+            class="material-icons">keyboard_backspace</i></a>
+    <h2 class="animated fadeInDown">Employee Payslip for {{name_of_employee}}</h2>
+</span>
 {%endblock%}
 
 {%block content%}
 <div class="content">
     <div class="container-fluid">
-        <div class="period">
-            <h3>{{month}} - {{year}}</h3>
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-category text-gray">{{name_of_employee}}</h6>
-                    <h4 class="card-title">Payslip</h4>
-                    <table class="table">
-                        <tr>
-                            <th>Name</td>
-                            <th>{{name_of_employee}}</td>
-                        </tr>
-                        <tr>
-                            <th>Employee NSSF Contribution</td>
-                            <td> UGX {{payroll.employee_nssf| intcomma }}</td>
-                        </tr>
-                        <tr>
-                            <th>Employer NSSF Contribution</td>
-                            <td> UGX {{payroll.employer_nssf | intcomma}}</td>
-                        </tr>
-                        <tr>
-                            <th>Total NSSF Contribution</td>
-                            <th> UGX {{payroll.total_nssf_contrib | intcomma}}</th>
-                        </tr>
-                        <tr>
-                            <th>PAYE</td>
-                            <td> UGX {{payroll.paye | intcomma}}</td>
-                        </tr>
-                        <tr>
-                            <th>Total Statutory Deductions</td>
-                            <th> UGX {{payroll.total_statutory | intcomma}}</th>
-                        </tr>
-                        <tr>
-                            <th>Meal Allowance</td>
-                            <td> UGX 150,000</td>
-                        </tr>
-                        <tr>
-                            <th>Overtime</td>
-                            <td> UGX {{payroll.overtime | intcomma}}</td>
-                        </tr>
-                        <tr>
-                            <th>Bonus</td>
-                            <td> UGX {{payroll.bonus | intcomma}}</td>
-                        </tr>
-                        <tr>
-                            <th>Sacco Deduction</td>
-                            <td> UGX {{payroll.sacco_deduction | intcomma}}</td>
-                        </tr>
-                        <tr>
-                            <th>Damage Deduction</td>
-                            <td> UGX {{payroll.damage_deduction | intcomma}}</td>
-                        </tr>
-                        <tr>
-                            <th>Prorate</td>
-                            <th> UGX {{payroll.prorate}}</th>
-                        </tr>
-                        <tr>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <th>BASIC SALARY</td>
-                            <th> UGX {{payroll.employee.basic_salary | intcomma}}</th>
-                        </tr>
-                        <tr>
-                            <th>GROSS SALARY</td>
-                            <th> UGX {{payroll.gross_salary | intcomma}}</th>
-                        </tr>
-                        <tr>
-                            <th>NET SALARY</td>
-                            <th> UGX {{payroll.net_salary | intcomma}}</th>
-                        </tr>
-                        <center class="buttons">
-                            <button class="btn btn-outline" data-toggle="modal" data-target="#modal_add_prorate">Add Prorate</button></a>
-                            <button class="btn btn-outline" data-toggle="modal" data-target="#modal_add_bonus">Add Bonus</button>
-                            <button class="btn btn-outline" data-toggle="modal" data-target="#modal_add_overtime" >Add Overtime</button>
-                        </center>
-                    </table>
-                    
-                </div> 
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <div class="period">
+                    <h3>{{month}} - {{year}}</h3>
+                </div>
+                <h6 class="card-category text-gray">{{name_of_employee}}</h6>
+                <h4 class="card-title">Payslip</h4>
+                <table class="table">
+                    <tr>
+                        <th>Name</td>
+                        <th>{{name_of_employee}}</td>
+                    </tr>
+                    <tr>
+                        <th>Employee NSSF Contribution</td>
+                        <td> UGX {{payroll.employee_nssf| intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <th>Employer NSSF Contribution</td>
+                        <td> UGX {{payroll.employer_nssf | intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total NSSF Contribution</td>
+                        <th> UGX {{payroll.total_nssf_contrib | intcomma}}</th>
+                    </tr>
+                    <tr>
+                        <th>PAYE</td>
+                        <td> UGX {{payroll.paye | intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Statutory Deductions</td>
+                        <th> UGX {{payroll.total_statutory | intcomma}}</th>
+                    </tr>
+                    <tr>
+                        <th>Meal Allowance</td>
+                        <td> UGX 150,000</td>
+                    </tr>
+                    <tr>
+                        <th>Overtime</td>
+                        <td> UGX {{payroll.overtime | intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <th>Bonus</td>
+                        <td> UGX {{payroll.bonus | intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <th>Sacco Deduction</td>
+                        <td> UGX {{payroll.sacco_deduction | intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <th>Damage Deduction</td>
+                        <td> UGX {{payroll.damage_deduction | intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <th>Prorate</td>
+                        <th> UGX {{payroll.prorate}}</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>BASIC SALARY</td>
+                        <th> UGX {{payroll.employee.basic_salary | intcomma}}</th>
+                    </tr>
+                    <tr>
+                        <th>GROSS SALARY</td>
+                        <th> UGX {{payroll.gross_salary | intcomma}}</th>
+                    </tr>
+                    <tr>
+                        <th>NET SALARY</td>
+                        <th> UGX {{payroll.net_salary | intcomma}}</th>
+                    </tr>
+                    <center class="buttons">
+                        <button class="btn btn-outline" data-toggle="modal" data-target="#modal_add_overtime">Add
+                            Overtime</button>
+                        <button class="btn btn-outline" data-toggle="modal" data-target="#modal_add_bonus">Add
+                            Bonus</button>
+                        <!-- <button type="hidden" class="btn btn-outline" data-toggle="modal" data-target="#modal_add_prorate">Add Prorate</button></a> -->
+                    </center>
+                </table>
+
             </div>
-            
         </div>
+
+
     </div>
 </div>
 
 <!-- Modals -->
-              <!-- Modal: modalAddProrate-->
-              <div class="modal fade" id="modal_add_prorate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <!--Header-->
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Add Prorate</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <!--Body-->
-                        <div class="modal-body">
-                            <form method="POST" action="{%url 'add_prorate'%}"> {%csrf_token%}
-                                <div class="form-group">
-                                    <label>Number of days worked</label>
-                                    <input type="number" class="form-control" placeholder="Enter the number of days worked" name="no_of_days_worked" value="26" required>
-                                </div>
-                                <input type="hidden" name="payroll_id" value={{payroll.id}}>
-                        </div>
-                        <!--Footer-->
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger" type="reset">Close</button>
-                            <button class="btn btn-danger" type="submit">Save</button>
-                        </div>
-                        </form>
-    
-                    </div>
-                </div>
+<!-- Modal: modalAddProrate-->
+<div class="modal fade" id="modal_add_prorate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Prorate</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
+            <!--Body-->
+            <div class="modal-body">
+                <form method="POST" action="{%url 'add_prorate'%}"> {%csrf_token%}
+                    <div class="form-group">
+                        <label>Number of days worked</label>
+                        <input type="number" class="form-control" placeholder="Enter the number of days worked"
+                            name="no_of_days_worked" value="26" required>
+                    </div>
+                    <input type="hidden" name="payroll_id" value={{payroll.id}}>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
+                    type="reset">Close</button>
+                <button class="btn btn-danger" type="submit">Save</button>
+            </div>
+            </form>
 
-            <!-- Modal: modalAddBonus-->
-            <div class="modal fade" id="modal_add_bonus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <!--Header-->
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Add Bonus</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <!--Body-->
-                        <div class="modal-body">
-                            <form method="POST" action="{%url 'add_bonus'%}"> {%csrf_token%}
-                                <div class="form-group">
-                                    <label>Amount</label>
-                                    <input type="number" class="form-control" placeholder="Enter the amount in Uganda shillings" name="bonus" value={{payroll.employee.basic_salary}} required>
-                                </div>
-                                <input type="hidden" name="payroll_id" value={{payroll.id}}>
-                        </div>
-                        <!--Footer-->
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger" type="reset">Close</button>
-                            <button class="btn btn-danger" type="submit">Save</button>
-                        </div>
-                        </form>
-    
-                    </div>
-                </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: modalAddBonus-->
+<div class="modal fade" id="modal_add_bonus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Bonus</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
-                       
-            <!-- Modal: modalAddOvertime-->
-                        <div class="modal fade" id="modal_add_overtime" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <!--Header-->
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="myModalLabel">Add Overtime</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                    </div>
-                                    <!--Body-->
-                                    <div class="modal-body">
-                                        <form method="POST" action="{%url 'add_overtime'%}"> {%csrf_token%}
-                                            <div class="form-group">
-                                        
-                                                <input type="number" class="form-control" placeholder="Enter the number of hours on normal working days" name="number_of_hours_normal" required>
-                                            </div>
-                                            <div class="form-group">
-                                            
-                                                <input type="number" class="form-control" placeholder="Enter the number of hours on holidays" name="number_of_hours_holidays" required>
-                                            </div>
-                                            <input type="hidden" name="payroll_id" value={{payroll.id}}>
-                                    </div>
-                                    <!--Footer-->
-                                    <div class="modal-footer">
-                                        <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger" type="reset">Close</button>
-                                        <button class="btn btn-danger" type="submit">Save</button>
-                                    </div>
-                                    </form>
-                
-                                </div>
-                            </div>
-                        </div>
+            <!--Body-->
+            <div class="modal-body">
+                <form method="POST" action="{%url 'add_bonus'%}"> {%csrf_token%}
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" class="form-control" placeholder="Enter the amount in Uganda shillings"
+                            name="bonus" value={{payroll.employee.basic_salary}} required>
+                    </div>
+                    <input type="hidden" name="payroll_id" value={{payroll.id}}>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
+                    type="reset">Close</button>
+                <button class="btn btn-danger" type="submit">Save</button>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal: modalAddOvertime-->
+<div class="modal fade" id="modal_add_overtime" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Overtime</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <form method="POST" action="{%url 'add_overtime'%}"> {%csrf_token%}
+                    <div class="form-group">
+
+                        <input type="number" class="form-control"
+                            placeholder="Enter the number of hours on normal working days" name="number_of_hours_normal"
+                            required>
+                    </div>
+                    <div class="form-group">
+
+                        <input type="number" class="form-control" placeholder="Enter the number of hours on holidays"
+                            name="number_of_hours_holidays" required>
+                    </div>
+                    <input type="hidden" name="payroll_id" value={{payroll.id}}>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
+                    type="reset">Close</button>
+                <button class="btn btn-danger" type="submit">Save</button>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
 {%endblock%}
