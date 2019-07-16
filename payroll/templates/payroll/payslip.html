@@ -1,6 +1,5 @@
 {%extends './base.html'%}
 {% load humanize %}
-
 {%block page_title %}
 <span>
     <a href="{%url 'payroll_record_page' payroll.payroll_record.id%}" style="color: inherit;"><i
@@ -8,7 +7,6 @@
     <h2 class="animated fadeInDown">Employee Payslip for {{name_of_employee}}</h2>
 </span>
 {%endblock%}
-
 {%block content%}
 <div class="content">
     <div class="container-fluid">
