@@ -211,8 +211,10 @@ def add_new_employee(request):
         # Fetching data from the add new employee form
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
-        dep = request.POST['depart']
-        position = request.POST['position']
+
+        dep = Departments.objects.get(pk=request.POST['depart']).id
+        position = Job_Titles.objects.get(pk=request.POST['position']).id
+
         bank_account = request.POST['bank_account']
         grade = request.POST['grade']
         basic_salary = request.POST['basic_salary']
@@ -227,30 +229,30 @@ def add_new_employee(request):
         residence_address = request.POST['residence_address']
         dob = request.POST['dob']
 
-        try:
-            # Creating instance of Employee
-            employee = Employee(first_name=first_name, last_name=last_name, bank_account=bank_account, basic_salary=basic_salary,
-                                grade=grade, department_id=dep, position_id=position, gender=gender,
-                                marital_status=marital_status, start_date=start_date, 
-                                nationality=nationality, nssf_no=nssf_no,
-                                ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, 
-                                residence_address=residence_address,dob=dob)
-            # Saving the employee instance
-            employee.save()
-            context = {
-                "employees_page": "active",
-                "success_msg": "You have successfully added %s to the employees" % (employee.first_name),
-                "employee": employee
-            }
+        #try:
+        # Creating instance of Employee
+        employee = Employee(first_name=first_name, last_name=last_name, bank_account=bank_account, basic_salary=basic_salary,
+                            grade=grade, department_id=dep, position_id=position, gender=gender,
+                            marital_status=marital_status, start_date=start_date, 
+                            nationality=nationality, nssf_no=nssf_no,
+                            ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, 
+                            residence_address=residence_address,dob=dob)
+        # Saving the employee instance
+        employee.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the employees" % (employee.first_name),
+            "employee": employee
+        }
 
-            return render(request, 'employees/success.html', context)
+        return render(request, 'employees/success.html', context)
 
-        except:
-            context = {
-                "employees_page": "active",
-                "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-            }
-            return render(request, "employees/failed.html", context)
+        # except:
+        #     context = {
+        #         "employees_page": "active",
+        #         "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
+        #     }
+        #     return render(request, "employees/failed.html", context)
 
     else:
         context = {
