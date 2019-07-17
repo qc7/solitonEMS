@@ -10,36 +10,49 @@
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_employee">
       Add New Employee +
     </button>
+    <a href="{%url 'job_titles_page'%}"><button type="button" class="btn btn-outline">
+        Manage Job Titles
+      </button></a>
+    <a href="{%url 'departments_page'%}">
+      <button type="button" class="btn btn-outline">
+        Manage Departments
+      </button>
+    </a>
     <div class="col-md-12">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead class="">
-              <th>Name</th>
-              <th>Start Date</th>
-              <th>Telephone</th>
-              <th>National ID</th>
-              <th>Gender</th>
-            </thead>
-            <tbody>
-              {% for employee in employees  %}
-              <tr>
-                <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}}
-                    {{employee.last_name}}</a></td>
-                <td>{{employee.start_date}}</td>
-                <td>{{employee.telephone_no}}</td>
-                <td>{{employee.national_id}}</td>
-                <td>{{employee.gender}}</td>
-                <td><a href="{% url 'edit_employee_page' employee.id %}" style="color:inherit"><i class="fa fa-edit"></i></a></td>
-                <td><a  href = "{% url 'delete_employee' employee.id %}" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i class="fa fa-trash"></i></a></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="">
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>Telephone</th>
+                <th>National ID</th>
+                <th>Gender</th>
+              </thead>
+              <tbody>
+                {% for employee in employees  %}
+                <tr>
+                  <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}}
+                      {{employee.last_name}}</a></td>
+                  <td>{{employee.start_date}}</td>
+                  <td>{{employee.telephone_no}}</td>
+                  <td>{{employee.national_id}}</td>
+                  <td>{{employee.gender}}</td>
+                  <td><a href="{% url 'edit_employee_page' employee.id %}" style="color:inherit"><i
+                        class="fa fa-edit"></i></a></td>
+                  <td><a href="{% url 'delete_employee' employee.id %}" style="color: inherit" ...
+                      onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i
+                        class="fa fa-trash"></i></a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
- 
+
     <!-- Modal: modalAddNewEmployee -->
     <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true" style="overflow-y: auto !important">
@@ -56,12 +69,10 @@
           <div class="modal-body">
             <form method="POST" action="{%url 'add_new_employee'%}"> {%csrf_token%}
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter first name"
-                  name="first_name" required>
+                <input type="text" class="form-control" placeholder="Enter first name" name="first_name" required>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control"  placeholder="Enter last name"
-                  name="last_name" required>
+                <input type="text" class="form-control" placeholder="Enter last name" name="last_name" required>
               </div>
               <div class="form-group">
                 <label for="Dep">Department:</label>
@@ -71,7 +82,7 @@
                   <option value="{{dep.pk}}">{{dep.name }}</option>
                   {% endfor %}
                 </select>
-              </div>   
+              </div>
               <div class="form-group">
                 <label for="Pos">Employee Position:</label>
                 <select class="form-control" id="position" name="position" required>
@@ -80,22 +91,19 @@
                   <option value="{{tt.pk}}">{{tt.title }}</option>
                   {% endfor %}
                 </select>
-              </div>                  
+              </div>
               {% comment %} <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter employee Position"
-                  name="position" required>
+                <input type="text" class="form-control" placeholder="Enter employee Position" name="position" required>
               </div> {% endcomment %}
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter employee grade"
-                  name="grade" required>
+                <input type="text" class="form-control" placeholder="Enter employee grade" name="grade" required>
               </div>
               <div class="form-group">
-                <input type="number" class="form-control" placeholder="Enter basic salary"
-                  name="basic_salary" required>
+                <input type="number" class="form-control" placeholder="Enter basic salary" name="basic_salary" required>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter employee Bank Account"
-                  name="bank_account" required>
+                <input type="text" class="form-control" placeholder="Enter employee Bank Account" name="bank_account"
+                  required>
               </div>
               <div class="form-group">
                 <label for="sel1">Gender:</label>
@@ -130,15 +138,18 @@
               </div>
 
               <div class="form-group">
-                <input type="number" class="form-control" placeholder="Enter National ID Number" name="national_id" required>
+                <input type="number" class="form-control" placeholder="Enter National ID Number" name="national_id"
+                  required>
               </div>
 
               <div class="form-group">
-                <input type="number" class="form-control" placeholder="Enter Telephone Number" name="telephone" required>
+                <input type="number" class="form-control" placeholder="Enter Telephone Number" name="telephone"
+                  required>
               </div>
 
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter Residence Address" name="residence_address" required>
+                <input type="text" class="form-control" placeholder="Enter Residence Address" name="residence_address"
+                  required>
               </div>
 
               <div class="form-group">

@@ -996,7 +996,7 @@ def departments_page(request):
         return render(request, 'registration/login.html', {"message": None})
         
     context = {
-        "departments_page": "active",
+        "employees_page": "active",
         "departs": Departments.objects.all(),
         "emps":Employee.objects.all()
     }
@@ -1032,7 +1032,7 @@ def teams_page(request, id):
     ts = Teams.objects.filter(department=id)
 
     context = {
-        "departments_page": "active",
+        "employees_page": "active",
         "teams": ts,
         "dep": Departments.objects.get(pk=id),
         "emps":Employee.objects.all(),
@@ -1068,7 +1068,7 @@ def job_titles_page(request):
         return render(request, 'registration/login.html', {"message": None})
         
     context = {
-        "job_titles_page": "active",
+        "employees_page": "active",
         "titles": Job_Titles.objects.all()
     }
 
