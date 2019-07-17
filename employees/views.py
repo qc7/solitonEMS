@@ -30,7 +30,11 @@ def dashboard_page(request):
     user = request.user
     # If user is an employee
     if str(user.solitonuser.soliton_role) == 'Employee':
-        return render(request,"role/employee.html")
+        context = {
+            "employee": user.solitonuser.employee,
+            "view_profile_page":'active'
+        }
+        return render(request,"role/employee.html",context)
     # If user is HOD
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request,"role/hod.html")
