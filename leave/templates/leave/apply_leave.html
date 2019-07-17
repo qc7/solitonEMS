@@ -71,6 +71,16 @@
               </div>
             </div>                
           </div>
+
+          <!-- Status Flash Messages -->
+          {% if messages %}
+          {% for msg in messages%}
+            <div class="alert alert-{{ msg.tags }}">
+              {{ msg }}
+            </div>
+          {% endfor %}
+      {% endif %}
+
     <!-- Button trigger modal-->
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_apply_leave">
       Apply Now
@@ -93,8 +103,8 @@
               <tr>
                 <td>{{ app.apply_date }}</td>
                 <td><a href="#" style="color: inherit">{{app.leave_type}}</a></td>
-                <td>{{ app.start_date }}-{{ app.end_date }}(5)</td>
-                <td>{{ app.sup_status }}</td>
+                <td>{{ app.start_date }}-{{ app.end_date }} ({{app.no_of_days}})</td>
+                <td>{{ app.sup_Status }}</td>
                 <td>{{ app.hod_status }}</td>
                 <td>{{ app.hr_status }}</td>
                 <td>                

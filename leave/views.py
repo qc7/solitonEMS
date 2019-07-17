@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+import datetime
+from datetime import timedelta
 from .models import (
     Leave_Types, 
     Holidays,
@@ -18,7 +20,8 @@ def leave_dashboard_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "leave_dashboard_page": "active"
+        "leave_dashboard_page": "active",
+        "applications": LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date')
     }
     return render(request, 'leave/dashboard.html', context)
 
@@ -155,27 +158,52 @@ def apply_leave_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "path_page": "active",
+        "apply_leave_page": "active",
         "apps": LeaveApplication.objects.all(),
         "l_types":Leave_Types.objects.all()
     }
 
     return render(request, "leave/apply_leave.html", context)
 
+@login_required
 def apply_leave(request):
     if request.method=="POST":
-        #per = request.POST["emp"]
+        
+        user = request.user #getting the current logged in User
+        cur_user = f'{user.first_name} {user.last_name}'
+
         l_type = Leave_Types.objects.get(pk=request.POST["ltype"])
+
+        date_format = "%Y-%m-%d"
         s_date = request.POST["s_date"]
         e_date = request.POST["e_date"]
 
-    #try:
-    leave_app = LeaveApplication(Employee_Name = "Bright", leave_type = l_type, 
-    start_date=s_date, end_date = e_date)
+        #getting the difference between the start n end date
+        diff = datetime.datetime.strptime(e_date, date_format)\
+             - datetime.datetime.strptime(s_date, date_format)  
 
-    leave_app.save()
+        n_days = (diff.days + 1) #including the last day
+        l_days =  l_type.leave_days #getting the leave type entitlement 
 
-    messages.success(request, f'Info Successfully Saved')
-    return redirect('apply_leave_page')
+        # used_days=LeaveApplication.objects.filter\
+        # (Employee_Name = cur_user, leave_type = l_type).aggregate(sum('no_of_days'))
 
-    #return redirect('apply_leave_page')
+        #bal = l_days - (used_days + n_days)
+        
+        if n_days <= l_days:
+            leave_app = LeaveApplication(Employee_Name = cur_user, 
+            leave_type = l_type, start_date=s_date, end_date = e_date, no_of_days = n_days, balance = 0)
+
+            leave_app.save()
+
+            messages.success(request, 'Leave Request Sent Successfully')
+            return redirect('apply_leave_page')
+
+        else:
+            messages.warning(request, f'You cannot Request for more than the\
+                {l_type.leave_type} leave days ({l_type.leave_days})')
+            return redirect('apply_leave_page')
+
+        
+
+    
