@@ -1,0 +1,46 @@
+{% extends './base.html'%} {% load static %}
+{%block sidebar-wrapper%}
+<div class="sidebar-wrapper">
+    <ul class="nav">
+        <li class="nav-item {{ dashboard_page }}">
+            <a class="nav-link" href="{% url 'dashboard_page' %}">
+                <i class="material-icons">dashboard</i>
+                <p>Dashboard</p>
+            </a>
+        </li>
+        <li class="nav-item {{ dashboard_page }}">
+            <a class="nav-link" href="{% url 'dashboard_page' %}">
+                <i class="material-icons">pregnant_woman</i>
+                <p>Leave</p>
+            </a>
+        </li>
+        <li class="nav-item  {{ payroll_page }}">
+            <a class="nav-link" href="{% url 'payroll_records_page' %}">
+                <i class="material-icons">library_books</i>
+                <p>Payroll</p>
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href=" {% url 'logout' %} ">
+                <i class="material-icons">exit_to_app</i>
+                <p>Logout</p>
+            </a>
+        </li>
+
+    </ul>
+</div>
+{%endblock%}
+{% block page_title %}
+    <h3>{{employee.first_name}} {{employee.last_name}}</h3>
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <h2>HOD Portal</h2>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

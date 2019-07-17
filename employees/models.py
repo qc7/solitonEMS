@@ -26,8 +26,8 @@ class Job_Titles(models.Model):
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1)
-    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1)
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1,blank=True)
+    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1,blank=True)
     bank_account = models.CharField(max_length=30,default="")
     basic_salary    =   models.CharField(max_length=20,default="")
     grade = models.CharField(max_length=3,default="")
@@ -41,7 +41,7 @@ class Employee(models.Model):
     residence_address = models.CharField(max_length=20)
     national_id   = models.CharField(max_length=20)
     ura_tin = models.CharField(max_length=20)
-    team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1)
+    team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1,blank=True)
     image_url = models.CharField(max_length=20, default="")
 
     def __str__(self):

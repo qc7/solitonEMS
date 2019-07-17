@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   {%load static %}
   <meta charset="utf-8" />
@@ -25,12 +26,10 @@
   <div class="wrapper ">
     <div class="sidebar" data-color="danger" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
       <!--
-
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
         Tip 2: you can also add an image using data-image tag
-        
-      -->  
+    -->
       <div class="logo">
         <center>
           <img src=" {% static 'registration/images/icons/logo.svg'  %} " style='width:50%' class="logo-normal"/>
@@ -40,58 +39,9 @@
         </a>
       </center>
       </div>
-      <div class="sidebar-wrapper">
-        <ul class="nav">
-          <li class="nav-item {{ dashboard_page }}">
-            <a class="nav-link" href="{% url 'dashboard_page' %}">
-              <i class="material-icons">dashboard</i>
-              <p>Dashboard</p>
-            </a>
-          </li>
+      {%block sidebar-wrapper%}
      
-          <li class="nav-item  {{ employees_page }}">
-            <a class="nav-link" href="{% url 'employees_page' %}">
-              <i class="material-icons">content_paste</i>
-              <p>Employees</p>
-            </a>
-          </li>
-
-          <li class="nav-item  {{ departments_page }}">
-            <a class="nav-link" href="{% url 'departments_page' %}">
-              <i class="material-icons">account_balance</i>
-              <p>Manage Departments</p>
-            </a>
-          </li>
-
-          <li class="nav-item  {{ job_titles_page }}">
-            <a class="nav-link" href="{% url 'job_titles_page' %}">
-              <i class="material-icons">supervisor_account</i>
-              <p>Job Titles</p>
-            </a>
-          </li>
-
-          <li class="nav-item  {{ leave_dashboard_page }}">
-            <a class="nav-link" href="{% url 'leave_dashboard_page' %}">
-              <i class="material-icons">event</i>
-              <p>Leave</p>
-            </a>
-          </li>
-        
-          <li class="nav-item  {{ payroll_page }}">
-            <a class="nav-link" href="{% url 'payroll_records_page' %}">
-              <i class="material-icons">library_books</i>
-              <p>Payroll</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href=" {% url 'logout' %} ">
-              <i class="material-icons">exit_to_app</i>
-              <p>Logout</p>
-            </a>
-          </li>
-
-        </ul>
-      </div>
+      {%endblock%}
     </div>
     <div class="main-panel">
       <!-- Navbar -->
@@ -106,10 +56,6 @@
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
-          <div class="collapse navbar-collapse justify-content-end">
-     
-
-          </div>
         </div>
       </nav>
       <!-- End Navbar -->

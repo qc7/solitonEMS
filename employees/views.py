@@ -17,6 +17,7 @@ from .models import (
     Job_Titles
 )
 from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction
+from .procedures import redirect_user_role
 # Create your views here.
 
 # Authentication
@@ -24,14 +25,20 @@ from .models import Employee, HomeAddress, Certification, EmergencyContact, Bene
 # dashboard
 @login_required
 def dashboard_page(request):
-    # # The line requires the user to be authenticated before accessing the view responses.
-    # if not request.user.is_authenticated:
-    #     # if the user is not authenticated it renders a login page
-    #     return render(request,'registration/login.html',{"message":None})
+
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
 
     context = {
         "dashboard_page": "active"
     }
+
     return render(request, 'employees/dashboard.html', context)
 
 
@@ -41,6 +48,17 @@ def employees_page(request):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
+
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
+        
+
     context = {
         "employees_page": "active",
         "employees": Employee.objects.all(),
@@ -57,6 +75,16 @@ def employee_page(request, id):
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
 
+    # redirect according to roles
+    # If user is a manager
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
+
     employee = Employee.objects.get(pk=id)
 
     context = {
@@ -72,11 +100,18 @@ def employee_page(request, id):
     return render(request, 'employees/employee.html', context)
 
 
-
-
-
 @login_required
 def edit_employee_page(request, id):
+    # redirect according to roles
+    # If user is a manager
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
+
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
@@ -97,6 +132,18 @@ def edit_certification_page(request, id):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
+    # redirect according to roles
+    
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
+        
+    
 
     certification = Certification.objects.get(pk=id)
     context = {
@@ -113,6 +160,16 @@ def edit_emergency_contact_page(request, id):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
+    
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
+        
 
     emergency_contact = EmergencyContact.objects.get(pk=id)
     context = {
@@ -132,6 +189,16 @@ def edit_beneficiary_page(request, id):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
+    
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
+        
 
     beneficiary = Beneficiary.objects.get(pk=id)
     context = {
@@ -148,6 +215,16 @@ def edit_spouse_page(request, id):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
+
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
+        
 
     spouse = Spouse.objects.get(pk=id)
     context = {
@@ -168,6 +245,16 @@ def edit_dependant_page(request, id):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
+    
+     # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
+        
 
     dependant = Dependant.objects.get(pk=id)
     context = {
@@ -480,11 +567,6 @@ def edit_certification(request):
         }
 
         return render(request, 'employees/success.html', context)
-        context = {
-            "employees_page": "active",
-            "failed_msg": "Something went wrong. Contact Bright and Hakim"
-        }
-        return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -740,14 +822,6 @@ def add_spouse(request):
         }
 
         return render(request, 'employees/success.html', context)
-
-        context = {
-            "employees_page": "active",
-            "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-            "back"
-        }
-
-        return render(request, "employees/failed.html", context)
 
     else:
         context = {

@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'employees',
     'payroll',
     'leave',
+    'role',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
