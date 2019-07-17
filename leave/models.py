@@ -28,6 +28,7 @@ class LeaveApplication(models.Model):
     apply_date=models.DateField(default=timezone.now)
     start_date = models.DateField()
     end_date=models.DateField()
+    no_of_days = models.IntegerField(default=1)
     supervisor=models.CharField(max_length=45, default="")
     sup_Status=models.CharField(max_length=15, default="Pending")
     hod=models.CharField(max_length=45, default="")
@@ -36,3 +37,4 @@ class LeaveApplication(models.Model):
     hr_status = models.CharField(max_length=15, default="Pending")
     app_status = models.CharField(max_length=10, default="Pending")
     remarks = models.TextField()
+    balance = models.IntegerField(default=0)
