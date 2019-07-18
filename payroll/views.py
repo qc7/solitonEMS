@@ -1,3 +1,5 @@
+import csv,io
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -359,3 +361,35 @@ def add_overtime(request):
     payroll.save()
 
     return HttpResponseRedirect(reverse('payslip_page', args=[payroll.id]))
+
+@permission_required('admin.can_add_log_entry')
+def payroll_download(request,id):
+    # Get the payroll record
+    payroll_record = PayrollRecord.objects.get(pk=id)
+
+    month = payroll_record.month
+    year = payroll_record.year
+
+    # Get all the associated Payroll objects
+    payrolls = Payroll.objects.filter(payroll_record=payroll_record)
+    
+    response = HttpResponse(content_type='text/csv')
+    filename = "payroll_"+month+"_"+year+".csv"
+    response['Content-Disposition'] = 'attachment; filename='+filename
+   
+    writer = csv.writer(response,delimiter=',')
+    # Writing the first row of the csv
+    heading_text = "Payroll for "+month+ " "+year
+    writer.writerow([heading_text.upper()])
+    writer.writerow(['Name','Employee NSSF Contribution','Employer NSSF contribution','PAYE','Bonus','Sacco Deduction','Damage Deduction','Basic Salary','Lunch Allowance','Overtime','Gross Salary','Net Salary'])
+
+    # Writing other rows
+    for payroll in payrolls:
+        name = payroll.employee.first_name + " " + payroll.employee.last_name
+        writer.writerow([name,payroll.employee_nssf,payroll.employer_nssf,payroll.paye,payroll.bonus,payroll.sacco_deduction,payroll.damage_deduction,payroll.employee.basic_salary,150000,payroll.overtime,payroll.gross_salary,payroll.net_salary,])
+
+    # Return the response
+    return response
+
+
+
