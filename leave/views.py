@@ -20,7 +20,7 @@ def leave_dashboard_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "leave_dashboard_page": "active",
+        "leave_page": "active",
         "applications": LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date')
     }
     return render(request, 'leave/dashboard.html', context)
@@ -32,7 +32,7 @@ def leave_types_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "leave_types_page": "active",
+        "leave_page": "active",
         "types": Leave_Types.objects.all()
     }
     return render(request, 'leave/leave_types.html', context)
@@ -77,7 +77,7 @@ def edit_leave_type_page(request, id):
     leave = Leave_Types.objects.get(pk=id)
 
     context = {
-        "leave_types_page": "active",
+        "leave_page": "active",
         "leave": leave
     }
     return render(request, 'leave/leave_type.html', context)
@@ -89,7 +89,7 @@ def holidays_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = { 
-        "holidays_page": "active",
+        "leave_page": "active",
         "holidays": Holidays.objects.all()
     }
     return render(request, 'leave/holidays.html', context)
@@ -122,7 +122,7 @@ def approval_path_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "path_page": "active",
+        "leave_page": "active",
         "a_path": Approval_Path.objects.all()
     }
 
@@ -134,7 +134,6 @@ def add_new_path(request):
         required = request.POST["required"]
         fapproval = request.POST["fapproval"]
         sapproval = request.POST["sapproval"]
-        tapproval = request.POST["tapproval"]
         lapproval = request.POST["lapproval"]
 
     try:
@@ -158,7 +157,7 @@ def apply_leave_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "apply_leave_page": "active",
+        "leave_page": "active",
         "apps": LeaveApplication.objects.all(),
         "l_types":Leave_Types.objects.all()
     }
