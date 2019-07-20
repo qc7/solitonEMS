@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 import datetime
+from django.db.models import Sum
 from datetime import timedelta
 from .models import (
     Leave_Types, 
@@ -10,6 +11,7 @@ from .models import (
     Approval_Path,
     LeaveApplication
 )
+from .procedures import get_leave_balance
 
 
 @login_required
@@ -21,7 +23,8 @@ def leave_dashboard_page(request):
 
     context = {
         "leave_dashboard_page": "active",
-        "applications": LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date')
+        "applications": LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date'),
+
     }
     return render(request, 'leave/dashboard.html', context)
 
@@ -183,27 +186,41 @@ def apply_leave(request):
              - datetime.datetime.strptime(s_date, date_format)  
 
         n_days = (diff.days + 1) #including the last day
-        l_days =  l_type.leave_days #getting the leave type entitlement 
-
-        # used_days=LeaveApplication.objects.filter\
-        # (Employee_Name = cur_user, leave_type = l_type).aggregate(sum('no_of_days'))
-
-        #bal = l_days - (used_days + n_days)
+        l_days =  l_type.leave_days #getting the leave type entitlement        
         
         if n_days <= l_days:
-            leave_app = LeaveApplication(Employee_Name = cur_user, 
-            leave_type = l_type, start_date=s_date, end_date = e_date, no_of_days = n_days, balance = 0)
+            if n_days <= get_leave_balance(cur_user,l_type):
+                leave_app = LeaveApplication(Employee_Name = cur_user, leave_type = l_type, start_date=s_date, 
+                end_date = e_date, no_of_days = n_days, balance = get_leave_balance(cur_user,l_type)-n_days)
 
-            leave_app.save()
+                leave_app.save()
 
-            messages.success(request, 'Leave Request Sent Successfully')
-            return redirect('apply_leave_page')
+                messages.success(request, 'Leave Request Sent Successfully')
+                return redirect('apply_leave_page')
+            else:
+                messages.warning(request, f'You have insufficient {l_type} leave Balance')
+                return redirect('apply_leave_page')
 
         else:
             messages.warning(request, f'You cannot Request for more than the\
                 {l_type.leave_type} leave days ({l_type.leave_days})')
             return redirect('apply_leave_page')
 
-        
+def approve_leave(request):
+    if request.method=="POST":
+        user = request.user #getting the current logged in User
+        cur_user = f'{user.first_name} {user.last_name}'
+        role = "Supervisor"
+
+        if role == "Supervisor":
+            leave = LeaveApplication.objects.get(pk=1)
+
+            LeaveApplication.objects.filter(pk=leave).update(supervisor=cur_user, sup_Status="Approved")
+
+            messages.success(request, 'Leave Approved Successfully')
+            return redirect('leave_dashboard_page')
+
+
+            
 
     

@@ -79,7 +79,7 @@
               <th>Applicant</th>
               <th>Leave Type</th>
               <th>Balance</th>
-              <th>Action</th>
+              <th colspan=2 align="center">Action</th>
             </thead>
             <tbody>
               {% for app in applications  %}
@@ -87,9 +87,10 @@
                 <td><a href="#" style="color: inherit">{{ app.no_of_days}}</a></td>
                 <td>{{ app.Employee_Name}}<br>{{ app.start_date}} to {{ app.end_date}}</td>
                 <td>{{ app.leave_type}}</td>
-                <td>0</td>
-                <td><a href="#" style="color:inherit"><i class="fa fa-check-square"></i></a></td>
-                <td><a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i class="fa fa-close"></i></a></td>
+                <td>{{app.balance }}</td>
+                <td>
+                <button type="button" class="btn btn-outline-success btn-rounded waves-effect">Approve</button>
+                <button type="button" class="btn btn-outline-danger btn-rounded waves-effect">Reject</button></td>
               </tr>
               {% endfor %}
             </tbody>
