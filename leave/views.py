@@ -33,7 +33,7 @@ def leave_dashboard_page(request):
         applications = LeaveApplication.objects\
             .filter(hr_status="Pending", sup_Status="Approved", hod_status="Approved").order_by('apply_date')
     else:
-        applications = ""#LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date')
+        applications = ""
 
     context = {
         "leave_dashboard_page": "active",
@@ -204,10 +204,11 @@ def apply_leave(request):
         l_days =  l_type.leave_days #getting the leave type entitlement        
         
         if n_days <= l_days:
-            if n_days <= get_leave_balance(cur_user,l_type):
+            l_balance = get_leave_balance(cur_user,l_type)
+            if n_days <= l_balance:
                 leave_app = LeaveApplication(Employee_Name = cur_user, leave_type = l_type, start_date=s_date, 
                 end_date = e_date, no_of_days = n_days, balance = get_leave_balance(cur_user,l_type))
-
+            
                 leave_app.save()
 
                 messages.success(request, 'Leave Request Sent Successfully')
