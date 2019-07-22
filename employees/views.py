@@ -365,11 +365,8 @@ def add_new_employee(request):
         # Fetching data from the add new employee form
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
-
         dep = Departments.objects.get(pk=request.POST['depart']).id
         position = Job_Titles.objects.get(pk=request.POST['position']).id
-
-        bank_account = request.POST['bank_account']
         grade = request.POST['grade']
         basic_salary = request.POST['basic_salary']
         gender = request.POST['gender']
@@ -385,7 +382,7 @@ def add_new_employee(request):
 
         #try:
         # Creating instance of Employee
-        employee = Employee(first_name=first_name, last_name=last_name, bank_account=bank_account, basic_salary=basic_salary,
+        employee = Employee(first_name=first_name, last_name=last_name,basic_salary=basic_salary,
                             grade=grade, department_id=dep, position_id=position, gender=gender,
                             marital_status=marital_status, start_date=start_date, 
                             nationality=nationality, nssf_no=nssf_no,
@@ -445,12 +442,9 @@ def edit_employee(request, id):
         employee = Employee.objects.get(pk=id)
         employee.first_name = request.POST['first_name']
         employee.last_name = request.POST['last_name']
-
         employee.department=Departments.objects.get(pk=request.POST['dep'])
         employee.position = Job_Titles.objects.get(pk=request.POST['position'])
-
         employee.grade = request.POST['grade']
-        employee.bank_account = request.POST['bank_account']
         employee.basic_salary = request.POST['basic_salary']
         employee.gender = request.POST['gender']
         employee.marital_status = request.POST['marital_status']
@@ -497,26 +491,20 @@ def add_new_home_address(request):
         village = request.POST['village']
         address = request.POST['address']
         telephone = request.POST['telephone']
-        try:
-            employee = Employee.objects.get(pk=employee_id)
-            # Creating instance of Home Address
-            homeaddress = HomeAddress(employee=employee, district=district, division=division, county=county, sub_county=sub_county,
-                                      parish=parish, village=village, address=address, telephone=telephone)
-            # Saving the Home Address instance
-            homeaddress.save()
-            context = {
-                "employees_page": "active",
-                "success_msg": "You have successfully added Home Address to the %s's details" % (employee.first_name)
-            }
+        
+        employee = Employee.objects.get(pk=employee_id)
+        # Creating instance of Home Address
+        homeaddress = HomeAddress(employee=employee, district=district, division=division, county=county, sub_county=sub_county,
+                                    parish=parish, village=village, address=address, telephone=telephone)
+        # Saving the Home Address instance
+        homeaddress.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added Home Address to the %s's details" % (employee.first_name),
+            "employee": employee
+        }
 
-            return render(request, 'employees/success.html', context)
-
-        except:
-            context = {
-                "employees_page": "active",
-                "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-            }
-            return render(request, "employees/failed.html", context)
+        return render(request, 'employees/success.html', context)
 
     else:
         context = {

@@ -28,7 +28,6 @@ class Employee(models.Model):
     last_name = models.CharField(max_length=30)
     department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1,blank=True)
     position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1,blank=True)
-    bank_account = models.CharField(max_length=30,default="")
     basic_salary    =   models.CharField(max_length=20,default="")
     grade = models.CharField(max_length=3,default="")
     gender = models.CharField(max_length=10)

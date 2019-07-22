@@ -38,7 +38,7 @@
                             </tr>
                             <tr>
                                 <th scope="row">Bank Account</th>
-                                <td>{{employee.bank_account}}</td>
+                                <td>{{employee.bankdetail.bank_account}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Basic Salary</th>
@@ -187,7 +187,8 @@
                     </div>
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal"
-                            data-target="#modal_add_certification">Add a certification</button> {%if certifications %}
+                            data-target="#modal_add_certification">Add a certification</button>
+                        {%if certifications %}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class=" text-primary">
@@ -224,8 +225,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        {%else%}
-                        <h1>No certifications </h1>
                         {%endif%}
                     </div>
                 </div>
@@ -242,6 +241,7 @@
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal"
                             data-target="#modal_add_emergency_contact">Add an emergency contact</button>
+                        {%if emergency_contact%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-danger">
@@ -281,6 +281,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
@@ -292,6 +293,7 @@
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_beneficiary">Add
                             a beneficiary</button>
+                        {%if beneficiary%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -330,6 +332,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
@@ -344,6 +347,7 @@
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_spouse">Add a
                             spouse</button>
+                        {%if spouse%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-primary">
@@ -403,12 +407,11 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
         </div>
-
-
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -419,6 +422,7 @@
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_dependant">Add a
                             dependant</button>
+                        {%if dependant%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-primary">
@@ -455,6 +459,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
@@ -470,6 +475,7 @@
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_deduction">Add a
                             deduction</button>
+                        {%if deduction%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-primary">
@@ -491,9 +497,7 @@
                                             <a href="{%url 'delete_deduction' deduction.id%}" style="color: inherit"
                                                 href=""
                                                 onclick="return confirm('Are you sure you want to delete this deduction from {{employee.first_name}}?')">
-
                                                 <i class="fa fa-trash"></i>
-
                                             </a>
                                         </td>
                                     </tr>
@@ -501,12 +505,11 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
         </div>
-
-
         <!-- modal Add deduction -->
         <div class="modal fade" id="modal_add_deduction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true" style="overflow-y: auto !important">
@@ -818,17 +821,17 @@
 
                         <form method="POST" action="{%url 'add_bank_details'%}"> {%csrf_token%}
                             <div class="form-group">
-                            
+
                                 <input type="text" class="form-control" placeholder="Enter Bank Name" name="bank_name"
                                     value="{{employee.bankdetail.name_of_bank}}" required>
                             </div>
                             <div class="form-group">
-                                
+
                                 <input type="text" class="form-control" placeholder="Enter Bank Branch"
                                     value="{{employee.bankdetail.branch}}" name="bank_branch" required>
                             </div>
                             <div class="form-group">
-        
+
                                 <input type="number" class="form-control" placeholder="Enter Bank Account"
                                     name="bank_account" value="{{employee.bankdetail.bank_account}}" required>
                             </div>
