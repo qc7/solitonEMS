@@ -22,7 +22,7 @@ def leave_dashboard_page(request):
         # if the user is not authenticated it renders a login page
         return render(request,'registration/login.html',{"message":None})
 
-    user_role="HR"
+    user_role="Employee"
     
     if user_role == "Supervisor":
         applications = LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date')
@@ -32,6 +32,8 @@ def leave_dashboard_page(request):
     elif user_role == "HR":
         applications = LeaveApplication.objects\
             .filter(hr_status="Pending", sup_Status="Approved", hod_status="Approved").order_by('apply_date')
+    else:
+        applications = ""#LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date')
 
     context = {
         "leave_dashboard_page": "active",
@@ -223,7 +225,7 @@ def approve_leave(request):
     if request.method=="POST":
         user = request.user #getting the current logged in User
         cur_user = f'{user.first_name} {user.last_name}'
-        role = "HR"
+        role = "Employee"
         l_type = request.POST.get("ltype")
         n_days = request.POST.get("ndays")
         leave = LeaveApplication.objects.get(pk=request.POST["app_id"])
