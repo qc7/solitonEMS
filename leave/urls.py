@@ -18,6 +18,7 @@ urlpatterns = [
     path('add_new_path/', views.add_new_path, name="add_new_path"),
     
     path('apply_leave/', views.apply_leave, name="apply_leave"),
+    path('approve_leave/', views.approve_leave, name="approve_leave"),
 
     # Authentication 
     # path('accounts/login/', views.login_page, name="loginAccounts"),

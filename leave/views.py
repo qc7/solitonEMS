@@ -16,14 +16,27 @@ from .procedures import get_leave_balance
 
 @login_required
 def leave_dashboard_page(request):
+    #applications=""
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request,'registration/login.html',{"message":None})
 
+    user_role="HR"
+    
+    if user_role == "Supervisor":
+        applications = LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date')
+    elif user_role == "HOD":
+        applications = LeaveApplication.objects.filter(hod_status="Pending", sup_Status="Approved")\
+            .order_by('apply_date')
+    elif user_role == "HR":
+        applications = LeaveApplication.objects\
+            .filter(hr_status="Pending", sup_Status="Approved", hod_status="Approved").order_by('apply_date')
+
     context = {
         "leave_dashboard_page": "active",
-        "applications": LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date'),
+        "applications": applications,
+        "role": user_role
 
     }
     return render(request, 'leave/dashboard.html', context)
@@ -191,7 +204,7 @@ def apply_leave(request):
         if n_days <= l_days:
             if n_days <= get_leave_balance(cur_user,l_type):
                 leave_app = LeaveApplication(Employee_Name = cur_user, leave_type = l_type, start_date=s_date, 
-                end_date = e_date, no_of_days = n_days, balance = get_leave_balance(cur_user,l_type)-n_days)
+                end_date = e_date, no_of_days = n_days, balance = get_leave_balance(cur_user,l_type))
 
                 leave_app.save()
 
@@ -210,17 +223,27 @@ def approve_leave(request):
     if request.method=="POST":
         user = request.user #getting the current logged in User
         cur_user = f'{user.first_name} {user.last_name}'
-        role = "Supervisor"
+        role = "HR"
+        l_type = request.POST.get("ltype")
+        n_days = request.POST.get("ndays")
+        leave = LeaveApplication.objects.get(pk=request.POST["app_id"])
 
-        if role == "Supervisor":
-            leave = LeaveApplication.objects.get(pk=1)
-
-            LeaveApplication.objects.filter(pk=leave).update(supervisor=cur_user, sup_Status="Approved")
+        if role == "Supervisor": 
+            LeaveApplication.objects.filter(pk=leave.id).update(supervisor=cur_user, sup_Status="Approved")
 
             messages.success(request, 'Leave Approved Successfully')
-            return redirect('leave_dashboard_page')
+            return redirect('leave_dashboard_page') 
+        elif role == "HOD": 
+            LeaveApplication.objects.filter(pk=leave.id).update(hod=cur_user, hod_status="Approved")
 
+            messages.success(request, 'Leave Approved Successfully')
+            return redirect('leave_dashboard_page') 
+        elif role == "HR": 
+            LeaveApplication.objects.filter(pk=leave.id).update(hr=cur_user, hr_status="Approved",
+            app_status="Approved",balance = get_leave_balance(cur_user,l_type)-n_days)
 
+            messages.success(request, 'Leave Approved Successfully')
+            return redirect('leave_dashboard_page') 
             
 
     
