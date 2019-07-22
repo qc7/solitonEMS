@@ -16,7 +16,7 @@ from .models import (
     Teams,
     Job_Titles
 )
-from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction
+from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction,BankDetail
 from .procedures import redirect_user_role
 # Create your views here.
 
@@ -467,7 +467,8 @@ def edit_employee(request, id):
         employee.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's bio data" % (employee.first_name)
+            "success_msg": "You have successfully updated %s's bio data" % (employee.first_name),
+            "employee": employee
         }
 
         return render(request, 'employees/success.html', context)
@@ -525,12 +526,42 @@ def add_new_home_address(request):
 
         return render(request, "employees/failed.html", context)
 
+@login_required
+def add_bank_details(request):
+    if request.method == 'POST':
+        # Fetching data from the add new home address form
+        employee_id = request.POST['employee_id']
+        name_of_bank = request.POST['bank_name']
+        branch = request.POST['bank_branch']
+        bank_account = request.POST['bank_account']
+       
+        
+        # Get the employee instance
+        employee = Employee.objects.get(pk=employee_id)
+        # Creating instance of Bank Detail
+        bank_detail = BankDetail(employee=employee, name_of_bank=name_of_bank,branch=branch,bank_account=bank_account)
+        # Saving the BankDetail instance
+        bank_detail.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s Bank Details " % (employee.first_name),
+            "employee":employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
 
 @login_required
 def edit_home_address(request):
     if request.method == 'POST':
-        # Fetching data from the edit home address form
-
         # Fetch the employee
         employee_id = request.POST['employee_id']
         employee = Employee.objects.get(pk=employee_id)
@@ -556,12 +587,6 @@ def edit_home_address(request):
 
         return render(request, 'employees/success.html', context)
 
-        # context = {
-        #     "employees_page": "active",
-        #     "failed_msg": "Something went wrong. Contact Bright and Hakim"
-        # }
-        # return render(request, "employees/failed.html", context)
-
     else:
         context = {
             "employees_page": "active",
@@ -570,6 +595,38 @@ def edit_home_address(request):
 
         return render(request, "employees/failed.html", context)
 
+@login_required
+def edit_bank_details(request):
+    if request.method == 'POST':
+        # Fetching data from the edit home address form
+
+        # Fetch the employee
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+        # Grab the Bankdetail
+        bank_detail = BankDetail.objects.get(employee=employee)
+
+        bank_detail.name_of_bank = request.POST['bank_name']
+        bank_detail.branch = request.POST['bank_branch']
+        bank_detail.bank_account = request.POST['bank_account']
+
+        # Saving the bank detail instance
+        bank_detail.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully updated %s's Bank Details" % (employee.first_name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
 
 @login_required
 def add_certification(request):

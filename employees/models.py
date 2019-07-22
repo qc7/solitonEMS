@@ -138,3 +138,12 @@ class Leave(models.Model):
     sup_Status=models.CharField(max_length=15)
     hod=models.CharField(max_length=45)
     hod_status = models.CharField(max_length=15)
+
+class BankDetail(models.Model):
+    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
+    name_of_bank = models.CharField(max_length=20)
+    branch = models.CharField(max_length=20)
+    bank_account = models.CharField(max_length=20)
+
+    def __str__(self):
+        return "{} {}".format(self.name_of_bank,self.bank_account)

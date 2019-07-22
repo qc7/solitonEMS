@@ -25,9 +25,9 @@
             <table class="table table-hover">
               <thead class="">
                 <th>Name</th>
-                <th>Start Date</th>
-                <th>Telephone</th>
-                <th>National ID</th>
+                <th>Hired Date</th>
+                <th>Position</th>
+                <th>Department</th>
                 <th>Gender</th>
               </thead>
               <tbody>
@@ -36,8 +36,8 @@
                   <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}}
                       {{employee.last_name}}</a></td>
                   <td>{{employee.start_date}}</td>
-                  <td>{{employee.telephone_no}}</td>
-                  <td>{{employee.national_id}}</td>
+                  <td>{{employee.position}}</td>
+                  <td>{{employee.department.name}}</td>
                   <td>{{employee.gender}}</td>
                   <td><a href="{% url 'edit_employee_page' employee.id %}" style="color:inherit"><i
                         class="fa fa-edit"></i></a></td>
