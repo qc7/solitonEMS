@@ -1,11 +1,33 @@
 from django.db import models
 
 # Create your models here.
+class Departments(models.Model):
+    name = models.CharField(max_length=45)
+    hod = models.CharField(max_length=45)
+    status = models.CharField(max_length=15, default="Active")
+
+    def __str__(self):
+        return self.name
+
+class Teams(models.Model):
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE)
+    name = models.CharField(max_length=45)
+    supervisors = models.CharField(max_length=45)
+    status = models.CharField(max_length=15,default="Active")
+
+class Job_Titles(models.Model):
+    title = models.CharField(max_length=45)
+    positions = models.IntegerField()
+
+    def __str__(self):
+        return self.title
+
+
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    position = models.CharField(max_length=30, default="")
-    bank_account = models.CharField(max_length=30,default="")
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1,blank=True)
+    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1,blank=True)
     basic_salary    =   models.CharField(max_length=20,default="")
     grade = models.CharField(max_length=3,default="")
     gender = models.CharField(max_length=10)
@@ -18,6 +40,7 @@ class Employee(models.Model):
     residence_address = models.CharField(max_length=20)
     national_id   = models.CharField(max_length=20)
     ura_tin = models.CharField(max_length=20)
+    team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1,blank=True)
     image_url = models.CharField(max_length=20, default="")
 
     def __str__(self):
@@ -102,7 +125,7 @@ class Deduction(models.Model):
         return self.name + " " + str(self.amount)
 
 class Leave(models.Model):
-    Employee_Name =models.CharField(max_length=60)
+    Employee =models.ForeignKey(Employee, on_delete = models.CASCADE)
     designation = models.CharField(max_length=20)
     nin = models.CharField(max_length=30)
     department=models.CharField(max_length=15)
@@ -115,4 +138,11 @@ class Leave(models.Model):
     hod=models.CharField(max_length=45)
     hod_status = models.CharField(max_length=15)
 
+class BankDetail(models.Model):
+    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
+    name_of_bank = models.CharField(max_length=20)
+    branch = models.CharField(max_length=20)
+    bank_account = models.CharField(max_length=20)
 
+    def __str__(self):
+        return "{} {}".format(self.name_of_bank,self.bank_account)

@@ -1,11 +1,11 @@
-{%extends './base.html'%} {%load static %}
-{%block page_title %}
+{% extends './base.html'%} {% load static %}
+{% block page_title %}
 <span >
     <i class="material-icons" style="font-size: 3em">done</i>
     <h1>Success!!</h1>
 </span>
 
-{%endblock%}
+{% endblock %}
 
 
 {% block content %}
@@ -15,10 +15,10 @@
         <div class="row">
             <div class="col-md-12">
                 <h3 style="padding-top:20px">{{success_msg}}</h3>
-                <a href="{%url 'employee_page' employee.id %}"><button class="btn btn-outline-danger">Back</button></a>
+                <a href="{% url 'employee_page' employee.id %}"><button class="btn btn-outline-danger">Back</button></a>
             </div>
         </div>
     </div>
 </div>
 
-{%endblock content%}
+{% endblock content %}

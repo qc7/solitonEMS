@@ -1,0 +1,21 @@
+{%extends './base.html'%}
+{% load humanize %}
+      
+{%block page_title %}
+<span>
+    <a href="{%url 'payslip_page' payroll.id%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
+    <h1>Failed!</h1>
+</span> 
+{%endblock%}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="message">
+            <h3>You can not add overtime after adding bonus</h3>
+        </div>
+        
+    </div>
+</div>
+
+{%endblock%}

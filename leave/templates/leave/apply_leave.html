@@ -1,0 +1,221 @@
+{% extends './base.html' %}
+{% block page_title %}
+<h1>Leave Application</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+
+  <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">pregnant_woman</i>
+                  </div>
+                  <p class="card-category">Maternity</p>
+                  <h3 class="card-title">20 
+                      
+                  </h3>
+                </div>
+                <div class="card-footer">
+                  
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">note_add</i>
+                  </div>
+                  <p class="card-category">Sick</p>
+                  <h3 class="card-title">2
+                      
+                  </h3>
+                </div>
+                <div class="card-footer">
+                </div>
+              </div>
+            </div> 
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">perm_identity</i>
+                  </div>
+                  <p class="card-category">Paternity</p>
+                  <h3 class="card-title">2
+                      
+                  </h3>
+                </div>
+                <div class="card-footer">
+                </div>
+              </div>
+            </div> 
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">hourglass_empty</i>
+                  </div>
+                  <p class="card-category">Compassionate</p>
+                  <h3 class="card-title">2
+                      
+                  </h3>
+                </div>
+                
+                <div class="card-footer">
+                </div>
+              </div>
+            </div>                
+          </div>
+
+          <!-- Status Flash Messages -->
+          {% if messages %}
+          {% for msg in messages%}
+            <div class="alert alert-{{ msg.tags }}">
+              {{ msg }}
+            </div>
+          {% endfor %}
+      {% endif %}
+
+    <!-- Button trigger modal-->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_apply_leave">
+      Apply Now
+    </button>
+    <div class="col-md-12">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="">
+                <th>Date</th>
+                <th>Leave Type</th>
+                <th>Duration</th>
+                <th>Supervisor Status</th>
+                <th>HOD Status</th>
+                <th>HR Status</th>                
+                <th colspan=2>#</th>
+            </thead>
+            <tbody>
+              {% for app in apps  %}
+              <tr>
+                <td>{{ app.apply_date }}</td>
+                <td><a href="#" style="color: inherit">{{app.leave_type}}</a></td>
+                <td>{{ app.start_date }}-{{ app.end_date }} ({{app.no_of_days}})</td>
+                <td>{{ app.sup_Status }}</td>
+                <td>{{ app.hod_status }}</td>
+                <td>{{ app.hr_status }}</td>
+                <td>                
+                <a href="#" data-toggle="modal" data-target="#modal_edit_employee" style="color:inherit" >
+                <i class="fa fa-edit"></i>
+                </a></td>
+                <td>
+                <a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
+                </a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: modalApplyLeave -->
+    <div class="modal fade" id="modal_apply_leave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Leave Application</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+         
+          <!-- Body -->
+          <div class="modal-body">
+            <form method="POST" action="{% url 'apply_leave' %}"> {% csrf_token %}
+              <div class="form-group">
+                <label for="">Leave Type:</label>
+                <select class="form-control" id="ltype" name="ltype" required>                                
+                                {% for ty in l_types %}                                    
+                                    {% if ty.leave_type == ty %}
+                                        <option selected>{{ty.leave_type }}</option>
+                                    {% else %}
+                                        <option value="{{ty.id }}">{{ty.leave_type }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+              </div>
+
+              <div class="form-group">
+                <input type="date" class="form-control"  placeholder="From"
+                  name="s_date" required>
+              </div>  
+
+              <div class="form-group">
+                <input type="date" class="form-control"  placeholder="To"
+                  name="e_date" required>
+              </div> 
+              <div class="form-group">
+                <input type="text" class="form-control"  placeholder="Remark"
+                  name="remark" required>
+              </div> 
+
+          <!--Footer-->
+          <div class="modal-footer">
+            <button class="btn btn-danger" type="submit">Apply</button>
+            <button class="btn btn-outline-danger" type="reset">Close</button>
+          </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- Modal: modalEditNewEmployee -->
+
+    <div class="modal fade" id="modal_edit_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Edit Leave Types</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+         
+          <!-- Body -->
+          <div class="modal-body">
+            <form method="POST" action="{% url 'edit_leave_type_page' 1 %}"> {% csrf_token %}
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Type"
+                  name="e_leave_type" value={{leave.type}} required>
+              </div>
+              <div class="form-group">
+                <input type="number" class="form-control"  placeholder="No. Of Days"
+                  name="e_leave_days" value={{ leave.leave_days }} required>
+              </div>  
+              <div class="form-group">
+                <input type="text" class="form-control"  placeholder="Description"
+                  name="e_desc" value={{ leave.desc }} required>
+              </div> 
+              
+          <!--Footer-->
+          <div class="modal-footer">
+            <button class="btn btn-danger" type="submit">Save</button>
+            <button class="btn btn-outline-danger" type="reset">Close</button>
+          </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- Modal: modalEditNewEmployee -->
+  </div>
+</div>
+{% endblock content %} 

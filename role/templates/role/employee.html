@@ -1,0 +1,129 @@
+{% extends './base.html'%} {% load static %}
+{%block sidebar-wrapper%}
+<div class="sidebar-wrapper">
+    <ul class="nav">
+        <li class="nav-item {{ view_profile_page }}">
+            <a class="nav-link" href="{% url 'dashboard_page' %}">
+                <i class="material-icons">dashboard</i>
+                <p>View Profile</p>
+            </a>
+        </li>
+        <li class="nav-item {{ dashboard_page }}">
+            <a class="nav-link" href="{% url 'dashboard_page' %}">
+                <i class="material-icons">pregnant_woman</i>
+                <p>Leave</p>
+            </a>
+        </li>
+        <li class="nav-item  {{ payroll_page }}">
+            <a class="nav-link" href="{% url 'payroll_records_page' %}">
+                <i class="material-icons">library_books</i>
+                <p>Payslip</p>
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href=" {% url 'logout' %} ">
+                <i class="material-icons">exit_to_app</i>
+                <p>Logout</p>
+            </a>
+        </li>
+
+    </ul>
+</div>
+{%endblock%}
+{% block page_title %}
+<h3>Employee Profile</h3>
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <h2>{{ employee }}</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-profile">
+                    <div class="card-avatar">
+                        <a href="#pablo">
+                            {% if employee.gender == "Male" %}
+                            <img class="img" src="{% static '/assets/img/faces/male_avatar.png' %}" />
+                            {% else%}
+                            <img class="img" src="{% static '/assets/img/faces/female_avatar.jpg' %}" />
+                            {% endif%}
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-category text-gray">{{employee.position}}</h6>
+                        <h4 class="card-title">Bio Data</h4>
+
+                        <table class="table">
+                            <tr>
+                                <td>Name</td>
+                                <td>{{employee.first_name}} {{employee.last_name}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Position</th>
+                                <td>{{employee.position}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Grade</th>
+                                <td>{{employee.grade}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Bank Account</th>
+                                <td>{{employee.bank_account}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Basic Salary</th>
+                                <td>UGX {{employee.basic_salary}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Gender</th>
+                                <td>{{employee.gender}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Start Date</th>
+                                <td>{{employee.start_date}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Marital Status</th>
+                                <td>{{employee.marital_status}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Date Of Birth</th>
+                                <td>{{employee.dob}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Nationality</th>
+                                <td>{{employee.nationality}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">NSSF Number</th>
+                                <td>{{employee.nssf_no}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Telephone</th>
+                                <td>{{employee.telephone_no}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Residence Address</th>
+                                <td>{{employee.residence_address}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">National ID</th>
+                                <td>{{employee.national_id}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">URA TIN</th>
+                                <td>{{employee.ura_tin}}</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {%endblock%}
