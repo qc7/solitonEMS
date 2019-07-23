@@ -25,7 +25,7 @@ SECRET_KEY = '0d1*j&^q381!@3^^4htw!n-1p!yxxy93s3^2exrw7%4bf_!hcf'
 # SECURITY WARNING: don't ru{%extends 'solitonems/base.html'%}n with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['solitonug.pythonanywhere.com']
 
 
 # Application definition
@@ -123,4 +123,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT ='/home/solitonug/solitonEMS/static'
 
