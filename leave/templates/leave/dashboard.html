@@ -14,12 +14,12 @@
                     <i class="material-icons">pregnant_woman</i>
                   </div>
                   <p class="card-category">Maternity</p>
-                  <h3 class="card-title">20 
-                      
+                  <h3 class="card-title">20
+
                   </h3>
                 </div>
                 <div class="card-footer">
-                  
+
                 </div>
               </div>
             </div>
@@ -31,13 +31,13 @@
                   </div>
                   <p class="card-category">Sick</p>
                   <h3 class="card-title">2
-                      
+
                   </h3>
                 </div>
                 <div class="card-footer">
                 </div>
               </div>
-            </div> 
+            </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
@@ -46,13 +46,13 @@
                   </div>
                   <p class="card-category">Paternity</p>
                   <h3 class="card-title">2
-                      
+
                   </h3>
                 </div>
                 <div class="card-footer">
                 </div>
               </div>
-            </div> 
+            </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
@@ -61,14 +61,14 @@
                   </div>
                   <p class="card-category">Compassionate</p>
                   <h3 class="card-title">2
-                      
+
                   </h3>
                 </div>
-                
+
                 <div class="card-footer">
                 </div>
               </div>
-            </div>                
+            </div>
           </div>
 
            <!-- Status Flash Messages -->
@@ -102,13 +102,14 @@
             <tbody>
               {% for app in applications  %}
               <tr>
+              <form method="POST" action="{% url 'approve_leave' %}"> {% csrf_token %}
                 <td>
                   <a href="#" style="color: inherit">{{ app.no_of_days}}</a>
                   <input type="hidden" id="ndays" name="ndays" value="{{ app.no_of_days}}">
                 </td>
-                <td>{{ app.Employee_Name}}<br>{{ app.start_date}} to {{ app.end_date}}</td>
+                <td>{{ app.employee}}<br>{{ app.start_date}} to {{ app.end_date}}</td>
                 <td>
-                  <input type="hidden" id="ltype" name="ltype" value="{{ app.leave_type}}">
+                  <input type="hidden" id="ltype" name="ltype" value="{{ app.leave_type_id}}">
                   {{ app.leave_type}}
                 </td>
                 <td>{{app.balance }}</td>                
@@ -120,16 +121,15 @@
                   <td>{{app.supervisor}}<br>({{app.sup_Status }})</td>
                   <td>{{app.hod}}<br>{{app.hod_status }}</td>
                 {% endif %}
-                <td>
-                  <form method="POST" action="{% url 'approve_leave' %}"> {% csrf_token %}
+                <td>                  
                     <input type="hidden" id="app_id" name="app_id" value="{{app.id }}">
                     <button type="submit" class="btn btn-outline-success btn-rounded waves-effect" 
                     ... onclick="return confirm('Are you sure you want to Approve this request?')">
                       Approve</button>
                     <button type="button" class="btn btn-outline-danger btn-rounded waves-effect">
-                      Reject</button>
-                  </form>
+                      Reject</button>                  
                 </td>
+                </form>
               </tr>
               {% endfor %}
             </tbody>

@@ -67,9 +67,9 @@
                   <select class="form-control" id="hod" name="hod" required>                                
                                 {% for emp in emps %}                                    
                                     {% if depart.hod == emp %}
-                                        <option selected>{{emp.first_name }}{{emp.last_name }}</option>
+                                        <option selected>{{emp.first_name }} {{emp.last_name }}</option>
                                     {% else %}
-                                        <option>{{emp.first_name }}{{emp.last_name }}</option>
+                                        <option>{{emp.first_name }} {{emp.last_name }}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>

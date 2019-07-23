@@ -23,7 +23,7 @@ class Approval_Path(models.Model):
     fourth_approval =models.CharField(max_length=45)
 
 class LeaveApplication(models.Model):
-    Employee_Name =models.CharField(max_length=60)
+    employee =models.ForeignKey('employees.Employee', on_delete=models.CASCADE)
     leave_type = models.ForeignKey(Leave_Types, on_delete=models.CASCADE)
     apply_date=models.DateField(default=timezone.now)
     start_date = models.DateField()

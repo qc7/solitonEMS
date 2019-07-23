@@ -26,9 +26,8 @@ class Job_Titles(models.Model):
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1)
-    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1)
-    bank_account = models.CharField(max_length=30,default="")
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1,blank=True)
+    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1,blank=True)
     basic_salary    =   models.CharField(max_length=20,default="")
     grade = models.CharField(max_length=3,default="")
     gender = models.CharField(max_length=10)
@@ -41,7 +40,7 @@ class Employee(models.Model):
     residence_address = models.CharField(max_length=20)
     national_id   = models.CharField(max_length=20)
     ura_tin = models.CharField(max_length=20)
-    team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1)
+    team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1,blank=True)
     image_url = models.CharField(max_length=20, default="")
 
     def __str__(self):
@@ -138,3 +137,12 @@ class Leave(models.Model):
     sup_Status=models.CharField(max_length=15)
     hod=models.CharField(max_length=45)
     hod_status = models.CharField(max_length=15)
+
+class BankDetail(models.Model):
+    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
+    name_of_bank = models.CharField(max_length=20)
+    branch = models.CharField(max_length=20)
+    bank_account = models.CharField(max_length=20)
+
+    def __str__(self):
+        return "{} {}".format(self.name_of_bank,self.bank_account)

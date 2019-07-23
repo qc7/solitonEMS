@@ -16,4 +16,5 @@ urlpatterns = [
     path('add_prorate/',views.add_prorate, name="add_prorate"),
     path('add_bonus/',views.add_bonus,name="add_bonus"),
     path('add_overtime/',views.add_overtime,name="add_overtime"),
+    path('payroll_download/<int:id>/',views.payroll_download,name="payroll_download"),
 ]

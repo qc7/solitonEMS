@@ -5,14 +5,36 @@ from django.utils import timezone
 import datetime
 from django.db.models import Sum
 from datetime import timedelta
+from .procedures import get_leave_balance
+from employees.models import Employee
 from .models import (
     Leave_Types, 
     Holidays,
     Approval_Path,
     LeaveApplication
 )
-from .procedures import get_leave_balance
 
+def get_current_user(request, need):
+    user = request.user #getting the current logged in User
+
+    cur_user = f'{user.solitonuser.employee.first_name} {user.solitonuser.employee.last_name}'
+    cur_role = user.solitonuser.soliton_role.name
+    user_dept = user.solitonuser.employee.department.id
+    cur_id = user.solitonuser.employee.id
+    gender = user.solitonuser.employee.gender
+
+    if need == "name":
+        return cur_user
+    elif need == "role":
+        return cur_role
+    elif need == "dept":
+        return user_dept
+    elif need == "id":
+        return cur_id
+    elif need == "gender":
+        return gender
+    else:
+        return 0
 
 @login_required
 def leave_dashboard_page(request):
@@ -22,7 +44,7 @@ def leave_dashboard_page(request):
         # if the user is not authenticated it renders a login page
         return render(request,'registration/login.html',{"message":None})
 
-    user_role="Employee"
+    user_role = get_current_user(request,"role")
     
     if user_role == "Supervisor":
         applications = LeaveApplication.objects.filter(sup_Status="Pending").order_by('apply_date')
@@ -50,7 +72,7 @@ def leave_types_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "leave_types_page": "active",
+        "leave_page": "active",
         "types": Leave_Types.objects.all()
     }
     return render(request, 'leave/leave_types.html', context)
@@ -95,7 +117,7 @@ def edit_leave_type_page(request, id):
     leave = Leave_Types.objects.get(pk=id)
 
     context = {
-        "leave_types_page": "active",
+        "leave_page": "active",
         "leave": leave
     }
     return render(request, 'leave/leave_type.html', context)
@@ -107,7 +129,7 @@ def holidays_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = { 
-        "holidays_page": "active",
+        "leave_page": "active",
         "holidays": Holidays.objects.all()
     }
     return render(request, 'leave/holidays.html', context)
@@ -140,7 +162,7 @@ def approval_path_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "path_page": "active",
+        "leave_page": "active",
         "a_path": Approval_Path.objects.all()
     }
 
@@ -152,7 +174,6 @@ def add_new_path(request):
         required = request.POST["required"]
         fapproval = request.POST["fapproval"]
         sapproval = request.POST["sapproval"]
-        tapproval = request.POST["tapproval"]
         lapproval = request.POST["lapproval"]
 
     try:
@@ -176,26 +197,26 @@ def apply_leave_page(request):
         return render(request,'registration/login.html',{"message":None})
 
     context = {
-        "apply_leave_page": "active",
-        "apps": LeaveApplication.objects.all(),
-        "l_types":Leave_Types.objects.all()
+        "leave_page": "active",
+        "apps": LeaveApplication.objects.filter(employee=get_current_user(request, "id")),
+        "l_types":Leave_Types.objects.all(),
+        "gender": get_current_user(request, "gender")
     }
 
     return render(request, "leave/apply_leave.html", context)
 
+
+
 @login_required
 def apply_leave(request):
     if request.method=="POST":
-        
-        user = request.user #getting the current logged in User
-        cur_user = f'{user.first_name} {user.last_name}'
-
         l_type = Leave_Types.objects.get(pk=request.POST["ltype"])
 
         date_format = "%Y-%m-%d"
         s_date = request.POST["s_date"]
         e_date = request.POST["e_date"]
 
+        cur_user = Employee.objects.get(pk = get_current_user(request, "id"))
         #getting the difference between the start n end date
         diff = datetime.datetime.strptime(e_date, date_format)\
              - datetime.datetime.strptime(s_date, date_format)  
@@ -206,9 +227,9 @@ def apply_leave(request):
         if n_days <= l_days:
             l_balance = get_leave_balance(cur_user,l_type)
             if n_days <= l_balance:
-                leave_app = LeaveApplication(Employee_Name = cur_user, leave_type = l_type, start_date=s_date, 
-                end_date = e_date, no_of_days = n_days, balance = get_leave_balance(cur_user,l_type))
-            
+                leave_app = LeaveApplication(employee = cur_user, leave_type = l_type, start_date=s_date, 
+                end_date = e_date, no_of_days = n_days, balance = get_leave_balance(cur_user, l_type))
+
                 leave_app.save()
 
                 messages.success(request, 'Leave Request Sent Successfully')
@@ -224,10 +245,11 @@ def apply_leave(request):
 
 def approve_leave(request):
     if request.method=="POST":
-        user = request.user #getting the current logged in User
-        cur_user = f'{user.first_name} {user.last_name}'
-        role = "Employee"
-        l_type = request.POST.get("ltype")
+        user = request.user #getting the current logged in User  
+        cur_user = Employee.objects.get(pk = get_current_user(request, "id"))
+        role = get_current_user(request, "role")
+
+        l_type = Leave_Types.objects.get(pk = request.POST.get("ltype"))
         n_days = request.POST.get("ndays")
         leave = LeaveApplication.objects.get(pk=request.POST["app_id"])
 
@@ -242,8 +264,9 @@ def approve_leave(request):
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 
         elif role == "HR": 
-            LeaveApplication.objects.filter(pk=leave.id).update(hr=cur_user, hr_status="Approved",
-            app_status="Approved",balance = get_leave_balance(cur_user,l_type)-n_days)
+            LeaveApplication.objects.filter(pk=leave.id).update(hr = f'{cur_user.first_name} {cur_user.last_name}', 
+            hr_status="Approved", app_status="Approved", 
+            balance = (get_leave_balance(cur_user,l_type)-int(n_days)))
 
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 

@@ -1,14 +1,14 @@
-{% extends './base.html'%} {% load static %} 
+{% extends './base.html'%} {% load static %}
 {% block page_title %}
 <span>
     <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
     <h3>{{employee.first_name}} {{employee.last_name}}</h3>
-</span> {% endblock %} 
+</span> {% endblock %}
 {% block content %}
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-12">
                 <div class="card card-profile">
                     <div class="card-avatar">
                         <a href="#pablo">
@@ -38,7 +38,7 @@
                             </tr>
                             <tr>
                                 <th scope="row">Bank Account</th>
-                                <td>{{employee.bank_account}}</td>
+                                <td>{{employee.bankdetail.bank_account}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Basic Salary</th>
@@ -90,7 +90,42 @@
 
                 </div>
             </div>
-            <div class="col-md-5">
+
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-profile">
+                    <div class="card-body">
+                        <h4 class="card-title">Bank Details</h4>
+
+                        <div class="card-description">
+                            {% if employee.bankdetail %}
+                            <table class="table">
+                                <tr>
+                                    <td>Bank Name</td>
+                                    <td>{{employee.bankdetail.name_of_bank}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Bank Branch</th>
+                                    <td>{{employee.bankdetail.branch}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Bank Account</th>
+                                    <td>{{employee.bankdetail.bank_account}}</td>
+                                </tr>
+
+                            </table>
+                            <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
+                                data-target="#modal_edit_bank_details"> <i class="fa fa-edit"></i> Edit</a>
+                            {% else %}
+                            <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
+                                data-target="#modal_add_bank_details"> <i class="fa fa-plus"></i></a>
+                            {% endif%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
                 <div class="card card-profile">
                     <div class="card-body">
                         <h4 class="card-title">Home Address</h4>
@@ -131,9 +166,11 @@
                                     <td>{{employee.homeaddress.telephone}}</td>
                                 </tr>
                             </table>
-                            <a href="#" class="btn btn-primary btn-round" data-toggle="modal" data-target="#modal_edit_home_address"> <i class="fa fa-edit"></i> Edit</a>
+                            <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
+                                data-target="#modal_edit_home_address"> <i class="fa fa-edit"></i> Edit</a>
                             {% else %}
-                            <a href="#" class="btn btn-danger btn-round" data-toggle="modal" data-target="#modal_add_home_address"> <i class="fa fa-plus"></i></a>
+                            <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
+                                data-target="#modal_add_home_address"> <i class="fa fa-plus"></i></a>
                             {% endif%}
                         </div>
                     </div>
@@ -149,7 +186,9 @@
                             Education</h4>
                     </div>
                     <div class="card-body">
-                        <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_certification">Add a certification</button> {%if certifications %}
+                        <button class="btn-outline-danger" data-toggle="modal"
+                            data-target="#modal_add_certification">Add a certification</button>
+                        {%if certifications %}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class=" text-primary">
@@ -175,16 +214,17 @@
                                         <td>{{certification.year_completed}}</td>
                                         <td>{{certification.name}}</td>
                                         <td>{{certification.grade}}</td>
-                                        <td><a href="{%url 'edit_certification_page' certification.id %}" style="color:inherit"><i class="fa fa-edit"></i></a></td>
-                                        <td><a href="{%url 'delete_certification' certification.id %}" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete this certification from {{employee.first_name}}?')"><i
+                                        <td><a href="{%url 'edit_certification_page' certification.id %}"
+                                                style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                                        <td><a href="{%url 'delete_certification' certification.id %}"
+                                                style="color: inherit" ...
+                                                onclick="return confirm('Are you sure you want to delete this certification from {{employee.first_name}}?')"><i
                                                     class="fa fa-trash"></i></a></td>
                                     </tr>
                                     {% endfor%}
                                 </tbody>
                             </table>
                         </div>
-                        {%else%}
-                        <h1>No certifications </h1>
                         {%endif%}
                     </div>
                 </div>
@@ -194,11 +234,14 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header card-header-danger">
-                        <i class="material-icons" style="font-size: 3em; float:left; margin-right:20px">local_hospital</i>
+                        <i class="material-icons"
+                            style="font-size: 3em; float:left; margin-right:20px">local_hospital</i>
                         <h4 class="card-title ">Emergency Contacts</h4>
                     </div>
                     <div class="card-body">
-                        <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_emergency_contact">Add an emergency contact</button>
+                        <button class="btn-outline-danger" data-toggle="modal"
+                            data-target="#modal_add_emergency_contact">Add an emergency contact</button>
+                        {%if emergency_contact%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-danger">
@@ -222,9 +265,12 @@
                                         <td>{{emergency_contact.relationship}}</td>
                                         <td>{{emergency_contact.mobile_number}}</td>
                                         <td>{{emergency_contact.email}}</td>
-                                        <td><a href="{%url 'edit_emergency_contact_page' emergency_contact.id %}" style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                                        <td><a href="{%url 'edit_emergency_contact_page' emergency_contact.id %}"
+                                                style="color:inherit"><i class="fa fa-edit"></i></a></td>
                                         <td>
-                                            <a style="color: inherit" href="{%url 'delete_emergency_contact' emergency_contact.id %}" onclick="return confirm('Are you sure you want to delete this emergency contact from {{employee.first_name}}?')">
+                                            <a style="color: inherit"
+                                                href="{%url 'delete_emergency_contact' emergency_contact.id %}"
+                                                onclick="return confirm('Are you sure you want to delete this emergency contact from {{employee.first_name}}?')">
 
                                                 <i class="fa fa-trash"></i>
 
@@ -235,6 +281,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
@@ -246,6 +293,7 @@
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_beneficiary">Add
                             a beneficiary</button>
+                        {%if beneficiary%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -269,9 +317,11 @@
                                         <td>{{beneficiary.relationship}}</td>
                                         <td>{{beneficiary.mobile_number}}</td>
                                         <td>{{beneficiary.percentage}}</td>
-                                        <td><a href="{%url 'edit_beneficiary_page' beneficiary.id%}" style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                                        <td><a href="{%url 'edit_beneficiary_page' beneficiary.id%}"
+                                                style="color:inherit"><i class="fa fa-edit"></i></a></td>
                                         <td>
-                                            <a style="color: inherit" href="{%url 'delete_beneficiary' beneficiary.id%}" onclick="return confirm('Are you sure you want to delete this beneficiary from {{employee.first_name}}?')">
+                                            <a style="color: inherit" href="{%url 'delete_beneficiary' beneficiary.id%}"
+                                                onclick="return confirm('Are you sure you want to delete this beneficiary from {{employee.first_name}}?')">
 
                                                 <i class="fa fa-trash"></i>
 
@@ -282,6 +332,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
@@ -296,6 +347,7 @@
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_spouse">Add a
                             spouse</button>
+                        {%if spouse%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-primary">
@@ -345,7 +397,8 @@
                                         <td><a href="{%url 'edit_spouse_page' spouse.id%}" style="color:inherit"><i
                                                     class="fa fa-edit"></i></a></td>
                                         <td>
-                                            <a style="color: inherit" href="{%url 'delete_spouse' spouse.id%}" onclick="return confirm('Are you sure you want to delete this spouse from {{employee.first_name}}?')">
+                                            <a style="color: inherit" href="{%url 'delete_spouse' spouse.id%}"
+                                                onclick="return confirm('Are you sure you want to delete this spouse from {{employee.first_name}}?')">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         </td>
@@ -354,12 +407,11 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
         </div>
-
-
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -370,6 +422,7 @@
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_dependant">Add a
                             dependant</button>
+                        {%if dependant%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-primary">
@@ -390,10 +443,12 @@
                                         <td>{{dependant.name}}</td>
                                         <td>{{dependant.dob}}</td>
                                         <td>{{dependant.gender}}</td>
-                                        <td><a href="{%url 'edit_dependant_page' dependant.id %}" style="color:inherit"><i
-                                            class="fa fa-edit"></i></a></td>
+                                        <td><a href="{%url 'edit_dependant_page' dependant.id %}"
+                                                style="color:inherit"><i class="fa fa-edit"></i></a></td>
                                         <td>
-                                            <a href="{%url 'delete_dependant' dependant.id%}" style="color: inherit" href="" onclick="return confirm('Are you sure you want to delete this dependant from {{employee.first_name}}?')">
+                                            <a href="{%url 'delete_dependant' dependant.id%}" style="color: inherit"
+                                                href=""
+                                                onclick="return confirm('Are you sure you want to delete this dependant from {{employee.first_name}}?')">
 
                                                 <i class="fa fa-trash"></i>
 
@@ -404,11 +459,12 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -419,6 +475,7 @@
                     <div class="card-body">
                         <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_deduction">Add a
                             deduction</button>
+                        {%if deduction%}
                         <div class="table-responsive">
                             <table class="table">
                                 <thead class="text-primary">
@@ -428,7 +485,7 @@
                                     <th>
                                         Amount
                                     </th>
-                                  
+
 
                                 </thead>
                                 <tbody>
@@ -437,10 +494,10 @@
                                         <td>{{deduction.name}}</td>
                                         <td>{{deduction.amount}}</td>
                                         <td>
-                                            <a href="{%url 'delete_deduction' deduction.id%}" style="color: inherit" href="" onclick="return confirm('Are you sure you want to delete this deduction from {{employee.first_name}}?')">
-
+                                            <a href="{%url 'delete_deduction' deduction.id%}" style="color: inherit"
+                                                href=""
+                                                onclick="return confirm('Are you sure you want to delete this deduction from {{employee.first_name}}?')">
                                                 <i class="fa fa-trash"></i>
-
                                             </a>
                                         </td>
                                     </tr>
@@ -448,19 +505,20 @@
                                 </tbody>
                             </table>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
         </div>
-
-             
         <!-- modal Add deduction -->
-        <div class="modal fade" id="modal_add_deduction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal fade" id="modal_add_deduction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!--Header-->
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Non Statutory Deduction</h4>
+                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Non Statutory Deduction
+                        </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -469,96 +527,37 @@
                     <div class="modal-body">
 
                         <form method="POST" action="{%url 'add_deduction'%}"> {%csrf_token%}
-                                <div class="form-group">
-                                    <label for="sel1">Name:</label>
-                                        <select class="form-control" id="sel1" name="deduction_name" required>
-                                          <option>Sacco</option>
-                                          <option>Damage</option>
-                                          <option>Others</option>
-                                         </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Amount:</label>
-                                    <input type="number" class="form-control" name="deduction_amount" id="" required>   
-                                </div>
-                                <input type="hidden" name="employee_id" value={{employee.id}}>
-                                       
-                            
+                            <div class="form-group">
+                                <label for="sel1">Name:</label>
+                                <select class="form-control" id="sel1" name="deduction_name" required>
+                                    <option>Sacco</option>
+                                    <option>Damage</option>
+                                    <option>Others</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount:</label>
+                                <input type="number" class="form-control" name="deduction_amount" id="" required>
+                            </div>
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+
+
                     </div>
                     <!--Footer-->
                     <div class="modal-footer">
-                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close" type="reset">Close</button>
+                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                            type="reset">Close</button>
                         <button class="btn btn-danger" type="submit">Save</button>
                     </div>
                     </form>
 
                 </div>
             </div>
-        </div>   
-
-              <!-- Modal: modalEditHomeAddress-->
-              <div class="modal fade" id="modal_edit_deduction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <!--Header-->
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Edit {{employee.first_name}}'s Home Address</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <!--Body-->
-                        <div class="modal-body">
-                            <form method="POST" action="{%url 'edit_home_address'%}"> {%csrf_token%}
-                                <div class="form-group">
-                                    <label>District</label>
-                                    <input type="text" class="form-control" placeholder="Enter home district" name="district" value="{{employee.homeaddress.district}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Division</label>
-                                    <input type="text" class="form-control" placeholder="Enter home division" value="{{employee.homeaddress.division}}" name="division" required>
-                                </div>
-    
-                                <div class="form-group">
-                                    <label for="">County</label>
-                                    <input type="text" class="form-control" placeholder="Enter home county" name="county" value="{{employee.homeaddress.county}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Sub County</label>
-                                    <input type="text" class="form-control" placeholder="Enter home sub county" value="{{employee.homeaddress.sub_county}}" name="sub_county" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Parish</label>
-                                    <input type="text" class="form-control" placeholder="Enter parish" name="parish" value="{{employee.homeaddress.parish}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Village</label>
-                                    <input type="text" class="form-control" placeholder="Enter village" name="village" value="{{employee.homeaddress.village}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Address</label>
-                                    <input type="text" class="form-control" placeholder="Enter address" name="address" value="{{employee.homeaddress.address}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Telephone</label>
-                                    <input type="text" class="form-control" placeholder="Enter telephone" name="telephone" value="{{employee.homeaddress.telephone}}" required>
-                                </div>
-                                <input type="hidden" name="employee_id" value={{employee.id}}>
-                        </div>
-                        <!--Footer-->
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger" type="reset">Close</button>
-                            <button class="btn btn-danger" type="submit">Save</button>
-                        </div>
-                        </form>
-    
-                    </div>
-                </div>
-            </div>
-
+        </div>
 
         <!-- Modal: modalEditHomeAddress-->
-        <div class="modal fade" id="modal_edit_home_address" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal fade" id="modal_edit_deduction" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!--Header-->
@@ -573,42 +572,122 @@
                         <form method="POST" action="{%url 'edit_home_address'%}"> {%csrf_token%}
                             <div class="form-group">
                                 <label>District</label>
-                                <input type="text" class="form-control" placeholder="Enter home district" name="district" value="{{employee.homeaddress.district}}" required>
+                                <input type="text" class="form-control" placeholder="Enter home district"
+                                    name="district" value="{{employee.homeaddress.district}}" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Division</label>
-                                <input type="text" class="form-control" placeholder="Enter home division" value="{{employee.homeaddress.division}}" name="division" required>
+                                <input type="text" class="form-control" placeholder="Enter home division"
+                                    value="{{employee.homeaddress.division}}" name="division" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="">County</label>
-                                <input type="text" class="form-control" placeholder="Enter home county" name="county" value="{{employee.homeaddress.county}}" required>
+                                <input type="text" class="form-control" placeholder="Enter home county" name="county"
+                                    value="{{employee.homeaddress.county}}" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Sub County</label>
-                                <input type="text" class="form-control" placeholder="Enter home sub county" value="{{employee.homeaddress.sub_county}}" name="sub_county" required>
+                                <input type="text" class="form-control" placeholder="Enter home sub county"
+                                    value="{{employee.homeaddress.sub_county}}" name="sub_county" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Parish</label>
-                                <input type="text" class="form-control" placeholder="Enter parish" name="parish" value="{{employee.homeaddress.parish}}" required>
+                                <input type="text" class="form-control" placeholder="Enter parish" name="parish"
+                                    value="{{employee.homeaddress.parish}}" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Village</label>
-                                <input type="text" class="form-control" placeholder="Enter village" name="village" value="{{employee.homeaddress.village}}" required>
+                                <input type="text" class="form-control" placeholder="Enter village" name="village"
+                                    value="{{employee.homeaddress.village}}" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Address</label>
-                                <input type="text" class="form-control" placeholder="Enter address" name="address" value="{{employee.homeaddress.address}}" required>
+                                <input type="text" class="form-control" placeholder="Enter address" name="address"
+                                    value="{{employee.homeaddress.address}}" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Telephone</label>
-                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone" value="{{employee.homeaddress.telephone}}" required>
+                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone"
+                                    value="{{employee.homeaddress.telephone}}" required>
                             </div>
                             <input type="hidden" name="employee_id" value={{employee.id}}>
                     </div>
                     <!--Footer-->
                     <div class="modal-footer">
-                        <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger" type="reset">Close</button>
+                        <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
+                            type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal: modalEditHomeAddress-->
+        <div class="modal fade" id="modal_edit_home_address" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Edit {{employee.first_name}}'s Home Address</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+                        <form method="POST" action="{%url 'edit_home_address'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <label>District</label>
+                                <input type="text" class="form-control" placeholder="Enter home district"
+                                    name="district" value="{{employee.homeaddress.district}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Division</label>
+                                <input type="text" class="form-control" placeholder="Enter home division"
+                                    value="{{employee.homeaddress.division}}" name="division" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">County</label>
+                                <input type="text" class="form-control" placeholder="Enter home county" name="county"
+                                    value="{{employee.homeaddress.county}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Sub County</label>
+                                <input type="text" class="form-control" placeholder="Enter home sub county"
+                                    value="{{employee.homeaddress.sub_county}}" name="sub_county" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Parish</label>
+                                <input type="text" class="form-control" placeholder="Enter parish" name="parish"
+                                    value="{{employee.homeaddress.parish}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Village</label>
+                                <input type="text" class="form-control" placeholder="Enter village" name="village"
+                                    value="{{employee.homeaddress.village}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Address</label>
+                                <input type="text" class="form-control" placeholder="Enter address" name="address"
+                                    value="{{employee.homeaddress.address}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Telephone</label>
+                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone"
+                                    value="{{employee.homeaddress.telephone}}" required>
+                            </div>
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
+                            type="reset">Close</button>
                         <button class="btn btn-danger" type="submit">Save</button>
                     </div>
                     </form>
@@ -618,7 +697,8 @@
         </div>
 
         <!-- modal Add Home Address -->
-        <div class="modal fade" id="modal_add_home_address" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal fade" id="modal_add_home_address" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!--Header-->
@@ -633,34 +713,43 @@
 
                         <form method="POST" action="{%url 'add_new_home_address'%}"> {%csrf_token%}
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter home district" name="district" value="{{employee.homeaddress.district}}" required>
+                                <input type="text" class="form-control" placeholder="Enter home district"
+                                    name="district" value="{{employee.homeaddress.district}}" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter home division" value="{{employee.homeaddress.division}}" name="division" required>
+                                <input type="text" class="form-control" placeholder="Enter home division"
+                                    value="{{employee.homeaddress.division}}" name="division" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter home county" name="county" value="{{employee.homeaddress.county}}" required>
+                                <input type="text" class="form-control" placeholder="Enter home county" name="county"
+                                    value="{{employee.homeaddress.county}}" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter home sub county" value="{{employee.homeaddress.sub_county}}" name="sub_county" required>
+                                <input type="text" class="form-control" placeholder="Enter home sub county"
+                                    value="{{employee.homeaddress.sub_county}}" name="sub_county" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter parish" name="parish" value="{{employee.homeaddress.parish}}" required>
+                                <input type="text" class="form-control" placeholder="Enter parish" name="parish"
+                                    value="{{employee.homeaddress.parish}}" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter village" name="village" value="{{employee.homeaddress.village}}" required>
+                                <input type="text" class="form-control" placeholder="Enter village" name="village"
+                                    value="{{employee.homeaddress.village}}" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter address" name="address" value="{{employee.homeaddress.address}}" required>
+                                <input type="text" class="form-control" placeholder="Enter address" name="address"
+                                    value="{{employee.homeaddress.address}}" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone" value="{{employee.homeaddress.telephone}}" required>
+                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone"
+                                    value="{{employee.homeaddress.telephone}}" required>
                             </div>
                             <input type="hidden" name="employee_id" value={{employee.id}}>
                     </div>
                     <!--Footer-->
                     <div class="modal-footer">
-                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close" type="reset">Close</button>
+                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                            type="reset">Close</button>
                         <button class="btn btn-danger" type="submit">Save</button>
                     </div>
                     </form>
@@ -669,8 +758,103 @@
             </div>
         </div>
 
+        <!-- modal Edit Bank Details -->
+        <div class="modal fade" id="modal_edit_bank_details" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Edit {{employee.first_name}}'s Bank Details</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+
+                        <form method="POST" action="{%url 'edit_bank_details'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <label for="bank_name">Bank Name</label>
+                                <input type="text" class="form-control" placeholder="Enter Bank Name" name="bank_name"
+                                    value="{{employee.bankdetail.name_of_bank}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bank_branch">Bank Branch</label>
+                                <input type="text" class="form-control" placeholder="Enter Bank Branch"
+                                    value="{{employee.bankdetail.branch}}" name="bank_branch" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bank_account">Bank Account</label>
+                                <input type="number" class="form-control" placeholder="Enter Bank Account"
+                                    name="bank_account" value="{{employee.bankdetail.bank_account}}" required>
+                            </div>
+
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                            type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- modal Add Bank Details -->
+        <div class="modal fade" id="modal_add_bank_details" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Bank Details</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+
+                        <form method="POST" action="{%url 'add_bank_details'%}"> {%csrf_token%}
+                            <div class="form-group">
+
+                                <input type="text" class="form-control" placeholder="Enter Bank Name" name="bank_name"
+                                    value="{{employee.bankdetail.name_of_bank}}" required>
+                            </div>
+                            <div class="form-group">
+
+                                <input type="text" class="form-control" placeholder="Enter Bank Branch"
+                                    value="{{employee.bankdetail.branch}}" name="bank_branch" required>
+                            </div>
+                            <div class="form-group">
+
+                                <input type="number" class="form-control" placeholder="Enter Bank Account"
+                                    name="bank_account" value="{{employee.bankdetail.bank_account}}" required>
+                            </div>
+
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                            type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- modal Add a certification -->
-        <div class="modal fade" id="modal_add_certification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal fade" id="modal_add_certification" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!--Header-->
@@ -685,14 +869,17 @@
 
                         <form method="POST" action="{%url 'add_certification'%}"> {%csrf_token%}
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter institution" name="institution" required>
+                                <input type="text" class="form-control" placeholder="Enter institution"
+                                    name="institution" required>
                             </div>
                             <div class="form-group">
-                                <input type="number" class="form-control" placeholder="Enter year completed" name="year_completed" required>
+                                <input type="number" class="form-control" placeholder="Enter year completed"
+                                    name="year_completed" required>
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter certification" name="certification" required>
+                                <input type="text" class="form-control" placeholder="Enter certification"
+                                    name="certification" required>
                             </div>
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Enter grade" name="grade" required>
@@ -712,7 +899,8 @@
         </div>
 
         <!-- modal Add  an emergency contact-->
-        <div class="modal fade" id="modal_add_emergency_contact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal fade" id="modal_add_emergency_contact" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!--Header-->
@@ -730,14 +918,16 @@
                                 <input type="text" class="form-control" placeholder="Enter name " name="name" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter relationship" name="relationship" required>
+                                <input type="text" class="form-control" placeholder="Enter relationship"
+                                    name="relationship" required>
                             </div>
 
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Enter email" name="email" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter mobile number" name="mobile_number" required>
+                                <input type="text" class="form-control" placeholder="Enter mobile number"
+                                    name="mobile_number" required>
                             </div>
 
                             <input type="hidden" name="employee_id" value={{employee.id}}>
@@ -754,7 +944,8 @@
         </div>
 
         <!-- modal Add  a beneficiary-->
-        <div class="modal fade" id="modal_add_beneficiary" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal fade" id="modal_add_beneficiary" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!--Header-->
@@ -772,14 +963,17 @@
                                 <input type="text" class="form-control" placeholder="Enter name " name="name" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter relationship" name="relationship" required>
+                                <input type="text" class="form-control" placeholder="Enter relationship"
+                                    name="relationship" required>
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter mobile number" name="mobile_number" required>
+                                <input type="text" class="form-control" placeholder="Enter mobile number"
+                                    name="mobile_number" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter percentage" name="percentage" required>
+                                <input type="text" class="form-control" placeholder="Enter percentage" name="percentage"
+                                    required>
                             </div>
 
                             <input type="hidden" name="employee_id" value={{employee.id}}>
@@ -796,7 +990,8 @@
         </div>
 
         <!-- modal Add  a spouse-->
-        <div class="modal fade" id="modal_add_spouse" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal fade" id="modal_add_spouse" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!--Header-->
@@ -813,7 +1008,8 @@
                                 <input type="text" class="form-control" placeholder="Enter name " name="name" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter national ID" name="national_id" required>
+                                <input type="text" class="form-control" placeholder="Enter national ID"
+                                    name="national_id" required>
                             </div>
 
                             <div class="form-group">
@@ -821,22 +1017,28 @@
                                 <input class="form-control" type="date" value="1992-08-19" name="dob">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter occupation" name="occupation" required>
+                                <input type="text" class="form-control" placeholder="Enter occupation" name="occupation"
+                                    required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone" required>
+                                <input type="text" class="form-control" placeholder="Enter telephone" name="telephone"
+                                    required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter nationality" name="nationality" required>
+                                <input type="text" class="form-control" placeholder="Enter nationality"
+                                    name="nationality" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter passport number" name="passport_number" required>
+                                <input type="text" class="form-control" placeholder="Enter passport number"
+                                    name="passport_number" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter alien certificate number" name="alien_certificate_number" required>
+                                <input type="text" class="form-control" placeholder="Enter alien certificate number"
+                                    name="alien_certificate_number" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter immigration file number" name="immigration_file_number" required>
+                                <input type="text" class="form-control" placeholder="Enter immigration file number"
+                                    name="immigration_file_number" required>
                             </div>
 
                             <input type="hidden" name="employee_id" value={{employee.id}}>
@@ -853,7 +1055,8 @@
         </div>
 
         <!-- modal Add  a dependant-->
-        <div class="modal fade" id="modal_add_dependant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal fade" id="modal_add_dependant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!--Header-->

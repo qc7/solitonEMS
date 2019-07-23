@@ -79,6 +79,7 @@
                         <th>UGX {{total_net_pay|intcomma}}</th>
                     </tr>
                 </table>
+                <a href="{%url 'payroll_download' payroll_record.id %}"><button class="btn btn-outline">Export Excel CSV</button></a>
             </div>
         </div>
         {%endif%}
