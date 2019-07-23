@@ -40,6 +40,7 @@ def dashboard_page(request):
         return render(request,"role/hod.html")
 
     context = {
+        "user": user,
         "dashboard_page": "active"
     }
 
@@ -48,6 +49,9 @@ def dashboard_page(request):
 
 @login_required
 def employees_page(request):
+    # redirect according to roles
+    user = request.user
+
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
@@ -64,6 +68,7 @@ def employees_page(request):
         
 
     context = {
+        "user":user,
         "employees_page": "active",
         "employees": Employee.objects.all(),
         "deps": Departments.objects.all(),
@@ -92,6 +97,7 @@ def employee_page(request, id):
     employee = Employee.objects.get(pk=id)
 
     context = {
+        "user": user,
         "employees_page": "active",
         "employee": employee,
         "certifications": employee.certification_set.all(),
@@ -122,6 +128,7 @@ def edit_employee_page(request, id):
         return render(request, 'registration/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
         "employee": employee,
         "deps": Departments.objects.all(),
@@ -151,6 +158,7 @@ def edit_certification_page(request, id):
 
     certification = Certification.objects.get(pk=id)
     context = {
+        "user":user,
         "employees_page": "active",
         "certification": certification
     }
@@ -177,6 +185,7 @@ def edit_emergency_contact_page(request, id):
 
     emergency_contact = EmergencyContact.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
         "emergency_contact": emergency_contact
     }
@@ -206,6 +215,7 @@ def edit_beneficiary_page(request, id):
 
     beneficiary = Beneficiary.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
         "beneficiary": beneficiary
     }
@@ -231,15 +241,13 @@ def edit_spouse_page(request, id):
         
 
     spouse = Spouse.objects.get(pk=id)
+    spouse.save()
     context = {
+        "user":user,
         "employees_page": "active",
         "spouse": spouse
     }
-    spouse.save()
-    context = {
-            "employees_page": "active",
-            "spouse": spouse
-    }
+  
     return render(request, 'employees/edit_spouse.html', context)
 
 
@@ -262,6 +270,7 @@ def edit_dependant_page(request, id):
 
     dependant = Dependant.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
         "dependant": dependant
     }
@@ -275,6 +284,7 @@ def departments_page(request):
         return render(request, 'registration/login.html', {"message": None})
         
     context = {
+        "user": request.user,
         "employees_page": "active",
         "departs": Departments.objects.all(),
         "emps":Employee.objects.all()
@@ -291,6 +301,7 @@ def teams_page(request, id):
     ts = Teams.objects.filter(department=id)
 
     context = {
+        "user": request.user,
         "employees_page": "active",
         "teams": ts,
         "dep": Departments.objects.get(pk=id),
@@ -307,6 +318,7 @@ def job_titles_page(request):
         return render(request, 'registration/login.html', {"message": None})
         
     context = {
+        "user": request.user,
         "employees_page": "active",
         "titles": Job_Titles.objects.all()
     }
@@ -321,8 +333,9 @@ def employee_team_page(request, id):
         return render(request, 'registration/login.html', {"message": None})
 
     employee = Employee.objects.get(pk=id)
-
+    user = request.user
     context = {
+        "user": user,
         "employees_page": "active",
         "employee": employee,
         "certifications": employee.certification_set.all(),
