@@ -90,7 +90,7 @@ def employee_page(request, id):
     # If user is an employee
     if str(user.solitonuser.soliton_role) == 'Employee':
         return render(request,"role/employee.html")
-    # If user is HOD
+    # If user is HOD  
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request,"role/hod.html")
 
@@ -637,6 +637,7 @@ def add_certification(request):
         year_completed = request.POST['year_completed']
         certification = request.POST['certification']
         grade = request.POST['grade']
+        employee_id = request.POST['employee_id']
         employee = Employee.objects.get(pk=employee_id)
 
         # Creating instance of Certification
