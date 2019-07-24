@@ -18,6 +18,7 @@ from .models import (
 )
 from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction,BankDetail
 from .procedures import redirect_user_role
+from role.models import SolitonUser
 # Create your views here.
 
 # Authentication
@@ -28,23 +29,31 @@ def dashboard_page(request):
 
     # redirect according to roles
     user = request.user
-    # If user is an employee
-    if str(user.solitonuser.soliton_role) == 'Employee':
+    # If user does not have a soliton role
+
+    try:
+        # If user is an employee
+        if str(user.solitonuser.soliton_role) == 'Employee':
+            context = {
+                "employee": user.solitonuser.employee,
+                "view_profile_page":'active'
+            }
+            return render(request,"role/employee.html",context)
+        # If user is HOD
+        if str(user.solitonuser.soliton_role) == 'HOD':
+            return render(request,"role/hod.html")
+        
         context = {
-            "employee": user.solitonuser.employee,
-            "view_profile_page":'active'
+            "user": user,
+            "dashboard_page": "active"
         }
-        return render(request,"role/employee.html",context)
-    # If user is HOD
-    if str(user.solitonuser.soliton_role) == 'HOD':
-        return render(request,"role/hod.html")
 
-    context = {
-        "user": user,
-        "dashboard_page": "active"
-    }
+        return render(request, 'employees/dashboard.html', context)
+    except SolitonUser.DoesNotExist:
+        return render(request, 'registration/login.html', {"message": "Soliton User does not exist"})
 
-    return render(request, 'employees/dashboard.html', context)
+    
+        
 
 
 @login_required
