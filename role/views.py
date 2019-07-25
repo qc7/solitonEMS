@@ -12,7 +12,7 @@ def leave_page(request,id):
 
     leave_applications = LeaveApplication.objects.all()
     context = {
-        "apps": leave_applications,
+        "leave_applications": leave_applications,
         "l_types":Leave_Types.objects.all()
     }
     return render(request,'role/employee/leave.html',context)
