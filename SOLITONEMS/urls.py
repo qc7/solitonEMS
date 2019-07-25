@@ -20,5 +20,6 @@ urlpatterns = [
     path('', include('employees.urls')),
     path('admin/', admin.site.urls),
     path('payroll/',include('payroll.urls')),
-    path('leave/',include('leave.urls'))
+    path('leave/',include('leave.urls')),
+    path('role/',include('role.urls'))
 ]

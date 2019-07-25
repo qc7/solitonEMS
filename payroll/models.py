@@ -10,7 +10,6 @@ class PayrollRecord(models.Model):
         return self.month + " " + self.year
         
 class Payroll(models.Model):
-
     employee   =    models.ForeignKey(Employee,on_delete=models.CASCADE,default="")
     payroll_record = models.ForeignKey(PayrollRecord,on_delete=models.CASCADE, default="")
     employee_nssf =  models.CharField(max_length=15)
