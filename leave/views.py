@@ -5,7 +5,7 @@ from django.utils import timezone
 import datetime
 from django.db.models import Sum
 from datetime import timedelta
-from .procedures import get_leave_balance
+from .procedures import get_leave_balance, get_employee_leave
 from employees.models import Employee
 from .models import (
     Leave_Types, 
@@ -254,12 +254,14 @@ def approve_leave(request):
         leave = LeaveApplication.objects.get(pk=request.POST["app_id"])
 
         if role == "Supervisor": 
-            LeaveApplication.objects.filter(pk=leave.id).update(supervisor=cur_user, sup_Status="Approved")
+            LeaveApplication.objects.filter(pk=leave.id).update(supervisor=f'{cur_user.first_name} {cur_user.last_name}', 
+            sup_Status="Approved")
 
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 
         elif role == "HOD": 
-            LeaveApplication.objects.filter(pk=leave.id).update(hod=cur_user, hod_status="Approved")
+            LeaveApplication.objects.filter(pk=leave.id).update(hod=f'{cur_user.first_name} {cur_user.last_name}', 
+            hod_status="Approved")
 
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 
@@ -271,5 +273,16 @@ def approve_leave(request):
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 
             
+def get_employee_leave_balance(request):
+    #Get employees
+    employees = Employee.objects.all()
 
-    
+    context = {
+        "leave_balance_page": "active",
+        "employees": employees,
+        "taken": get_employee_leave(employee),
+        "balance": leave_balance(employee)
+    }
+
+    return render(request, "leave/leave_balance.html", context)
+
