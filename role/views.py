@@ -1,12 +1,21 @@
 from django.shortcuts import render
 from employees.models import Employee
 from payroll.models import PayrollRecord,Payroll
+from leave.models import LeaveApplication,Leave_Types
 # Create your views here.
 
 
 
-def leave_page(request):
-    return render(request,'role/employee/leave.html')
+def leave_page(request,id):
+    # Get the employee
+    employee = Employee.objects.get(pk=id)
+
+    leave_applications = LeaveApplication.objects.all()
+    context = {
+        "apps": leave_applications,
+        "l_types":Leave_Types.objects.all()
+    }
+    return render(request,'role/employee/leave.html',context)
 
 def employee_payslip_page(request,id):
     # Get the employee

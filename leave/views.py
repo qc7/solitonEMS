@@ -168,8 +168,9 @@ def apply_leave_page(request):
 def apply_leave(request):
     if request.method=="POST":
         
-        user = request.user #getting the current logged in User
-        cur_user = f'{user.first_name} {user.last_name}'
+        user = request.user #getting the current logged in user
+        employee = user.solitonuser.employee
+    
 
         l_type = Leave_Types.objects.get(pk=request.POST["ltype"])
 
@@ -190,7 +191,7 @@ def apply_leave(request):
         #bal = l_days - (used_days + n_days)
         
         if n_days <= l_days:
-            leave_app = LeaveApplication(Employee_Name = cur_user, 
+            leave_app = LeaveApplication(employee = employee, 
             leave_type = l_type, start_date=s_date, end_date = e_date, no_of_days = n_days, balance = 0)
 
             leave_app.save()
