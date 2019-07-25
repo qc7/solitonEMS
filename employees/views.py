@@ -18,6 +18,7 @@ from .models import (
 )
 from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction,BankDetail
 from .procedures import redirect_user_role
+from role.models import SolitonUser
 # Create your views here.
 
 # Authentication
@@ -28,26 +29,38 @@ def dashboard_page(request):
 
     # redirect according to roles
     user = request.user
-    # If user is an employee
-    if str(user.solitonuser.soliton_role) == 'Employee':
+    # If user does not have a soliton role
+
+    try:
+        # If user is an employee
+        if str(user.solitonuser.soliton_role) == 'Employee':
+            context = {
+                "employee": user.solitonuser.employee,
+                "view_profile_page":'active'
+            }
+            return render(request,"role/employee/employee.html",context)
+        # If user is HOD
+        if str(user.solitonuser.soliton_role) == 'HOD':
+            return render(request,"role/hod/hod.html")
+        
         context = {
-            "employee": user.solitonuser.employee,
-            "view_profile_page":'active'
+            "user": user,
+            "dashboard_page": "active"
         }
-        return render(request,"role/employee.html",context)
-    # If user is HOD
-    if str(user.solitonuser.soliton_role) == 'HOD':
-        return render(request,"role/hod.html")
 
-    context = {
-        "dashboard_page": "active"
-    }
+        return render(request, 'employees/dashboard.html', context)
+    except SolitonUser.DoesNotExist:
+        return render(request, 'registration/login.html', {"message": "Soliton User does not exist"})
 
-    return render(request, 'employees/dashboard.html', context)
+    
+        
 
 
 @login_required
 def employees_page(request):
+    # redirect according to roles
+    user = request.user
+
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
@@ -64,6 +77,7 @@ def employees_page(request):
         
 
     context = {
+        "user":user,
         "employees_page": "active",
         "employees": Employee.objects.all(),
         "deps": Departments.objects.all(),
@@ -85,13 +99,14 @@ def employee_page(request, id):
     # If user is an employee
     if str(user.solitonuser.soliton_role) == 'Employee':
         return render(request,"role/employee.html")
-    # If user is HOD
+    # If user is HOD  
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request,"role/hod.html")
 
     employee = Employee.objects.get(pk=id)
 
     context = {
+        "user": user,
         "employees_page": "active",
         "employee": employee,
         "certifications": employee.certification_set.all(),
@@ -122,6 +137,7 @@ def edit_employee_page(request, id):
         return render(request, 'registration/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
         "employee": employee,
         "deps": Departments.objects.all(),
@@ -151,6 +167,7 @@ def edit_certification_page(request, id):
 
     certification = Certification.objects.get(pk=id)
     context = {
+        "user":user,
         "employees_page": "active",
         "certification": certification
     }
@@ -177,6 +194,7 @@ def edit_emergency_contact_page(request, id):
 
     emergency_contact = EmergencyContact.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
         "emergency_contact": emergency_contact
     }
@@ -206,6 +224,7 @@ def edit_beneficiary_page(request, id):
 
     beneficiary = Beneficiary.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
         "beneficiary": beneficiary
     }
@@ -231,15 +250,13 @@ def edit_spouse_page(request, id):
         
 
     spouse = Spouse.objects.get(pk=id)
+    spouse.save()
     context = {
+        "user":user,
         "employees_page": "active",
         "spouse": spouse
     }
-    spouse.save()
-    context = {
-            "employees_page": "active",
-            "spouse": spouse
-    }
+  
     return render(request, 'employees/edit_spouse.html', context)
 
 
@@ -262,6 +279,7 @@ def edit_dependant_page(request, id):
 
     dependant = Dependant.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
         "dependant": dependant
     }
@@ -275,6 +293,7 @@ def departments_page(request):
         return render(request, 'registration/login.html', {"message": None})
         
     context = {
+        "user": request.user,
         "employees_page": "active",
         "departs": Departments.objects.all(),
         "emps":Employee.objects.all()
@@ -291,6 +310,7 @@ def teams_page(request, id):
     ts = Teams.objects.filter(department=id)
 
     context = {
+        "user": request.user,
         "employees_page": "active",
         "teams": ts,
         "dep": Departments.objects.get(pk=id),
@@ -307,6 +327,7 @@ def job_titles_page(request):
         return render(request, 'registration/login.html', {"message": None})
         
     context = {
+        "user": request.user,
         "employees_page": "active",
         "titles": Job_Titles.objects.all()
     }
@@ -321,8 +342,9 @@ def employee_team_page(request, id):
         return render(request, 'registration/login.html', {"message": None})
 
     employee = Employee.objects.get(pk=id)
-
+    user = request.user
     context = {
+        "user": user,
         "employees_page": "active",
         "employee": employee,
         "certifications": employee.certification_set.all(),
@@ -624,6 +646,7 @@ def add_certification(request):
         year_completed = request.POST['year_completed']
         certification = request.POST['certification']
         grade = request.POST['grade']
+        employee_id = request.POST['employee_id']
         employee = Employee.objects.get(pk=employee_id)
 
         # Creating instance of Certification

@@ -210,13 +210,18 @@ def apply_leave_page(request):
 @login_required
 def apply_leave(request):
     if request.method=="POST":
+        
+        user = request.user #getting the current logged in user
+        employee = user.solitonuser.employee
+    
+
         l_type = Leave_Types.objects.get(pk=request.POST["ltype"])
 
         date_format = "%Y-%m-%d"
         s_date = request.POST["s_date"]
         e_date = request.POST["e_date"]
 
-        cur_user = Employee.objects.get(pk = get_current_user(request, "id"))
+        #cur_user = Employee.objects.get(pk = get_current_user(request, "id"))
         #getting the difference between the start n end date
         diff = datetime.datetime.strptime(e_date, date_format)\
              - datetime.datetime.strptime(s_date, date_format)  
@@ -227,16 +232,32 @@ def apply_leave(request):
         if n_days <= l_days:
             l_balance = get_leave_balance(cur_user,l_type)
             if n_days <= l_balance:
-                leave_app = LeaveApplication(employee = cur_user, leave_type = l_type, start_date=s_date, 
+                leave_app = LeaveApplication(employee = employee, leave_type = l_type, start_date=s_date, 
                 end_date = e_date, no_of_days = n_days, balance = get_leave_balance(cur_user, l_type))
 
                 leave_app.save()
 
                 messages.success(request, 'Leave Request Sent Successfully')
-                return redirect('apply_leave_page')
+
+                if str(user.solitonuser.soliton_role) =='Employee':
+                    context = {
+                    "employee": user.solitonuser.employee,
+                    "view_profile_page":'active'
+                    }
+                    return render(request,"role/employee/employee.html",context)
+                else:
+                    return redirect('apply_leave_page')
+                
             else:
                 messages.warning(request, f'You have insufficient {l_type} leave Balance')
-                return redirect('apply_leave_page')
+                if str(user.solitonuser.soliton_role) =='Employee':
+                    context = {
+                    "employee": user.solitonuser.employee,
+                    "view_profile_page":'active'
+                    }
+                    return render(request,"role/employee/employee.html",context)
+                else:
+                    return redirect('apply_leave_page')       
 
         else:
             messages.warning(request, f'You cannot Request for more than the\
