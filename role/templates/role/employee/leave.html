@@ -9,7 +9,7 @@
             </a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" href="{% url 'leave_page' %}">
+            <a class="nav-link" href="{% url 'employee_leave_page' user.solitonuser.employee.id %}">
                 <i class="material-icons">pregnant_woman</i>
                 <p>Leave</p>
             </a>
@@ -42,21 +42,81 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-profile">
-                  
+
                     <div class="card-body">
-                        
-                    <button class="btn btn-outline-primary">Apply For Leave</button>
-                    <h3>Leave Applications</h3>
-                    <table class="table">
-                        <thead>
-                            <th>Date Applied</th>
-                            <th>Leave Type</th>
-                            <th>Status</th>
-                        </thead>
-                    </table>
+
+                        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_apply_leave">Apply For Leave</button>
+                        <h3>Leave Applications</h3>
+                        <table class="table">
+                            <thead>
+                                <th>Date Applied</th>
+                                <th>Leave Type</th>
+                                <th>Status</th>
+                            </thead>
+                            {%for leave_application in leave_applications%}
+                            <tr>
+                                <td>{{leave_application.apply_date}}</td>
+                                <td>{{leave_application.leave_type}}</td>
+                                <td>{{leave_application.app_status}}</td>
+                            </tr>
+                            {%endfor%}
+                        </table>
                     </div>
 
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal: modalApplyLeave -->
+<div class="modal fade" id="modal_apply_leave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Leave Application</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <form method="POST" action="{% url 'apply_leave' %}"> {% csrf_token %}
+                    <div class="form-group">
+                        <label for="">Leave Type:</label>
+                        <select class="form-control" id="ltype" name="ltype" required>
+                            {% for ty in l_types %}
+                            {% if ty.leave_type == ty %}
+                            <option selected>{{ty.leave_type }}</option>
+                            {% else %}
+                            <option value="{{ty.id }}">{{ty.leave_type }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <input type="date" class="form-control" placeholder="From" name="s_date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <input type="date" class="form-control" placeholder="To" name="e_date" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Remark" name="remark" required>
+                    </div>
+
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" type="submit">Apply</button>
+                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>

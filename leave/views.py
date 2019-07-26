@@ -168,8 +168,9 @@ def apply_leave_page(request):
 def apply_leave(request):
     if request.method=="POST":
         
-        user = request.user #getting the current logged in User
-        cur_user = f'{user.first_name} {user.last_name}'
+        user = request.user #getting the current logged in user
+        employee = user.solitonuser.employee
+    
 
         l_type = Leave_Types.objects.get(pk=request.POST["ltype"])
 
@@ -183,20 +184,24 @@ def apply_leave(request):
 
         n_days = (diff.days + 1) #including the last day
         l_days =  l_type.leave_days #getting the leave type entitlement 
-
-        # used_days=LeaveApplication.objects.filter\
-        # (Employee_Name = cur_user, leave_type = l_type).aggregate(sum('no_of_days'))
-
-        #bal = l_days - (used_days + n_days)
         
         if n_days <= l_days:
-            leave_app = LeaveApplication(Employee_Name = cur_user, 
+            leave_app = LeaveApplication(employee = employee, 
             leave_type = l_type, start_date=s_date, end_date = e_date, no_of_days = n_days, balance = 0)
 
             leave_app.save()
 
             messages.success(request, 'Leave Request Sent Successfully')
-            return redirect('apply_leave_page')
+
+            if str(user.solitonuser.soliton_role) =='Employee':
+                context = {
+                "employee": user.solitonuser.employee,
+                "view_profile_page":'active'
+                 }
+                return render(request,"role/employee/employee.html",context)
+            else:
+                return redirect('apply_leave_page')
+                
 
         else:
             messages.warning(request, f'You cannot Request for more than the\
