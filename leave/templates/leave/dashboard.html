@@ -79,36 +79,72 @@
            <a href="{%url 'apply_leave_page'%}"><button class="btn btn-outline-primary">Apply For Leave</button></a>
          </div>
 
+           <!-- Status Flash Messages -->
+          {% if messages %}
+            {% for msg in messages%}
+              <div class="alert alert-{{ msg.tags }}">
+                {{ msg }}
+              </div>
+            {% endfor %}
+        {% endif %}
 
           <div class="col-md-12">
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-hover thead-dark">
-                  <thead class="">
-                    <th>No. of Days</th>
-                    <th>Applicant</th>
-                    <th>Leave Type</th>
-                    <th>Balance</th>
-                    <th>Action</th>
-                  </thead>
-                  <tbody>
-                    {% for app in applications  %}
-                    <tr>
-                      <td><a href="#" style="color: inherit">{{ app.no_of_days}}</a></td>
-                      <td>{{ app.Employee_Name}}<br>{{ app.start_date}} to {{ app.end_date}}</td>
-                      <td>{{ app.leave_type}}</td>
-                      <td>0</td>
-                      <td><a href="#" style="color:inherit"><i class="fa fa-check-square"></i></a></td>
-                      <td><a href="#" style="color: inherit" ...
-                          onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i
-                            class="fa fa-close"></i></a></td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover thead-dark">
+            <thead class="">
+              <th>No. of Days</th>
+              <th>Applicant</th>
+              <th>Leave Type</th>
+              <th>Balance</th>
+              {% if role == "Supervisor" %}                
+                <th>Status</th>
+              {% elif role == "HOD" %}                
+                <th>Supervisor<br>Status</th>
+              {% elif role == "HR" %}                
+                <th>Supervisor<br>Status</th>
+                <th> HOD<br>Status </th>
+              {% endif %}
+              <th colspan=2 align="center">Action</th>
+            </thead>
+            <tbody>
+              {% for app in applications  %}
+              <tr>
+              <form method="POST" action="{% url 'approve_leave' %}"> {% csrf_token %}
+                <td>
+                  <a href="#" style="color: inherit">{{ app.no_of_days}}</a>
+                  <input type="hidden" id="ndays" name="ndays" value="{{ app.no_of_days}}">
+                </td>
+                <td>{{ app.employee}}<br>{{ app.start_date}} to {{ app.end_date}}</td>
+                <td>
+                  <input type="hidden" id="ltype" name="ltype" value="{{ app.leave_type_id}}">
+                  {{ app.leave_type}}
+                </td>
+                <td>{{app.balance }}</td>                
+                {% if role == "Supervisor" %}                
+                  <td>{{app.supervisor}}<br>({{app.sup_Status }})</td>
+                {% elif role == "HOD" %}                
+                  <td>{{app.supervisor}}<br>({{app.sup_Status }})</td>
+                {% elif role == "HR" %}                
+                  <td>{{app.supervisor}}<br>({{app.sup_Status }})</td>
+                  <td>{{app.hod}}<br>{{app.hod_status }}</td>
+                {% endif %}
+                <td>                  
+                    <input type="hidden" id="app_id" name="app_id" value="{{app.id }}">
+                    <button type="submit" class="btn btn-outline-success btn-rounded waves-effect" 
+                    ... onclick="return confirm('Are you sure you want to Approve this request?')">
+                      Approve</button>
+                    <button type="button" class="btn btn-outline-danger btn-rounded waves-effect">
+                      Reject</button>                  
+                </td>
+                </form>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
         </div>
       </div>
       {% endblock content %}

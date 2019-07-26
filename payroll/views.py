@@ -362,6 +362,7 @@ def add_overtime(request):
 
     return HttpResponseRedirect(reverse('payslip_page', args=[payroll.id]))
 
+
 @login_required
 def payroll_download(request,id):
     # Get the payroll record

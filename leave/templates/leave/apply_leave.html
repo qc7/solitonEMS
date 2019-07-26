@@ -8,6 +8,22 @@
   <div class="container-fluid">
 
   <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">schedule</i>
+                  </div>
+                  <p class="card-category">Annual</p>
+                  <h3 class="card-title">2
+                      
+                  </h3>
+                </div>
+                <div class="card-footer">
+                </div>
+              </div>
+            </div> 
+          {% if gender == "Female" %}
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-success card-header-icon">
@@ -24,21 +40,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-danger card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">note_add</i>
-                  </div>
-                  <p class="card-category">Sick</p>
-                  <h3 class="card-title">2
-                      
-                  </h3>
-                </div>
-                <div class="card-footer">
-                </div>
-              </div>
-            </div> 
+          {% else %}
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
@@ -54,6 +56,22 @@
                 </div>
               </div>
             </div> 
+          {% endif %}
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">note_add</i>
+                  </div>
+                  <p class="card-category">Sick</p>
+                  <h3 class="card-title">2
+                      
+                  </h3>
+                </div>
+                <div class="card-footer">
+                </div>
+              </div>
+            </div>             
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
@@ -104,9 +122,33 @@
                 <td>{{ app.apply_date }}</td>
                 <td><a href="#" style="color: inherit">{{app.leave_type}}</a></td>
                 <td>{{ app.start_date }}-{{ app.end_date }} ({{app.no_of_days}})</td>
-                <td>{{ app.sup_Status }}</td>
-                <td>{{ app.hod_status }}</td>
-                <td>{{ app.hr_status }}</td>
+                <td>
+                {% if app.sup_Status == "Approved" %}
+                  <button type="button" class="btn btn-success btn-rounded">{{ app.sup_Status }}</button>
+                {% elif app.sup_Status == "Rejected" %}
+                  <button type="button" class="btn btn-danger btn-rounded">{{ app.sup_Status }}</button>
+                {% else %}
+                  <button type="button" class="btn btn-warning btn-rounded">{{ app.sup_Status }}</button>
+                {% endif %}
+                </td>
+                <td>
+                  {% if app.hod_status == "Approved" %}
+                    <button type="button" class="btn btn-success btn-rounded">{{ app.hod_status }}</button>
+                  {% elif app.hod_status == "Rejected" %}
+                    <button type="button" class="btn btn-danger btn-rounded">{{ app.hod_status }}</button>
+                  {% else %}
+                    <button type="button" class="btn btn-warning btn-rounded">{{ app.hod_status }}</button>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if app.hr_status == "Approved" %}
+                    <button type="button" class="btn btn-success btn-rounded">{{ app.hr_status }}</button>
+                  {% elif app.hr_status == "Rejected" %}
+                    <button type="button" class="btn btn-danger btn-rounded">{{ app.hr_status }}</button>
+                  {% else %}
+                    <button type="button" class="btn btn-warning btn-rounded">{{ app.hr_status }}</button>
+                  {% endif %}
+                </td>
                 <td>                
                 <a href="#" data-toggle="modal" data-target="#modal_edit_employee" style="color:inherit" >
                 <i class="fa fa-edit"></i>
@@ -162,7 +204,7 @@
               </div> 
               <div class="form-group">
                 <input type="text" class="form-control"  placeholder="Remark"
-                  name="remark" required>
+                  name="remark">
               </div> 
 
           <!--Footer-->
