@@ -230,10 +230,10 @@ def apply_leave(request):
         l_days =  l_type.leave_days #getting the leave type entitlement        
         
         if n_days <= l_days:
-            l_balance = get_leave_balance(cur_user,l_type)
+            l_balance = get_leave_balance(employee,l_type)
             if n_days <= l_balance:
                 leave_app = LeaveApplication(employee = employee, leave_type = l_type, start_date=s_date, 
-                end_date = e_date, no_of_days = n_days, balance = get_leave_balance(cur_user, l_type))
+                end_date = e_date, no_of_days = n_days, balance = get_leave_balance(employee, l_type))
 
                 leave_app.save()
 
