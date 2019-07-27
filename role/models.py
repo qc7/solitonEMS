@@ -21,3 +21,12 @@ class SolitonUser(models.Model):
     # Return something meaningful 
     def __str__(self):
         return '{}'.format(self.user.username)
+
+# Stores all the notifications
+class Notification(models.Model):
+    user = models.ForeignKey(SolitonUser,on_delete=models.CASCADE)
+    message = models.TextField()
+    date_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return '{} {}'.format(self.user, self.message)

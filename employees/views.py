@@ -53,8 +53,6 @@ def dashboard_page(request):
         return render(request, 'registration/login.html', {"message": "Soliton User does not exist"})
 
     
-        
-
 
 @login_required
 def employees_page(request):
@@ -387,8 +385,6 @@ def add_new_employee(request):
         # Fetching data from the add new employee form
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
-        dep = Departments.objects.get(pk=request.POST['depart']).id
-        position = Job_Titles.objects.get(pk=request.POST['position']).id
         grade = request.POST['grade']
         basic_salary = request.POST['basic_salary']
         gender = request.POST['gender']
@@ -405,7 +401,7 @@ def add_new_employee(request):
         #try:
         # Creating instance of Employee
         employee = Employee(first_name=first_name, last_name=last_name,basic_salary=basic_salary,
-                            grade=grade, department_id=dep, position_id=position, gender=gender,
+                            grade=grade, gender=gender,
                             marital_status=marital_status, start_date=start_date, 
                             nationality=nationality, nssf_no=nssf_no,
                             ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, 

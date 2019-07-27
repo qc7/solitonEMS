@@ -26,8 +26,6 @@ class Job_Titles(models.Model):
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1,blank=True)
-    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1,blank=True)
     basic_salary    =   models.CharField(max_length=20,default="")
     grade = models.CharField(max_length=3,default="")
     gender = models.CharField(max_length=10)
@@ -45,6 +43,15 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+class OrganisationDetail(models.Model):
+    employee = models.OneToOneField(Employee,on_delete=models.CASCADE)
+    department = models.OneToOneField(Departments, on_delete=models.CASCADE, default=1,blank=True)
+    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1,blank=True)
+
+    def __str__(self):
+        return self.employee + " " + self.department
+
 
 
 class HomeAddress(models.Model):

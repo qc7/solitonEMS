@@ -36,7 +36,7 @@
                                 <th scope="row">Grade</th>
                                 <td>{{employee.grade}}</td>
                             </tr>
-                
+
                             <tr>
                                 <th scope="row">Basic Salary</th>
                                 <td>UGX {{employee.basic_salary}}</td>
@@ -91,6 +91,36 @@
         </div>
         <div class="row">
             <div class="col-md-6">
+                <div class="card card-profile">
+                    <div class="card-body">
+                        <h4 class="card-title">Organisation Details</h4>
+
+                        <div class="card-description">
+                            {% if employee.bankdetail %}
+                            <table class="table">
+                                <tr>
+                                    <td>Bank Name</td>
+                                    <td>{{employee.bankdetail.name_of_bank}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Bank Branch</th>
+                                    <td>{{employee.bankdetail.branch}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Bank Account</th>
+                                    <td>{{employee.bankdetail.bank_account}}</td>
+                                </tr>
+
+                            </table>
+                            <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
+                                data-target="#modal_edit_bank_details"> <i class="fa fa-edit"></i> Edit</a>
+                            {% else %}
+                            <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
+                                data-target="#modal_add_organisation_details"> <i class="fa fa-plus"></i></a>
+                            {% endif%}
+                        </div>
+                    </div>
+                </div>
                 <div class="card card-profile">
                     <div class="card-body">
                         <h4 class="card-title">Bank Details</h4>
@@ -846,6 +876,48 @@
                 </div>
             </div>
         </div>
+
+                <!-- modal Add Organisation Details -->
+                <div class="modal fade" id="modal_add_organisation_details" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <!--Header-->
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Organisation Details</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <!--Body-->
+                        <div class="modal-body">
+    
+                            <form method="POST" action="{%url 'add_bank_details'%}"> {%csrf_token%}
+                                <div class="form-group">
+    
+                                    <input type="text" class="form-control" placeholder="Enter Position" name="position"
+                                        value="{{employee.bankdetail.name_of_bank}}" required>
+                                </div>
+                                <div class="form-group">
+    
+                                    <input type="text" class="form-control" placeholder="Enter Department"
+                                        value="{{employee.bankdetail.branch}}" name="bank_branch" required>
+                                </div>
+        
+    
+                                <input type="hidden" name="employee_id" value={{employee.id}}>
+                        </div>
+                        <!--Footer-->
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                                type="reset">Close</button>
+                            <button class="btn btn-danger" type="submit">Save</button>
+                        </div>
+                        </form>
+    
+                    </div>
+                </div>
+            </div>
 
 
 
