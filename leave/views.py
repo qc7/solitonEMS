@@ -19,7 +19,7 @@ def get_current_user(request, need):
 
     cur_user = f'{user.solitonuser.employee.first_name} {user.solitonuser.employee.last_name}'
     cur_role = user.solitonuser.soliton_role.name
-    user_dept = user.solitonuser.employee.department.id
+    user_dept = user.solitonuser.employee.organisationdetail.department.id
     cur_id = user.solitonuser.employee.id
     gender = user.solitonuser.employee.gender
 

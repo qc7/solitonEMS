@@ -47,6 +47,8 @@ urlpatterns = [
     path('delete_deduction/<int:id>',views.delete_deduction,name="delete_deduction"),
     path('edit_bank_details/',views.edit_bank_details,name="edit_bank_details"),
     path('add_bank_details/',views.add_bank_details,name="add_bank_details"),
+    path('add_organisation_details/',views.add_organisation_details,name="add_organisation_details"),
+    path('edit_organisation_details/',views.edit_organisation_details,name="edit_organisation_details"),
     # Authentication
     path('accounts/login/', views.login_page, name="loginAccounts"),
     path('login/', views.login_view, name="login"),

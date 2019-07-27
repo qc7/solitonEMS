@@ -16,7 +16,7 @@ from .models import (
     Teams,
     Job_Titles
 )
-from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction,BankDetail
+from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction,BankDetail,OrganisationDetail
 from .procedures import redirect_user_role
 from role.models import SolitonUser
 # Create your views here.
@@ -78,8 +78,7 @@ def employees_page(request):
         "user":user,
         "employees_page": "active",
         "employees": Employee.objects.all(),
-        "deps": Departments.objects.all(),
-        "titles": Job_Titles.objects.all()
+       
     }
     return render(request, 'employees/employees.html', context)
 
@@ -113,6 +112,8 @@ def employee_page(request, id):
         "spouses": employee.spouse_set.all(),
         "dependants": employee.dependant_set.all(),
         "deductions": employee.deduction_set.all(),
+         "deps": Departments.objects.all(),
+        "titles": Job_Titles.objects.all()
     }
     return render(request, 'employees/employee.html', context)
 
@@ -564,6 +565,77 @@ def add_bank_details(request):
 
         return render(request, "employees/failed.html", context)
 
+
+@login_required
+def add_organisation_details(request):
+    if request.method == 'POST':
+        # Fetching data from the add new home address form
+        employee_id = request.POST['employee_id']
+        depart = request.POST['depart']
+        position = request.POST['position']
+        
+        # Get the employee instance
+        employee = Employee.objects.get(pk=employee_id)
+        # Get the department instance
+        department = Departments.objects.get(pk=depart)
+        # Get the Job title instance
+        position = Job_Titles.objects.get(pk=position)
+        # Creating instance of organisation Detail
+        organisation_detail = OrganisationDetail(employee=employee, department=department, position=position)
+        # Saving the BankDetail instance
+        organisation_detail.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s Organisation Details " % (employee.first_name),
+            "employee":employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+@login_required
+def edit_organisation_details(request):
+    if request.method == 'POST':
+        # Fetching data from the add new home address form
+        employee_id = request.POST['employee_id']
+        depart = request.POST['depart']
+        position = request.POST['position']
+        
+        # Get the employee instance
+        employee = Employee.objects.get(pk=employee_id)
+        # Get the department instance
+        department = Departments.objects.get(pk=depart)
+        # Get the Job title instance
+        position = Job_Titles.objects.get(pk=position)
+        # get instance of organisation Detail
+        organisation_detail = OrganisationDetail.objects.get(employee=employee)
+        organisation_detail.department = department
+        organisation_detail.position = position
+        # Saving the BankDetail instance
+        organisation_detail.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully updated %s Organisation Details " % (employee.first_name),
+            "employee":employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
 
 @login_required
 def edit_home_address(request):

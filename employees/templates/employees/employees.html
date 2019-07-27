@@ -36,8 +36,8 @@
                   <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}}
                       {{employee.last_name}}</a></td>
                   <td>{{employee.start_date}}</td>
-                  <td>{{employee.position}}</td>
-                  <td>{{employee.department.name}}</td>
+                  <td>{{employee.organisationdetail.position}}</td>
+                  <td>{{employee.organisationdetail.department.name}}</td>
                   <td>{{employee.gender}}</td>
                   <td><a href="{% url 'edit_employee_page' employee.id %}" style="color:inherit"><i
                         class="fa fa-edit"></i></a></td>
