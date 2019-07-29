@@ -42,10 +42,13 @@ def dashboard_page(request):
         # If user is HOD
         if str(user.solitonuser.soliton_role) == 'HOD':
             return render(request,"role/hod/hod.html")
+
+        number_of_employees = Employee.objects.all().count()
         
         context = {
             "user": user,
-            "dashboard_page": "active"
+            "dashboard_page": "active",
+            "number_of_employees":number_of_employees
         }
 
         return render(request, 'employees/dashboard.html', context)
