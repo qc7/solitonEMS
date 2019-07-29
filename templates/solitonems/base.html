@@ -129,7 +129,7 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 
                   {%for notification in notifications%}
-                  <a class="dropdown-item" href="#">{{notification.message}}</a>
+                  <a class="dropdown-item" href="{%url 'notifications_page'%}">{{notification.message}}</a>
                   {%endfor%}
 
                   {%if not notifications%}

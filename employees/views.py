@@ -44,7 +44,7 @@ def dashboard_page(request):
             return render(request,"role/hod/hod.html")
 
         number_of_employees = Employee.objects.all().count()
-        notifications = Notification.objects.filter(user=user.solitonuser)
+        notifications = Notification.objects.filter(user=user.solitonuser,status="unread")
         number_of_notifications = notifications.count()
         context = {
             "user": user,
@@ -79,7 +79,7 @@ def employees_page(request):
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request,"role/hod.html")
     
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count()
 
     context = {
@@ -112,7 +112,7 @@ def employee_page(request, id):
 
     employee = Employee.objects.get(pk=id)
 
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count()
 
     context = {
@@ -150,7 +150,7 @@ def edit_employee_page(request, id):
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count()
 
     context = {
@@ -182,7 +182,7 @@ def edit_certification_page(request, id):
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request,"role/hod.html")
         
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count()
 
     certification = Certification.objects.get(pk=id)
@@ -213,7 +213,7 @@ def edit_emergency_contact_page(request, id):
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request,"role/hod.html")
 
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count()   
 
     emergency_contact = EmergencyContact.objects.get(pk=id)
@@ -249,7 +249,7 @@ def edit_beneficiary_page(request, id):
         
 
     beneficiary = Beneficiary.objects.get(pk=id)
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count()
 
     context = {
@@ -314,7 +314,7 @@ def edit_dependant_page(request, id):
         
 
     dependant = Dependant.objects.get(pk=id)
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count()
     context = {
         "user": user,
@@ -332,7 +332,7 @@ def departments_page(request):
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
     user = request.user
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count()    
     context = {
         "user": request.user,
@@ -352,7 +352,7 @@ def teams_page(request, id):
         return render(request, 'registration/login.html', {"message": None})
 
     ts = Teams.objects.filter(department=id)
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count() 
     context = {
         "user": request.user,
@@ -393,7 +393,7 @@ def employee_team_page(request, id):
 
     employee = Employee.objects.get(pk=id)
     user = request.user
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count() 
     context = {
         "user": user,
@@ -408,6 +408,24 @@ def employee_team_page(request, id):
         "number_of_notifications":number_of_notifications
     }
 
+def notifications_page(request):
+    # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'registration/login.html', {"message": None})
+    
+    user = request.user
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count() 
+    context = {
+        "user": user,
+        "employees_page": "active",
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
+    }
+
+    return render(request,'solitonems/notifications.html',context)
+
 def login_view(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -420,6 +438,8 @@ def login_view(request):
 
     else:
         return render(request, "registration/login.html", {"message": "Invalid credentials"})
+
+
 
 
 def login_page(request):
@@ -516,8 +536,6 @@ def edit_employee(request, id):
         employee = Employee.objects.get(pk=id)
         employee.first_name = request.POST['first_name']
         employee.last_name = request.POST['last_name']
-        employee.department=Departments.objects.get(pk=request.POST['dep'])
-        employee.position = Job_Titles.objects.get(pk=request.POST['position'])
         employee.grade = request.POST['grade']
         employee.basic_salary = request.POST['basic_salary']
         employee.gender = request.POST['gender']

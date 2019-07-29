@@ -16,6 +16,7 @@ urlpatterns = [
     path('departments/', views.departments_page, name="departments_page"),
     path('teams/<int:id>/', views.teams_page, name="teams_page"),
     path('jobs/', views.job_titles_page, name="job_titles_page"),
+    path('notifications/',views.notifications_page,name="notifications_page"),
 
     # Process
     path('add_new_employee/', views.add_new_employee, name="add_new_employee"),
