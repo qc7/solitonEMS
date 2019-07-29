@@ -27,6 +27,7 @@ class Notification(models.Model):
     user = models.ForeignKey(SolitonUser,on_delete=models.CASCADE)
     message = models.TextField()
     date_time = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10,default='unread')
 
     def __str__(self):
-        return '{} {}'.format(self.user, self.message)
+        return '{} {} {}'.format(self.user, self.message,self.date_time)

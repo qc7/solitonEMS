@@ -24,7 +24,7 @@
 
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="danger" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+    <div class="sidebar" data-color="danger" data-background-color="white" data-image="{%static 'assets/img/sidebar-1.jpg'%}">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
@@ -117,17 +117,24 @@
               <li class="nav-item dropdown">
                 <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
-                  <span class="notification">5</span>
+                  {%if notifications%}
+                  <span class="notification">
+                    {{number_of_notifications}}
+                  </span>
+                  {%endif%}
                   <p class="d-lg-none d-md-block">
                     Some Actions
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                  <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                  <a class="dropdown-item" href="#">You're now friend with Andrew</a>
-                  <a class="dropdown-item" href="#">Another Notification</a>
-                  <a class="dropdown-item" href="#">Another One</a>
+
+                  {%for notification in notifications%}
+                  <a class="dropdown-item" href="#">{{notification.message}}</a>
+                  {%endfor%}
+
+                  {%if not notifications%}
+                  <a class="dropdown-item">No notifications yet</a>
+                  {%endif%}
                 </div>
               </li>
               <li class="nav-item dropdown">

@@ -45,8 +45,8 @@ class Employee(models.Model):
 
 class OrganisationDetail(models.Model):
     employee = models.OneToOneField(Employee,on_delete=models.CASCADE)
-    department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1,blank=True)
-    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1,blank=True)
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE,blank=True)
+    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE,blank=True)
     team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1,blank=True)
     def __str__(self):
         return self.position.title + " " + self.department.name

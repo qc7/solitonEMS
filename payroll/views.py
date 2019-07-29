@@ -10,6 +10,7 @@ from .EmployeePayroll import EmployeePayroll
 from employees.models import Employee
 from django.db.models import Sum
 from .procedures import get_total_deduction,get_total_nssf,get_total_paye,get_total_gross_pay,get_total_basic_pay,get_total_net_pay
+from role.models import Notification,SolitonUser
 # Create your views here.
 # Pages
 ###############################################################
@@ -20,11 +21,17 @@ def payroll_records_page(request):
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
     
-    # Grab the payroll objects for this payroll record
+    # Get the notifications
+    user = request.user.solitonuser
+
+    notifications = Notification.objects.filter(user=user)
+    number_of_notifications = notifications.count()
 
     context = {
         "payroll_page": "active",
-        "payroll_records": PayrollRecord.objects.all()
+        "payroll_records": PayrollRecord.objects.all(),
+        "number_of_notifications": number_of_notifications,
+        "notifications":notifications
     }
     return render(request, 'payroll/payroll_records.html', context)
 
@@ -41,6 +48,12 @@ def payroll_record_page(request,id):
     # Get all employees
     employees = Employee.objects.all()
 
+    # Get the notifications
+    user = request.user.solitonuser
+
+    notifications = Notification.objects.filter(user=user)
+    number_of_notifications = notifications.count()
+
     context = {
         "payroll_page": "active",
         "month": month,
@@ -51,7 +64,9 @@ def payroll_record_page(request,id):
         "total_paye": get_total_paye(payrolls),
         "total_gross_pay":get_total_gross_pay(payrolls),
         "total_basic_pay":get_total_basic_pay(employees),
-        "total_net_pay":get_total_net_pay(payrolls)
+        "total_net_pay":get_total_net_pay(payrolls),
+        "number_of_notifications": number_of_notifications,
+        "notifications":notifications
     }
     return render(request,'payroll/payroll_record.html',context) 
 
@@ -60,9 +75,16 @@ def edit_period_page(request,id):
     # fetch PayrollRecordRequest 
     payroll_record = PayrollRecord.objects.get(pk=id)
 
+    # Get the notifications
+    user = request.user.solitonuser
+
+    notifications = Notification.objects.filter(user=user)
+    number_of_notifications = notifications.count()
     context = {
         "payroll_record": payroll_record,
-        "payroll_page": "active"
+        "payroll_page": "active",
+        "number_of_notifications": number_of_notifications,
+        "notifications":notifications
     }
 
     return render(request,'payroll/edit_payroll.html',context)
@@ -71,13 +93,21 @@ def edit_period_page(request,id):
 def payslip_page(request,id):
     # Get the payroll
     payroll = Payroll.objects.get(pk=id)
+    
+    # Get the notifications
+    user = request.user.solitonuser
+
+    notifications = Notification.objects.filter(user=user)
+    number_of_notifications = notifications.count()
 
     context = {
         "payroll_page": "active",
         "payroll": payroll,
         "month": payroll.payroll_record.month,
         "year": payroll.payroll_record.year,
-        "name_of_employee":"{} {}".format(payroll.employee.first_name,payroll.employee.last_name)
+        "name_of_employee":"{} {}".format(payroll.employee.first_name,payroll.employee.last_name),
+        "number_of_notifications": number_of_notifications,
+        "notifications":notifications
     }
 
     return render(request,'payroll/payslip.html',context)

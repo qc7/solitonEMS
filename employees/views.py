@@ -18,7 +18,7 @@ from .models import (
 )
 from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction,BankDetail,OrganisationDetail
 from .procedures import redirect_user_role
-from role.models import SolitonUser
+from role.models import SolitonUser,Notification
 # Create your views here.
 
 # Authentication
@@ -44,11 +44,14 @@ def dashboard_page(request):
             return render(request,"role/hod/hod.html")
 
         number_of_employees = Employee.objects.all().count()
-        
+        notifications = Notification.objects.filter(user=user.solitonuser)
+        number_of_notifications = notifications.count()
         context = {
             "user": user,
             "dashboard_page": "active",
-            "number_of_employees":number_of_employees
+            "number_of_employees":number_of_employees,
+            "notifications": notifications,
+            "number_of_notifications":number_of_notifications
         }
 
         return render(request, 'employees/dashboard.html', context)
@@ -75,12 +78,16 @@ def employees_page(request):
     # If user is HOD
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request,"role/hod.html")
-        
+    
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
 
     context = {
         "user":user,
         "employees_page": "active",
         "employees": Employee.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
        
     }
     return render(request, 'employees/employees.html', context)
@@ -105,6 +112,9 @@ def employee_page(request, id):
 
     employee = Employee.objects.get(pk=id)
 
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
+
     context = {
         "user": user,
         "employees_page": "active",
@@ -116,7 +126,9 @@ def employee_page(request, id):
         "dependants": employee.dependant_set.all(),
         "deductions": employee.deduction_set.all(),
          "deps": Departments.objects.all(),
-        "titles": Job_Titles.objects.all()
+        "titles": Job_Titles.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
     return render(request, 'employees/employee.html', context)
 
@@ -138,12 +150,17 @@ def edit_employee_page(request, id):
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
+
     context = {
         "user": user,
         "employees_page": "active",
         "employee": employee,
         "deps": Departments.objects.all(),
-        "titles": Job_Titles.objects.all()
+        "titles": Job_Titles.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
     return render(request, 'employees/edit_employee.html', context)
 
@@ -165,13 +182,16 @@ def edit_certification_page(request, id):
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request,"role/hod.html")
         
-    
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
 
     certification = Certification.objects.get(pk=id)
     context = {
         "user":user,
         "employees_page": "active",
-        "certification": certification
+        "certification": certification,
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
 
     return render(request, 'employees/edit_cert.html', context)
@@ -192,13 +212,17 @@ def edit_emergency_contact_page(request, id):
     # If user is HOD
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request,"role/hod.html")
-        
+
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()   
 
     emergency_contact = EmergencyContact.objects.get(pk=id)
     context = {
         "user": user,
         "employees_page": "active",
-        "emergency_contact": emergency_contact
+        "emergency_contact": emergency_contact,
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
 
     return render(request, 'employees/edit_emergency.html', context)
@@ -225,10 +249,15 @@ def edit_beneficiary_page(request, id):
         
 
     beneficiary = Beneficiary.objects.get(pk=id)
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
+
     context = {
         "user": user,
         "employees_page": "active",
-        "beneficiary": beneficiary
+        "beneficiary": beneficiary,
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
 
     return render(request, 'employees/edit_beneficiary.html', context)
@@ -253,10 +282,15 @@ def edit_spouse_page(request, id):
 
     spouse = Spouse.objects.get(pk=id)
     spouse.save()
+
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
     context = {
         "user":user,
         "employees_page": "active",
-        "spouse": spouse
+        "spouse": spouse,
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
   
     return render(request, 'employees/edit_spouse.html', context)
@@ -280,10 +314,14 @@ def edit_dependant_page(request, id):
         
 
     dependant = Dependant.objects.get(pk=id)
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
     context = {
         "user": user,
         "employees_page": "active",
-        "dependant": dependant
+        "dependant": dependant,
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
 
     return render(request, 'employees/edit_dependant.html', context)
@@ -293,12 +331,16 @@ def departments_page(request):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
-        
+    user = request.user
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()    
     context = {
         "user": request.user,
         "employees_page": "active",
         "departs": Departments.objects.all(),
-        "emps":Employee.objects.all()
+        "emps":Employee.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
 
     return render(request, "employees/departments.html", context)
@@ -310,14 +352,16 @@ def teams_page(request, id):
         return render(request, 'registration/login.html', {"message": None})
 
     ts = Teams.objects.filter(department=id)
-
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count() 
     context = {
         "user": request.user,
         "employees_page": "active",
         "teams": ts,
         "dep": Departments.objects.get(pk=id),
         "emps":Employee.objects.all(),
-        #"team_emps": ts.employee_set.all()
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
 
     return render(request, "employees/teams.html", context)
@@ -327,11 +371,15 @@ def job_titles_page(request):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
-        
+    user = request.user
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()     
     context = {
         "user": request.user,
         "employees_page": "active",
-        "titles": Job_Titles.objects.all()
+        "titles": Job_Titles.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
 
     return render(request, "employees/job_titles.html", context)
@@ -345,6 +393,8 @@ def employee_team_page(request, id):
 
     employee = Employee.objects.get(pk=id)
     user = request.user
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count() 
     context = {
         "user": user,
         "employees_page": "active",
@@ -353,7 +403,9 @@ def employee_team_page(request, id):
         "emergency_contacts": employee.emergencycontact_set.all(),
         "beneficiaries": employee.beneficiary_set.all(),
         "spouses": employee.spouse_set.all(),
-        "dependants": employee.dependant_set.all()
+        "dependants": employee.dependant_set.all(),
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications
     }
 
 def login_view(request):
