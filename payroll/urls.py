@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     # Pages
     path('', views.payroll_records_page, name="payroll_records_page"),
@@ -17,4 +18,5 @@ urlpatterns = [
     path('add_bonus/',views.add_bonus,name="add_bonus"),
     path('add_overtime/',views.add_overtime,name="add_overtime"),
     path('payroll_download/<int:id>/',views.payroll_download,name="payroll_download"),
+    path('generate_payslip_pdf/<int:id>/',views.generate_payslip_pdf,name="generate_payslip_pdf"),
 ]

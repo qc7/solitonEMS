@@ -9,7 +9,7 @@ from django.urls import reverse
 from .EmployeePayroll import EmployeePayroll
 from employees.models import Employee
 from django.db.models import Sum
-from .procedures import get_total_deduction,get_total_nssf,get_total_paye,get_total_gross_pay,get_total_basic_pay,get_total_net_pay
+from .procedures import get_total_deduction,get_total_nssf,get_total_paye,get_total_gross_pay,get_total_basic_pay,get_total_net_pay,render_to_pdf
 from role.models import Notification,SolitonUser
 # Create your views here.
 # Pages
@@ -111,6 +111,24 @@ def payslip_page(request,id):
     }
 
     return render(request,'payroll/payslip.html',context)
+
+@login_required
+def generate_payslip_pdf(request,id):
+    # Get the payroll
+    payroll = Payroll.objects.get(pk=id)
+    
+    user = request.user
+    context = {
+        "payroll": payroll,
+        "month": payroll.payroll_record.month,
+        "year": payroll.payroll_record.year,
+        "name_of_employee":"{} {}".format(payroll.employee.first_name,payroll.employee.last_name),
+        "user": user   
+        
+    }
+
+    pdf = render_to_pdf('solitonems/payslip.html', context)
+    return HttpResponse(pdf, content_type='application/pdf')
 
 ###############################################################
 # Processes

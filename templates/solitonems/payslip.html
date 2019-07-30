@@ -1,0 +1,161 @@
+{%load static %}
+{% load humanize %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Payslip PDF</title>
+        <style type="text/css">
+            body {
+				font-family: Arial, Helvetica, sans-serif;
+                font-weight: 200;
+                font-size: 14px;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: left;
+                color: #b60e08;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;  
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+			.logo {
+				width:200px;
+			}
+			.bank-row,.financial-row,.personnel-row,.income-row, .total-row,.total-values-row,.income-values{
+				border: 1px solid #000;
+			}
+			
+               
+		
+        </style>
+    </head>
+    <body>
+
+    	<div class='wrapper'>
+    		<div class='header'>
+    			<img src="/home/bright/Documents/Projects/solitonEMS/templates/solitonems/logo.png" class="logo" alt="" />
+    		
+    		</div>
+    	</div>	
+        <div class='details' >
+		   <!-- Table 6 columns-->
+		   <br>
+		   <table width="100%" >
+               <tr class="bank-row">
+				   <td><b>Bank Name:</b></td>
+				   <td colspan="2">{{payroll.employee.bankdetail.name_of_bank}}</td>
+				   <td colspan="3"><b>Account Number:</b> {{payroll.employee.bankdetail.bank_account}}</td>
+			   </tr>
+			   <tr>
+				   <td colspan="6"></td>
+			   </tr>
+			   <tr class="financial-row">
+				   <td><b>Financial Year:</b></td>
+				   <td>2019/2020</td>
+				   <td>Period: {{month}} - {{year}}</td>
+				   <th colspan="2">Process Date: <br>{% now "jS F Y" %}</th>
+				   <th>Currency: UGX</th>
+			   </tr>
+			   <tr>
+			   	   <td colspan="6"></td>
+			   </tr>
+			   <tr class="personnel-row">
+				   <th>Personnel</th>
+				   <td colspan="2">{{name_of_employee}}</td>
+				   <th colspan="3">Designation: {{payroll.employee.organisationdetail.position}}</th>
+			   </tr>
+			   <tr>
+				   <td colspan="6"></td>
+			   </tr>
+			   <tr class="income-row">
+				   <th colspan="3">Income</th>
+				   <th colspan="3">Deductions</th>
+			   </tr>
+			   <tr class="income-values">
+				   <th colspan="2">Description </th>
+				   <th>Amount</td>
+				   <th colspan="2">Description </th>
+				   <th>Amount</td>
+			   </tr>
+			   <tr class="income-values">
+				   <td colspan="2">Basic Salary</td>
+				   <td>{{payroll.employee.basic_salary | intcomma}}</td>
+				   <td colspan="2">P.A.Y.E</td>
+				   <td>{{payroll.paye | intcomma}}</td>
+			   </tr>
+			   <tr class="income-values">
+				   <td colspan="2">Lunch Allowance</td>
+				   <td>150,000</td>
+				   <td colspan="2">N.S.S.F</td>
+				   <td>{{payroll.employee_nssf| intcomma }}</td>
+				</tr>
+				<tr class="income-values">
+					<td colspan="2">Overtime</td>
+					<td>{{payroll.overtime | intcomma}}</td>
+					<td colspan="2">Damage</td>
+					<td>{{payroll.damage_deduction | intcomma}}</td>
+				</tr>
+				<tr class="income-values">
+					<td colspan="2">Bonus</td>
+					<td>{{payroll.bonus | intcomma}}</td>
+					<td colspan="2">Sacco</td>
+					<td>{{payroll.sacco_deduction | intcomma}}</td>	
+				</tr>
+				<tr class="income-values">
+					<td colspan="3" style="border: none"></td>
+					<td colspan="2">Employer N.S.S.F</td>
+					<td>{{payroll.employer_nssf | intcomma}}</td>
+				</tr>
+				<tr>
+					<td colspan="6"></td>
+				</tr>
+				<tr class="total-row">
+					<th>Total Income</th>
+					<th colspan="2">Total Taxable Income</th>
+					<th>Tax</th>
+					<th>Total Deductions</th>
+					<th>NET PAY</th>
+				</tr>
+				<tr class="total-values-row">
+					<td>{{payroll.gross_salary | intcomma}}</td>
+					<td colspan="2">{{payroll.gross_salary | intcomma}}</td>
+					<td>{{payroll.paye | intcomma}}</td>
+					<td>{{payroll.total_statutory | intcomma}}</td>
+					<td>{{payroll.net_salary | intcomma}}</td>
+				</tr>
+				<tr>
+					<td colspan="6"></td>
+				</tr>
+				<tr>
+					<td colspan="6"></td>
+				</tr>
+				<tr>
+					<td colspan="3">Prepared by: {{user.solitonuser.employee.first_name}} {{user.solitonuser.employee.last_name}}</td>
+                    <td colspan="3">Signature:..............................................</td>
+				</tr>
+
+		   </table>
+		   <small>Generated with Soliton EMS</small>
+        </div>
+    </div>
+    </body>
+</html>
