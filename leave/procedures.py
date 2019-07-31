@@ -18,7 +18,7 @@ def get_leave_balance(employee, l_type):
 def get_employee_leave(employee):
     leave_days = 0
     days_taken = LeaveApplication.objects.filter\
-        (employee_id = employee, leave_type = "Annual").aggregate(Sum('no_of_days'))
+        (employee_id = employee, leave_type = 4).aggregate(Sum('no_of_days'))
         
     total_days_taken = days_taken['no_of_days__sum']
 

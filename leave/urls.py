@@ -8,6 +8,7 @@ urlpatterns = [
     path('holidays/', views.holidays_page, name="holidays_page"),
     path('path/', views.approval_path_page, name="path_page"),
     path('apply/', views.apply_leave_page, name="apply_leave_page"),
+    path('leave_balance/', views.get_employee_leave_balance, name="leave_balance_page"),
     
     # Process
     path('add_new_type/', views.add_new_type, name="add_new_type"),

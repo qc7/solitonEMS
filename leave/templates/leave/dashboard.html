@@ -14,7 +14,7 @@
                     <i class="material-icons">pregnant_woman</i>
                   </div>
                   <p class="card-category">Maternity</p>
-                  <h3 class="card-title">20
+                  <h3 class="card-title">{{ maternity }}
 
                   </h3>
                 </div>
@@ -30,7 +30,7 @@
                     <i class="material-icons">note_add</i>
                   </div>
                   <p class="card-category">Sick</p>
-                  <h3 class="card-title">2
+                  <h3 class="card-title">{{sick}}
 
                   </h3>
                 </div>
@@ -45,7 +45,7 @@
                     <i class="material-icons">perm_identity</i>
                   </div>
                   <p class="card-category">Paternity</p>
-                  <h3 class="card-title">2
+                  <h3 class="card-title">{{paternity}}
 
                   </h3>
                 </div>
@@ -60,7 +60,24 @@
                     <i class="material-icons">hourglass_empty</i>
                   </div>
                   <p class="card-category">Compassionate</p>
-                  <h3 class="card-title">2
+                  <h3 class="card-title">{{ compassionate }}
+
+                  </h3>
+                </div>
+
+                <div class="card-footer">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">hourglass_empty</i>
+                  </div>
+                  <p class="card-category">Annual</p>
+                  <h3 class="card-title">{{ annual }}
 
                   </h3>
                 </div>
@@ -80,7 +97,11 @@
             {% endfor %}
         {% endif %}
 
-          <div class="col-md-12">
+        {% if role == "HR"%}
+        <a href="{% url 'leave_balance_page' %}">
+        <button class="btn btn-outline-info waves-effect" type="submit">Leave Balance</button></a>
+        {% endif %}
+      <div class="col-md-12">
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-hover thead-dark">

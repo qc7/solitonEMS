@@ -57,11 +57,22 @@ def leave_dashboard_page(request):
     else:
         applications = ""
 
+    leave_types = Leave_Types.objects.all()
+    
+    leave_types_dict = {}
+    for typ in leave_types:
+        leave_count = LeaveApplication.objects.filter(leave_type=typ).count()
+        leave_types_dict.update({typ:leave_count})
+
     context = {
         "leave_dashboard_page": "active",
         "applications": applications,
-        "role": user_role
-
+        "role": user_role,
+        "maternity": LeaveApplication.objects.filter(leave_type=1).count(),
+        "paternity": LeaveApplication.objects.filter(leave_type=2).count(),
+        "compassionate": LeaveApplication.objects.filter(leave_type=3).count(),
+        "annual": LeaveApplication.objects.filter(leave_type=4).count(),
+        # "sick": LeaveApplication.objects.filter(leave_type=5).count(),
     }
     return render(request, 'leave/dashboard.html', context)
 
@@ -221,7 +232,6 @@ def apply_leave(request):
         s_date = request.POST["s_date"]
         e_date = request.POST["e_date"]
 
-        #cur_user = Employee.objects.get(pk = get_current_user(request, "id"))
         #getting the difference between the start n end date
         diff = datetime.datetime.strptime(e_date, date_format)\
              - datetime.datetime.strptime(s_date, date_format)  
@@ -230,10 +240,14 @@ def apply_leave(request):
         l_days =  l_type.leave_days #getting the leave type entitlement        
         
         if n_days <= l_days:
-            l_balance = get_leave_balance(employee,l_type)
-            if n_days <= l_balance:
+            new_balance=0
+            if l_type.leave_type == "Annual":
+                curr_balance = employee.leave_balance
+                new_balance = curr_balance - n_days 
+
+            if n_days <= new_balance:
                 leave_app = LeaveApplication(employee = employee, leave_type = l_type, start_date=s_date, 
-                end_date = e_date, no_of_days = n_days, balance = get_leave_balance(employee, l_type))
+                end_date = e_date, no_of_days = n_days, balance = curr_balance)
 
                 leave_app.save()
 
@@ -242,9 +256,9 @@ def apply_leave(request):
                 if str(user.solitonuser.soliton_role) =='Employee':
                     context = {
                     "employee": user.solitonuser.employee,
-                    "view_profile_page":'active'
+                    "employee_leave_page":'active'
                     }
-                    return render(request,"role/employee/employee.html",context)
+                    return render(request,"role/employee/leave.html",context)
                 else:
                     return redirect('apply_leave_page')
                 
@@ -253,9 +267,9 @@ def apply_leave(request):
                 if str(user.solitonuser.soliton_role) =='Employee':
                     context = {
                     "employee": user.solitonuser.employee,
-                    "view_profile_page":'active'
+                    "employee_leave_page":'active'
                     }
-                    return render(request,"role/employee/employee.html",context)
+                    return render(request,"role/employee/leave.html",context)
                 else:
                     return redirect('apply_leave_page')       
 
@@ -267,7 +281,7 @@ def apply_leave(request):
 def approve_leave(request):
     if request.method=="POST":
         user = request.user #getting the current logged in User  
-        cur_user = Employee.objects.get(pk = get_current_user(request, "id"))
+        employee = user.solitonuser.employee
         role = get_current_user(request, "role")
 
         l_type = Leave_Types.objects.get(pk = request.POST.get("ltype"))
@@ -275,21 +289,29 @@ def approve_leave(request):
         leave = LeaveApplication.objects.get(pk=request.POST["app_id"])
 
         if role == "Supervisor": 
-            LeaveApplication.objects.filter(pk=leave.id).update(supervisor=f'{cur_user.first_name} {cur_user.last_name}', 
+            LeaveApplication.objects.filter(pk=leave.id).update(supervisor=f'{employee.first_name} {employee.last_name}', 
             sup_Status="Approved")
 
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 
         elif role == "HOD": 
-            LeaveApplication.objects.filter(pk=leave.id).update(hod=f'{cur_user.first_name} {cur_user.last_name}', 
+            LeaveApplication.objects.filter(pk=leave.id).update(hod=f'{employee.first_name} {employee.last_name}', 
             hod_status="Approved")
 
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 
         elif role == "HR": 
-            LeaveApplication.objects.filter(pk=leave.id).update(hr = f'{cur_user.first_name} {cur_user.last_name}', 
-            hr_status="Approved", app_status="Approved", 
-            balance = (get_leave_balance(cur_user,l_type)-int(n_days)))
+            curr_balance = 0
+            if l_type.leave_type == "Annual":                    
+                curr_balance = leave.employee.leave_balance
+                new_balance = int(curr_balance) - int(n_days)
+            else:
+                new_balance = curr_balance
+           
+            LeaveApplication.objects.filter(pk=leave.id).update(hr = f'{employee.first_name} {employee.last_name}', 
+            hr_status="Approved", app_status="Approved", balance = new_balance)
+
+            Employee.objects.filter(pk=leave.employee_id).update(leave_balance=new_balance)
 
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 
@@ -298,11 +320,14 @@ def get_employee_leave_balance(request):
     #Get employees
     employees = Employee.objects.all()
 
+    # LeaveApplication.objects.filter\
+    #     (employee_id = employee, leave_type = l_type).aggregate(Sum('no_of_days'))
+        
+    # total_days_taken = days_taken['no_of_days__sum']
+
     context = {
         "leave_balance_page": "active",
-        "employees": employees,
-        "taken": get_employee_leave(employee),
-        "balance": leave_balance(employee)
+        "employees": employees
     }
 
     return render(request, "leave/leave_balance.html", context)

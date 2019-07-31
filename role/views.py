@@ -2,6 +2,7 @@ from django.shortcuts import render
 from employees.models import Employee
 from payroll.models import PayrollRecord,Payroll
 from leave.models import LeaveApplication,Leave_Types
+from leave.procedures import get_leave_balance, get_employee_leave, leave_balance
 # Create your views here.
 
 
@@ -10,10 +11,11 @@ def leave_page(request,id):
     # Get the employee
     employee = Employee.objects.get(pk=id)
 
-    leave_applications = LeaveApplication.objects.all()
+    leave_applications = LeaveApplication.objects.filter(employee=employee)
     context = {
         "leave_applications": leave_applications,
-        "l_types":Leave_Types.objects.all()
+        "l_types":Leave_Types.objects.all(),
+        "l_balance": employee.leave_balance
     }
     return render(request,'role/employee/leave.html',context)
 

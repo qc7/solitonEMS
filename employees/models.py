@@ -41,6 +41,8 @@ class Employee(models.Model):
     national_id   = models.CharField(max_length=20)
     ura_tin = models.CharField(max_length=20)
     team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1,blank=True)
+    leave_balance = models.IntegerField(default=21)
+    leave_status = models.CharField(max_length=45, default="At Work")
     image_url = models.CharField(max_length=20, default="")
 
     def __str__(self):

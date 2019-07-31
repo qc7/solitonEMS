@@ -44,8 +44,15 @@
                 <div class="card card-profile">
 
                     <div class="card-body">
-
-                        {% comment %} <h2>Leave Balance: </h2> {% endcomment %}
+                    <!-- Status Flash Messages -->
+                        {% if messages %}
+                            {% for msg in messages%}
+                                <div class="alert alert-{{ msg.tags }}">
+                                    {{ msg }}
+                                </div>
+                             {% endfor %}
+                        {% endif %}
+                        <h2>Annual Leave Balance: <b>{{ l_balance }} day(s)</b></h2>
                         <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_apply_leave">Apply For Leave</button>
                         <h3>Leave Applications</h3>
                         <table class="table">
