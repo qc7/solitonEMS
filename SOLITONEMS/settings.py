@@ -22,11 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '0d1*j&^q381!@3^^4htw!n-1p!yxxy93s3^2exrw7%4bf_!hcf'
 
-# SECURITY WARNING: don't ru{%extends 'solitonems/base.html'%}n with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.16.20.93','localhost']
-
+ALLOWED_HOSTS = ['solitonug.pythonanywhere.com','localhost']
 
 # Application definition
 
@@ -123,4 +122,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT ='/home/solitonug/solitonEMS/static'
 

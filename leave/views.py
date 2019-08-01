@@ -19,7 +19,7 @@ def get_current_user(request, need):
 
     cur_user = f'{user.solitonuser.employee.first_name} {user.solitonuser.employee.last_name}'
     cur_role = user.solitonuser.soliton_role.name
-    user_dept = user.solitonuser.employee.department.id
+    user_dept = user.solitonuser.employee.organisationdetail.department.id
     cur_id = user.solitonuser.employee.id
     gender = user.solitonuser.employee.gender
 
@@ -260,7 +260,7 @@ def apply_leave(request):
                     }
                     return render(request,"role/employee/leave.html",context)
                 else:
-                    return redirect('apply_leave_page')
+                    return render(request,"role/employee/leave.html",context)
                 
             else:
                 messages.warning(request, f'You have insufficient {l_type} leave Balance')
@@ -271,12 +271,12 @@ def apply_leave(request):
                     }
                     return render(request,"role/employee/leave.html",context)
                 else:
-                    return redirect('apply_leave_page')       
+                    return render(request,"role/employee/leave.html")      
 
         else:
             messages.warning(request, f'You cannot Request for more than the\
                 {l_type.leave_type} leave days ({l_type.leave_days})')
-            return redirect('apply_leave_page')
+            return render(request,"role/employee/leave.html")
 
 def approve_leave(request):
     if request.method=="POST":

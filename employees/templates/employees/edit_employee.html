@@ -25,32 +25,7 @@
                                 placeholder="Enter last name" name="last_name" name="last_name"
                                 value={{employee.last_name}}>
                         </div>
-                        <div class="form-group">
-                            <label for="">Department</label>
-                            <select class="form-control" id="position" name="dep" required>                                
-                                {% for dep in deps %}                                    
-                                    {% if employee.department == dep %}
-                                        <option selected value="{{dep.pk}}">{{dep.name }}</option>
-                                    {% else %}
-                                        <option value="{{dep.pk}}">{{dep.name }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Position</label>
-                            {% comment %} <input type="text" class="form-control" placeholder="Enter employee Position"
-                                name="position" value="{{employee.position}}" required> {% endcomment %}
-                            <select class="form-control" id="position" name="position" required>                                
-                                {% for pos in titles %}                                    
-                                    {% if employee.position == pos %}
-                                        <option selected value="{{pos.pk}}">{{pos.title }}</option>
-                                    {% else %}
-                                        <option value="{{pos.pk}}">{{pos.title }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
+
                         <div class="form-group">
                             <label for="">Grade</label>
                             <input type="text" class="form-control" placeholder="Enter employee grade"

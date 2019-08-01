@@ -1,0 +1,17 @@
+{%extends './base.html'%}
+{%block page_title %}
+<h1>Notifications</h1>
+{%endblock%}
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                {%for notification in notifications%}
+                <li>{{notification.message}}</li>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

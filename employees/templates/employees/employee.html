@@ -20,7 +20,7 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <h6 class="card-category text-gray">{{employee.position}}</h6>
+                        <h6 class="card-category text-gray">{{employee.organisationdetail.position}}</h6>
                         <h4 class="card-title">Bio Data</h4>
 
                         <table class="table">
@@ -29,14 +29,10 @@
                                 <td>{{employee.first_name}} {{employee.last_name}}</td>
                             </tr>
                             <tr>
-                                <th scope="row">Position</th>
-                                <td>{{employee.position}}</td>
-                            </tr>
-                            <tr>
                                 <th scope="row">Grade</th>
                                 <td>{{employee.grade}}</td>
                             </tr>
-                
+
                             <tr>
                                 <th scope="row">Basic Salary</th>
                                 <td>UGX {{employee.basic_salary}}</td>
@@ -91,6 +87,31 @@
         </div>
         <div class="row">
             <div class="col-md-6">
+                <div class="card card-profile">
+                    <div class="card-body">
+                        <h4 class="card-title">Organisation Details</h4>
+
+                        <div class="card-description">
+                            {% if employee.organisationdetail %}
+                            <table class="table">
+                                <tr>
+                                    <td>Position</td>
+                                    <td>{{employee.organisationdetail.position}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Department</th>
+                                    <td>{{employee.organisationdetail.department}}</td>
+                                </tr>
+                            </table>
+                            <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
+                                data-target="#modal_edit_organisation_details"> <i class="fa fa-edit"></i> Edit</a>
+                            {% else %}
+                            <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
+                                data-target="#modal_add_organisation_details"> <i class="fa fa-plus"></i></a>
+                            {% endif%}
+                        </div>
+                    </div>
+                </div>
                 <div class="card card-profile">
                     <div class="card-body">
                         <h4 class="card-title">Bank Details</h4>
@@ -847,7 +868,103 @@
             </div>
         </div>
 
+        <!-- modal Add Organisation Details -->
+        <div class="modal fade" id="modal_add_organisation_details" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Organisation Details
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+                        <form method="POST" action="{%url 'add_organisation_details'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <label for="Dep">Department:</label>
+                                <select class="form-control" id="depl" name="depart" required>
+                                    <option>==Select Department==</option>
+                                    {% for dep in deps %}
+                                    <option value="{{dep.pk}}">{{dep.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Pos">Employee Position:</label>
+                                <select class="form-control" id="position" name="position" required>
+                                    <option>==Select Title==</option>
+                                    {% for tt in titles %}
+                                    <option value="{{tt.pk}}">{{tt.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                         
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                            type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
 
+                </div>
+            </div>
+        </div>
+
+                <!-- modal Edit Organisation Details -->
+                <div class="modal fade" id="modal_edit_organisation_details" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <!--Header-->
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Edit {{employee.first_name}}'s organisation Details</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <!--Body-->
+                        <div class="modal-body">
+                            <form method="POST" action="{%url 'edit_organisation_details'%}"> {%csrf_token%}
+                                    <div class="form-group">
+                                            <label for="Dep">Department:</label>
+                                            <select class="form-control" id="depl" name="depart" required>
+                                                <option value="{{employee.organisationdetail.department.id}}">{{employee.organisationdetail.department}}</option>
+                                                {% for dep in deps %}
+                                                <option value="{{dep.pk}}">{{dep.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Pos">Employee Position:</label>
+                                            <select class="form-control" id="position" name="position" required>
+                                                <option value="{{employee.organisationdetail.position.id}}">{{employee.organisationdetail.position}}</option>
+                                                {% for tt in titles %}
+                                                <option value="{{tt.pk}}">{{tt.title }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                               
+    
+                                <input type="hidden" name="employee_id" value={{employee.id}}>
+                        </div>
+                        <!--Footer-->
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                                type="reset">Close</button>
+                            <button class="btn btn-danger" type="submit">Save</button>
+                        </div>
+                        </form>
+    
+                    </div>
+                </div>
+            </div>
 
         <!-- modal Add a certification -->
         <div class="modal fade" id="modal_add_certification" tabindex="-1" role="dialog"

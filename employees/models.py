@@ -26,8 +26,6 @@ class Job_Titles(models.Model):
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1,blank=True)
-    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE, default=1,blank=True)
     basic_salary    =   models.CharField(max_length=20,default="")
     grade = models.CharField(max_length=3,default="")
     gender = models.CharField(max_length=10)
@@ -40,13 +38,21 @@ class Employee(models.Model):
     residence_address = models.CharField(max_length=20)
     national_id   = models.CharField(max_length=20)
     ura_tin = models.CharField(max_length=20)
-    team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1,blank=True)
     leave_balance = models.IntegerField(default=21)
     leave_status = models.CharField(max_length=45, default="At Work")
     image_url = models.CharField(max_length=20, default="")
 
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+class OrganisationDetail(models.Model):
+    employee = models.OneToOneField(Employee,on_delete=models.CASCADE)
+    department = models.ForeignKey(Departments, on_delete=models.CASCADE,blank=True)
+    position = models.ForeignKey(Job_Titles, on_delete=models.CASCADE,blank=True)
+    team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1,blank=True)
+    def __str__(self):
+        return self.position.title + " " + self.department.name
+
 
 
 class HomeAddress(models.Model):

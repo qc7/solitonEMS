@@ -15,7 +15,7 @@ def leave_page(request,id):
     context = {
         "leave_applications": leave_applications,
         "l_types":Leave_Types.objects.all(),
-        "l_balance": employee.leave_balance
+        "l_balance": employee.leave_balance,        
     }
     return render(request,'role/employee/leave.html',context)
 

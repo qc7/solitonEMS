@@ -1,7 +1,7 @@
 
 from django.urls import path
 from . import views
-from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     # Pages
     path('', views.dashboard_page, name="dashboard_page"),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('departments/', views.departments_page, name="departments_page"),
     path('teams/<int:id>/', views.teams_page, name="teams_page"),
     path('jobs/', views.job_titles_page, name="job_titles_page"),
+    path('notifications/',views.notifications_page,name="notifications_page"),
 
     # Process
     path('add_new_employee/', views.add_new_employee, name="add_new_employee"),
@@ -47,6 +48,8 @@ urlpatterns = [
     path('delete_deduction/<int:id>',views.delete_deduction,name="delete_deduction"),
     path('edit_bank_details/',views.edit_bank_details,name="edit_bank_details"),
     path('add_bank_details/',views.add_bank_details,name="add_bank_details"),
+    path('add_organisation_details/',views.add_organisation_details,name="add_organisation_details"),
+    path('edit_organisation_details/',views.edit_organisation_details,name="edit_organisation_details"),
     # Authentication
     path('accounts/login/', views.login_page, name="loginAccounts"),
     path('login/', views.login_view, name="login"),

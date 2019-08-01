@@ -4,7 +4,7 @@
 <span>
     <a href="{%url 'payroll_record_page' payroll.payroll_record.id%}" style="color: inherit;"><i
             class="material-icons">keyboard_backspace</i></a>
-    <h2 class="animated fadeInDown">Employee Payslip for {{name_of_employee}}</h2>
+    <h2 class="animated fadeInDown">{{name_of_employee}}</h2>
 </span>
 {%endblock%}
 {%block content%}
@@ -90,6 +90,8 @@
                         <!-- <button type="hidden" class="btn btn-outline" data-toggle="modal" data-target="#modal_add_prorate">Add Prorate</button></a> -->
                     </center>
                 </table>
+
+                <a href="{%url 'generate_payslip_pdf' payroll.id%}"><button class="btn btn-outline">Generate PDF</button></a>
 
             </div>
 
