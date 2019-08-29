@@ -54,7 +54,9 @@
                         {% endif %}
                         <h2>Annual Leave Balance: <b>{{ l_balance }} day(s)</b></h2>
                         <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_apply_leave">Apply For Leave</button>
-                        <h3>Leave Applications</h3>
+                       <a class="nav-link" href="{% url 'leave_planner' %}">
+                        <button class="btn btn-outline-primary" >Leave Planner</button>
+                       <h3>Leave Applications</h3>
                         <table class="table">
                             <thead>
                                 <th>Date Applied</th>

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from employees.models import Employee
+from employees.models import Employee, Departments, Teams
 
 class SolitonRole(models.Model):
     #Soliton role attributes
@@ -17,6 +17,8 @@ class SolitonUser(models.Model):
     middleName = models.CharField(max_length=20, blank=True)
     employee   = models.OneToOneField(Employee,on_delete=models.CASCADE)
     soliton_role = models.ForeignKey(SolitonRole,on_delete=models.CASCADE)
+    soliton_department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1)
+    soliton_team    = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1)
     password_change =models.CharField(max_length=10,blank=True)
     # Return something meaningful 
     def __str__(self):

@@ -106,7 +106,7 @@
         {% endif %}
 
         {% if role == "HR"%}
-        <a href="{% url 'leave_balance_page' %}">
+        <a href="#"> {% comment %} {% url 'leave_balance_page' %}"> {% endcomment %}
         <button class="btn btn-outline-info waves-effect" type="submit">Leave Balance</button></a>
         {% endif %}
       <div class="col-md-12">

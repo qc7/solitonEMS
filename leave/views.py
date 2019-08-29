@@ -1,17 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils.dateparse import parse_date
 from django.utils import timezone
 import datetime
 from django.db.models import Sum
 from datetime import timedelta
-from .procedures import get_leave_balance, get_employee_leave
+import calendar
+#from .procedures import get_leave_balance, get_employee_leave
 from employees.models import Employee
 from .models import (
     Leave_Types, 
     Holidays,
     Approval_Path,
-    LeaveApplication
+    LeaveApplication,
+    annual_planner
 )
 
 def get_current_user(request, need):
@@ -232,11 +235,7 @@ def apply_leave(request):
         s_date = request.POST["s_date"]
         e_date = request.POST["e_date"]
 
-        #getting the difference between the start n end date
-        diff = datetime.datetime.strptime(e_date, date_format)\
-             - datetime.datetime.strptime(s_date, date_format)  
-
-        n_days = (diff.days + 1) #including the last day
+        n_days = calculateWorkingDaysBetweenTwoDates(s_date, e_date)
         l_days =  l_type.leave_days #getting the leave type entitlement        
         
         if n_days <= l_days:
@@ -263,7 +262,7 @@ def apply_leave(request):
                     return render(request,"role/employee/leave.html",context)
                 
             else:
-                messages.warning(request, f'You have insufficient {l_type} leave Balance')
+                messages.warning(request, f'You have insufficient {l_type} leave Balance {n_days}')
                 if str(user.solitonuser.soliton_role) =='Employee':
                     context = {
                     "employee": user.solitonuser.employee,
@@ -316,19 +315,86 @@ def approve_leave(request):
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 
             
-def get_employee_leave_balance(request):
-    #Get employees
-    employees = Employee.objects.all()
+def calculateWorkingDaysBetweenTwoDates(start_date, end_date):
+    holidays = Holidays.objects.all()
 
-    # LeaveApplication.objects.filter\
-    #     (employee_id = employee, leave_type = l_type).aggregate(Sum('no_of_days'))
+    date_format = "%Y-%m-%d"
+    
+    date_difference = datetime.datetime.strptime(end_date, date_format)\
+             - datetime.datetime.strptime(start_date, date_format)  
+
+    all_days_between = (date_difference.days + 1)
+
+    all_working_days = 0
+    k=0
+    while k <= all_days_between:
+        check_date = parse_date(start_date) + datetime.timedelta(days = k)
+
+        for holiday in holidays:           
+            if check_date.weekday() != 6:
+                if check_date != holiday.holiday_date: 
+                    all_working_days = all_working_days + 1
         
-    # total_days_taken = days_taken['no_of_days__sum']
+        k = k + 1
+       
+    return all_working_days 
 
-    context = {
-        "leave_balance_page": "active",
-        "employees": employees
+def leave_calendar(request):
+    # first_day = calendar.TextCalendar(calendar.MONDAY)
+    # annual_calendar = first_day.formatyear(2019)
+
+    year=2011
+    month=12
+    change=None
+
+    # init variables
+    cal = calendar.Calendar()
+    cal.setfirstweekday(6)
+    month_days = cal.itermonthdays(year, month)
+    lst = [[]]
+    week = 0
+
+    # make month lists containing list of days for each week
+    # each day tuple will contain list of entries and 'current' indicator
+    for day in month_days:
+        lst[week].append((day))
+        if len(lst[week]) == 7:
+            lst.append([])
+            week += 1
+    
+    return redirect("leave/annual_calendar.html")
+
+def leave_planer(request):
+     # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request,'registration/login.html',{"message":None})
+    context = { 
+        "leave_planner": "active",
+        "planner": annual_planner.objects.all(),
+        "leave_types": Leave_Types.objects.all(),
+        "employees": Employee.objects.all()
     }
+    return render(request, 'leave/leave_planner.html', context)
+    
+def add_new_absence(request):
+    if request.method=="POST":
+        employee = Employee.objects.get(pk=request.user.id)
+        leave = Leave_Types.objects.get(pk=request.POST["leave_type"])
+        from_date = request.POST["from_date"]
+        to_date = request.POST["to_date"]
 
-    return render(request, "leave/leave_balance.html", context)
+    try:
+        planner = annual_planner(leave_year="2019", date_from = from_date, date_to = to_date,\
+            employee=employee, leave = leave)
 
+        planner.save()
+
+        messages.success(request, f'Data Saved Successfully')
+
+        return redirect('leave_planner')
+
+    except:
+        messages.error(request, f'Data Not Saved, Check you inputs and try again!')
+
+        return redirect('leave_planner')

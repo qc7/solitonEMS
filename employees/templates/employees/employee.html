@@ -902,6 +902,15 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="team">Employee Team:</label>
+                                <select class="form-control" id="team" name="team" required>
+                                    <option>==Select Team==</option>
+                                    {% for team in teams %}
+                                    <option value="{{team.pk}}">{{tt.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                          
                             <input type="hidden" name="employee_id" value={{employee.id}}>
                     </div>
@@ -950,6 +959,15 @@
                                                 {% endfor %}
                                             </select>
                                         </div>
+                                        <div class="form-group">
+                                <label for="team">Employee Team:</label>
+                                <select class="form-control" id="team" name="team" required>
+                                    <option value="{{employee.organisationdetail.team.id}}">{{employee.organisationdetail.team}}</option>
+                                    {% for team in teams %}
+                                    <option value="{{team.pk}}">{{team.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                                
     
                                 <input type="hidden" name="employee_id" value={{employee.id}}>

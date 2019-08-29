@@ -1,6 +1,7 @@
 {% extends './base.html' %}
 {% block page_title %}
-<h1>Departments</h1>
+  <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>    
+  <h2>Departments</h2>
 {% endblock %}
 
 {% block content %}
@@ -10,6 +11,16 @@
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_depart">
       Add Department +
     </button>
+    
+    <!-- Status Flash Messages -->
+      {% if messages %}
+          {% for msg in messages%}
+            <div class="alert alert-{{ msg.tags }}">
+              {{ msg }}
+            </div>
+          {% endfor %}
+      {% endif %}
+
     <div class="col-md-12">
       <div class="card-body">
         <div class="table-responsive">
@@ -30,9 +41,14 @@
                 <td>{{ depart.hod }}</td>
                 <td><a href="{% url 'teams_page' depart.id %}" style="color: inherit">{{ depart.teams_set.all.count }}</a></td>
                 <td>{{ depart.status }}</td>
-                <td><a href="#" style="color:inherit"><i class="fa fa-edit"></i></a></td>
                 <td>
-                <a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
+                  <a href="{% url 'edit_department_page' depart.id %}" data-toggle="modal" data-target="#modal_edit_department" style="color:inherit">
+                    <i class="fa fa-edit"></i>
+                  </a></td>
+                </td>
+                <td>
+                <a  href = "{% url 'delete_department' depart.id %}" style="color: inherit" ... 
+                  onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
                 </a></td>
               </tr>
               {% endfor %}
@@ -42,7 +58,7 @@
       </div>
     </div>
 
-    <!-- Modal: modalAddNewHoliday -->
+    <!-- Modal: modal_add_new_department -->
     <div class="modal fade" id="modal_add_new_depart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true" style="overflow-y: auto !important">
       <div class="modal-dialog" role="document">
@@ -64,13 +80,10 @@
               </div> 
               <div class="form-group">
                <label for="">Head of Department</label>
-                  <select class="form-control" id="hod" name="hod" required>                                
+                  <select class="form-control" id="hod" name="hod" required>       
+                  <option selected>{{depart.hod }}</option>                         
                                 {% for emp in emps %}                                    
-                                    {% if depart.hod == emp %}
-                                        <option selected>{{emp.first_name }} {{emp.last_name }}</option>
-                                    {% else %}
-                                        <option>{{emp.first_name }} {{emp.last_name }}</option>
-                                    {% endif %}
+                                   <option>{{emp.first_name }} {{emp.last_name }}</option>                                    
                                 {% endfor %}
                             </select>
               </div>          
@@ -78,22 +91,23 @@
           <!--Footer-->
           <div class="modal-footer">
             <button class="btn btn-danger" type="submit">Save</button>
-            <button class="btn btn-outline-danger" type="reset">Close</button>
+            <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close" type="reset">Close</button>
           </div>
           </form>
-
         </div>
       </div>
     </div>
-    <!-- Modal: modalAddNewHoliday -->
-
-    {% comment %} <div class="modal fade" id="modal_edit_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!-- modal_add_new_depart -->   
+  </div>
+  
+  <!-- Modal: modal_edit_department -->
+    <div class="modal fade" id="modal_edit_department" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true" style="overflow-y: auto !important">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <!-- Header -->
           <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Edit Leave Types</h4>
+            <h4 class="modal-title" id="myModalLabel">Edit {{ department.name }}</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">×</span>
             </button>
@@ -101,31 +115,32 @@
          
           <!-- Body -->
           <div class="modal-body">
-            <form method="POST" action="{% url 'edit_leave_type_page' leave.id %}"> {% csrf_token %}
+            <form method="POST" action="{% url 'edit_department' 1 %}"> {% csrf_token %}
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Type"
-                  name="e_leave_type" value={{leave.type}} required>
-              </div>
-              <div class="form-group">
-                <input type="number" class="form-control"  placeholder="No. Of Days"
-                  name="e_leave_days" value={{ leave.leave_days }} required>
-              </div>  
-              <div class="form-group">
-                <input type="text" class="form-control"  placeholder="Description"
-                  name="e_desc" value={{ leave.desc }} required>
+                <input type="hidden" class="form-control" name="dep_id" value="{{ department.id }}">
+                <input type="text" class="form-control" placeholder="Department Name"
+                  name="dep_name" value="{{ department.name}}" required>
               </div> 
-              
+              <div class="form-group">
+               <label for="">Head of Department {{ deps.id }}</label>
+                  <select class="form-control" id="hod" name="hod" required>       
+                  <option selected>{{department.hod }}</option>                         
+                                {% for emp in emps %}                                    
+                                   <option>{{emp.first_name }} {{emp.last_name }}</option>                                    
+                                {% endfor %}
+                            </select>
+              </div>          
+
           <!--Footer-->
           <div class="modal-footer">
             <button class="btn btn-danger" type="submit">Save</button>
-            <button class="btn btn-outline-danger" type="reset">Close</button>
+            <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close" type="reset">Close</button>
           </div>
           </form>
-
         </div>
       </div>
-    </div> {% endcomment %}
-    <!-- Modal: modalAddNewHoliday -->
-  </div>
+    </div>
+    <!-- #modal_edit_department -->
 </div>
+ 
 {% endblock content %} 

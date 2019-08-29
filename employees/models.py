@@ -15,6 +15,9 @@ class Teams(models.Model):
     supervisors = models.CharField(max_length=45)
     status = models.CharField(max_length=15,default="Active")
 
+    def __str__(self):
+        return self.name
+     
 class Job_Titles(models.Model):
     title = models.CharField(max_length=45)
     positions = models.IntegerField()

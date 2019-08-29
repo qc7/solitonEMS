@@ -1,6 +1,7 @@
 {% extends './base.html' %}
 {% block page_title %}
-<h1>Job Titles</h1>
+  <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>    
+  <h2>Job Titles</h2>
 {% endblock %}
 
 {% block content %}
@@ -26,9 +27,13 @@
                 <td>{{ job.id }}</td>
                 <td><a href="#" style="color: inherit">{{ job.title }}</a></td>
                 <td>{{ job.positions }}</td>
-                <td><a href="#" style="color:inherit"><i class="fa fa-edit"></i></a></td>
                 <td>
-                <a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
+                  <a href="{% url 'edit_job_title_page' job.id %}" data-toggle="modal" data-target="#modal_edit_job" style="color:inherit">
+                    <i class="fa fa-edit"></i></a>
+                </td>
+                <td>
+                  <a  href = "{% url 'delete_job_title' job.id %}" 
+                  style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
                 </a></td>
               </tr>
               {% endfor %}
@@ -66,22 +71,24 @@
           <!--Footer-->
           <div class="modal-footer">
             <button class="btn btn-danger" type="submit">Save</button>
-            <button class="btn btn-outline-danger" type="reset">Close</button>
+            <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
           </div>
           </form>
 
         </div>
       </div>
     </div>
-    <!-- Modal: modalAddNewHoliday -->
+  </div>
 
-    {% comment %} <div class="modal fade" id="modal_edit_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  <!-- Modal: modal_edit_job -->
+
+    <div class="modal fade" id="modal_edit_job" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true" style="overflow-y: auto !important">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <!-- Header -->
           <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Edit Leave Types</h4>
+            <h4 class="modal-title" id="myModalLabel">Edit Job Title</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">×</span>
             </button>
@@ -89,31 +96,27 @@
          
           <!-- Body -->
           <div class="modal-body">
-            <form method="POST" action="{% url 'edit_leave_type_page' leave.id %}"> {% csrf_token %}
+            <form method="POST" action="{% url 'edit_job_title' 1 %}"> {% csrf_token %}
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Type"
-                  name="e_leave_type" value={{leave.type}} required>
+                <input type="text" class="form-control" placeholder="Job Title"
+                  name="job_title" value="{{title.title}}" required>
               </div>
               <div class="form-group">
-                <input type="number" class="form-control"  placeholder="No. Of Days"
-                  name="e_leave_days" value={{ leave.leave_days }} required>
+                <input type="number" class="form-control"  placeholder="No. Positions"
+                  name="positions" value="{{ job.positions }}" required>
               </div>  
-              <div class="form-group">
-                <input type="text" class="form-control"  placeholder="Description"
-                  name="e_desc" value={{ leave.desc }} required>
-              </div> 
-              
+
           <!--Footer-->
           <div class="modal-footer">
             <button class="btn btn-danger" type="submit">Save</button>
-            <button class="btn btn-outline-danger" type="reset">Close</button>
+            <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
           </div>
           </form>
 
         </div>
       </div>
-    </div> {% endcomment %}
-    <!-- Modal: modalAddNewHoliday -->
-  </div>
+    </div>
+    <!-- Modal: modal_edit_job -->
+
 </div>
 {% endblock content %} 

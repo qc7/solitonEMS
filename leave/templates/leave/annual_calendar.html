@@ -1,0 +1,37 @@
+{% extends './base.html' %}
+{% block page_title %}
+  <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>    
+  <h2>Leave Calendar</h2>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <form method="POST" action="{% url 'annual_calendar' %}"> {% csrf_token %}
+      <div class="form-group">
+        <div class="calendar_panel_bottom_noborder">
+          <span class="month">Juny 2011</span>
+          <span class="day_name">S</span>
+          <span class="day_name">M</span>
+          <span class="day_name">T</span>
+          <span class="day_name">W</span>
+          <span class="day_name">T</span>
+          <span class="day_name">F</span>
+          <span class="day_name">S</span>
+          {% for week in month_days %}
+
+              {% for day in week %}
+                  <span class="date">{{ day }}</span>
+              {% endfor %}
+
+          {% endfor %}
+      <div class="clear"></div>
+
+
+</div>
+              </div> 
+    </form>
+  </div>
+</div>
+ 
+{% endblock content %} 

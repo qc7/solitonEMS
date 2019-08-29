@@ -1,0 +1,163 @@
+{% extends './base.html' %}
+{% block page_title %}
+<h1>Leave Calendar - 2019</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <!-- Button trigger modal-->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_holiday">
+      + New Absence
+    </button>
+
+     <!-- Status Flash Messages -->
+          {% if messages %}
+            {% for msg in messages%}
+              <div class="alert alert-{{ msg.tags }}">
+                {{ msg }}
+              </div>
+            {% endfor %}
+        {% endif %}
+
+    <div class="col-md-12">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="">
+              <th>Employee</th>
+              <th>Type</th>
+              <th>Duration</th>
+              <th>Duration</th>
+              <th>Status</th>
+            </thead>
+            <tbody>
+              {% for plan in planner  %}
+              <tr>
+                <td><a href="#" style="color: inherit">{{ plan.employee }}</a></td>
+                <td>{{ plan.leave }}</td>
+                <td>{{ plan.date_from }} - {{ plan.date_to }}</td>
+                <td>{{ plan.status }}</td>
+                <td><a href="#" style="color:inherit"><i class="fa fa-edit"></i></a></td>
+                <td>
+                <a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
+                </a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: modalAddNewHoliday -->
+    <div class="modal fade" id="modal_add_new_holiday" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Add Absence</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+         
+          <!-- Body -->
+          <div class="modal-body">
+            <form method="POST" action="{% url 'add_new_absence' %}"> {% csrf_token %}
+              <div class="form-group">
+                  <label for="">Employee:</label>
+                <select class="form-control" id="employee" name="employee" required>                                
+                                {% for employee in employees %}                                    
+                                    {% if employee.name == employee %}
+                                        <option selected value="{{employee.id }}">{{employee.name }}</option>
+                                    {% else %}
+                                        <option value="{{employee.id }}">{{ employee.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select> 
+              </div> 
+              <div class="form-group">
+                {% comment %} <input type="text" class="form-control" placeholder="Leave Type"
+                  name="leave_type" required> {% endcomment %}
+                  <label for="">Leave Type:</label>
+                <select class="form-control" id="leave_type" name="leave_type" required>                                
+                                {% for type in leave_types %}                                    
+                                    {% if type.leave_type == type %}
+                                        <option selected value="{{type.id }}">{{type.leave_type }}</option>
+                                    {% else %}
+                                        <option value="{{type.id }}">{{type.leave_type }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+              </div> 
+              <div class="form-group">
+              <label for="start_date">From</label>
+                <input type="date" class="form-control"  placeholder="From"
+                  name="from_date" required>
+              </div>               
+              <div class="form-group">
+              <label for="start_date">To</label>
+                <input type="date" class="form-control"  placeholder="To"
+                  name="to_date" required>
+              </div> 
+              
+              <div class="form-group">
+              <label for="overlap">Overlaps During this time (0)</label>
+              </div> 
+
+          <!--Footer-->
+          <div class="modal-footer">
+            <button class="btn btn-danger" type="submit">Save</button>
+            <button class="btn btn-outline-danger" type="reset" data-dismiss="modal">Close</button>
+          </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- Modal: modalAddNewHoliday -->
+
+    {% comment %} <div class="modal fade" id="modal_edit_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Edit Leave Types</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+         
+          <!-- Body -->
+          <div class="modal-body">
+            <form method="POST" action="{% url 'edit_leave_type_page' leave.id %}"> {% csrf_token %}
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Type"
+                  name="e_leave_type" value={{leave.type}} required>
+              </div>
+              <div class="form-group">
+                <input type="number" class="form-control"  placeholder="No. Of Days"
+                  name="e_leave_days" value={{ leave.leave_days }} required>
+              </div>  
+              <div class="form-group">
+                <input type="text" class="form-control"  placeholder="Description"
+                  name="e_desc" value={{ leave.desc }} required>
+              </div> 
+              
+          <!--Footer-->
+          <div class="modal-footer">
+            <button class="btn btn-danger" type="submit">Save</button>
+            <button class="btn btn-outline-danger" type="reset">Close</button>
+          </div>
+          </form>
+
+        </div>
+      </div>
+    </div> {% endcomment %}
+    <!-- Modal: modalAddNewHoliday -->
+  </div>
+</div>
+{% endblock content %} 
