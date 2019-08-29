@@ -1,0 +1,55 @@
+{%extends 'solitonems/base.html'%}
+
+{%block page_title %}
+<span>
+    <h2 class="animated fadeInDown">Manage Overtime Applications</h2>
+</span>
+{%endblock%}
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <a href="{%url 'approved_overtime_page'%}">
+                    <button class="btn btn-outline">View Approved Applications</button>
+                </a>
+
+                {%if pending_applications %}
+                <h3>Pending applications</h3>
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Start time</th>
+                        <th>End time</th>
+                    </tr>
+                    {%for pending_application in pending_applications %}
+                    <tr>
+                        <td>{{pending_application.applicant.first_name}} {{pending_application.applicant.last_name}}
+                        </td>
+                        <td>{{pending_application.date}}</td>
+                        <td>{{pending_application.start_time}}</td>
+                        <td>{{pending_application.end_time}}</td>
+                        <td>
+                            <a href="{%url 'reject_overtime_application' pending_application.id%}"
+                               onclick="return confirm('Are you sure you want to reject {{pending_application.applicant.first_name}}\'s overtime application?')">
+                                <button class="btn btn-danger">Reject</button>
+                            </a>
+                            <a href="{%url 'approve_overtime_application' pending_application.id%}"
+                               onclick="return confirm('Are you sure you want to approve {{pending_application.applicant.first_name}}\'s overtime application?')">
+                                <button class="btn btn-success">Approve</button>
+                            </a>
+
+                        </td>
+
+                    </tr>
+                    {%endfor%}
+                </table>
+                {%else%}
+                <h3>No pending applications</h3>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

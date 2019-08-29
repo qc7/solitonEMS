@@ -1,73 +1,96 @@
-      {%extends 'solitonems/base.html'%}
-      {%block page_title %}
-      <h1>Dashboard</h1>
-      {%endblock%}
+{%extends 'solitonems/base.html'%}
+{%block page_title %}
+<h1>Dashboard</h1>
+{%endblock%}
 
-      {%block content%}
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_employee">
+            Recruitment
+        </button>
+        <a href="{%url 'job_titles_page'%}">
+            <button type="button" class="btn btn-outline">
+              Manage Performance
+            </button>
+        </a>
+        <a href="{%url 'departments_page'%}">
+            <button type="button" class="btn btn-outline">
+                Training and Development
+            </button>
+        </a>
+          <a href="{%url 'departments_page'%}">
+            <button type="button" class="btn btn-outline">
+                Employee Termination
+            </button>
+        </a>
+      <a href="{%url 'departments_page'%}">
+            <button type="button" class="btn btn-outline">
+                Fleet Management
+            </button>
+        </a>
+        <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-warning card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">people</i>
-                  </div>
-                  <p class="card-category">Employees</p>
-                  <h3 class="card-title">{{number_of_employees}}
-                  </h3>
+                <div class="card card-stats">
+                    <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">people</i>
+                        </div>
+                        <p class="card-category">Employees</p>
+                        <h3 class="card-title">{{number_of_employees}}
+                        </h3>
+                    </div>
+                    <div class="card-footer">
+                    </div>
                 </div>
-                <div class="card-footer">
-                </div>
-              </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-success card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">pregnant_woman</i>
-                  </div>
-                  <p class="card-category">On Leave</p>
-                  <h3 class="card-title">0
-                      
-                  </h3>
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">pregnant_woman</i>
+                        </div>
+                        <p class="card-category">On Leave</p>
+                        <h3 class="card-title">0
+
+                        </h3>
+                    </div>
+                    <div class="card-footer">
+
+                    </div>
                 </div>
-                <div class="card-footer">
-                  
-                </div>
-              </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-danger card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">info_outline</i>
-                  </div>
-                  <p class="card-category">Suspended</p>
-                  <h3 class="card-title">0
-                      
-                  </h3>
+                <div class="card card-stats">
+                    <div class="card-header card-header-danger card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">info_outline</i>
+                        </div>
+                        <p class="card-category">Suspended</p>
+                        <h3 class="card-title">0
+
+                        </h3>
+                    </div>
+                    <div class="card-footer">
+                    </div>
                 </div>
-                <div class="card-footer">
-                </div>
-              </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-info card-header-icon">
-                  <div class="card-icon">
-                    <i class="fa fa-book"></i>
-                  </div>
-                  <p class="card-category">Training</p>
-                  <h3 class="card-title">0
-                      
-                  </h3>
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-book"></i>
+                        </div>
+                        <p class="card-category">Training</p>
+                        <h3 class="card-title">0
+
+                        </h3>
+                    </div>
+                    <div class="card-footer">
+                    </div>
                 </div>
-                <div class="card-footer">
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-      {%endblock content%}
+    </div>
+</div>
+{%endblock content%}
