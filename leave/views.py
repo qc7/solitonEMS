@@ -389,32 +389,40 @@ def add_new_absence(request):
         from_date = request.POST["from_date"]
         to_date = request.POST["to_date"]
 
-    try:
-        planner = annual_planner(leave_year="2019", date_from = from_date, date_to = to_date,\
-            employee=employee, leave = leave)
+    # try:
+    planner = annual_planner(leave_year="2019", date_from = from_date, date_to = to_date,\
+        employee=employee, leave = leave)
 
-        planner.save()
+    planner.save()
 
-        messages.success(request, f'Data Saved Successfully')
+    messages.success(request, f'Data Saved Successfully')
 
-        return redirect('leave_planner')
+    overlaps = get_leave_overlap(from_date, to_date)
 
-    except:
-        messages.error(request, f'Data Not Saved, Check you inputs and try again!')
+    messages.warning(request,f'There are {overlaps} Overlap(s) during the selected period')
 
-        return redirect('leave_planner')
+    return redirect('leave_planner')
+
+    # except:
+    #     messages.error(request, f'Data Not Saved, Check you inputs and try again!')
+
+    #     return redirect('leave_planner')
     
 def get_leave_overlap(start_date, end_date):
-    absences = leave_planer.objects.all()
+    absences = annual_planner.objects.all()
 
     Range = namedtuple('Range', ['start', 'end'])
 
-    r1 = Range(start=start_date, end=end_date)
+    date_format = "%Y-%m-%d"
+    from_date = datetime.datetime.strptime(start_date, date_format)
+    to_date = datetime.datetime.strptime(end_date, date_format)
+
+    r1 = Range(start=from_date, end=to_date)
     
     overlap = 0
     overlap_count = 0
     for absence in absences:
-        r2 = Range(start=absence.start_date, end=absence.end_date)
+        r2 = Range(start=absence.date_from, end=absence.date_to)
         latest_start = max(r1.start, r2.start)
         earliest_end = min(r1.end, r2.end)
         delta = (earliest_end - latest_start).days + 1
