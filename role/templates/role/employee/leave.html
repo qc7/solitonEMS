@@ -51,11 +51,12 @@
                                     {{ msg }}
                                 </div>
                              {% endfor %}
-                        {% endif %}
+                        {% endif %} 
+                        
                         <h2>Annual Leave Balance: <b>{{ l_balance }} day(s)</b></h2>
                         <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_apply_leave">Apply For Leave</button>
                        <a class="nav-link" href="{% url 'leave_planner' %}">
-                        <button class="btn btn-outline-primary" >Leave Planner</button>
+                        <button class="btn btn-outline-primary" >Leave Planner</button></a>
                        <h3>Leave Applications</h3>
                         <table class="table">
                             <thead>
@@ -117,7 +118,7 @@
                         <input type="date" class="form-control" placeholder="To" name="e_date" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Remark" name="remark" required>
+                        <input type="text" class="form-control" placeholder="Additional Note" name="remark" required>
                     </div>
 
                     <!--Footer-->
