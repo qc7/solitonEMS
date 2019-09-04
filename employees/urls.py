@@ -45,11 +45,14 @@ urlpatterns = [
      path('add_new_title/', views.add_new_title, name="add_new_title"),
 
     path('add_deduction/', views.add_deduction,name="add_deduction"),
+    path('add_allowance/', views.add_allowance,name="add_allowance"),
     path('delete_deduction/<int:id>',views.delete_deduction,name="delete_deduction"),
+    path('delete_allowance/<int:id>',views.delete_allowance,name="delete_allowance"),
     path('edit_bank_details/',views.edit_bank_details,name="edit_bank_details"),
     path('add_bank_details/',views.add_bank_details,name="add_bank_details"),
     path('add_organisation_details/',views.add_organisation_details,name="add_organisation_details"),
     path('edit_organisation_details/',views.edit_organisation_details,name="edit_organisation_details"),
+    path('employees_download/',views.employees_download,name="employees_download"),
     # Authentication
     path('accounts/login/', views.login_page, name="loginAccounts"),
     path('login/', views.login_view, name="login"),

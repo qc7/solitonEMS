@@ -25,35 +25,35 @@
                     </tr>
                     <tr>
                         <th>Employee NSSF Contribution</td>
-                        <td> UGX {{payroll.employee_nssf| intcomma }}</td>
+                        <td> {{payroll.employee.currency}} {{payroll.employee_nssf| intcomma }}</td>
                     </tr>
                     <tr>
                         <th>Employer NSSF Contribution</td>
-                        <td> UGX {{payroll.employer_nssf | intcomma}}</td>
+                        <td> {{payroll.employee.currency}} {{payroll.employer_nssf | intcomma}}</td>
                     </tr>
                     <tr>
                         <th>Total NSSF Contribution</td>
-                        <th> UGX {{payroll.total_nssf_contrib | intcomma}}</th>
+                        <th> {{payroll.employee.currency}} {{payroll.total_nssf_contrib | intcomma}}</th>
                     </tr>
                     <tr>
                         <th>PAYE</td>
-                        <td> UGX {{payroll.paye | intcomma}}</td>
+                        <td> {{payroll.employee.currency}} {{payroll.paye | intcomma}}</td>
                     </tr>
                     <tr>
                         <th>Total Statutory Deductions</td>
-                        <th> UGX {{payroll.total_statutory | intcomma}}</th>
+                        <th> {{payroll.employee.currency}} {{payroll.total_statutory | intcomma}}</th>
                     </tr>
                     <tr>
                         <th>Meal Allowance</td>
-                        <td> UGX 150,000</td>
+                        <td> {{payroll.employee.currency}} 150,000</td>
                     </tr>
                     <tr>
                         <th>Overtime</td>
-                        <td> UGX {{payroll.overtime | intcomma}}</td>
+                        <td> {{payroll.employee.currency}} {{payroll.overtime | intcomma}}</td>
                     </tr>
                     <tr>
                         <th>Bonus</td>
-                        <td> UGX {{payroll.bonus | intcomma}}</td>
+                        <td> {{payroll.employee.currency}} {{payroll.bonus | intcomma}}</td>
                     </tr>
                     <tr>
                         <th>Sacco Deduction</td>
@@ -61,26 +61,26 @@
                     </tr>
                     <tr>
                         <th>Damage Deduction</td>
-                        <td> UGX {{payroll.damage_deduction | intcomma}}</td>
+                        <td> {{payroll.employee.currency}} {{payroll.damage_deduction | intcomma}}</td>
                     </tr>
                     <tr>
                         <th>Prorate</td>
-                        <th> UGX {{payroll.prorate}}</th>
+                        <th> {{payroll.employee.currency}} {{payroll.prorate}}</th>
                     </tr>
                     <tr>
                         <th></th>
                     </tr>
                     <tr>
                         <th>BASIC SALARY</td>
-                        <th> UGX {{payroll.employee.basic_salary | intcomma}}</th>
+                        <th> {{payroll.employee.currency}} {{payroll.employee.basic_salary | intcomma}}</th>
                     </tr>
                     <tr>
                         <th>GROSS SALARY</td>
-                        <th> UGX {{payroll.gross_salary | intcomma}}</th>
+                        <th> {{payroll.employee.currency}} {{payroll.gross_salary | intcomma}}</th>
                     </tr>
                     <tr>
                         <th>NET SALARY</td>
-                        <th> UGX {{payroll.net_salary | intcomma}}</th>
+                        <th> {{payroll.employee.currency}} {{payroll.net_salary | intcomma}}</th>
                     </tr>
                     <center class="buttons">
                         <button class="btn btn-outline" data-toggle="modal" data-target="#modal_add_overtime">Add

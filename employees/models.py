@@ -1,5 +1,5 @@
 from django.db import models
-
+from settings.models import Currency
 # Create your models here.
 class Departments(models.Model):
     name = models.CharField(max_length=45)
@@ -41,6 +41,11 @@ class Employee(models.Model):
     leave_balance = models.IntegerField(default=21)
     leave_status = models.CharField(max_length=45, default="At Work")
     image_url = models.CharField(max_length=20, default="")
+    status = models.CharField(max_length=20, default="Active")
+    title = models.CharField(max_length=10, blank=True)
+    workstation = models.CharField(max_length=20, blank=True)
+    currency = models.ForeignKey(Currency,on_delete=models.CASCADE, blank=True, default=1)
+    work_station = models.CharField(max_length=40, blank=True)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -154,3 +159,12 @@ class BankDetail(models.Model):
 
     def __str__(self):
         return "{} {}".format(self.name_of_bank,self.bank_account)
+
+class Allowance(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    amount = models.IntegerField()
+    
+
+    def __str__(self):
+        return "{}".format(self.name)

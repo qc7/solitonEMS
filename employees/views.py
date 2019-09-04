@@ -16,9 +16,11 @@ from .models import (
     Teams,
     Job_Titles
 )
-from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction,BankDetail,OrganisationDetail
+from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction,BankDetail,OrganisationDetail,Allowance
 from .procedures import redirect_user_role
 from role.models import SolitonUser,Notification
+from settings.models import Currency
+import csv
 # Create your views here.
 
 # Authentication
@@ -128,7 +130,8 @@ def employee_page(request, id):
          "deps": Departments.objects.all(),
         "titles": Job_Titles.objects.all(),
         "notifications": notifications,
-        "number_of_notifications":number_of_notifications
+        "number_of_notifications":number_of_notifications,
+        "allowances": Allowance.objects.all()
     }
     return render(request, 'employees/employee.html', context)
 
@@ -160,7 +163,8 @@ def edit_employee_page(request, id):
         "deps": Departments.objects.all(),
         "titles": Job_Titles.objects.all(),
         "notifications": notifications,
-        "number_of_notifications":number_of_notifications
+        "number_of_notifications":number_of_notifications,
+        "currencies": Currency.objects.all()
     }
     return render(request, 'employees/edit_employee.html', context)
 
@@ -473,7 +477,11 @@ def add_new_employee(request):
         telephone = request.POST['telephone']
         residence_address = request.POST['residence_address']
         dob = request.POST['dob']
-
+        renumeration_currency_id = request.POST['renumeration_currency']
+        title = request.POST['title']
+        work_station = request.POST['work_station']
+        
+        currency = Currency.objects.get(pk=renumeration_currency_id)
         #try:
         # Creating instance of Employee
         employee = Employee(first_name=first_name, last_name=last_name,basic_salary=basic_salary,
@@ -481,7 +489,8 @@ def add_new_employee(request):
                             marital_status=marital_status, start_date=start_date, 
                             nationality=nationality, nssf_no=nssf_no,
                             ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, 
-                            residence_address=residence_address,dob=dob)
+                            residence_address=residence_address,dob=dob,currency=currency,title=title,
+                            work_station=work_station)
         # Saving the employee instance
         employee.save()
         context = {
@@ -534,6 +543,7 @@ def edit_employee(request, id):
         # Fetching data from the add new employee form
     
         employee = Employee.objects.get(pk=id)
+        employee.title = request.POST['title']
         employee.first_name = request.POST['first_name']
         employee.last_name = request.POST['last_name']
         employee.grade = request.POST['grade']
@@ -548,6 +558,10 @@ def edit_employee(request, id):
         employee.telephone_no = request.POST['telephone']
         employee.residence_address = request.POST['residence_address']
         employee.dob = request.POST['dob']
+        currency_id = request.POST['renumeration_currency']
+        employee.currency = Currency.objects.get(pk=currency_id)
+
+        employee.status = request.POST['status']
 
         # Saving the employee instance
         employee.save()
@@ -1345,6 +1359,37 @@ def add_deduction(request):
         }
 
         return render(request, "employees/failed.html", context)
+
+def add_allowance(request):
+
+    if request.method == 'POST':
+        # Fetching data from the add allowances form
+        name = request.POST['allowance_name']
+        amount = request.POST['allowance_amount']
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+
+        # Creating instance of Allowance
+        allowance = Allowance(employee=employee, name=name, amount=amount)
+
+        # Saving the Allowance instance
+        allowance.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the allowances" % (allowance.name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
     
 def delete_deduction(request,id):
     try:
@@ -1370,3 +1415,50 @@ def delete_deduction(request,id):
         "employee": employee
     }
     return render(request, 'employees/deleted.html', context)
+
+def delete_allowance(request,id):
+    try:
+        # Grab the Allowance
+        allowance = Allowance.objects.get(pk=id)
+
+        name = allowance.name
+        employee = allowance.employee
+        # Delete the Allowance
+        allowance.delete()
+
+    except Allowance.DoesNotExist:
+        context = {
+            "employees_page": "active",
+            "deleted_msg": "The allowance no longer exists on the system"
+        }
+
+        return render(request, 'employees/deleted.html', context)
+
+    context = {
+        "employees_page": "active",
+        "deleted_msg": "You have deleted %s from the allowances" % (name),
+        "employee": employee
+    }
+    return render(request, 'employees/deleted.html', context)
+
+@login_required
+def employees_download(request):
+
+    # Get all the associated Employee objects
+    employees = Employee.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    # Name the csv file
+    filename = "employees.csv"
+    response['Content-Disposition'] = 'attachment; filename='+filename
+    writer = csv.writer(response,delimiter=',')
+    # Writing the first row of the csv
+    heading_text = "Soliton Employees"
+    writer.writerow([heading_text.upper()])
+    writer.writerow(['ID','Title','Name','Workstation','Status','Renumeration Currency','Basic Salary','Grade','Gender','Hired Date','Marital Status','Date of Birth','Nationality','NSSF NO.','Telephone','Residence Adddress','National ID','URA TIN'])
+    # Writing other rows
+    for employee in employees:
+        name = employee.first_name + " " + employee.last_name
+        writer.writerow([employee.id,employee.title,name,employee.work_station,employee.status,employee.currency,employee.basic_salary,employee.grade,employee.gender,employee.start_date,employee.marital_status,employee.dob,employee.nationality,employee.nssf_no,employee.telephone_no,employee.residence_address,employee.national_id,employee.ura_tin])
+
+    # Return the response
+    return response
