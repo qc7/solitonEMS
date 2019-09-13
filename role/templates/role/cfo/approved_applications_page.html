@@ -1,4 +1,4 @@
-{%extends 'solitonems/base.html'%}
+{%extends './cfo.html'%}
 
 {%block page_title %}
 <span>
@@ -24,14 +24,14 @@
                     <tr>
                         <td>{{approved_application.supervisee.first_name}} {{approved_application.supervisee.last_name}}
                         </td>
-                        <td>{{ approved_application.date }}</td>
-                        <td>{{ approved_application.start_time }}</td>
-                        <td>{{ approved_application.end_time }}</td>
-                        <td>{{ approved_application.description }}</td>
+                        <td>{{approved_application.date}}</td>
+                        <td>{{approved_application.start_time}}</td>
+                        <td>{{approved_application.end_time}}</td>
+                        <td>{{approved_application.description}}</td>
                     </tr>
-                    {% endfor %}
+                    {%endfor%}
                 </table>
-                {% else %}
+                {%else%}
                 <h3>No approved leave applications</h3>
                 {%endif%}
             </div>

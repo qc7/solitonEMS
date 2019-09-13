@@ -165,6 +165,9 @@ class Allowance(models.Model):
     name = models.CharField(max_length=50)
     amount = models.IntegerField()
     
-
     def __str__(self):
         return "{}".format(self.name)
+
+class Supervision(models.Model):
+    supervisor = models.ForeignKey(Employee,on_delete=models.CASCADE, related_name="supervisees")
+    supervisee = models.ForeignKey(Employee,on_delete=models.CASCADE, related_name="supervisors")

@@ -85,8 +85,12 @@
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                  
                   <center>
-                    <h4 style="font-weight: bold">{{user.solitonuser.soliton_role}}</h4>
+                    <h4 style="font-weight: bold">
+                      {% block actor %}
+                      {%endblock%}
+                    </h4>
                   </center>
                   <a class="dropdown-item" href="#">{{user.solitonuser.employee.first_name}}
                     {{user.solitonuser.employee.last_name}}</a>

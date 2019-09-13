@@ -629,6 +629,89 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="material-icons" style="font-size: 3em; float:left; margin-right:20px">wallet</i>
+                        <h4 class="card-title ">Supervisees</h4>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_supervisee">Add a supervisee
+                            </button>
+                        {%if supervisions%}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th>
+                                        Name
+                                    </th>
+                                    
+                                </thead>
+                                <tbody>
+                                    {%for supervision in supervisions%}
+                                    <tr>
+                                        <td>{{supervision.supervisee}}</td>
+                                        
+                                        <td>
+                                            <a href="{%url 'delete_supervisee' supervision.id%}" style="color: inherit"
+                                                
+                                                onclick="return confirm('Are you sure you want to delete this supervisee from {{employee.first_name}}?')">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          <!-- modal Add supervisee -->
+          <div class="modal fade" id="modal_add_supervisee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true" style="overflow-y: auto !important">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <!--Header-->
+                  <div class="modal-header">
+                      <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s supervisee
+                      </h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">×</span>
+                      </button>
+                  </div>
+                  <!--Body-->
+                  <div class="modal-body">
+
+                      <form method="POST" action="{%url 'add_supervisee'%}"> {%csrf_token%}
+                          <div class="form-group">
+                              <label for="sel1">Supervisee:</label>
+                              <select class="form-control" id="sel1" name="supervisee_id" required>
+                                  {%for supervisee_option in supervisee_options%}
+                                  <option value={{supervisee_option.id}}>{{supervisee_option}}</option>
+                                  {%endfor%}
+                              </select>
+                          </div>
+                
+                          <input type="hidden" name="employee_id" value={{employee.id}}>
+
+
+                  </div>
+                  <!--Footer-->
+                  <div class="modal-footer">
+                      <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                          type="reset">Close</button>
+                      <button class="btn btn-danger" type="submit">Save</button>
+                  </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
         <!-- modal Add deduction -->
         <div class="modal fade" id="modal_add_deduction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true" style="overflow-y: auto !important">

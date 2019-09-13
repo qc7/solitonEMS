@@ -1,29 +1,23 @@
 {% extends '../base.html'%} {% load static %}
 {%block actor%}
-HOD
+CFO
 {%endblock%}
 {%block sidebar-wrapper%}
 <div class="sidebar-wrapper">
     <ul class="nav">
         <li class="nav-item {{ dashboard_page }}">
-            <a class="nav-link" href="{% url 'hod_role_page' %}">
+            <a class="nav-link" href="{% url 'cfo_role_page' %}">
                 <i class="material-icons">dashboard</i>
                 <p>Dashboard</p>
             </a>
         </li>
         <li class="nav-item {{ overtime_page }}">
-            <a class="nav-link" href="{%url 'hod_overtime_page'%}">
+            <a class="nav-link" href="{%url 'cfo_overtime_page'%}">
                 <i class="material-icons">hourglass_empty</i>
                 <p>Overtime</p>
             </a>
         </li>
-        <li class="nav-item {{ leave_page }}">
-            <a class="nav-link" href="#">
-                <i class="material-icons">pregnant_woman</i>
-                <p>Leave</p>
-            </a>
-        </li>
-        <li class="nav-item  {{ payroll_page }}">
+        <li class="nav-iCFO Portaltem  {{ payroll_page }}">
             <a class="nav-link" href="#">
                 <i class="material-icons">library_books</i>
                 <p>Payroll</p>

@@ -1,10 +1,13 @@
 {%extends '../base.html'%}
+{%block actor%}
+Employee
+{%endblock%}
 
 {%block sidebar-wrapper%}
 <div class="sidebar-wrapper">
     <ul class="nav">
         <li class="nav-item {{ view_profile_page }}">
-            <a class="nav-link" href="{% url 'dashboard_page' %}">
+            <a class="nav-link" href="{% url 'employee_role_page' %}">
                 <i class="material-icons">dashboard</i>
                 <p>View Profile</p>
             </a>
@@ -27,7 +30,14 @@
                 <p>Overtime</p>
             </a>
         </li>
+        <li class="nav-item {{supervisees_page}}">
+            <a class="nav-link" href="{% url 'employee_supervisees_page' user.solitonuser.employee.id%}">
+                <i class="material-icons">people</i>
+                <p>Supervisees</p>
+            </a>
+        </li>
     </ul>
+    
 </div>
 
 

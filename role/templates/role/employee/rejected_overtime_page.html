@@ -1,15 +1,13 @@
 {%extends './overtime_application.html'%}
 {%block overtime_applications %}
-<button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_apply_leave">Apply for
-    overtime
-</button>
-<a href="{%url 'approved_overtime_page'%}">
+
+<a href="{%url 'employee_overtime_page' user.solitonuser.employee.id%}">
     <button class="btn btn-outline">Pending</button>
 </a>
-<a href="{%url 'approved_overtime_page'%}">
+<a href="{%url 'employee_approved_overtime_page' user.solitonuser.employee.id%}">
     <button class="btn btn-outline">Approved</button>
 </a>
-<a href="{%url 'approved_overtime_page'%}">
+<a href="{%url 'employee_rejected_overtime_page' user.solitonuser.employee.id%}">
     <button class="btn btn-outline-danger">Rejected</button>
 </a>
 {%if rejected_applications %}
@@ -34,6 +32,6 @@
     {%endfor%}
 </table>
 {%else%}
-<h3>No pending applications</h3>
+<h3>No rejected applications</h3>
 {%endif%}
 {%endblock%}

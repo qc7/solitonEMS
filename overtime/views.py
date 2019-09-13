@@ -2,10 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
 from overtime.models import OvertimeApplication
 from role.models import Notification
-
 
 # Create your views here.
 @login_required
@@ -55,13 +53,9 @@ def approved_overtime_page(request):
 def reject_overtime_application(request, id):
     # Get the overtime application
     overtime_application = OvertimeApplication.objects.get(pk=id)
-
     overtime_application.status = "Rejected"
-
     overtime_application.save()
-
     return HttpResponseRedirect(reverse('overtime_page'))
-
 
 def approve_overtime_application(request, id):
     # Get the overtime application
@@ -69,5 +63,3 @@ def approve_overtime_application(request, id):
     overtime_application.status = "Approved"
     overtime_application.save()
     return HttpResponseRedirect(reverse('overtime_page'))
-
-

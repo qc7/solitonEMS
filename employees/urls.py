@@ -46,6 +46,8 @@ urlpatterns = [
 
     path('add_deduction/', views.add_deduction,name="add_deduction"),
     path('add_allowance/', views.add_allowance,name="add_allowance"),
+    path('add_supervisee/', views.add_supervisee,name="add_supervisee"),
+    path('delete_superviser/<int:id>/', views.delete_supervisee,name="delete_supervisee"),
     path('delete_deduction/<int:id>',views.delete_deduction,name="delete_deduction"),
     path('delete_allowance/<int:id>',views.delete_allowance,name="delete_allowance"),
     path('edit_bank_details/',views.edit_bank_details,name="edit_bank_details"),
