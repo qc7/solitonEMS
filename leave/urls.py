@@ -17,7 +17,7 @@ urlpatterns = [
     path('apply_leave/', views.apply_leave, name="apply_leave"),
     path('approve_leave/', views.approve_leave, name="approve_leave"),
     
-    path('annual_calendar/', views.leave_calendar, name="annual_calendar"),
+    path('annual_calendar/', views.Leave_planner_summary, name="annual_calendar"),
     path('leave_planner/', views.leave_planer, name="leave_planner"),
     path('add_new_absence/', views.add_new_absence, name="add_new_absence"),
 

@@ -4,20 +4,21 @@ from django.contrib.auth.decorators import login_required
 from django.utils.dateparse import parse_date
 from django.utils import timezone
 import datetime
-from django.db.models import (
-    Sum,
-    Count
-)
 from datetime import timedelta
 import calendar
 from collections import namedtuple
 from employees.models import Employee
+from django.db import connection
+from django.db.models import (
+    Sum,
+    Count
+)
 from .models import (
     Leave_Types, 
     Holidays,
     Approval_Path,
     LeaveApplication,
-    annual_planner
+    annual_planner,
 )
 
 def get_current_user(request, need):
@@ -344,41 +345,30 @@ def calculate_leave_days(start_date, end_date):
     return all_working_days
         
 
-def leave_calendar(request):
+def annual_calendar(request):
     # first_day = calendar.TextCalendar(calendar.MONDAY)
     # annual_calendar = first_day.formatyear(2019)
-
-    year=2011
-    month=12
-    change=None
-
-    # init variables
-    cal = calendar.Calendar()
-    cal.setfirstweekday(6)
-    month_days = cal.itermonthdays(year, month)
-    lst = [[]]
-    week = 0
-
-    # make month lists containing list of days for each week
-    # each day tuple will contain list of entries and 'current' indicator
-    for day in month_days:
-        lst[week].append((day))
-        if len(lst[week]) == 7:
-            lst.append([])
-            week += 1
-    
-    return redirect("leave/annual_calendar.html")
+    context = { 
+        "annual_calendar": "active",
+        "employees": Employee.objects.all()
+    }
+        
+    return render(request, 'leave/annual_calendar.html', context)
 
 def leave_planer(request):
      # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request,'registration/login.html',{"message":None})
+
+    current_year = datetime.datetime.now().year
+
     context = { 
         "leave_planner": "active",
         "planner": annual_planner.objects.all(),
         "leave_types": Leave_Types.objects.all(),
-        "employees": Employee.objects.all()
+        "employees": Employee.objects.all(),
+        "year": current_year
     }
     return render(request, 'leave/leave_planner.html', context)
     
@@ -389,24 +379,35 @@ def add_new_absence(request):
         from_date = request.POST["from_date"]
         to_date = request.POST["to_date"]
 
-    # try:
-    planner = annual_planner(leave_year="2019", date_from = from_date, date_to = to_date,\
-        employee=employee, leave = leave)
+    date_format = "%Y-%m-%d"
+    leave_year = datetime.datetime.strptime(from_date, date_format).year
+    leave_month = calendar.month_name[datetime.datetime.strptime(from_date, date_format).month]
+    leave_days = calculate_leave_days(from_date, to_date)
 
-    planner.save()
+    try:
+        if leave_days >= 1:
+            planner = annual_planner(leave_year=leave_year, date_from = from_date, date_to = to_date,\
+                employee=employee, leave = leave, leave_month = leave_month[0:3], no_of_days = leave_days)
 
-    messages.success(request, f'Data Saved Successfully')
+            planner.save()
 
-    overlaps = get_leave_overlap(from_date, to_date)
+            messages.success(request, f'Data Saved Successfully')
 
-    messages.warning(request,f'There are {overlaps} Overlap(s) during the selected period')
+            overlaps = get_leave_overlap(from_date, to_date)
 
-    return redirect('leave_planner')
+            if overlaps > 1:
+                messages.warning(request,f'There are {overlaps - 1} Overlap(s) during the selected period.\
+                    \n Click to View Overlaps')
 
-    # except:
-    #     messages.error(request, f'Data Not Saved, Check you inputs and try again!')
+        else:
+            messages.warning(request,f'Invalid Date Range')
 
-    #     return redirect('leave_planner')
+        return redirect('leave_planner')
+
+    except:
+        messages.error(request, f'Data Not Saved, Check you inputs and try again!')
+
+        #  return redirect('leave_planner')
     
 def get_leave_overlap(start_date, end_date):
     absences = annual_planner.objects.all()
@@ -416,8 +417,8 @@ def get_leave_overlap(start_date, end_date):
     date_format = "%Y-%m-%d"
     from_date = datetime.datetime.strptime(start_date, date_format)
     to_date = datetime.datetime.strptime(end_date, date_format)
-
-    r1 = Range(start=from_date, end=to_date)
+    
+    r1 = Range(start=from_date.date(), end=to_date.date())
     
     overlap = 0
     overlap_count = 0
@@ -433,3 +434,63 @@ def get_leave_overlap(start_date, end_date):
 
     
     return overlap_count
+
+def Leave_planner_summary(request):
+     # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request,'registration/login.html',{"message":None})  
+    department_id = 1
+    team_id = 1
+    # Select multiple records
+    all_plans = None
+    with connection.cursor() as cursor:
+        cursor.execute(f"SELECT e.first_name || ' ' || e.last_name as Employee,\
+        SUM(CASE WHEN leave_month = 'Jan' THEN no_of_days ELSE 0 END) as Jan,\
+        SUM(CASE WHEN leave_month = 'Feb' THEN no_of_days ELSE 0 END) as Feb,\
+        SUM(CASE WHEN leave_month = 'Mar' THEN no_of_days ELSE 0 END) as Mar,\
+        SUM(CASE WHEN leave_month = 'Apr' THEN no_of_days ELSE 0 END) as Apr,\
+        SUM(CASE WHEN leave_month = 'May' THEN no_of_days ELSE 0 END) as May,\
+        SUM(CASE WHEN leave_month = 'Jun' THEN no_of_days ELSE 0 END) as Jun,\
+        SUM(CASE WHEN leave_month = 'Jul' THEN no_of_days ELSE 0 END) as Jul,\
+        SUM(CASE WHEN leave_month = 'Aug' THEN no_of_days ELSE 0 END) as Aug,\
+        SUM(CASE WHEN leave_month = 'Sep' THEN no_of_days ELSE 0 END) as Sep,\
+        SUM(CASE WHEN leave_month = 'Oct' THEN no_of_days ELSE 0 END) as Oct,\
+        SUM(CASE WHEN leave_month = 'Nov' THEN no_of_days ELSE 0 END) as Nov,\
+        SUM(CASE WHEN leave_month = 'Dec' THEN no_of_days ELSE 0 END) as Dec\
+        FROM employees_employee e LEFT OUTER JOIN leave_annual_planner l ON e.id=l.employee_id\
+		WHERE e.id IN \
+            (SELECT employee_id FROM employees_organisationdetail \
+                WHERE department_id={ department_id } AND team_id={ team_id })\
+        GROUP BY e.id;")
+        all_plans = cursor.fetchall()
+    # DB API fetchall produces a list of tuples
+    #all_plans[0][0] # first drink id
+
+    context = {
+        "plans": all_plans,
+        "employees": Employee.objects.all()
+    }
+    return render(request, 'leave/annual_calendar.html', context)
+
+def leave_plan(leave_planer):
+    no_of_days = 0
+
+    if leave_plan.leave_month == 'Jan':
+        no_of_days = leave_planer.objects.filter(no_of_days) 
+        return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Feb': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Mar': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Apr': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'May': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Jun': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Jul': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Aug': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Sep': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Oct': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Nov': return leave_plan.no_of_days
+    elif leave_plan.leave_month == 'Dec': return leave_plan.no_of_days
+    else:
+        return 0
+
+        

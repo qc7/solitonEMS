@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 {% block page_title %}
-<h1>Leave Calendar - 2019</h1>
+<h1>Leave Planner - {{year}}</h1>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,8 @@
      <!-- Status Flash Messages -->
           {% if messages %}
             {% for msg in messages%}
-              <div class="alert alert-{{ msg.tags }}">
+              <div class="alert alert-{{ msg.tags }} alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                 {{ msg }}
               </div>
             {% endfor %}
@@ -23,7 +24,7 @@
     <div class="col-md-12">
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover">
+          <table class="table table-hover" id="planner_table">
             <thead class="">
               <th>Employee</th>
               <th>Type</th>
@@ -162,3 +163,43 @@
   </div>
 </div>
 {% endblock content %} 
+
+{% comment %} {% block js%}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.3/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/b-print-1.5.6/cr-1.5.0/fc-3.2.5/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/datatables.min.css"/>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.3/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/b-print-1.5.6/cr-1.5.0/fc-3.2.5/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/datatables.min.js"></script>
+
+  <script>
+      $(document).ready( function () {
+      $('#planner_table').DataTable();
+
+  } );
+
+
+  $(document).ready(function() {
+        // messages timeout for 10 sec 
+        setTimeout(function() {
+            $('.alert alert-success').fadeOut('slow');
+        }, 10000); // <-- time in milliseconds, 1000 =  1 sec
+
+        // delete message
+        $('.del-msg').live('click',function(){
+            $('.del-msg').parent().attr('style', 'display:none;');
+        })
+    });
+
+
+</script> {% endcomment %}
+{% comment %} {% endblock %} {% endcomment %}
+<script>    
+    $(document).ready(function(){
+        window.setTimeout(function() {
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove();
+    });
+  }, 5000);
+
+</script>
+
