@@ -74,6 +74,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Description" name="description" required>
                     </div>
+                    <input type="hidden" value="{{user.solitonuser.employee.id}}" name="supervisor_id">
                     <input type="hidden" value="{{supervisee.id}}" name="supervisee_id">
                     <!--Footer-->
                     <div class="modal-footer">

@@ -111,12 +111,22 @@ def employee_supervisee_page(request,id):
 
 @login_required
 def apply_overtime(request):
+    overtime_application = create_overtime_application(request)
+    supervisee_id = overtime_application.supervisee.id
+    return HttpResponseRedirect(reverse('employee_supervisee_page',args=[supervisee_id]))
+
+
+def create_overtime_application(request):
     overtime_date = request.POST['date']
     start_time = request.POST['start_time']
     end_time = request.POST['end_time']
     description = request.POST['description']
     supervisee_id = request.POST['supervisee_id']
+    supervisor_id = request.POST['supervisor_id']
+    supervisor = Employee.objects.get(pk=supervisor_id)
     supervisee = Employee.objects.get(pk=supervisee_id)
-    overtime_application = OvertimeApplication(date=overtime_date,start_time=start_time,end_time=end_time,description=description,supervisee=supervisee)
+    overtime_application = OvertimeApplication(date=overtime_date, start_time=start_time, end_time=end_time,
+                                               supervisor=supervisor,
+                                               description=description, supervisee=supervisee)
     overtime_application.save()
-    return HttpResponseRedirect(reverse('employee_supervisee_page',args=[supervisee_id]))
+    return overtime_application

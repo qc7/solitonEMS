@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+
+from employees.services import create_employee_instance
 from .models import (
     Employee,
     HomeAddress,
@@ -12,9 +14,9 @@ from .models import (
     Beneficiary,
     Spouse,
     Dependant,
-    Departments,
-    Teams,
-    Job_Titles,
+    Department,
+    Team,
+    Position,
     BankDetail, OrganisationDetail, Allowance,
     Supervision
 )
@@ -100,8 +102,8 @@ def employee_page(request, id):
         "spouses": employee.spouse_set.all(),
         "dependants": employee.dependant_set.all(),
         "deductions": employee.deduction_set.all(),
-        "deps": Departments.objects.all(),
-        "titles": Job_Titles.objects.all(),
+        "deps": Department.objects.all(),
+        "titles": Position.objects.all(),
         "notifications": notifications,
         "number_of_notifications": number_of_notifications,
         "allowances": Allowance.objects.all(),
@@ -129,8 +131,8 @@ def edit_employee_page(request, id):
         "user": user,
         "employees_page": "active",
         "employee": employee,
-        "deps": Departments.objects.all(),
-        "titles": Job_Titles.objects.all(),
+        "deps": Department.objects.all(),
+        "titles": Position.objects.all(),
         "notifications": notifications,
         "number_of_notifications": number_of_notifications,
         "currencies": Currency.objects.all()
@@ -309,7 +311,7 @@ def departments_page(request):
     context = {
         "user": request.user,
         "employees_page": "active",
-        "departs": Departments.objects.all(),
+        "departs": Department.objects.all(),
         "emps": Employee.objects.all(),
         "notifications": notifications,
         "number_of_notifications": number_of_notifications
@@ -324,14 +326,14 @@ def teams_page(request, id):
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
 
-    ts = Teams.objects.filter(department=id)
+    ts = Team.objects.filter(department=id)
     notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
     number_of_notifications = notifications.count()
     context = {
         "user": request.user,
         "employees_page": "active",
         "teams": ts,
-        "dep": Departments.objects.get(pk=id),
+        "dep": Department.objects.get(pk=id),
         "emps": Employee.objects.all(),
         "notifications": notifications,
         "number_of_notifications": number_of_notifications
@@ -351,7 +353,7 @@ def job_titles_page(request):
     context = {
         "user": request.user,
         "employees_page": "active",
-        "titles": Job_Titles.objects.all(),
+        "titles": Position.objects.all(),
         "notifications": notifications,
         "number_of_notifications": number_of_notifications
     }
@@ -432,40 +434,10 @@ def logout_view(request):
 @login_required
 def add_new_employee(request):
     if request.method == 'POST':
-        # Fetching data from the add new employee form
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        grade = request.POST['grade']
-        basic_salary = request.POST['basic_salary']
-        gender = request.POST['gender']
-        marital_status = request.POST['marital_status']
-        start_date = request.POST['start_date']
-        nationality = request.POST['nationality']
-        nssf_no = request.POST['nssf_no']
-        ura_tin = request.POST['ura_tin']
-        national_id = request.POST['national_id']
-        telephone = request.POST['telephone']
-        residence_address = request.POST['residence_address']
-        dob = request.POST['dob']
-        renumeration_currency_id = request.POST['renumeration_currency']
-        title = request.POST['title']
-        work_station = request.POST['work_station']
-
-        currency = Currency.objects.get(pk=renumeration_currency_id)
-        # try:
-        # Creating instance of Employee
-        employee = Employee(first_name=first_name, last_name=last_name, basic_salary=basic_salary,
-                            grade=grade, gender=gender,
-                            marital_status=marital_status, start_date=start_date,
-                            nationality=nationality, nssf_no=nssf_no,
-                            ura_tin=ura_tin, national_id=national_id, telephone_no=telephone,
-                            residence_address=residence_address, dob=dob, currency=currency, title=title,
-                            work_station=work_station)
-        # Saving the employee instance
-        employee.save()
+        employee = create_employee_instance(request)
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully added %s to the employees" % (employee.first_name),
+            "success_msg": "You have successfully added %s to the employees" % employee.first_name,
             "employee": employee
         }
 
@@ -478,6 +450,9 @@ def add_new_employee(request):
         }
 
         return render(request, "employees/failed.html", context)
+
+
+
 
 
 @login_required
@@ -511,7 +486,6 @@ def delete_employee(request, id):
 def edit_employee(request, id):
     if request.method == 'POST':
         # Fetching data from the add new employee form
-
         employee = Employee.objects.get(pk=id)
         employee.title = request.POST['title']
         employee.first_name = request.POST['first_name']
@@ -635,9 +609,9 @@ def add_organisation_details(request):
         # Get the employee instance
         employee = Employee.objects.get(pk=employee_id)
         # Get the department instance
-        department = Departments.objects.get(pk=depart)
+        department = Department.objects.get(pk=depart)
         # Get the Job title instance
-        position = Job_Titles.objects.get(pk=position)
+        position = Position.objects.get(pk=position)
         # Creating instance of organisation Detail
         organisation_detail = OrganisationDetail(employee=employee, department=department, position=position)
         # Saving the BankDetail instance
@@ -670,9 +644,9 @@ def edit_organisation_details(request):
         # Get the employee instance
         employee = Employee.objects.get(pk=employee_id)
         # Get the department instance
-        department = Departments.objects.get(pk=depart)
+        department = Department.objects.get(pk=depart)
         # Get the Job title instance
-        position = Job_Titles.objects.get(pk=position)
+        position = Position.objects.get(pk=position)
         # get instance of organisation Detail
         organisation_detail = OrganisationDetail.objects.get(employee=employee)
         organisation_detail.department = department
@@ -1248,7 +1222,7 @@ def add_new_department(request):
         hod = request.POST["hod"]
 
     try:
-        depat = Departments(name=dep_name, hod=hod)
+        depat = Department(name=dep_name, hod=hod)
 
         depat.save()
 
@@ -1268,7 +1242,7 @@ def add_new_team(request):
         dpt = request.POST["dept"]
 
     try:
-        team = Teams(department_id=dpt, name=team_name, supervisors=sup)
+        team = Team(department_id=dpt, name=team_name, supervisors=sup)
 
         team.save()
 
@@ -1287,7 +1261,7 @@ def add_new_title(request):
         pos = request.POST["positions"]
 
     try:
-        job = Job_Titles(title=job_title, positions=pos)
+        job = Position(title=job_title, positions=pos)
 
         job.save()
 
