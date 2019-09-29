@@ -1,8 +1,6 @@
 from django.db.models import QuerySet
 from django.test import TestCase
 
-from employees.models import Employee
-from overtime.models import OvertimeApplication
 from overtime.selectors import get_cfo_pending_overtime_applications, get_ceo_pending_overtime_applications
 from overtime.tests.overtime_objects import get_supervisor, get_supervisee, get_overtime_application
 

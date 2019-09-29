@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from employees.models import Employee,Supervision
 from overtime.models import OvertimeApplication
-from payroll.models import PayrollRecord, Payroll
+from payroll.models import PayrollRecord, Payslip
 from leave.models import LeaveApplication, Leave_Types
 from leave.procedures import get_leave_balance, get_employee_leave, leave_balance
 # Create your views here.
@@ -41,7 +41,7 @@ def employee_payslip_page(request, id):
     # Get the latest payroll record
     payroll_record = PayrollRecord.objects.all().order_by('-id')[0]
     # Get the payroll
-    payroll = Payroll.objects.get(employee=employee, payroll_record=payroll_record)
+    payroll = Payslip.objects.get(employee=employee, payroll_record=payroll_record)
     context = {
         "payroll": payroll,
         "month": payroll.payroll_record.month,
@@ -112,7 +112,7 @@ def employee_supervisee_page(request,id):
 @login_required
 def apply_overtime(request):
     overtime_application = create_overtime_application(request)
-    supervisee_id = overtime_application.supervisee.id
+    supervisee_id = overtime_application.applicant.id
     return HttpResponseRedirect(reverse('employee_supervisee_page',args=[supervisee_id]))
 
 

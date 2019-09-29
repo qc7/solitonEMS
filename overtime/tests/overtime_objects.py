@@ -2,6 +2,7 @@ from django.utils import timezone
 
 from employees.models import Employee
 from overtime.models import OvertimeApplication
+from settings.models import Currency
 
 
 def get_supervisee(currency):

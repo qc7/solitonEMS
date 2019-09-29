@@ -1,12 +1,8 @@
 from django.test import TestCase
 from django.urls import resolve, reverse
-from django.utils import timezone
 
-from employees.models import Employee
-from overtime.models import OvertimeApplication
 from role.views.cfo_views import cfo_overtime_page, cfo_approve_overtime
 from role.views.hod_views import hod_role_page, hod_reject_overtime, hod_amend_overtime_page
-from settings.models import Currency
 
 
 class TestUrl(TestCase):
@@ -33,4 +29,4 @@ class TestUrl(TestCase):
         self.assertEquals(resolve(url).func, hod_reject_overtime)
 
     def test_cfo_approve_overtime_is_resolved(self):
-        self.check_page_url_is_resolved('cfo_approve_overtime',cfo_approve_overtime,args=[1])
+        self.check_page_url_is_resolved('cfo_approve_overtime', cfo_approve_overtime, args=[1])

@@ -8,7 +8,7 @@ from role.tests.check_functions import check_template_and_status_code, check_pro
 from settings.models import Currency
 
 
-class TestView(TestCase):
+class TestRoleView(TestCase):
 
     def setUp(self):
         self.client = Client()

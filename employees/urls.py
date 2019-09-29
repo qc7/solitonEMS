@@ -55,8 +55,5 @@ urlpatterns = [
     path('add_organisation_details/',views.add_organisation_details,name="add_organisation_details"),
     path('edit_organisation_details/',views.edit_organisation_details,name="edit_organisation_details"),
     path('employees_download/',views.employees_download,name="employees_download"),
-    # Authentication
-    path('accounts/login/', views.login_page, name="loginAccounts"),
-    path('login/', views.login_view, name="login"),
-    path('logout/', views.logout_view, name="logout"),
+
 ]

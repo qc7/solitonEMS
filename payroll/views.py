@@ -4,12 +4,15 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import PayrollRecord, Payroll
+
+from payroll.selectors import get_payroll_record_by_id
+from payroll.services import create_payslip_list_service
+from .models import PayrollRecord, Payslip
 from django.urls import reverse
-from .EmployeePayroll import EmployeePayroll
+from .simple_payslip import SimplePayslip
 from employees.models import Employee
 from django.db.models import Sum
-from .procedures import get_total_deduction, get_total_nssf, get_total_paye, get_total_gross_pay, get_total_basic_pay, \
+from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_total_paye, get_total_gross_pay, get_total_basic_pay, \
     get_total_net_pay, render_to_pdf
 from role.models import Notification, SolitonUser
 
@@ -17,12 +20,18 @@ from role.models import Notification, SolitonUser
 # Create your views here.
 # Pages
 ###############################################################
-@login_required
+def payroll_page(request):
+    context = {
+        "payroll_page": "active"
+    }
+    return render(request, 'payroll/payroll_page.html', context)
+
+
 def payroll_records_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+        return render(request, 'ems_login/login.html', {"message": None})
 
     # Get the notifications
     user = request.user.solitonuser
@@ -48,7 +57,7 @@ def payroll_record_page(request, id):
     year = payroll_record.year
 
     # Get all the associated Payroll objects
-    payrolls = Payroll.objects.filter(payroll_record=payroll_record)
+    payrolls = Payslip.objects.filter(payroll_record=payroll_record)
     # Get all employees
     employees = Employee.objects.all()
 
@@ -98,11 +107,9 @@ def edit_period_page(request, id):
 @login_required
 def payslip_page(request, id):
     # Get the payroll
-    payroll = Payroll.objects.get(pk=id)
-
+    payroll = Payslip.objects.get(pk=id)
     # Get the notifications
     user = request.user.solitonuser
-
     notifications = Notification.objects.filter(user=user)
     number_of_notifications = notifications.count()
 
@@ -122,7 +129,7 @@ def payslip_page(request, id):
 @login_required
 def generate_payslip_pdf(request, id):
     # Get the payroll
-    payroll = Payroll.objects.get(pk=id)
+    payroll = Payslip.objects.get(pk=id)
 
     user = request.user
     context = {
@@ -178,48 +185,11 @@ def edit_period(request):
     return HttpResponseRedirect(reverse('payroll_records_page'))
 
 
-def generate_payroll(request, id):
-    # Get Payroll record
-    payroll_record = PayrollRecord.objects.get(pk=id)
-    # Get all employees
-    employees = Employee.objects.all()
-    # Loop through all employees
-    for employee in employees:
-
-        sacco_deduction = "0.0"
-        damage_deduction = "0.0"
-
-        if employee.deduction_set.filter(name="Sacco"):
-            deduction = employee.deduction_set.filter(name="Sacco").first()
-            sacco_deduction = str(deduction.amount)
-
-        if employee.deduction_set.filter(name="Damage"):
-            deduction = employee.deduction_set.filter(name="Damage").first()
-            damage_deduction = str(deduction.amount)
-
-        # Get total deduction
-        total_deduction = get_total_deduction(employee)
-
-        employee_payroll = EmployeePayroll(int(employee.basic_salary))
-        employee_payroll.deduct(total_deduction)
-        employee_nssf = employee_payroll.nssf_contrib
-        employer_nssf = employee_payroll.employer_nssf_contrib
-        gross_salary = employee_payroll.gross_salary
-        paye = employee_payroll.paye
-        net_salary = employee_payroll.net_salary
-        total_nssf_contrib = int(employee_nssf) + int(employer_nssf)
-        total_statutory = total_nssf_contrib + int(paye)
-
-        # Create payroll object
-        payroll = Payroll(employee=employee, payroll_record=payroll_record, employee_nssf=employee_nssf,
-                          employer_nssf=employer_nssf, gross_salary=gross_salary, paye=paye, net_salary=net_salary,
-                          total_nssf_contrib=total_nssf_contrib, total_statutory=total_statutory,
-                          sacco_deduction=sacco_deduction, damage_deduction=damage_deduction)
-
-        # Save payroll object
-        payroll.save()
-
+def create_payroll_payslips(request, id):
+    payroll_record = get_payroll_record_by_id(id)
+    create_payslip_list_service(payroll_record)
     return HttpResponseRedirect(reverse('payroll_record_page', args=[payroll_record.id]))
+
 
 
 def generate_payroll_with_bonus(request, id):
@@ -242,9 +212,9 @@ def generate_payroll_with_bonus(request, id):
             damage_deduction = str(deduction.amount)
 
         # Get total deduction
-        total_deduction = get_total_deduction(employee)
+        total_deduction = get_total_non_statutory_deductions(employee)
 
-        employee_payroll = EmployeePayroll(int(employee.basic_salary))
+        employee_payroll = SimplePayslip(int(employee.basic_salary))
 
         bonus = employee_payroll.get_half_bonus()
 
@@ -253,13 +223,13 @@ def generate_payroll_with_bonus(request, id):
         gross_salary = employee_payroll.gross_salary
         paye = employee_payroll.get_paye(employee_payroll.gross_salary)
         employee_payroll.get_net_salary(employee_payroll.gross_salary)
-        employee_payroll.deduct(total_deduction)
+        employee_payroll.deduct_amount_from_net_salary(total_deduction)
         net_salary = employee_payroll.net_salary
         total_nssf_contrib = int(employee_nssf) + int(employer_nssf)
         total_statutory = total_nssf_contrib + int(paye)
 
         # Create payroll object
-        payroll = Payroll(employee=employee, payroll_record=payroll_record, employee_nssf=employee_nssf,
+        payroll = Payslip(employee=employee, payroll_record=payroll_record, employee_nssf=employee_nssf,
                           employer_nssf=employer_nssf, gross_salary=gross_salary, paye=paye, net_salary=net_salary,
                           total_nssf_contrib=total_nssf_contrib, total_statutory=total_statutory,
                           sacco_deduction=sacco_deduction, damage_deduction=damage_deduction, bonus=bonus)
@@ -276,13 +246,13 @@ def add_prorate(request):
     payroll_id = request.POST['payroll_id']
 
     # Grab the Payroll object
-    payroll = Payroll.objects.get(pk=payroll_id)
+    payroll = Payslip.objects.get(pk=payroll_id)
 
     # Grab the basic salary
     basic_salary = payroll.employee.basic_salary
 
     # Create the EmployeePayroll object
-    employee_payroll = EmployeePayroll(basic_salary)
+    employee_payroll = SimplePayslip(basic_salary)
 
     # Check if the the payroll has bonus and overtime
     if payroll.bonus:
@@ -300,9 +270,9 @@ def add_prorate(request):
     # Subtract the deductions
     employee = payroll.employee
 
-    total_deduction = get_total_deduction(employee)
+    total_deduction = get_total_non_statutory_deductions(employee)
 
-    employee_payroll.deduct(total_deduction)
+    employee_payroll.deduct_amount_from_net_salary(total_deduction)
 
     # Update the payroll object 
     payroll.prorate = employee_payroll.prorate
@@ -326,13 +296,13 @@ def add_bonus(request):
     payroll_id = request.POST['payroll_id']
 
     # Grab the Payroll object
-    payroll = Payroll.objects.get(pk=payroll_id)
+    payroll = Payslip.objects.get(pk=payroll_id)
 
     # Grab the basic salary
     basic_salary = payroll.employee.basic_salary
 
     # Create the EmployeePayroll object
-    employee_payroll = EmployeePayroll(basic_salary)
+    employee_payroll = SimplePayslip(basic_salary)
 
     # Check if the overtime is set
     if payroll.overtime:
@@ -344,9 +314,9 @@ def add_bonus(request):
     # Subtract the deductions
     employee = payroll.employee
 
-    total_deduction = get_total_deduction(employee)
+    total_deduction = get_total_non_statutory_deductions(employee)
 
-    employee_payroll.deduct(total_deduction)
+    employee_payroll.deduct_amount_from_net_salary(total_deduction)
 
     # Update the payroll object
     payroll.bonus = employee_payroll.bonus
@@ -371,7 +341,7 @@ def add_overtime(request):
     payroll_id = request.POST['payroll_id']
 
     # Grab the Payroll object
-    payroll = Payroll.objects.get(pk=payroll_id)
+    payroll = Payslip.objects.get(pk=payroll_id)
 
     # If the payroll already has bonus
     if float(payroll.bonus) > 0:
@@ -385,7 +355,7 @@ def add_overtime(request):
     basic_salary = payroll.employee.basic_salary
 
     # Create the EmployeePayroll object
-    employee_payroll = EmployeePayroll(basic_salary)
+    employee_payroll = SimplePayslip(basic_salary)
 
     # Add overtime to the employee payroll object
     total_overtime = 0
@@ -400,7 +370,7 @@ def add_overtime(request):
     # Subtract the deductions
     employee = payroll.employee
 
-    total_deduction = get_total_deduction(employee)
+    total_deduction = get_total_non_statutory_deductions(employee)
 
     # Update the payroll object
     payroll.gross_salary = int(employee_payroll.gross_salary)
@@ -409,7 +379,7 @@ def add_overtime(request):
     payroll.employer_nssf = int(employee_payroll.get_employer_nssf_contrib(payroll.gross_salary))
     payroll.paye = int(employee_payroll.get_paye(payroll.gross_salary))
     employee_payroll.get_net_salary(payroll.gross_salary)
-    employee_payroll.deduct(total_deduction)
+    employee_payroll.deduct_amount_from_net_salary(total_deduction)
     payroll.net_salary = int(employee_payroll.net_salary)
     payroll.total_nssf_contrib = int(payroll.employee_nssf) + int(payroll.employer_nssf)
     payroll.total_statutory = payroll.total_nssf_contrib + int(payroll.paye)
@@ -427,7 +397,7 @@ def payroll_download(request, id):
     month = payroll_record.month
     year = payroll_record.year
     # Get all the associated Payroll objects
-    payrolls = Payroll.objects.filter(payroll_record=payroll_record)
+    payrolls = Payslip.objects.filter(payroll_record=payroll_record)
     response = HttpResponse(content_type='text/csv')
     # Name the csv file
     filename = "payroll_" + month + "_" + year + ".csv"

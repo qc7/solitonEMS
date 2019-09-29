@@ -45,6 +45,13 @@
 
         <div class="sidebar-wrapper">
             <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dashboard_page' %}">
+                        <i class="material-icons">verified_user</i>
+                        <p>Admin</p>
+                    </a>
+                </li>
+
                 <li class="nav-item {{ dashboard_page }}">
                     <a class="nav-link" href="{% url 'dashboard_page' %}">
                         <i class="material-icons">dashboard</i>
@@ -67,7 +74,7 @@
                 </li>
 
                 <li class="nav-item  {{ payroll_page }}">
-                    <a class="nav-link" href="{% url 'payroll_records_page' %}">
+                    <a class="nav-link" href="{% url 'payroll_page' %}">
                         <i class="material-icons">library_books</i>
                         <p>Payroll</p>
                     </a>
@@ -160,7 +167,7 @@
                                 </p>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                                <center><h4 style="font-weight: bold">HR</h4></center>
+                                <center><h4 style="font-weight: bold">{{user.solitonuser.employee.position}}</h4></center>
                                 <a class="dropdown-item" href="#">{{user.solitonuser.employee.first_name}}
                                     {{user.solitonuser.employee.last_name}}</a>
                                 <div class="dropdown-divider"></div>

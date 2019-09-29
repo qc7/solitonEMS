@@ -30,7 +30,7 @@ class Position(models.Model):
 class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    basic_salary = models.CharField(max_length=20, default="")
+    basic_salary = models.IntegerField(default=1000000)
     grade = models.CharField(max_length=3, default="")
     gender = models.CharField(max_length=10)
     start_date = models.DateField()
@@ -49,6 +49,7 @@ class Employee(models.Model):
     title = models.CharField(max_length=10, blank=True)
     work_station = models.CharField(max_length=20, blank=True)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, blank=True, default=1)
+    lunch_allowance = models.IntegerField(default=150000)
 
     @property
     def department(self):
@@ -57,6 +58,15 @@ class Employee(models.Model):
     @property
     def position(self):
         return self.organisationdetail.position.name
+
+    @property
+    def initial_gross_salary(self) -> int:
+        return self.basic_salary + self.lunch_allowance
+
+    @property
+    def overtime_hourly_rate(self) -> float:
+        hourly_rate = (float(self.initial_gross_salary) / 26.0) / 8
+        return hourly_rate
 
     def __str__(self):
         return self.first_name + " " + self.last_name
