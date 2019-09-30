@@ -55,6 +55,7 @@ class SimplePayslip:
         self.sacco_deduction_amount = get_sacco_deduction_amount(employee)
         self.damage_deduction_amount = get_damage_deduction_amount(employee)
         self.total_deductions = self.total_statutory_deductions + self.total_non_statutory_deductions
+        self.lunch_allowance=self.employee.lunch_allowance
 
     def sum_all_income(self, employee):
         return employee.initial_gross_salary + self.overtime_pay + self.bonus

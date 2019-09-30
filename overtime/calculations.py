@@ -1,6 +1,4 @@
-def is_on_holiday(overtime_application):
-    # Check if date is a holiday
-    pass
+from holidays.selectors import is_on_holiday
 
 
 def get_overtime_pay(overtime_application) -> float:

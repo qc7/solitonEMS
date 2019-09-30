@@ -107,7 +107,7 @@ def edit_period_page(request, id):
 @login_required
 def payslip_page(request, id):
     # Get the payroll
-    payroll = Payslip.objects.get(pk=id)
+    payslip = Payslip.objects.get(pk=id)
     # Get the notifications
     user = request.user.solitonuser
     notifications = Notification.objects.filter(user=user)
@@ -115,10 +115,10 @@ def payslip_page(request, id):
 
     context = {
         "payroll_page": "active",
-        "payroll": payroll,
-        "month": payroll.payroll_record.month,
-        "year": payroll.payroll_record.year,
-        "name_of_employee": "{} {}".format(payroll.employee.first_name, payroll.employee.last_name),
+        "payslip": payslip,
+        "month": payslip.payroll_record.month,
+        "year": payslip.payroll_record.year,
+        "name_of_employee": "{} {}".format(payslip.employee.first_name, payslip.employee.last_name),
         "number_of_notifications": number_of_notifications,
         "notifications": notifications
     }
@@ -128,17 +128,15 @@ def payslip_page(request, id):
 
 @login_required
 def generate_payslip_pdf(request, id):
-    # Get the payroll
-    payroll = Payslip.objects.get(pk=id)
-
+    # Get the payslip
+    payslip = Payslip.objects.get(pk=id)
     user = request.user
     context = {
-        "payroll": payroll,
-        "month": payroll.payroll_record.month,
-        "year": payroll.payroll_record.year,
-        "name_of_employee": "{} {}".format(payroll.employee.first_name, payroll.employee.last_name),
+        "payslip": payslip,
+        "month": payslip.payroll_record.month,
+        "year": payslip.payroll_record.year,
+        "name_of_employee": "{} {}".format(payslip.employee.first_name, payslip.employee.last_name),
         "user": user
-
     }
 
     pdf = render_to_pdf('solitonems/payslip.html', context)
@@ -192,52 +190,6 @@ def create_payroll_payslips(request, id):
 
 
 
-def generate_payroll_with_bonus(request, id):
-    # Get Payroll record
-    payroll_record = PayrollRecord.objects.get(pk=id)
-    # Get all employees
-    employees = Employee.objects.all()
-    # Loop through all employees
-    for employee in employees:
-
-        sacco_deduction = "0.0"
-        damage_deduction = "0.0"
-
-        if employee.deduction_set.filter(name="Sacco"):
-            deduction = employee.deduction_set.filter(name="Sacco").first()
-            sacco_deduction = str(deduction.amount)
-
-        if employee.deduction_set.filter(name="Damage"):
-            deduction = employee.deduction_set.filter(name="Damage").first()
-            damage_deduction = str(deduction.amount)
-
-        # Get total deduction
-        total_deduction = get_total_non_statutory_deductions(employee)
-
-        employee_payroll = SimplePayslip(int(employee.basic_salary))
-
-        bonus = employee_payroll.get_half_bonus()
-
-        employee_nssf = employee_payroll.get_nssf_contrib(employee_payroll.gross_salary)
-        employer_nssf = employee_payroll.get_employer_nssf_contrib(employee_payroll.gross_salary)
-        gross_salary = employee_payroll.gross_salary
-        paye = employee_payroll.get_paye(employee_payroll.gross_salary)
-        employee_payroll.get_net_salary(employee_payroll.gross_salary)
-        employee_payroll.deduct_amount_from_net_salary(total_deduction)
-        net_salary = employee_payroll.net_salary
-        total_nssf_contrib = int(employee_nssf) + int(employer_nssf)
-        total_statutory = total_nssf_contrib + int(paye)
-
-        # Create payroll object
-        payroll = Payslip(employee=employee, payroll_record=payroll_record, employee_nssf=employee_nssf,
-                          employer_nssf=employer_nssf, gross_salary=gross_salary, paye=paye, net_salary=net_salary,
-                          total_nssf_contrib=total_nssf_contrib, total_statutory=total_statutory,
-                          sacco_deduction=sacco_deduction, damage_deduction=damage_deduction, bonus=bonus)
-
-        # Save payroll object
-        payroll.save()
-
-    return HttpResponseRedirect(reverse('payroll_record_page', args=[payroll_record.id]))
 
 
 def add_prorate(request):

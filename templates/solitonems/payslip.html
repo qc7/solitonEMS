@@ -62,8 +62,8 @@
 		   <table width="100%" >
                <tr class="bank-row">
 				   <td><b>Bank Name:</b></td>
-				   <td colspan="2">{{payroll.employee.bankdetail.name_of_bank}}</td>
-				   <td colspan="3"><b>Account Number:</b> {{payroll.employee.bankdetail.bank_account}}</td>
+				   <td colspan="2">{{payslip.employee.bankdetail.name_of_bank}}</td>
+				   <td colspan="3"><b>Account Number:</b> {{payslip.employee.bankdetail.bank_account}}</td>
 			   </tr>
 			   <tr>
 				   <td colspan="6"></td>
@@ -73,7 +73,7 @@
 				   <td>2019/2020</td>
 				   <td>Period: {{month}} - {{year}}</td>
 				   <th colspan="2">Process Date: <br>{% now "jS F Y" %}</th>
-				   <th>Currency: {{payroll.employee.currency}}</th>
+				   <th>Currency: {{payslip.employee.currency}}</th>
 			   </tr>
 			   <tr>
 			   	   <td colspan="6"></td>
@@ -81,7 +81,7 @@
 			   <tr class="personnel-row">
 				   <th>Personnel</th>
 				   <td colspan="2">{{name_of_employee}}</td>
-				   <th colspan="3">Designation: {{payroll.employee.organisationdetail.position}}</th>
+				   <th colspan="3">Designation: {{payslip.employee.organisationdetail.position}}</th>
 			   </tr>
 			   <tr>
 				   <td colspan="6"></td>
@@ -98,32 +98,32 @@
 			   </tr>
 			   <tr class="income-values">
 				   <td colspan="2">Basic Salary</td>
-				   <td>{{payroll.employee.basic_salary | intcomma}}</td>
+				   <td>{{payslip.employee.basic_salary | intcomma}}</td>
 				   <td colspan="2">P.A.Y.E</td>
-				   <td>{{payroll.paye | intcomma}}</td>
+				   <td>{{payslip.paye | intcomma}}</td>
 			   </tr>
 			   <tr class="income-values">
 				   <td colspan="2">Lunch Allowance</td>
-				   <td>150,000</td>
+				   <td>{{payslip.lunch_allowance| intcomma}}</td>
 				   <td colspan="2">N.S.S.F</td>
-				   <td>{{payroll.employee_nssf| intcomma }}</td>
+				   <td>{{payslip.employee_nssf| intcomma }}</td>
 				</tr>
 				<tr class="income-values">
 					<td colspan="2">Overtime</td>
-					<td>{{payroll.overtime | intcomma}}</td>
+					<td>{{payslip.overtime | intcomma}}</td>
 					<td colspan="2">Damage</td>
-					<td>{{payroll.damage_deduction | intcomma}}</td>
+					<td>{{payslip.damage_deduction | intcomma}}</td>
 				</tr>
 				<tr class="income-values">
 					<td colspan="2">Bonus</td>
-					<td>{{payroll.bonus | intcomma}}</td>
+					<td>{{payslip.bonus | intcomma}}</td>
 					<td colspan="2">Sacco</td>
-					<td>{{payroll.sacco_deduction | intcomma}}</td>	
+					<td>{{payslip.sacco_deduction | intcomma}}</td>
 				</tr>
 				<tr class="income-values">
 					<td colspan="3" style="border: none"></td>
 					<td colspan="2">Employer N.S.S.F</td>
-					<td>{{payroll.employer_nssf | intcomma}}</td>
+					<td>{{payslip.employer_nssf | intcomma}}</td>
 				</tr>
 				<tr>
 					<td colspan="6"></td>
@@ -136,11 +136,11 @@
 					<th>NET PAY</th>
 				</tr>
 				<tr class="total-values-row">
-					<td>{{payroll.gross_salary | intcomma}}</td>
+					<td>{{payslip.gross_salary | intcomma}}</td>
 					<td colspan="2">{{payroll.gross_salary | intcomma}}</td>
-					<td>{{payroll.paye | intcomma}}</td>
-					<td>{{payroll.total_statutory | intcomma}}</td>
-					<td>{{payroll.net_salary | intcomma}}</td>
+					<td>{{payslip.paye | intcomma}}</td>
+					<td>{{payslip.total_statutory | intcomma}}</td>
+					<td>{{payslip.net_salary | intcomma}}</td>
 				</tr>
 				<tr>
 					<td colspan="6"></td>

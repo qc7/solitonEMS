@@ -15,4 +15,3 @@ class TestSelector(TestCase):
 
     def test_get_payroll_record_selector(self):
         self.assertEqual(get_payroll_record_by_id(1).id,1)
-

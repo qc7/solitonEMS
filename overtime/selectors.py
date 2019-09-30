@@ -1,3 +1,4 @@
+from employees.models import Employee
 from overtime.models import OvertimeApplication
 
 
@@ -37,3 +38,8 @@ def get_ceo_pending_overtime_applications():
     pending_applications = OvertimeApplication.objects.filter(status="Pending", cfo_approval="Approved",
                                                               HOD_approval="Approved")
     return pending_applications
+
+
+def get_approved_overtime_applications(employee: Employee):
+    approved_applications = OvertimeApplication.objects.filter(status="Approved", applicant=employee)
+    return approved_applications

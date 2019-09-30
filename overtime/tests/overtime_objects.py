@@ -16,7 +16,7 @@ def get_supervisee(currency):
     return supervisee
 
 
-def get_supervisor(currency):
+def get_applicant(currency):
     supervisor: object = Employee.objects.create(
         first_name="Test",
         last_name="Supervisor",
@@ -31,13 +31,13 @@ def get_overtime_application(currency, HOD_approval="Pending", cfo_approval="Pen
     overtime_application = OvertimeApplication.objects.create(
         status="Pending",
         date=timezone.now().today(),
-        start_time=timezone.now().time(),
-        end_time=timezone.now().time(),
+        start_time=timezone.now(),
+        end_time=timezone.now(),
         HOD_approval=HOD_approval,
         cfo_approval=cfo_approval,
         ceo_approval=ceo_approval,
         description="Testing overtime application",
-        supervisee=get_supervisor(currency),
+        applicant=get_applicant(currency),
         supervisor=get_supervisee(currency)
     )
     return overtime_application
