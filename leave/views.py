@@ -5,9 +5,11 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 import datetime
 from datetime import timedelta
+from datetime import date
 import calendar
+from calendar import HTMLCalendar
 from collections import namedtuple
-from employees.models import Employee
+from employees.models import Employee, Departments, Teams
 from django.db import connection
 from django.db.models import (
     Sum,
@@ -440,8 +442,13 @@ def Leave_planner_summary(request):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request,'registration/login.html',{"message":None})  
-    department_id = 1
-    team_id = 1
+    
+    department_id = 0
+    team_id = 0
+    if request.method=="POST":
+        department_id = request.POST["department"]
+        team_id = request.POST["team"]
+    
     # Select multiple records
     all_plans = None
     with connection.cursor() as cursor:
@@ -465,32 +472,27 @@ def Leave_planner_summary(request):
         GROUP BY e.id;")
         all_plans = cursor.fetchall()
     # DB API fetchall produces a list of tuples
-    #all_plans[0][0] # first drink id
 
     context = {
         "plans": all_plans,
-        "employees": Employee.objects.all()
+        "departments": Departments.objects.all(),
+        "teams": Teams.objects.all()
     }
     return render(request, 'leave/annual_calendar.html', context)
 
-def leave_plan(leave_planer):
-    no_of_days = 0
+def leave_calendar(request, month=date.today().month, year=date.today().year):
+    year = int(year)
+    month = int(month)
 
-    if leave_plan.leave_month == 'Jan':
-        no_of_days = leave_planer.objects.filter(no_of_days) 
-        return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Feb': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Mar': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Apr': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'May': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Jun': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Jul': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Aug': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Sep': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Oct': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Nov': return leave_plan.no_of_days
-    elif leave_plan.leave_month == 'Dec': return leave_plan.no_of_days
-    else:
-        return 0
+    if year < 1900 or year > 2099: 
+        year=date.today().year
+    
+    month_name=calendar.month_name[month]
 
-        
+    cal = HTMLCalendar.formatmonth(year, month)
+
+    context = {
+        "title": year,
+        "calendar": cal
+    }
+    return render(request, 'leave/leave_calendar.html', context)

@@ -11,21 +11,26 @@
       <div class="card-body">
         <div class="table-responsive">
         <table class="table table-hover">
-          <tr> 
+          <tr>
+          <form method="POST" action="{% url 'Leave_planner_summary' %}"> {% csrf_token %}
             <td><strong> Filter By: </strong></td>
             <td> 
               <div class="form-group">
                 <label for="exampleFormControlSelect1">Department:</label>
-                <select class="form-control" id="options">
-                  <option>{{department}}</option>
+                <select class="form-control" id="options" name="department">
+                  {% for department in departments %}
+                    <option value = {{department.id}}>{{department.name}}</option>
+                  {% endfor %}
                 </select>
               </div>  
-            </td>
+            </td> 
             <td> 
               <div class="form-group">
                 <label for="exampleFormControlSelect1">Team:</label>
-                <select class="form-control" id="options">
-                  <option>{{team}}</option>
+                <select class="form-control" id="options" name="team">
+                  {% for team in teams %}
+                    <option value = {{team.id}}>{{team}}</option>
+                  {% endfor %}
                 </select>
               </div>  
             </td> 
@@ -34,6 +39,7 @@
                 <button class="btn btn-danger" type="submit">Reload</button>
               </div>  
             </td>
+            </form>
           </tr>
         </table>
           <table class="table table-hover">
