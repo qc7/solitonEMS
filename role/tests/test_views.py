@@ -1,3 +1,5 @@
+import datetime
+
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
@@ -17,7 +19,7 @@ class TestRoleView(TestCase):
             code="UGX"
         )
 
-        self.supervisee = Employee.objects.create(
+        self.applicant = Employee.objects.create(
             first_name="Test",
             last_name="Employee",
             start_date=timezone.now().today(),
@@ -34,10 +36,10 @@ class TestRoleView(TestCase):
         self.overtime_application = OvertimeApplication.objects.create(
             status="Pending",
             date=timezone.now().today(),
-            start_time=timezone.now().time(),
-            end_time=timezone.now().time(),
+            start_time=timezone.now(),
+            end_time=timezone.now(),
             description="Testing overtime application",
-            supervisee=self.supervisee,
+            applicant=self.applicant,
             supervisor=self.supervisor
         )
 
@@ -82,10 +84,10 @@ class TestRoleView(TestCase):
             'id': self.overtime_application.id,
             'status': "Approved",
             'date': '2019-09-17',
-            'start_time': timezone.now().time(),
-            'end_time': timezone.now().time(),
+            'start_time': timezone.now(),
+            'end_time': timezone.now(),
             'description': 'Testing overtime application',
-            'supervisee': self.supervisee,
+            'applicant': self.applicant,
             'supervisor': self.supervisor
         })
 

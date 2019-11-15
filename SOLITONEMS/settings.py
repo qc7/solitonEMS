@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'settings',
     'overtime',
     'holidays',
-    'ems_login',
+    'ems_auth',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

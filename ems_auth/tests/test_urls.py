@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from ems_login.tests.check_methods import check_page_url_is_resolved
-from ems_login.views import login_view,login_page,logout_view
+from ems_auth.tests.check_methods import check_page_url_is_resolved
+from ems_auth.views import login_view,login_page,logout_view
 
 
 class TestUrls(TestCase):

@@ -10,4 +10,4 @@ def check_role(request, role, user):
     elif role == "CEO" and user.solitonuser.is_ceo == 'True':
         return HttpResponseRedirect(reverse('ceo_role_page'))
     else:
-        return render(request, 'ems_login/login.html', {"message": "Wrong or No role assigned."})
+        return render(request, 'ems_auth/login.html', {"message": "Wrong or No role assigned."})

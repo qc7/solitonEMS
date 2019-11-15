@@ -161,3 +161,4 @@ pip-selfcheck.json
 
 # End of https://www.gitignore.io/api/django,virtualenv,visualstudiocode
 /.vscode/
+/.vscode/

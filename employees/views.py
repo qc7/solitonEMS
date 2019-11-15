@@ -33,7 +33,7 @@ def dashboard_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     try:
         if str(user.solitonuser.is_hr) == 'True':
@@ -50,7 +50,7 @@ def dashboard_page(request):
             return render(request, 'employees/dashboard.html', context)
 
     except SolitonUser.DoesNotExist:
-        return render(request, 'ems_login/login.html', {"message": "Soliton User does not exist"})
+        return render(request, 'ems_auth/login.html', {"message": "Soliton User does not exist"})
 
 
 @login_required
@@ -61,7 +61,7 @@ def employees_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     user = request.user
@@ -85,7 +85,7 @@ def employee_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     # If user is a manager
@@ -126,7 +126,7 @@ def edit_employee_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
     notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
     number_of_notifications = notifications.count()
@@ -149,7 +149,7 @@ def edit_certification_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
     # redirect according to roles
 
     # redirect according to roles
@@ -181,7 +181,7 @@ def edit_emergency_contact_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     user = request.user
@@ -216,7 +216,7 @@ def edit_beneficiary_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     user = request.user
@@ -247,7 +247,7 @@ def edit_spouse_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     user = request.user
@@ -279,7 +279,7 @@ def edit_dependant_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     user = request.user
@@ -308,7 +308,7 @@ def departments_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
     user = request.user
     notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
     number_of_notifications = notifications.count()
@@ -328,7 +328,7 @@ def teams_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     ts = Team.objects.filter(department=id)
     notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
@@ -350,7 +350,7 @@ def job_titles_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
     user = request.user
     notifications = Notification.objects.filter(user=user.solitonuser)
     number_of_notifications = notifications.count()
@@ -370,7 +370,7 @@ def employee_team_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     employee = Employee.objects.get(pk=id)
     user = request.user
@@ -394,7 +394,7 @@ def notifications_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     user = request.user
     notifications = Notification.objects.filter(user=user.solitonuser)

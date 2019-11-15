@@ -8,7 +8,7 @@ def holidays_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'ems_login/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     # Get the notifications
     user = request.user.solitonuser
