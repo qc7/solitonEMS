@@ -29,3 +29,4 @@ def check_process_view_post(self, view_name, payload=None):
 def check_page_url_is_resolved(self, url_name, view_function_name, args=None):
     url = reverse(url_name, args=args)
     self.assertEquals(resolve(url).func, view_function_name)
+
