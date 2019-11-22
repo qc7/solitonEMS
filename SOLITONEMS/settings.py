@@ -24,7 +24,7 @@ SECRET_KEY = '0d1*j&^q381!@3^^4htw!n-1p!yxxy93s3^2exrw7%4bf_!hcf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['solitonug.pythonanywhere.com', 'localhost']
+ALLOWED_HOSTS = ['solitonug.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -104,12 +104,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'ems_auth.User'
+
+AUTHENTICATION_BACKENDS = ['ems_auth.backends.EmailBackend']
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Kampala'
 
 USE_I18N = True
 
@@ -122,3 +127,20 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/solitonug/solitonEMS/static'
+
+
+#  Email smtp setup for production
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = "mail3.soliton.co.ug"
+# EMAIL_HOST_USER = '' Put the email account for the soliton system
+# EMAIL_HOST_PASSWORD = '' Put the password for the email account
+# EMAIL_PORT = 587
+# DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
+# EMAIL_USE_TLS = True
+
+#  Email smtp setup for development
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 1025
+DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
+
+
