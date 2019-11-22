@@ -14,7 +14,7 @@ from employees.models import Employee
 from django.db.models import Sum
 from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_total_paye, get_total_gross_pay, get_total_basic_pay, \
     get_total_net_pay, render_to_pdf
-from role.models import Notification, SolitonUser
+from role.models import Notification
 
 
 # Create your views here.

@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from employees.services import create_employee_instance
+from ems_auth.models import User
 from .models import (
     Employee,
     HomeAddress,
@@ -19,7 +20,7 @@ from .models import (
     Supervision
 )
 
-from role.models import SolitonUser, Notification
+from role.models import Notification
 from settings.models import Currency
 import csv
 
@@ -36,7 +37,7 @@ def dashboard_page(request):
         return render(request, 'ems_auth/login.html', {"message": None})
 
     try:
-        if str(user.solitonuser.is_hr) == 'True':
+        if str(user.is_hr) == 'True':
             number_of_employees = Employee.objects.all().count()
             notifications = Notification.objects.filter(user=user.solitonuser, status="unread")
             number_of_notifications = notifications.count()
@@ -47,9 +48,10 @@ def dashboard_page(request):
                 "notifications": notifications,
                 "number_of_notifications": number_of_notifications
             }
+
             return render(request, 'employees/dashboard.html', context)
 
-    except SolitonUser.DoesNotExist:
+    except User.DoesNotExist:
         return render(request, 'ems_auth/login.html', {"message": "Soliton User does not exist"})
 
 
