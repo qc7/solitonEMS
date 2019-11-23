@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from employees.services import create_employee_instance
+from ems_auth.decorators import my_login_required
 from ems_auth.models import User
 from .models import (
     Employee,
@@ -24,32 +25,22 @@ from role.models import Notification
 from settings.models import Currency
 import csv
 
-
 # dashboard
 
+
+@my_login_required
 def dashboard_page(request):
     # Get the user
     user = request.user
-
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
     try:
-        if str(user.is_hr) == 'True':
-            number_of_employees = Employee.objects.all().count()
-            notifications = Notification.objects.filter(user=user.solitonuser, status="unread")
-            number_of_notifications = notifications.count()
-            context = {
-                "user": user,
-                "dashboard_page": "active",
-                "number_of_employees": number_of_employees,
-                "notifications": notifications,
-                "number_of_notifications": number_of_notifications
-            }
+        number_of_employees = Employee.objects.all().count()
+        context = {
+            "user": user,
+            "dashboard_page": "active",
+            "number_of_employees": number_of_employees,
+        }
 
-            return render(request, 'employees/dashboard.html', context)
+        return render(request, 'employees/dashboard.html', context)
 
     except User.DoesNotExist:
         return render(request, 'ems_auth/login.html', {"message": "Soliton User does not exist"})
@@ -113,7 +104,7 @@ def employee_page(request, id):
         "notifications": notifications,
         "number_of_notifications": number_of_notifications,
         "allowances": Allowance.objects.all(),
-        "supervisee_options": Employee.objects.exclude(pk= employee.id),
+        "supervisee_options": Employee.objects.exclude(pk=employee.id),
         "supervisions": Supervision.objects.filter(supervisor=employee)
     }
     return render(request, 'employees/employee.html', context)
@@ -410,7 +401,6 @@ def notifications_page(request):
     return render(request, 'solitonems/notifications.html', context)
 
 
-
 ###################################################################
 # Processes
 ###################################################################
@@ -433,9 +423,6 @@ def add_new_employee(request):
         }
 
         return render(request, "employees/failed.html", context)
-
-
-
 
 
 @login_required
@@ -1372,6 +1359,7 @@ def delete_allowance(request, id):
     }
     return render(request, 'employees/deleted.html', context)
 
+
 def add_supervisee(request):
     if request.method == 'POST':
         # Fetching data from the add deductions' form
@@ -1385,7 +1373,7 @@ def add_supervisee(request):
         supervisee = Employee.objects.get(pk=supervisee_id)
 
         # Create instance of supervision
-        supervision = Supervision(supervisee= supervisee, supervisor=employee)
+        supervision = Supervision(supervisee=supervisee, supervisor=employee)
         # Save supervision instance
         supervision.save()
         context = {
@@ -1404,6 +1392,7 @@ def add_supervisee(request):
         }
 
         return render(request, "employees/failed.html", context)
+
 
 def delete_supervisee(request, id):
     try:
@@ -1429,6 +1418,7 @@ def delete_supervisee(request, id):
         "employee": employee
     }
     return render(request, 'employees/deleted.html', context)
+
 
 @login_required
 def employees_download(request):
