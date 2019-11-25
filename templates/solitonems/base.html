@@ -15,13 +15,10 @@
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
-
     <script src="https://kit.fontawesome.com/9bce6be5f4.js"></script>
     <!-- CSS Files -->
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}"/>
     <link href="{% static 'assets/css/material-dashboard.css' %}" rel="stylesheet"/>
-
-
 </head>
 
 <body class="">
@@ -37,7 +34,6 @@
             <center>
                 <img src=" {% static 'registration/images/icons/logo.svg'  %} " style='width:50%' class="logo-normal"/>
                 <a href="#" class="simple-text logo-normal">
-
                     SOLITON TELMEC EMS
                 </a>
             </center>
@@ -45,17 +41,29 @@
 
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'dashboard_page' %}">
+                <li class="nav-item" data-toggle="popover" title="Admin">
+                    <a class="nav-link" href="#" >
                         <i class="material-icons">verified_user</i>
                         <p>Admin</p>
                     </a>
+                    <ul id="popover-content" class="nav list-group" style="display: none">
+                        <a href="#" class="list-group-item">Manage Users</a>
+                        <a href="#" class="list-group-item">View Users</a>
+                        <a href="#" class="list-group-item">Reports</a>
+                    </ul>
                 </li>
 
-                <li class="nav-item {{ dashboard_page }}">
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'dashboard_page' %}">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
+                    </a>
+                </li>
+
+                <li class="nav-item {{holidays_page}}">
+                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                        <i class="material-icons">account_balance</i>
+                        <p>Organisation</p>
                     </a>
                 </li>
 
@@ -91,6 +99,37 @@
                     <a class="nav-link" href="{% url 'holidays_page' %}">
                         <i class="material-icons">beach_access</i>
                         <p>Holidays</p>
+                    </a>
+                </li>
+
+                <li class="nav-item {{holidays_page}}">
+                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                        <i class="material-icons">people</i>
+                        <p>Recruitment</p>
+                    </a>
+                </li>
+                <li class="nav-item {{holidays_page}}">
+                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                        <i class="material-icons">assignment</i>
+                        <p>Contracts</p>
+                    </a>
+                </li>
+                <li class="nav-item {{holidays_page}}">
+                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                        <i class="material-icons">bookmarks</i>
+                        <p>Training</p>
+                    </a>
+                </li>
+                <li class="nav-item {{holidays_page}}">
+                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                        <i class="material-icons">book</i>
+                        <p>Learning and Development</p>
+                    </a>
+                </li>
+                <li class="nav-item {{holidays_page}}">
+                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                        <i class="material-icons"></i>
+                        <p></p>
                     </a>
                 </li>
 
@@ -443,15 +482,14 @@
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
 
+       $('[data-toggle="popover"]').popover({
+            html: true,
+            trigger: 'focus',
+            content: function() {
+            return $('#popover-content').html();
+          }
+       });
     });
-
-
-
-
-
-
-
-
 
 
 </script>
