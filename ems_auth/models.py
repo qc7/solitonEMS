@@ -30,7 +30,6 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    middleName = models.CharField(max_length=20, blank=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -50,3 +49,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         unique_together = ['email']
+
+
+class SolitonUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
