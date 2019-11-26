@@ -41,9 +41,12 @@ class Employee(models.Model):
     residence_address = models.CharField(max_length=20)
     national_id   = models.CharField(max_length=20)
     ura_tin = models.CharField(max_length=20)
+    annual_allowance = models.IntegerField(default=21)
     leave_balance = models.IntegerField(default=21)
+    balance_last_year = models.IntegerField(default=0)
     leave_status = models.CharField(max_length=45, default="At Work")
     image_url = models.CharField(max_length=20, default="")
+    email = models.CharField(max_length=45, default="")
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -55,8 +58,6 @@ class OrganisationDetail(models.Model):
     team = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1,blank=True)
     def __str__(self):
         return self.position.title + " " + self.department.name
-
-
 
 class HomeAddress(models.Model):
     employee = models.OneToOneField(Employee,on_delete=models.CASCADE,primary_key=True)

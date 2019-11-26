@@ -66,4 +66,7 @@ urlpatterns = [
     path('accounts/login/', views.login_page, name="loginAccounts"),
     path('login/', views.login_view, name="login"),
     path('logout/', views.logout_view, name="logout"),
+
+    #Leave    
+    path('edit_leave_details/',views.edit_leave_details,name="edit_leave_details"),
 ]

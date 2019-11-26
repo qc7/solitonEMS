@@ -3,6 +3,7 @@ from employees.models import Employee
 from payroll.models import PayrollRecord,Payroll
 from leave.models import LeaveApplication,Leave_Types
 from leave.procedures import get_leave_balance, get_employee_leave, leave_balance
+from django.core.mail import send_mail
 # Create your views here.
 
 

@@ -92,7 +92,6 @@ def employees_page(request):
     }
     return render(request, 'employees/employees.html', context)
 
-
 @login_required
 def employee_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
@@ -1512,3 +1511,34 @@ def delete_deduction(request,id):
         "employee": employee
     }
     return render(request, 'employees/deleted.html', context)
+
+def edit_leave_details(request, id):
+    if request.method == 'POST':
+        # Fetching data from the edit leave' form
+        name = request.POST['name']
+        dob = request.POST['dob']
+        gender = request.POST['gender']
+
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+
+        # Creating instance of Dependent
+        #dependant = Dependant(employee=employee, name=name, dob=dob, gender=gender)
+
+        # Saving the Dependant instance
+        #dependant.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the dependants" % (dependant.name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)

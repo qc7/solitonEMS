@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.utils.dateparse import parse_date
 from django.utils import timezone
@@ -234,7 +236,6 @@ def apply_leave(request):
         user = request.user #getting the current logged in user
         employee = user.solitonuser.employee
     
-
         l_type = Leave_Types.objects.get(pk=request.POST["ltype"])
 
         date_format = "%Y-%m-%d"
@@ -257,6 +258,13 @@ def apply_leave(request):
 
                 leave_app.save()
 
+                subject = 'New Leave Request' 
+                from_mail = settings.EMAIL_HOST_USER 
+                msg = 'You have a new leave request that requires your attention'
+                to_mails = [employee.email, 'walusimbi96@gmail.com']
+
+                send_mail(subject, msg, from_mail,to_mails,fail_silently=False)
+                
                 messages.success(request, 'Leave Request Sent Successfully')
 
                 if str(user.solitonuser.soliton_role) =='Employee':
@@ -283,6 +291,9 @@ def apply_leave(request):
             messages.warning(request, f'You cannot Request({n_days}) for more than the\
                 {l_type.leave_type} leave days ({l_type.leave_days})')
             return render(request,"role/employee/leave.html")
+
+#def send_mail_alert(subject, msg, from_mail, to_mail):
+    
 
 def approve_leave(request):
     if request.method=="POST":
