@@ -1,0 +1,160 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<h1>Users</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="">
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </thead>
+              <tbody>
+                {% for employee in employees  %}
+                <tr>
+                  <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}}
+                      {{employee.last_name}}</a></td>
+                  <td>{{employee.start_date}}</td>
+                  <td>{{employee.organisationdetail.position}}</td>
+                  <td>{{employee.organisationdetail.department.name}}</td>
+                  <td>{{employee.gender}}</td>
+                  <td><a href="{% url 'edit_employee_page' employee.id %}" style="color:inherit"><i
+                        class="fa fa-edit"></i></a></td>
+                  <td><a href="{% url 'delete_employee' employee.id %}" style="color: inherit" ...
+                      onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i
+                        class="fa fa-trash"></i></a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <a href="{%url 'employees_download' %}">
+              <button class="btn btn-outline">Export CSV Report</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: modalAddNewEmployee -->
+    <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Add Employee Bio Data</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <!--Body-->
+          <div class="modal-body">
+            <form method="POST" action="{%url 'add_new_employee'%}"> {%csrf_token%}
+              <div class="form-group">
+                <label for="sel1">Title:</label>
+                <select class="form-control" id="sel1" name="title" required>
+                  <option>Mr.</option>
+                  <option>Miss.</option>
+                  <option>Mrs.</option>
+                  <option>Dr.</option>
+                  <option>Prof.</option>
+                  <option>Eng.</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter first name" name="first_name" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter last name" name="last_name" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter employee grade" name="grade" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter work station" name="work_station">
+              </div>
+              <div class="form-group">
+                <label for="sel1">Renumeration Currency:</label>
+                <select class="form-control" id="sel1" name="renumeration_currency" required>
+                  <option value=1>UGX</option>
+                  <option value=2>USD</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Enter basic salary" name="basic_salary" required>
+              </div>
+              <div class="form-group">
+                <label for="sel1">Gender:</label>
+                <select class="form-control" id="sel1" name="gender" required>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sel1">Marital Status:</label>
+                <select class="form-control" id="sel1" name="marital_status" required>
+                  <option>Single</option>
+                  <option>Married</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Start Date</label>
+                <input class="form-control" type="date" value="2011-08-19" name="start_date" required>
+              </div>
+
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter Nationality" name="nationality" required>
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Enter NSSF Number" name="nssf_no" required>
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Enter URA TIN" name="ura_tin" required>
+              </div>
+
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter National ID Number" name="national_id"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" placeholder="Enter Telephone Number" name="telephone"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter Residence Address" name="residence_address"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label>Date of Birth</label>
+                <input class="form-control" type="date" value="1992-08-19" name="dob">
+              </div>
+          </div>
+          <!--Footer-->
+          <div class="modal-footer">
+            <button class="btn btn-outline-danger" type="reset">Close</button>
+            <button class="btn btn-danger" type="submit">Save</button>
+          </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- Modal: modalAddNewEmployee -->
+
+  </div>
+</div>
+{%endblock content%}

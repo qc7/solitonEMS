@@ -41,14 +41,14 @@
 
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li class="nav-item" data-toggle="popover" title="Admin">
+                <li class="nav-item {{admin}}" data-toggle="popover" title="Admin">
                     <a class="nav-link" href="#" >
                         <i class="material-icons">verified_user</i>
                         <p>Admin</p>
                     </a>
                     <ul id="popover-content" class="nav list-group" style="display: none">
-                        <a href="#" class="list-group-item">Manage Users</a>
-                        <a href="#" class="list-group-item">View Users</a>
+                        <a href="{%url 'manage_users_page'%}" class="list-group-item">Manage Users</a>
+                        <a href="{%url 'view_users_page'%}" class="list-group-item">View Users</a>
                         <a href="#" class="list-group-item">Reports</a>
                     </ul>
                 </li>
@@ -484,7 +484,7 @@
 
        $('[data-toggle="popover"]').popover({
             html: true,
-            trigger: 'focus',
+            trigger: 'click',
             content: function() {
             return $('#popover-content').html();
           }
