@@ -1,0 +1,98 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<h1>Manage Users</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <!-- Button trigger modal-->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_employee">
+      Add User +
+    </button>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          {{ user_form.non_field_errors }}
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="">
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </thead>
+              <tbody>
+                {% for user in users  %}
+                <tr>
+                  <td>{{user.id}}</a></td>
+                  <td>{{user.solitonuser.employee}}</a></td>
+                  <td>{{user.email}}</a></td>
+                  <td>{{user.status}}</td>
+                  <td>
+                    <a href="{%url 'edit_user_page' user.id%}">Edit</a> |
+                    <a href="{%url 'manage_user_permissions_page' user.id%}">Manage Permissions</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: modalAddNewEmployee -->
+    <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">User Form</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <!--Body-->
+          <div class="modal-body">
+            <form method="POST" action="#"> {%csrf_token%}
+              {% for field in user_form %}
+              <div class="form-group">
+                {{ field.errors }}
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+              <p class="help">{{ field.help_text|safe }}</p>
+              {% endif %}
+              </div>
+              {% endfor %}
+              {% for field in soliton_user_form %}
+              <div class="form-group">
+                {{ field.errors }}
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+              <p class="help">{{ field.help_text|safe }}</p>
+              {% endif %}
+              </div>
+              {% endfor %}
+
+
+          <!--Footer-->
+          <div class="modal-footer">
+            <button class="btn btn-outline-danger" type="reset">Close</button>
+            <button class="btn btn-danger" type="submit">Save</button>
+          </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    <!-- Modal: modalAddNewEmployee -->
+
+  </div>
+</div>
+</div>
+{%endblock content%}

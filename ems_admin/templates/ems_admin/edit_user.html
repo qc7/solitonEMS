@@ -1,0 +1,26 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<h1>Edit User</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+           <form method="POST" action="#">{%csrf_token%}
+               {{user_form}}
+                <hr/>
+               {{soliton_user_form}}
+             <button class="btn btn-danger" type="submit">Edit User</button>
+           </form>
+        </div>
+      </div>
+    </div>
+    <!-- Modal: modalAddNewEmployee -->
+
+  </div>
+</div>
+</div>
+{%endblock content%}

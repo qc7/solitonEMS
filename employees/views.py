@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from employees.services import create_employee_instance
-from ems_auth.decorators import my_login_required
+from ems_auth.decorators import ems_login_required
 from ems_auth.models import User
 from .models import (
     Employee,
@@ -25,10 +25,11 @@ from role.models import Notification
 from settings.models import Currency
 import csv
 
+
 # dashboard
 
 
-@my_login_required
+@ems_login_required
 def dashboard_page(request):
     # Get the user
     user = request.user
@@ -46,29 +47,15 @@ def dashboard_page(request):
         return render(request, 'ems_auth/login.html', {"message": "Soliton User does not exist"})
 
 
-@login_required
+@ems_login_required
 def employees_page(request):
     # redirect according to roles
     user = request.user
-
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
-    # redirect according to roles
-    user = request.user
-
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
-    number_of_notifications = notifications.count()
 
     context = {
         "user": user,
         "employees_page": "active",
         "employees": Employee.objects.all(),
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
-
     }
     return render(request, 'employees/employees.html', context)
 

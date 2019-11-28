@@ -1,7 +1,7 @@
-from django.urls import reverse,resolve
+from django.urls import reverse, resolve
 
 
-def check_response_200_ok(response, self, template_path):
+def check_response_200_ok(self, response, template_path):
     self.assertEquals(response.status_code, 200)
     self.assertTemplateUsed(response, template_path)
 
