@@ -28,7 +28,10 @@
                   <td>{{user.id}}</a></td>
                   <td>{{user.solitonuser.employee}}</a></td>
                   <td>{{user.email}}</a></td>
-                  <td>Edit | Suspend | Manage Permissions</td>
+                  <td>
+                    <a href="{%url 'edit_user_page' user.id%}">Edit</a> |
+                    <a>Manage Permissions</a>
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -88,5 +91,6 @@
     <!-- Modal: modalAddNewEmployee -->
 
   </div>
+</div>
 </div>
 {%endblock content%}
