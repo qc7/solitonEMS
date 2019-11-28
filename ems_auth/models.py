@@ -47,6 +47,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return '{}'.format(self.email)
 
+    @property
+    def status(self):
+        if self.is_active:
+            return 'Active'
+        else:
+            return 'Inactive'
+
+
     class Meta:
         unique_together = ['email']
 

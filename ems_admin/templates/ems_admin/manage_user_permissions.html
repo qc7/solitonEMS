@@ -1,15 +1,11 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Manage Users</h1>
+<h1>Manage User Permissions</h1>
 {% endblock %}
 
 {% block content %}
 <div class="content">
   <div class="container-fluid">
-    <!-- Button trigger modal-->
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_employee">
-      Add User +
-    </button>
     <div class="col-md-12">
       <div class="card">
         <div class="card-body">
@@ -17,22 +13,40 @@
           <div class="table-responsive">
             <table class="table table-hover">
               <thead class="">
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
+                <th>Process/Module</th>
+                <th>Full Auth</th>
+                <th>View Only</th>
+                <th>No Rights</th>
                 <th>Actions</th>
               </thead>
               <tbody>
-                {% for user in users  %}
+                {% for permission in permissions %}
                 <tr>
-                  <td>{{user.id}}</a></td>
-                  <td>{{user.solitonuser.employee}}</a></td>
-                  <td>{{user.email}}</a></td>
-                  <td>{{user.status}}</td>
+                  <td>{{permission.name}}</td>
+
                   <td>
-                    <a href="{%url 'edit_user_page' user.id%}">Edit</a> |
-                    <a href="{%url 'manage_user_permissions_page' user.id%}">Manage Permissions</a>
+                    {%if permission.full_auth%}
+                      <i class="large material-icons">check</i>
+                    {%else%}
+                      <i class="large material-icons">clear</i>
+                    {%endif%}
+                  </td>
+                  <td>
+                    {%if permission.view_only%}
+                      <i class="large material-icons">check</i>
+                    {%else%}
+                      <i class="large material-icons">clear</i>
+                    {%endif%}
+                  </td>
+                  <td>
+                    {%if permission.no_rights%}
+                      <i class="large material-icons">check</i>
+                    {%else%}
+                      <i class="large material-icons">clear</i>
+                    {%endif%}
+                  </td>
+                  <td>
+                    <a href="{%url 'edit_user_permission_page' permission.id%}">Edit</a>
                   </td>
                 </tr>
                 {% endfor %}

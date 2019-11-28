@@ -5,8 +5,9 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
-from ems_admin.forms import UserForm, SolitonUserForm
-from ems_admin.selectors import get_bound_user_form, get_user, get_solitonuser
+from ems_admin.forms import UserForm, SolitonUserForm, EMSPermissionForm
+from ems_admin.selectors import get_bound_user_form, get_user, get_solitonuser, get_bound_soliton_user_form, \
+    fetch_all_permissions_or_create, get_permission
 from ems_auth.models import SolitonUser
 
 User = get_user_model()
@@ -54,13 +55,12 @@ def edit_user_page(request, id):
     user_form = get_bound_user_form(user)
 
     try:
-        solitonuser = get_solitonuser(user)
-        soliton_user_form = get_bound_soliton_user_form(solitonuser)
+        soliton_user_form = get_bound_soliton_user_form(user)
     except SolitonUser.DoesNotExist:
         soliton_user_form = SolitonUserForm()
 
     if request.POST:
-        soliton_user_form = SolitonUserForm(request.POST, instance=solitonuser)
+        soliton_user_form = SolitonUserForm(request.POST, instance=get_solitonuser(user))
         soliton_user_form.save(commit=False)
         user = UserForm(request.POST, instance=user)
         user.save()
@@ -81,9 +81,38 @@ def edit_user_page(request, id):
         return render(request, 'ems_admin/edit_user.html', context)
 
 
-def get_bound_soliton_user_form(solitonuser):
-    soliton_user_form = SolitonUserForm(instance=solitonuser)
-    return soliton_user_form
+def manage_user_permissions_page(request, id):
+    user = get_user(id)
+    permissions = fetch_all_permissions_or_create(user)
+
+    context = {
+        'admin': 'active',
+        'permissions': permissions
+    }
+
+    return render(request, 'ems_admin/manage_user_permissions.html', context)
+
+
+def edit_user_permission_page(request, id):
+    permission = get_permission(id)
+    permission_user = permission.user
+
+    emspermission_form = EMSPermissionForm(instance=permission)
+
+    if request.POST:
+        emspermission_form = EMSPermissionForm(request.POST, instance=permission)
+        emspermission_form.save()
+
+        return HttpResponseRedirect(reverse(manage_user_permissions_page, args=[permission_user.id]))
+
+    context = {
+        'admin': 'active',
+        'emspermission_form': emspermission_form,
+        'permission': permission,
+        'permission_user': permission_user
+    }
+
+    return render(request, 'ems_admin/edit_user_permission.html', context)
 
 
 def view_users_page(request):
