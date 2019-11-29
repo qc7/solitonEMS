@@ -23,8 +23,15 @@ def get_bound_soliton_user_form(user):
     return soliton_user_form
 
 
+def create_soliton(user):
+    pass
+
+
 def get_solitonuser(user):
-    solitonuser = SolitonUser.objects.get(user=user)
+    try:
+        solitonuser = SolitonUser.objects.get(user=user)
+    except SolitonUser.DoesNotExist:
+        return None
     return solitonuser
 
 

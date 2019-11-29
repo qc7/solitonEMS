@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -60,14 +61,18 @@ def edit_user_page(request, id):
         soliton_user_form = SolitonUserForm()
 
     if request.POST:
-        soliton_user_form = SolitonUserForm(request.POST, instance=get_solitonuser(user))
-        soliton_user_form.save(commit=False)
-        user = UserForm(request.POST, instance=user)
-        user.save()
-        soliton_user_form.user = user
-        soliton_user_form.save()
-
-        return HttpResponseRedirect(reverse(manage_users_page))
+        user_form = UserForm(request.POST, instance=user)
+        user_form.save()
+        soliton_user = get_solitonuser(user)
+        try:
+            soliton_user_form = SolitonUserForm(request.POST, instance=soliton_user)
+            soliton_user_form.save(commit=False)
+            soliton_user_form.user = user
+            soliton_user_form.save()
+            return HttpResponseRedirect(reverse(manage_users_page))
+        except ValueError:
+            messages.error(request, "The employee can not be assigned to more than one user")
+            return HttpResponseRedirect(reverse(manage_users_page))
     else:
         user = request.user
         context = {
