@@ -10,3 +10,6 @@ class TestPayrollView(TestCase):
 
     def test_payroll_page_view_get(self):
         check_template_and_status_code(self, payroll_page, "payroll/payroll_page.html")
+
+    def test_manage_payroll_records_page_renders(self):
+        check_template_and_status_code(self, payroll_page, "payroll/payroll_page.html")

@@ -1,8 +1,6 @@
-import csv, io
-from django.contrib.auth.decorators import permission_required
+import csv
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
+
 from django.http import HttpResponse, HttpResponseRedirect
 
 from payroll.selectors import get_payroll_record_by_id
@@ -11,15 +9,11 @@ from .models import PayrollRecord, Payslip
 from django.urls import reverse
 from .simple_payslip import SimplePayslip
 from employees.models import Employee
-from django.db.models import Sum
-from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_total_paye, get_total_gross_pay, get_total_basic_pay, \
+from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_total_paye, get_total_gross_pay, \
+    get_total_basic_pay, \
     get_total_net_pay, render_to_pdf
-from role.models import Notification
 
 
-# Create your views here.
-# Pages
-###############################################################
 def payroll_page(request):
     context = {
         "payroll_page": "active"
@@ -27,28 +21,15 @@ def payroll_page(request):
     return render(request, 'payroll/payroll_page.html', context)
 
 
-def payroll_records_page(request):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
-    # Get the notifications
-    user = request.user.solitonuser
-
-    notifications = Notification.objects.filter(user=user)
-    number_of_notifications = notifications.count()
-
+def manage_payroll_records_page(request):
     context = {
+        "user": request.user,
         "payroll_page": "active",
         "payroll_records": PayrollRecord.objects.all(),
-        "number_of_notifications": number_of_notifications,
-        "notifications": notifications
     }
     return render(request, 'payroll/payroll_records.html', context)
 
 
-@login_required
 def payroll_record_page(request, id):
     # Get the payroll record
     payroll_record = PayrollRecord.objects.get(pk=id)
@@ -56,62 +37,48 @@ def payroll_record_page(request, id):
     month = payroll_record.month
     year = payroll_record.year
 
-    # Get all the associated Payroll objects
-    payrolls = Payslip.objects.filter(payroll_record=payroll_record)
+    # Get all the associated payslip objects
+    payslips = Payslip.objects.filter(payroll_record=payroll_record)
     # Get all employees
     employees = Employee.objects.all()
 
     # Get the notifications
-    user = request.user.solitonuser
-
-    notifications = Notification.objects.filter(user=user)
-    number_of_notifications = notifications.count()
+    user = request.user
 
     context = {
         "payroll_page": "active",
         "month": month,
         "year": year,
-        "payrolls": payrolls,
+        "payrolls": payslips,
         "payroll_record": payroll_record,
-        "total_nssf_contribution": get_total_nssf(payrolls),
-        "total_paye": get_total_paye(payrolls),
-        "total_gross_pay": get_total_gross_pay(payrolls),
+        "total_nssf_contribution": get_total_nssf(payslips),
+        "total_paye": get_total_paye(payslips),
+        "total_gross_pay": get_total_gross_pay(payslips),
         "total_basic_pay": get_total_basic_pay(employees),
-        "total_net_pay": get_total_net_pay(payrolls),
-        "number_of_notifications": number_of_notifications,
-        "notifications": notifications
+        "total_net_pay": get_total_net_pay(payslips),
     }
     return render(request, 'payroll/payroll_record.html', context)
 
 
-@login_required
 def edit_period_page(request, id):
     # fetch PayrollRecordRequest 
     payroll_record = PayrollRecord.objects.get(pk=id)
 
     # Get the notifications
-    user = request.user.solitonuser
-
-    notifications = Notification.objects.filter(user=user)
-    number_of_notifications = notifications.count()
+    user = request.user
     context = {
         "payroll_record": payroll_record,
         "payroll_page": "active",
-        "number_of_notifications": number_of_notifications,
-        "notifications": notifications
     }
 
     return render(request, 'payroll/edit_payroll.html', context)
 
 
-@login_required
 def payslip_page(request, id):
     # Get the payroll
     payslip = Payslip.objects.get(pk=id)
     # Get the notifications
-    user = request.user.solitonuser
-    notifications = Notification.objects.filter(user=user)
-    number_of_notifications = notifications.count()
+    user = request.user
 
     context = {
         "payroll_page": "active",
@@ -119,14 +86,11 @@ def payslip_page(request, id):
         "month": payslip.payroll_record.month,
         "year": payslip.payroll_record.year,
         "name_of_employee": "{} {}".format(payslip.employee.first_name, payslip.employee.last_name),
-        "number_of_notifications": number_of_notifications,
-        "notifications": notifications
     }
 
     return render(request, 'payroll/payslip.html', context)
 
 
-@login_required
 def generate_payslip_pdf(request, id):
     # Get the payslip
     payslip = Payslip.objects.get(pk=id)
@@ -187,9 +151,6 @@ def create_payroll_payslips(request, id):
     payroll_record = get_payroll_record_by_id(id)
     create_payslip_list_service(payroll_record)
     return HttpResponseRedirect(reverse('payroll_record_page', args=[payroll_record.id]))
-
-
-
 
 
 def add_prorate(request):
@@ -342,7 +303,6 @@ def add_overtime(request):
     return HttpResponseRedirect(reverse('payslip_page', args=[payroll.id]))
 
 
-@login_required
 def payroll_download(request, id):
     # Get the payroll record
     payroll_record = PayrollRecord.objects.get(pk=id)
