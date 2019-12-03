@@ -19,18 +19,9 @@ class Team(models.Model):
     status = models.CharField(max_length=15, default="Active")
 
 
-<<<<<<< HEAD
-    def __str__(self):
-        return self.name
-     
-class Job_Titles(models.Model):
-    title = models.CharField(max_length=45)
-    positions = models.IntegerField()
-=======
 class Position(models.Model):
     name = models.CharField(max_length=45)
     number_of_slots = models.IntegerField()
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
 
     def __str__(self):
         return self.name
@@ -88,13 +79,10 @@ class OrganisationDetail(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, blank=True)
     position = models.ForeignKey(Position, on_delete=models.CASCADE, blank=True)
 
-<<<<<<< HEAD
-=======
     def __str__(self):
         return self.position.name + " " + self.department.name
 
 
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
 class HomeAddress(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, primary_key=True)
     district = models.CharField(max_length=20)

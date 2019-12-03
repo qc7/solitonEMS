@@ -310,17 +310,11 @@ def teams_page(request, id):
         # if the user is not authenticated it renders a login page
         return render(request, 'ems_auth/login.html', {"message": None})
 
-<<<<<<< HEAD
     user = request.user
 
     ts = Teams.objects.filter(department=id)
     notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
     number_of_notifications = notifications.count() 
-=======
-    ts = Team.objects.filter(department=id)
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
-    number_of_notifications = notifications.count()
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
     context = {
         "user": user,
         "employees_page": "active",
@@ -570,24 +564,15 @@ def add_organisation_details(request):
         employee_id = request.POST['employee_id']
         depart = request.POST['depart']
         position = request.POST['position']
-<<<<<<< HEAD
         team = request.POST['team']
         
-=======
-
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
         # Get the employee instance
         employee = Employee.objects.get(pk=employee_id)
         # Get the department instance
         department = Department.objects.get(pk=depart)
         # Get the Job title instance
-<<<<<<< HEAD
-        position = Job_Titles.objects.get(pk=position)
-        # Get the Job title instance
         team = Teams.objects.get(pk=team)
-=======
         position = Position.objects.get(pk=position)
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
         # Creating instance of organisation Detail
         organisation_detail = OrganisationDetail(employee=employee, department=department,\
             position=position, team = team)
@@ -617,23 +602,14 @@ def edit_organisation_details(request):
         employee_id = request.POST['employee_id']
         depart = request.POST['depart']
         position = request.POST['position']
-<<<<<<< HEAD
         team = request.POST['team']
         
-=======
-
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
         # Get the employee instance
         employee = Employee.objects.get(pk=employee_id)
         # Get the department instance
         department = Department.objects.get(pk=depart)
-        # Get the Job title instance
-<<<<<<< HEAD
-        position = Job_Titles.objects.get(pk=position)# Get the Job title instance
         team = Teams.objects.get(pk=team)
-=======
         position = Position.objects.get(pk=position)
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
         # get instance of organisation Detail
         organisation_detail = OrganisationDetail.objects.get(employee=employee)
         organisation_detail.department = department
@@ -1202,11 +1178,7 @@ def delete_dependant(request, id):
     }
     return render(request, 'employees/deleted.html', context)
 
-<<<<<<< HEAD
 # Department Section
-=======
-
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
 def add_new_department(request):
     if request.method == "POST":
         dep_name = request.POST["dep_name"]
@@ -1335,7 +1307,6 @@ def add_new_title(request):
 
     return render(request, 'employees/employee.html', context)
 
-<<<<<<< HEAD
 def edit_job_title_page(request, id):
      # redirect according to roles
     # If user is a manager
@@ -1403,10 +1374,6 @@ def delete_job_title(request, id):
         return redirect('job_titles_page')
 
 #Deductions
-def add_deduction(request):
-=======
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
-
 def add_deduction(request):
     if request.method == 'POST':
         # Fetching data from the add deductions' form
@@ -1494,7 +1461,6 @@ def delete_deduction(request, id):
     }
     return render(request, 'employees/deleted.html', context)
 
-<<<<<<< HEAD
 def edit_leave_details(request, id):
     if request.method == 'POST':
         # Fetching data from the edit leave' form
@@ -1513,7 +1479,7 @@ def edit_leave_details(request, id):
         context = {
             "employees_page": "active",
             "success_msg": "You have successfully added %s to the dependants" % (dependant.name),
-=======
+        }
 
 def delete_allowance(request, id):
     try:
@@ -1560,25 +1526,17 @@ def add_supervisee(request):
         context = {
             "employees_page": "active",
             "success_msg": "You have successfully added %s to the supervisees" % (supervision.supervisee),
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
             "employee": employee
         }
 
         return render(request, 'employees/success.html', context)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896
     else:
         context = {
             "employees_page": "active",
             "failed_msg": "Failed! You performed a GET request"
         }
 
-<<<<<<< HEAD
-        return render(request, "employees/failed.html", context)
-=======
         return render(request, "employees/failed.html", context)
 
 
@@ -1634,4 +1592,3 @@ def employees_download(request):
 
     # Return the response
     return response
->>>>>>> e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896

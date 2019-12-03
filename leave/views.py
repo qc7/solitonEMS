@@ -11,7 +11,7 @@ from datetime import date
 import calendar
 from calendar import HTMLCalendar
 from collections import namedtuple
-from employees.models import Employee, Departments, Teams
+from employees.models import Employee, Department, Team
 from django.db import connection
 from django.db.models import (
     Sum,
