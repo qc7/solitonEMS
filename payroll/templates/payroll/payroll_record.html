@@ -34,7 +34,7 @@
                 {%if not payrolls %}
                 <a href="{%url 'generate_payroll' payroll_record.id %}"><button class="btn btn-danger">Generate Initial
                         Payroll</button></a>
-                <a href="{%url 'generate_payroll_with_bonus' payroll_record.id %}"><button
+                <a href="#"><button
                         class="btn btn-success">Generate Payroll With Bonus</button></a>
                 <div class="instructions">
                     <h4>Initial Payroll</h4>
@@ -63,21 +63,13 @@
                         <td><a href="{%url 'payslip_page' payroll.id%}"
                                 style="color: inherit">{{payroll.employee.first_name}}
                                 {{payroll.employee.last_name}}</a></td>
-                        <td>UGX {{payroll.total_nssf_contrib | intcomma}}</td>
-                        <td>UGX {{ payroll.paye| intcomma}}</td>
-                        <td>UGX {{payroll.gross_salary | intcomma}}</td>
-                        <td>UGX {{payroll.employee.basic_salary | intcomma}}</td>
-                        <td>UGX {{payroll.net_salary | intcomma }}</td>
+                        <td>{{payroll.employee.currency}} {{payroll.total_nssf_contrib | intcomma}}</td>
+                        <td>{{payroll.employee.currency}} {{ payroll.paye| intcomma}}</td>
+                        <td>{{payroll.employee.currency}} {{payroll.gross_salary | intcomma}}</td>
+                        <td>{{payroll.employee.currency}} {{payroll.employee.basic_salary | intcomma}}</td>
+                        <td>{{payroll.employee.currency}} {{payroll.net_salary | intcomma }}</td>
                     </tr>
                     {%endfor%}
-                    <tr>
-                        <th colspan="2">TOTAL</th>
-                        <th>UGX {{total_nssf_contribution|intcomma}}</th>
-                        <th>UGX {{total_paye|intcomma}}</th>
-                        <th>UGX {{total_gross_pay|intcomma}}</th>
-                        <th>UGX {{total_basic_pay|intcomma}}</th>
-                        <th>UGX {{total_net_pay|intcomma}}</th>
-                    </tr>
                 </table>
                 <a href="{%url 'payroll_download' payroll_record.id %}"><button class="btn btn-outline">Export Excel CSV</button></a>
             </div>

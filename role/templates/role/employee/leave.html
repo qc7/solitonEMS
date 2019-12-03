@@ -1,37 +1,5 @@
-{% extends '../base.html'%} {% load static %}
-{%block sidebar-wrapper%}
-<div class="sidebar-wrapper">
-    <ul class="nav">
-        <li class="nav-item {{ view_profile_page }}">
-            <a class="nav-link" href="{% url 'dashboard_page' %}">
-                <i class="material-icons">dashboard</i>
-                <p>View Profile</p>
-            </a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'employee_leave_page' user.solitonuser.employee.id %}">
-                <i class="material-icons">pregnant_woman</i>
-                <p>Leave</p>
-            </a>
-        </li>
-        <li class="nav-item  {{ payroll_page }}">
-            <a class="nav-link" href="{% url 'employee_payslip_page' user.solitonuser.employee.id %}">
-                <i class="material-icons">library_books</i>
-                <p>Payslip</p>
-            </a>
-        </li>
-        <li class="nav-item ">
-            <a class="nav-link" href=" {% url 'logout' %} ">
-                <i class="material-icons">exit_to_app</i>
-                <p>Logout</p>
-            </a>
-        </li>
+{% extends './base.html'%} {% load static %}
 
-    </ul>
-</div>
-
-
-{%endblock%}
 {% block page_title %}
 <h2>Leave</h2>
 {% endblock %}

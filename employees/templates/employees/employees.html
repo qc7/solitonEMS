@@ -53,6 +53,9 @@
                 {% endfor %}
               </tbody>
             </table>
+            <a href="{%url 'employees_download' %}">
+              <button class="btn btn-outline">Export CSV Report</button>
+            </a>
           </div>
         </div>
       </div>
@@ -74,6 +77,17 @@
           <div class="modal-body">
             <form method="POST" action="{%url 'add_new_employee'%}"> {%csrf_token%}
               <div class="form-group">
+                <label for="sel1">Title:</label>
+                <select class="form-control" id="sel1" name="title" required>
+                  <option>Mr.</option>
+                  <option>Miss.</option>
+                  <option>Mrs.</option>
+                  <option>Dr.</option>
+                  <option>Prof.</option>
+                  <option>Eng.</option>
+                </select>
+              </div>
+              <div class="form-group">
                 <input type="text" class="form-control" placeholder="Enter first name" name="first_name" required>
               </div>
               <div class="form-group">
@@ -81,6 +95,16 @@
               </div>
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Enter employee grade" name="grade" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter work station" name="work_station">
+              </div>
+              <div class="form-group">
+                <label for="sel1">Renumeration Currency:</label>
+                <select class="form-control" id="sel1" name="renumeration_currency" required>
+                  <option value=1>UGX</option>
+                  <option value=2>USD</option>
+                </select>
               </div>
               <div class="form-group">
                 <input type="number" class="form-control" placeholder="Enter basic salary" name="basic_salary" required>

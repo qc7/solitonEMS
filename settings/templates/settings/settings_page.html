@@ -1,0 +1,91 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{%block page_title %}
+<span>
+    <a href="{%url 'dashboard_page'%}" style="color: inherit;"><i
+            class="material-icons">keyboard_backspace</i></a>
+    <h2 class="animated fadeInDown">Settings</h2>
+</span>
+{%endblock%}
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title ">Currency</h4>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_spouse">Add a
+                            currency
+                        </button>
+                        {%if spouses%}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary">
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    National Id Number
+                                </th>
+                                <th>
+                                    Date of Birth
+                                </th>
+                                <th>
+                                    Occupation
+                                </th>
+                                <th>
+                                    Telephone
+                                </th>
+
+                                <th>
+                                    Nationality
+                                </th>
+                                <th>
+                                    Passport Number
+                                </th>
+
+                                <th>
+                                    Alien Cerficate Number
+                                </th>
+
+                                <th>
+                                    Immigration File Number
+                                </th>
+                                </thead>
+                                <tbody>
+                                {%for spouse in spouses%}
+                                <tr>
+                                    <td>{{spouse.name}}</td>
+                                    <td>{{spouse.national_id}}</td>
+                                    <td>{{spouse.dob}}</td>
+                                    <td>{{spouse.occupation}}</td>
+                                    <td>{{spouse.telephone}}</td>
+                                    <td>{{spouse.nationality}}</td>
+                                    <td>{{spouse.passport_number}}</td>
+                                    <td>{{spouse.alien_certificate_number}}</td>
+                                    <td>{{spouse.immigration_file_number}}</td>
+                                    <td><a href="{%url 'edit_spouse_page' spouse.id%}" style="color:inherit"><i
+                                            class="fa fa-edit"></i></a></td>
+                                    <td>
+                                        <a style="color: inherit" href="{%url 'delete_spouse' spouse.id%}"
+                                           onclick="return confirm('Are you sure you want to delete this spouse from {{employee.first_name}}?')">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {%endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

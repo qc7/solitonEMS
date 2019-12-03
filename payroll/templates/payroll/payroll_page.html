@@ -1,0 +1,29 @@
+{%extends './base.html'%}
+{% load humanize %}
+
+{%block page_title %}
+<span>
+
+    <h2 class="animated fadeInDown">Payroll</h2>
+</span>
+{%endblock%}
+
+{%block content%}
+
+<div class="content">
+
+    <div class="container-fluid">
+        <div class="card  animated fadeInUp">
+            <div class="period card-header">
+                <ul class="module-items">
+                    <li><a href="payroll_records_page"><button class="btn btn-outline">Generate Payroll</button></a></li>
+                    <li><button class="btn btn-outline">View latest payroll</button></li>
+                    <li><button class="btn btn-outline">View your latest payslip</button></li>
+                    <li><button class="btn btn-outline">Reports</button></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

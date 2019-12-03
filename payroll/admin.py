@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Payroll, PayrollRecord
+from .models import Payslip, PayrollRecord
 # Register your models here.
 
 admin.site.register(PayrollRecord)
-admin.site.register(Payroll)
+admin.site.register(Payslip)

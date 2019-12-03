@@ -1,35 +1,15 @@
 from django.db import models
-from django.contrib.auth.models import User
-from employees.models import Employee, Departments, Teams
+from ems_auth.models import User
 
-class SolitonRole(models.Model):
-    #Soliton role attributes
-    name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.name
 
 # Create your models here.
-class SolitonUser(models.Model):
-    # This line is required. Links SolitonUser to a User model instance
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
-    # The additional attributes we wish to include
-    middleName = models.CharField(max_length=20, blank=True)
-    employee   = models.OneToOneField(Employee,on_delete=models.CASCADE)
-    soliton_role = models.ForeignKey(SolitonRole,on_delete=models.CASCADE)
-    soliton_department = models.ForeignKey(Departments, on_delete=models.CASCADE, default=1)
-    soliton_team    = models.ForeignKey(Teams, on_delete=models.CASCADE, default=1)
-    password_change =models.CharField(max_length=10,blank=True)
-    # Return something meaningful 
-    def __str__(self):
-        return '{}'.format(self.user.username)
 
 # Stores all the notifications
 class Notification(models.Model):
-    user = models.ForeignKey(SolitonUser,on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     date_time = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=10,default='unread')
+    status = models.CharField(max_length=10, default='unread')
 
     def __str__(self):
-        return '{} {} {}'.format(self.user, self.message,self.date_time)
+        return '{} {} {}'.format(self.user, self.message, self.date_time)

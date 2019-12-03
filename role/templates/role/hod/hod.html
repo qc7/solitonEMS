@@ -1,21 +1,30 @@
 {% extends '../base.html'%} {% load static %}
+{%block actor%}
+HOD
+{%endblock%}
 {%block sidebar-wrapper%}
 <div class="sidebar-wrapper">
     <ul class="nav">
         <li class="nav-item {{ dashboard_page }}">
-            <a class="nav-link" href="{% url 'dashboard_page' %}">
+            <a class="nav-link" href="{% url 'hod_role_page' %}">
                 <i class="material-icons">dashboard</i>
                 <p>Dashboard</p>
             </a>
         </li>
+        <li class="nav-item {{ overtime_page }}">
+            <a class="nav-link" href="{%url 'hod_overtime_page'%}">
+                <i class="material-icons">hourglass_empty</i>
+                <p>Overtime</p>
+            </a>
+        </li>
         <li class="nav-item {{ leave_page }}">
-            <a class="nav-link" href="{% url 'leave_dashboard_page' %}">
+            <a class="nav-link" href="#">
                 <i class="material-icons">pregnant_woman</i>
                 <p>Leave</p>
             </a>
         </li>
         <li class="nav-item  {{ payroll_page }}">
-            <a class="nav-link" href="{% url 'payroll_records_page' %}">
+            <a class="nav-link" href="#">
                 <i class="material-icons">library_books</i>
                 <p>Payroll</p>
             </a>
@@ -30,17 +39,7 @@
     </ul>
 </div>
 {%endblock%}
-{% block page_title %}
-    <h3>{{employee.first_name}} {{employee.last_name}}</h3>
-{% endblock %}
 
 {%block content%}
-<div class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <h2>HOD Portal</h2>
-        </div>
-    </div>
-</div>
 
 {%endblock%}

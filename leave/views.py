@@ -53,7 +53,7 @@ def leave_dashboard_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'registration/login.html',{"message":None})
+        return render(request,'ems_auth/login.html',{"message":None})
 
     user_role = get_current_user(request,"role")
     
@@ -91,7 +91,7 @@ def leave_types_page(request):
      # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'registration/login.html',{"message":None})
+        return render(request,'ems_auth/login.html',{"message":None})
 
     context = {
         "leave_page": "active",
@@ -134,7 +134,7 @@ def edit_leave_type_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
     
     leave = Leave_Types.objects.get(pk=id)
 
@@ -148,7 +148,7 @@ def holidays_page(request):
      # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'registration/login.html',{"message":None})
+        return render(request,'ems_auth/login.html',{"message":None})
 
     context = { 
         "leave_page": "active",
@@ -181,7 +181,7 @@ def approval_path_page(request):
      # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'registration/login.html',{"message":None})
+        return render(request,'ems_auth/login.html',{"message":None})
 
     context = {
         "leave_page": "active",
@@ -216,7 +216,7 @@ def apply_leave_page(request):
      #The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'registration/login.html',{"message":None})
+        return render(request,'ems_auth/login.html',{"message":None})
 
     context = {
         "leave_page": "active",
