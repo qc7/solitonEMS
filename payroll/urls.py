@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     # Pages
     path('', views.payroll_page, name="payroll_page"),
-    path('payroll_records_page',views.payroll_records_page, name="payroll_records_page"),
+    path('payroll_records_page', views.manage_payroll_records_page, name="payroll_records_page"),
     path('edit_period_page/<int:id>/',views.edit_period_page,name="edit_period_page"),
     path('payroll_record_page/<int:id>/',views.payroll_record_page,name="payroll_record_page"),
     path('payslip_page/<int:id>',views.payslip_page,name='payslip_page'),

@@ -41,12 +41,12 @@
 
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li class="nav-item {{admin}}" data-toggle="popover" title="Admin">
+                <li class="nav-item {{admin}}" data-toggle="popover-admin" title="Admin">
                     <a class="nav-link" href="#" >
                         <i class="material-icons">verified_user</i>
                         <p>Admin</p>
                     </a>
-                    <ul id="popover-content" class="nav list-group" style="display: none">
+                    <ul id="popover-admin" class="nav list-group" style="display: none">
                         <a href="{%url 'manage_users_page'%}" class="list-group-item">Manage Users</a>
                         <a href="{%url 'view_users_page'%}" class="list-group-item">View Users</a>
                         <a href="#" class="list-group-item">Reports</a>
@@ -81,11 +81,16 @@
                     </a>
                 </li>
 
-                <li class="nav-item  {{ payroll_page }}">
-                    <a class="nav-link" href="{% url 'payroll_page' %}">
+                <li class="nav-item  {{ payroll_page }}" data-toggle="popover-payroll" title="Payroll" >
+                    <a class="nav-link" href="#">
                         <i class="material-icons">library_books</i>
                         <p>Payroll</p>
                     </a>
+                    <ul id="popover-payroll" class="nav list-group" style="display: none">
+                        <a href="{%url 'payroll_records_page'%}" class="list-group-item">Manage Payroll Records</a>
+                        <a href="#" class="list-group-item">View Payroll Records</a>
+                        <a href="#" class="list-group-item">View your payslip</a>
+                    </ul>
                 </li>
 
                 <li class="nav-item {{overtime_page}}">
@@ -160,15 +165,6 @@
                 </button>
 
                 <div class="collapse navbar-collapse justify-content-end">
-                    <form class="navbar-form">
-                        <div class="input-group no-border">
-                            <input type="text" value="" class="form-control" placeholder="Search...">
-                            <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                                <i class="material-icons">search</i>
-                                <div class="ripple-container"></div>
-                            </button>
-                        </div>
-                    </form>
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="#pablo">
@@ -483,18 +479,29 @@
 
 
 </script>
+<!--    Popovers-->
 <script>
+
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
 
-       $('[data-toggle="popover"]').popover({
+       $('[data-toggle="popover-admin"]').popover({
             html: true,
             trigger: 'click',
             content: function() {
-            return $('#popover-content').html();
+            return $('#popover-admin').html();
           }
        });
+
+       $('[data-toggle="popover-payroll"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function() {
+            return $('#popover-payroll').html();
+          }
+       });
+
     });
 
 
