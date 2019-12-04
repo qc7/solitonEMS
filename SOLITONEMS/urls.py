@@ -12,5 +12,4 @@ urlpatterns = [
     path('holidays/', include('holidays.urls')),
     path('', include('employees.urls')),
     path('ems_admin/', include('ems_admin.urls'))
-
 ]

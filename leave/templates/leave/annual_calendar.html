@@ -1,0 +1,94 @@
+{% extends './base.html' %}
+{% block page_title %}
+  <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>    
+  <h2>Leave Calendar - 2019</h2>
+{% endblock %}
+
+{% block content %} 
+<div class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-hover">
+          <tr>
+          <form method="POST" action="{% url 'Leave_planner_summary' %}"> {% csrf_token %}
+            <td><strong> Filter By: </strong></td>
+            <td> 
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Department:</label>
+                <select class="form-control" id="options" name="department">
+                  {% for department in departments %}
+                    <option value = {{department.id}}>{{department.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>  
+            </td> 
+            <td> 
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Team:</label>
+                <select class="form-control" id="options" name="team">
+                  {% for team in teams %}
+                    <option value = {{team.id}}>{{team}}</option>
+                  {% endfor %}
+                </select>
+              </div>  
+            </td> 
+            <td> 
+              <div class="form-group">
+                <button class="btn btn-danger" type="submit">Reload</button>
+              </div>  
+            </td>
+            </form>
+          </tr>
+        </table>
+          <table class="table table-hover">
+            <thead class="">
+                <th><strong>Employee</strong></th>
+                <th><strong>Jan</strong></th>
+                <th><strong>Feb</strong></th>
+                <th><strong>Mar</strong></th>
+                <th><strong>Apr</strong></th>
+                <th><strong>May</strong></th>
+                <th><strong>Jun</strong></th>
+                <th><strong>Jul</strong></th>
+                <th><strong>Aug</strong></th>
+                <th><strong>Sep</strong></th>
+                <th><strong>Oct</strong></th>
+                <th><strong>Nov</strong></th>
+                <th><strong>Dec</strong></th>
+            </thead>
+            <tbody>
+            {% for plan in plans %}
+              <tr>
+                <td>{{ plan.0 }}</td>
+                <td>{{ plan.1 }}</td>
+                <td>{{ plan.2 }}</td>
+                <td>{{ plan.3 }}</td>
+                <td>{{ plan.4 }}</td>
+                <td>{{ plan.5 }}</td>
+                <td>{{ plan.6 }}</td>
+                <td>{{ plan.7 }}</td>
+                <td>{{ plan.8 }}</td>
+                <td>{{ plan.9 }}</td>
+                <td>{{ plan.10 }}</td>
+                <td>{{ plan.11 }}</td>
+                <td>{{ plan.12 }}</td>
+              </tr>
+            {% endfor %}
+          {% comment %} {% for week in month_days %}
+
+              {% for day in week %}
+                  <span class="date">{{ day }}</span>
+              {% endfor %}
+
+          {% endfor %} {% endcomment %}
+          </tbody>
+          </table>
+      <div class="clear"></div>
+  </div>
+  </div>
+  </div>
+</div>
+ 
+{% endblock content %} 

@@ -33,6 +33,7 @@ SOLITONEMS_APPS = [
     'payroll',
     'leave',
     'role',
+    'organisation_details',
     'settings',
     'overtime',
     'holidays',
@@ -149,5 +150,3 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
 DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
-
-

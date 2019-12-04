@@ -104,12 +104,16 @@
                             {% if employee.organisationdetail %}
                             <table class="table">
                                 <tr>
-                                    <td>Position</td>
+                                    <td><strong>Position</strong></td>
                                     <td>{{employee.organisationdetail.position}}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Department</th>
                                     <td>{{employee.organisationdetail.department}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Team</th>
+                                    <td>{{employee.organisationdetail.team}}</td>
                                 </tr>
                             </table>
                             <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
@@ -199,6 +203,38 @@
                             <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
                                 data-target="#modal_add_home_address"> <i class="fa fa-plus"></i></a>
                             {% endif%}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-profile">
+                       <div class="card-header card-header-primary">
+                        <i class="material-icons" style="font-size: 3em; float:left; margin-right:20px">school</i>
+                        <h4 class="card-title ">
+                            leave Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-description">                            
+                            <table class="table">
+                                <tr>
+                                    <td>Annual Allowance</td>
+                                    <td>{{employee.annual_allowance}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Balance - {{2019}}</th>
+                                    <td>{{employee.leave_balance}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Balance - {{2018}}</th>
+                                    <td>{{employee.balance_last_year}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Leave Status</th>
+                                    <td>{{employee.leave_status}}</td>
+                            </tr>
+                            </table>
+                            <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
+                                data-target="#modal_add_leave_details"> <i class="fa fa-edit"></i></a>                           
                         </div>
                     </div>
                 </div>
@@ -1078,6 +1114,15 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="team">Employee Team:</label>
+                                <select class="form-control" id="team" name="team" required>
+                                    <option>==Select Team==</option>
+                                    {% for team in teams %}
+                                    <option value="{{team.pk}}">{{tt.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>                            
+                            <div class="form-group">
                                 <label for="Pos">Employee Position:</label>
                                 <select class="form-control" id="position" name="position" required>
                                     <option>==Select Title==</option>
@@ -1399,8 +1444,55 @@
             </div>
         </div>
 
+        <!-- modal Add Leave Details -->
+        <div class="modal fade" id="modal_add_leave_details" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Leave Details</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+
+                        <form method="POST" action="{%url 'edit_leave_details'%}"> {%csrf_token%}
+                            <div class="form-group">
+                                <label>Annual Allowance</label>
+                                <input type="text" class="form-control" placeholder="Annual Leave Allowance" name="bank_name"
+                                    value="{{employee.annual_allowance}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Balance</label>
+                                <input type="text" class="form-control" placeholder="Leave Balance this Year:"
+                                    value="{{employee.leave_balance}}" name="leave_balance" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Balance Last Year</label>
+                                <input type="number" class="form-control" placeholder="Leave Balance last Year:"
+                                    name="balance_last_year" value="{{employee.balance_last_year}}" required>
+                            </div>
+
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                            type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+
 
 
 {% endblock content %}

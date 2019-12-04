@@ -1,17 +1,28 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
+from django.utils.dateparse import parse_date
 from django.utils import timezone
 import datetime
-from django.db.models import Sum
 from datetime import timedelta
-from .procedures import get_leave_balance, get_employee_leave
-from employees.models import Employee
+from datetime import date
+import calendar
+from calendar import HTMLCalendar
+from collections import namedtuple
+from employees.models import Employee, Department, Team
+from django.db import connection
+from django.db.models import (
+    Sum,
+    Count
+)
 from .models import (
     Leave_Types, 
     Holidays,
     Approval_Path,
-    LeaveApplication
+    LeaveApplication,
+    annual_planner,
 )
 
 def get_current_user(request, need):
@@ -129,7 +140,7 @@ def edit_leave_type_page(request, id):
 
     context = {
         "leave_page": "active",
-        "leave": leave
+        "leave": leave  
     }
     return render(request, 'leave/leave_type.html', context)
 
@@ -225,19 +236,15 @@ def apply_leave(request):
         user = request.user #getting the current logged in user
         employee = user.solitonuser.employee
     
-
         l_type = Leave_Types.objects.get(pk=request.POST["ltype"])
 
         date_format = "%Y-%m-%d"
         s_date = request.POST["s_date"]
         e_date = request.POST["e_date"]
 
-        #getting the difference between the start n end date
-        diff = datetime.datetime.strptime(e_date, date_format)\
-             - datetime.datetime.strptime(s_date, date_format)  
-
-        n_days = (diff.days + 1) #including the last day
-        l_days =  l_type.leave_days #getting the leave type entitlement        
+        #getting the leave type entitlement
+        n_days = calculate_leave_days(s_date, e_date)
+        l_days =  l_type.leave_days         
         
         if n_days <= l_days:
             new_balance=0
@@ -251,6 +258,13 @@ def apply_leave(request):
 
                 leave_app.save()
 
+                subject = 'New Leave Request' 
+                from_mail = settings.EMAIL_HOST_USER 
+                msg = 'You have a new leave request that requires your attention'
+                to_mails = [employee.email, 'walusimbi96@gmail.com']
+
+                send_mail(subject, msg, from_mail,to_mails,fail_silently=False)
+                
                 messages.success(request, 'Leave Request Sent Successfully')
 
                 if str(user.solitonuser.soliton_role) =='Employee':
@@ -263,7 +277,7 @@ def apply_leave(request):
                     return render(request,"role/employee/leave.html",context)
                 
             else:
-                messages.warning(request, f'You have insufficient {l_type} leave Balance')
+                messages.warning(request, f'You have insufficient {l_type} leave Balance {n_days}')
                 if str(user.solitonuser.soliton_role) =='Employee':
                     context = {
                     "employee": user.solitonuser.employee,
@@ -274,9 +288,12 @@ def apply_leave(request):
                     return render(request,"role/employee/leave.html")      
 
         else:
-            messages.warning(request, f'You cannot Request for more than the\
+            messages.warning(request, f'You cannot Request({n_days}) for more than the\
                 {l_type.leave_type} leave days ({l_type.leave_days})')
             return render(request,"role/employee/leave.html")
+
+#def send_mail_alert(subject, msg, from_mail, to_mail):
+    
 
 def approve_leave(request):
     if request.method=="POST":
@@ -316,19 +333,177 @@ def approve_leave(request):
             messages.success(request, 'Leave Approved Successfully')
             return redirect('leave_dashboard_page') 
             
-def get_employee_leave_balance(request):
-    #Get employees
-    employees = Employee.objects.all()
+def calculate_leave_days(start_date, end_date):    
+    date_format = "%Y-%m-%d"
+    from_date = datetime.datetime.strptime(start_date, date_format)
+    to_date = datetime.datetime.strptime(end_date, date_format)
+    
+    date_difference = to_date - from_date  
 
-    # LeaveApplication.objects.filter\
-    #     (employee_id = employee, leave_type = l_type).aggregate(Sum('no_of_days'))
+    all_days_between = (date_difference.days + 1)
+
+    holidays = Holidays.objects.filter(holiday_date__range=(from_date, to_date)).count()
+
+
+    all_working_days = all_days_between - holidays
+    k=0
+    while k <= all_days_between:
+        check_date = from_date + datetime.timedelta(days = k)
         
-    # total_days_taken = days_taken['no_of_days__sum']
+        if check_date.weekday() == 6:
+            all_working_days = all_working_days - 1
+        
+        k = k + 1
+       
+    return all_working_days
+        
+
+def annual_calendar(request):
+    # first_day = calendar.TextCalendar(calendar.MONDAY)
+    # annual_calendar = first_day.formatyear(2019)
+    context = { 
+        "annual_calendar": "active",
+        "employees": Employee.objects.all()
+    }
+        
+    return render(request, 'leave/annual_calendar.html', context)
+
+def leave_planer(request):
+     # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request,'registration/login.html',{"message":None})
+
+    current_year = datetime.datetime.now().year
+
+    context = { 
+        "leave_planner": "active",
+        "planner": annual_planner.objects.all(),
+        "leave_types": Leave_Types.objects.all(),
+        "employees": Employee.objects.all(),
+        "year": current_year
+    }
+    return render(request, 'leave/leave_planner.html', context)
+    
+def add_new_absence(request):
+    if request.method=="POST":
+        employee = Employee.objects.get(pk=request.user.id)
+        leave = Leave_Types.objects.get(pk=request.POST["leave_type"])
+        from_date = request.POST["from_date"]
+        to_date = request.POST["to_date"]
+
+    date_format = "%Y-%m-%d"
+    leave_year = datetime.datetime.strptime(from_date, date_format).year
+    leave_month = calendar.month_name[datetime.datetime.strptime(from_date, date_format).month]
+    leave_days = calculate_leave_days(from_date, to_date)
+
+    try:
+        if leave_days >= 1:
+            planner = annual_planner(leave_year=leave_year, date_from = from_date, date_to = to_date,\
+                employee=employee, leave = leave, leave_month = leave_month[0:3], no_of_days = leave_days)
+
+            planner.save()
+
+            messages.success(request, f'Data Saved Successfully')
+
+            overlaps = get_leave_overlap(from_date, to_date)
+
+            if overlaps > 1:
+                messages.warning(request,f'There are {overlaps - 1} Overlap(s) during the selected period.\
+                    \n Click to View Overlaps')
+
+        else:
+            messages.warning(request,f'Invalid Date Range')
+
+        return redirect('leave_planner')
+
+    except:
+        messages.error(request, f'Data Not Saved, Check you inputs and try again!')
+
+        #  return redirect('leave_planner')
+    
+def get_leave_overlap(start_date, end_date):
+    absences = annual_planner.objects.all()
+
+    Range = namedtuple('Range', ['start', 'end'])
+
+    date_format = "%Y-%m-%d"
+    from_date = datetime.datetime.strptime(start_date, date_format)
+    to_date = datetime.datetime.strptime(end_date, date_format)
+    
+    r1 = Range(start=from_date.date(), end=to_date.date())
+    
+    overlap = 0
+    overlap_count = 0
+    for absence in absences:
+        r2 = Range(start=absence.date_from, end=absence.date_to)
+        latest_start = max(r1.start, r2.start)
+        earliest_end = min(r1.end, r2.end)
+        delta = (earliest_end - latest_start).days + 1
+        overlap = max(0, delta)
+
+        if overlap > 0:
+            overlap_count += 1
+
+    
+    return overlap_count
+
+def Leave_planner_summary(request):
+     # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request,'registration/login.html',{"message":None})  
+    
+    department_id = 0
+    team_id = 0
+    if request.method=="POST":
+        department_id = request.POST["department"]
+        team_id = request.POST["team"]
+    
+    # Select multiple records
+    all_plans = None
+    with connection.cursor() as cursor:
+        cursor.execute(f"SELECT e.first_name || ' ' || e.last_name as Employee,\
+        SUM(CASE WHEN leave_month = 'Jan' THEN no_of_days ELSE 0 END) as Jan,\
+        SUM(CASE WHEN leave_month = 'Feb' THEN no_of_days ELSE 0 END) as Feb,\
+        SUM(CASE WHEN leave_month = 'Mar' THEN no_of_days ELSE 0 END) as Mar,\
+        SUM(CASE WHEN leave_month = 'Apr' THEN no_of_days ELSE 0 END) as Apr,\
+        SUM(CASE WHEN leave_month = 'May' THEN no_of_days ELSE 0 END) as May,\
+        SUM(CASE WHEN leave_month = 'Jun' THEN no_of_days ELSE 0 END) as Jun,\
+        SUM(CASE WHEN leave_month = 'Jul' THEN no_of_days ELSE 0 END) as Jul,\
+        SUM(CASE WHEN leave_month = 'Aug' THEN no_of_days ELSE 0 END) as Aug,\
+        SUM(CASE WHEN leave_month = 'Sep' THEN no_of_days ELSE 0 END) as Sep,\
+        SUM(CASE WHEN leave_month = 'Oct' THEN no_of_days ELSE 0 END) as Oct,\
+        SUM(CASE WHEN leave_month = 'Nov' THEN no_of_days ELSE 0 END) as Nov,\
+        SUM(CASE WHEN leave_month = 'Dec' THEN no_of_days ELSE 0 END) as Dec\
+        FROM employees_employee e LEFT OUTER JOIN leave_annual_planner l ON e.id=l.employee_id\
+		WHERE e.id IN \
+            (SELECT employee_id FROM employees_organisationdetail \
+                WHERE department_id={ department_id } AND team_id={ team_id })\
+        GROUP BY e.id;")
+        all_plans = cursor.fetchall()
+    # DB API fetchall produces a list of tuples
 
     context = {
-        "leave_balance_page": "active",
-        "employees": employees
+        "plans": all_plans,
+        "departments": Departments.objects.all(),
+        "teams": Teams.objects.all()
     }
+    return render(request, 'leave/annual_calendar.html', context)
 
-    return render(request, "leave/leave_balance.html", context)
+def leave_calendar(request, month=date.today().month, year=date.today().year):
+    year = int(year)
+    month = int(month)
 
+    if year < 1900 or year > 2099: 
+        year=date.today().year
+    
+    month_name=calendar.month_name[month]
+
+    cal = HTMLCalendar.formatmonth(year, month)
+
+    context = {
+        "title": year,
+        "calendar": cal
+    }
+    return render(request, 'leave/leave_calendar.html', context)
