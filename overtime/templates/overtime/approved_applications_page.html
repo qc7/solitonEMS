@@ -1,0 +1,41 @@
+{%extends 'solitonems/base.html'%}
+
+{%block page_title %}
+<span>
+    <h2 class="animated fadeInDown">Approved Overtime Applications</h2>
+</span>
+{%endblock%}
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <!-- table-->
+                {%if approved_applications%}
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Description</th>
+                    </tr>
+                    {%for approved_application in approved_applications%}
+                    <tr>
+                        <td>{{approved_application.supervisee.first_name}} {{approved_application.supervisee.last_name}}
+                        </td>
+                        <td>{{ approved_application.date }}</td>
+                        <td>{{ approved_application.start_time }}</td>
+                        <td>{{ approved_application.end_time }}</td>
+                        <td>{{ approved_application.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <h3>No approved leave applications</h3>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

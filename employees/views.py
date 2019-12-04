@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
+from django.http import HttpResponse
+
+from employees.services import create_employee_instance
+from ems_auth.decorators import ems_login_required
+from ems_auth.models import User
 from .models import (
     Employee,
     HomeAddress,
@@ -12,54 +14,69 @@ from .models import (
     Beneficiary,
     Spouse,
     Dependant,
-    Departments,
-    Teams,
-    Job_Titles
+    Department,
+    Team,
+    Position,
+    BankDetail, OrganisationDetail, Allowance,
+    Supervision
 )
-from .models import Employee, HomeAddress, Certification, EmergencyContact, Beneficiary, Spouse,Dependant,Deduction
-# Create your views here.
 
-# Authentication
+from role.models import Notification
+from settings.models import Currency
+import csv
+
 
 # dashboard
-@login_required
+
+
+@ems_login_required
 def dashboard_page(request):
-    # # The line requires the user to be authenticated before accessing the view responses.
-    # if not request.user.is_authenticated:
-    #     # if the user is not authenticated it renders a login page
-    #     return render(request,'registration/login.html',{"message":None})
+    # Get the user
+    user = request.user
+    try:
+        number_of_employees = Employee.objects.all().count()
+        context = {
+            "user": user,
+            "dashboard_page": "active",
+            "number_of_employees": number_of_employees,
+        }
 
-    context = {
-        "dashboard_page": "active"
-    }
-    return render(request, 'employees/dashboard.html', context)
+        return render(request, 'employees/dashboard.html', context)
+
+    except User.DoesNotExist:
+        return render(request, 'ems_auth/login.html', {"message": "Soliton User does not exist"})
 
 
-@login_required
+@ems_login_required
 def employees_page(request):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+    # redirect according to roles
+    user = request.user
+
     context = {
+        "user": user,
         "employees_page": "active",
         "employees": Employee.objects.all(),
-        "deps": Departments.objects.all(),
-        "titles": Job_Titles.objects.all()
     }
     return render(request, 'employees/employees.html', context)
-
 
 @login_required
 def employee_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
+
+    # redirect according to roles
+    # If user is a manager
+    user = request.user
 
     employee = Employee.objects.get(pk=id)
 
+    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    number_of_notifications = notifications.count()
+
     context = {
+        "user": user,
         "employees_page": "active",
         "employee": employee,
         "certifications": employee.certification_set.all(),
@@ -68,25 +85,41 @@ def employee_page(request, id):
         "spouses": employee.spouse_set.all(),
         "dependants": employee.dependant_set.all(),
         "deductions": employee.deduction_set.all(),
+        "deps": Department.objects.all(),
+        "titles": Position.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications":number_of_notifications,
+        "teams":Teams.objects.all(),
+        "allowances": Allowance.objects.all(),
+        "supervisee_options": Employee.objects.exclude(pk=employee.id),
+        "supervisions": Supervision.objects.filter(supervisor=employee)
     }
     return render(request, 'employees/employee.html', context)
 
 
-
-
-
 @login_required
 def edit_employee_page(request, id):
+    # redirect according to roles
+    # If user is a manager
+    user = request.user
+
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
+    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    number_of_notifications = notifications.count()
+
     context = {
+        "user": user,
         "employees_page": "active",
         "employee": employee,
-        "deps": Departments.objects.all(),
-        "titles": Job_Titles.objects.all()
+        "deps": Department.objects.all(),
+        "titles": Position.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications,
+        "currencies": Currency.objects.all()
     }
     return render(request, 'employees/edit_employee.html', context)
 
@@ -96,12 +129,28 @@ def edit_certification_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
+    # redirect according to roles
+
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request, "role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request, "role/ceo.html")
+
+    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    number_of_notifications = notifications.count()
 
     certification = Certification.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
-        "certification": certification
+        "certification": certification,
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
     }
 
     return render(request, 'employees/edit_cert.html', context)
@@ -112,15 +161,31 @@ def edit_emergency_contact_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
+
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request, "role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request, "role/ceo.html")
+
+    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    number_of_notifications = notifications.count()
 
     emergency_contact = EmergencyContact.objects.get(pk=id)
     context = {
+        "user": user,
         "employees_page": "active",
-        "emergency_contact": emergency_contact
+        "emergency_contact": emergency_contact,
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
     }
 
     return render(request, 'employees/edit_emergency.html', context)
+
 
 # The login view authenticates the user
 # The view also renders the login page
@@ -131,12 +196,27 @@ def edit_beneficiary_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
+
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request, "role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request, "role/ceo.html")
 
     beneficiary = Beneficiary.objects.get(pk=id)
+    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    number_of_notifications = notifications.count()
+
     context = {
+        "user": user,
         "employees_page": "active",
-        "beneficiary": beneficiary
+        "beneficiary": beneficiary,
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
     }
 
     return render(request, 'employees/edit_beneficiary.html', context)
@@ -144,63 +224,171 @@ def edit_beneficiary_page(request, id):
 
 @login_required
 def edit_spouse_page(request, id):
-     # The line requires the user to be authenticated before accessing the view responses.
+    # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
+
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request, "role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request, "role/ceo.html")
 
     spouse = Spouse.objects.get(pk=id)
-    context = {
-        "employees_page": "active",
-        "spouse": spouse
-    }
     spouse.save()
+
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
     context = {
-            "employees_page": "active",
-            "spouse": spouse
+        "user": user,
+        "employees_page": "active",
+        "spouse": spouse,
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
     }
+
     return render(request, 'employees/edit_spouse.html', context)
 
 
 @login_required
 def edit_dependant_page(request, id):
-        # The line requires the user to be authenticated before accessing the view responses.
+    # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
+        return render(request, 'ems_auth/login.html', {"message": None})
+
+    # redirect according to roles
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request, "role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request, "role/ceo.html")
 
     dependant = Dependant.objects.get(pk=id)
+    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    number_of_notifications = notifications.count()
     context = {
+        "user": user,
         "employees_page": "active",
-        "dependant": dependant
+        "dependant": dependant,
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
     }
 
     return render(request, 'employees/edit_dependant.html', context)
 
 
-def login_view(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
+def departments_page(request):
+    # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'ems_auth/login.html', {"message": None})
+    user = request.user
+    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    number_of_notifications = notifications.count()
+    context = {
+        "user": request.user,
+        "employees_page": "active",
+        "departs": Department.objects.all(),
+        "emps": Employee.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
+    }
 
-    user = authenticate(request, username=username, password=password)
-
-    if user is not None:
-        login(request, user)
-        return HttpResponseRedirect(reverse('dashboard_page'))
-
-    else:
-        return render(request, "registration/login.html", {"message": "Invalid credentials"})
+    return render(request, "employees/departments.html", context)
 
 
-def login_page(request):
-    return render(request, "registration/login.html")
+def teams_page(request, id):
+    # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'ems_auth/login.html', {"message": None})
 
-# The logout view logs out the user
+    user = request.user
+
+    ts = Teams.objects.filter(department=id)
+    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
+    number_of_notifications = notifications.count() 
+    context = {
+        "user": user,
+        "employees_page": "active",
+        "teams": ts,
+        "dep": Department.objects.get(pk=id),
+        "emps": Employee.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
+    }
+
+    return render(request, "employees/teams.html", context)
 
 
-def logout_view(request):
-    logout(request)
-    return render(request, "registration/login.html", {"message": "Logged Out", "info": "info"})
+def job_titles_page(request):
+    # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'ems_auth/login.html', {"message": None})
+    user = request.user
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
+    context = {
+        "user": request.user,
+        "employees_page": "active",
+        "titles": Position.objects.all(),
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
+    }
+
+    return render(request, "employees/job_titles.html", context)
+
+
+@login_required
+def employee_team_page(request, id):
+    # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'ems_auth/login.html', {"message": None})
+
+    employee = Employee.objects.get(pk=id)
+    user = request.user
+    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    number_of_notifications = notifications.count()
+    context = {
+        "user": user,
+        "employees_page": "active",
+        "employee": employee,
+        "certifications": employee.certification_set.all(),
+        "emergency_contacts": employee.emergencycontact_set.all(),
+        "beneficiaries": employee.beneficiary_set.all(),
+        "spouses": employee.spouse_set.all(),
+        "dependants": employee.dependant_set.all(),
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
+    }
+
+
+def notifications_page(request):
+    # The line requires the user to be authenticated before accessing the view responses.
+    if not request.user.is_authenticated:
+        # if the user is not authenticated it renders a login page
+        return render(request, 'ems_auth/login.html', {"message": None})
+
+    user = request.user
+    notifications = Notification.objects.filter(user=user.solitonuser)
+    number_of_notifications = notifications.count()
+    context = {
+        "user": user,
+        "employees_page": "active",
+        "notifications": notifications,
+        "number_of_notifications": number_of_notifications
+    }
+    return render(request, 'solitonems/notifications.html', context)
+
 
 ###################################################################
 # Processes
@@ -208,51 +396,14 @@ def logout_view(request):
 @login_required
 def add_new_employee(request):
     if request.method == 'POST':
-        # Fetching data from the add new employee form
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-
-        dep = Departments.objects.get(pk=request.POST['depart']).id
-        position = Job_Titles.objects.get(pk=request.POST['position']).id
-
-        bank_account = request.POST['bank_account']
-        grade = request.POST['grade']
-        basic_salary = request.POST['basic_salary']
-        gender = request.POST['gender']
-        marital_status = request.POST['marital_status']
-        start_date = request.POST['start_date']
-        nationality = request.POST['nationality']
-        nssf_no = request.POST['nssf_no']
-        ura_tin = request.POST['ura_tin']
-        national_id = request.POST['national_id']
-        telephone = request.POST['telephone']
-        residence_address = request.POST['residence_address']
-        dob = request.POST['dob']
-
-        #try:
-        # Creating instance of Employee
-        employee = Employee(first_name=first_name, last_name=last_name, bank_account=bank_account, basic_salary=basic_salary,
-                            grade=grade, department_id=dep, position_id=position, gender=gender,
-                            marital_status=marital_status, start_date=start_date, 
-                            nationality=nationality, nssf_no=nssf_no,
-                            ura_tin=ura_tin, national_id=national_id, telephone_no=telephone, 
-                            residence_address=residence_address,dob=dob)
-        # Saving the employee instance
-        employee.save()
+        employee = create_employee_instance(request)
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully added %s to the employees" % (employee.first_name),
+            "success_msg": "You have successfully added %s to the employees" % employee.first_name,
             "employee": employee
         }
 
         return render(request, 'employees/success.html', context)
-
-        # except:
-        #     context = {
-        #         "employees_page": "active",
-        #         "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-        #     }
-        #     return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -268,7 +419,7 @@ def delete_employee(request, id):
     try:
         # Grab the employee
         employee = Employee.objects.get(pk=id)
-       
+
         name = employee.first_name + " " + employee.last_name
         # Delete the employee
         employee_to_delete = employee
@@ -285,7 +436,7 @@ def delete_employee(request, id):
     context = {
         "employees_page": "active",
         "deleted_msg": "You have deleted %s from employees" % (name),
-        
+
     }
     return render(request, 'employees/deleted_employee.html', context)
 
@@ -294,16 +445,11 @@ def delete_employee(request, id):
 def edit_employee(request, id):
     if request.method == 'POST':
         # Fetching data from the add new employee form
-    
         employee = Employee.objects.get(pk=id)
+        employee.title = request.POST['title']
         employee.first_name = request.POST['first_name']
         employee.last_name = request.POST['last_name']
-
-        employee.department=Departments.objects.get(pk=request.POST['dep'])
-        employee.position = Job_Titles.objects.get(pk=request.POST['position'])
-
         employee.grade = request.POST['grade']
-        employee.bank_account = request.POST['bank_account']
         employee.basic_salary = request.POST['basic_salary']
         employee.gender = request.POST['gender']
         employee.marital_status = request.POST['marital_status']
@@ -315,17 +461,22 @@ def edit_employee(request, id):
         employee.telephone_no = request.POST['telephone']
         employee.residence_address = request.POST['residence_address']
         employee.dob = request.POST['dob']
+        currency_id = request.POST['renumeration_currency']
+        employee.currency = Currency.objects.get(pk=currency_id)
+
+        employee.status = request.POST['status']
 
         # Saving the employee instance
         employee.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's bio data" % (employee.first_name)
+            "success_msg": "You have successfully updated %s's bio data" % (employee.first_name),
+            "employee": employee
         }
 
         return render(request, 'employees/success.html', context)
 
-        
+
 
     else:
         context = {
@@ -349,26 +500,129 @@ def add_new_home_address(request):
         village = request.POST['village']
         address = request.POST['address']
         telephone = request.POST['telephone']
-        try:
-            employee = Employee.objects.get(pk=employee_id)
-            # Creating instance of Home Address
-            homeaddress = HomeAddress(employee=employee, district=district, division=division, county=county, sub_county=sub_county,
-                                      parish=parish, village=village, address=address, telephone=telephone)
-            # Saving the Home Address instance
-            homeaddress.save()
-            context = {
-                "employees_page": "active",
-                "success_msg": "You have successfully added Home Address to the %s's details" % (employee.first_name)
-            }
 
-            return render(request, 'employees/success.html', context)
+        employee = Employee.objects.get(pk=employee_id)
+        # Creating instance of Home Address
+        homeaddress = HomeAddress(employee=employee, district=district, division=division, county=county,
+                                  sub_county=sub_county,
+                                  parish=parish, village=village, address=address, telephone=telephone)
+        # Saving the Home Address instance
+        homeaddress.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added Home Address to the %s's details" % (employee.first_name),
+            "employee": employee
+        }
 
-        except:
-            context = {
-                "employees_page": "active",
-                "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-            }
-            return render(request, "employees/failed.html", context)
+        return render(request, 'employees/success.html', context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+@login_required
+def add_bank_details(request):
+    if request.method == 'POST':
+        # Fetching data from the add new home address form
+        employee_id = request.POST['employee_id']
+        name_of_bank = request.POST['bank_name']
+        branch = request.POST['bank_branch']
+        bank_account = request.POST['bank_account']
+
+        # Get the employee instance
+        employee = Employee.objects.get(pk=employee_id)
+        # Creating instance of Bank Detail
+        bank_detail = BankDetail(employee=employee, name_of_bank=name_of_bank, branch=branch, bank_account=bank_account)
+        # Saving the BankDetail instance
+        bank_detail.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s Bank Details " % (employee.first_name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+@login_required
+def add_organisation_details(request):
+    if request.method == 'POST':
+        # Fetching data from the add new home address form
+        employee_id = request.POST['employee_id']
+        depart = request.POST['depart']
+        position = request.POST['position']
+        team = request.POST['team']
+        
+        # Get the employee instance
+        employee = Employee.objects.get(pk=employee_id)
+        # Get the department instance
+        department = Department.objects.get(pk=depart)
+        # Get the Job title instance
+        team = Teams.objects.get(pk=team)
+        position = Position.objects.get(pk=position)
+        # Creating instance of organisation Detail
+        organisation_detail = OrganisationDetail(employee=employee, department=department,\
+            position=position, team = team)
+        # Saving the BankDetail instance
+        organisation_detail.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s Organisation Details " % (employee.first_name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+@login_required
+def edit_organisation_details(request):
+    if request.method == 'POST':
+        # Fetching data from the add new home address form
+        employee_id = request.POST['employee_id']
+        depart = request.POST['depart']
+        position = request.POST['position']
+        team = request.POST['team']
+        
+        # Get the employee instance
+        employee = Employee.objects.get(pk=employee_id)
+        # Get the department instance
+        department = Department.objects.get(pk=depart)
+        team = Teams.objects.get(pk=team)
+        position = Position.objects.get(pk=position)
+        # get instance of organisation Detail
+        organisation_detail = OrganisationDetail.objects.get(employee=employee)
+        organisation_detail.department = department
+        organisation_detail.position = position
+        # Saving the BankDetail instance
+        organisation_detail.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully updated %s Organisation Details " % (employee.first_name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
 
     else:
         context = {
@@ -382,8 +636,6 @@ def add_new_home_address(request):
 @login_required
 def edit_home_address(request):
     if request.method == 'POST':
-        # Fetching data from the edit home address form
-
         # Fetch the employee
         employee_id = request.POST['employee_id']
         employee = Employee.objects.get(pk=employee_id)
@@ -409,11 +661,39 @@ def edit_home_address(request):
 
         return render(request, 'employees/success.html', context)
 
-        # context = {
-        #     "employees_page": "active",
-        #     "failed_msg": "Something went wrong. Contact Bright and Hakim"
-        # }
-        # return render(request, "employees/failed.html", context)
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+@login_required
+def edit_bank_details(request):
+    if request.method == 'POST':
+        # Fetching data from the edit home address form
+
+        # Fetch the employee
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+        # Grab the Bankdetail
+        bank_detail = BankDetail.objects.get(employee=employee)
+
+        bank_detail.name_of_bank = request.POST['bank_name']
+        bank_detail.branch = request.POST['bank_branch']
+        bank_detail.bank_account = request.POST['bank_account']
+
+        # Saving the bank detail instance
+        bank_detail.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully updated %s's Bank Details" % (employee.first_name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
 
     else:
         context = {
@@ -433,12 +713,12 @@ def add_certification(request):
         certification = request.POST['certification']
         grade = request.POST['grade']
         employee_id = request.POST['employee_id']
-
         employee = Employee.objects.get(pk=employee_id)
 
         # Creating instance of Certification
-        certification = Certification(employee=employee, institution=institution, year_completed=year_completed, name=certification,
-                                        grade=grade)
+        certification = Certification(employee=employee, institution=institution, year_completed=year_completed,
+                                      name=certification,
+                                      grade=grade)
         # Saving the certification instance
         certification.save()
         context = {
@@ -480,11 +760,6 @@ def edit_certification(request):
         }
 
         return render(request, 'employees/success.html', context)
-        context = {
-            "employees_page": "active",
-            "failed_msg": "Something went wrong. Contact Bright and Hakim"
-        }
-        return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -503,7 +778,7 @@ def delete_certification(request, id):
 
         name = certification.name
         employee = certification.employee
-    # Delete the certification
+        # Delete the certification
         certification.delete()
 
     except Certification.DoesNotExist:
@@ -602,7 +877,8 @@ def edit_emergency_contact(request):
         emergency_contact.save()
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully updated %s's emergency contact" % (emergency_contact.employee.first_name),
+            "success_msg": "You have successfully updated %s's emergency contact" % (
+                emergency_contact.employee.first_name),
             "employee": emergency_contact.employee
         }
 
@@ -630,7 +906,7 @@ def add_beneficiary(request):
 
         # Creating instance of Beneficiary
         beneficiary = Beneficiary(employee=employee, name=name, relationship=relationship,
-                                             mobile_number=mobile_number, percentage=percentage)
+                                  mobile_number=mobile_number, percentage=percentage)
 
         # Saving the certification instance
         beneficiary.save()
@@ -729,8 +1005,9 @@ def add_spouse(request):
 
         # Creating instance of Spouse
         spouse = Spouse(employee=employee, name=name, national_id=national_id, dob=dob, occupation=occupation,
-                   telephone=telephone, nationality=nationality, passport_number=passport_number,
-        alien_certificate_number=alien_certificate_number, immigration_file_number=immigration_file_number)
+                        telephone=telephone, nationality=nationality, passport_number=passport_number,
+                        alien_certificate_number=alien_certificate_number,
+                        immigration_file_number=immigration_file_number)
         # Saving the Spouse instance
         spouse.save()
         context = {
@@ -740,14 +1017,6 @@ def add_spouse(request):
         }
 
         return render(request, 'employees/success.html', context)
-
-        context = {
-            "employees_page": "active",
-            "failed_msg": "Failed! Something went wrong. Contact Bright and Hakim"
-            "back"
-        }
-
-        return render(request, "employees/failed.html", context)
 
     else:
         context = {
@@ -821,7 +1090,6 @@ def edit_spouse(request):
 
 
 def add_dependant(request):
-
     if request.method == 'POST':
         # Fetching data from the add dependants' form
         name = request.POST['name']
@@ -910,29 +1178,14 @@ def delete_dependant(request, id):
     }
     return render(request, 'employees/deleted.html', context)
 
-
-def departments_page(request):
-     # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
-        
-    context = {
-        "departments_page": "active",
-        "departs": Departments.objects.all(),
-        "emps":Employee.objects.all()
-    }
-
-    return render(request, "employees/departments.html", context)
-
-
+# Department Section
 def add_new_department(request):
     if request.method == "POST":
         dep_name = request.POST["dep_name"]
         hod = request.POST["hod"]
 
     try:
-        depat = Departments(name=dep_name, hod=hod)
+        depat = Department(name=dep_name, hod=hod)
 
         depat.save()
 
@@ -940,30 +1193,80 @@ def add_new_department(request):
         return redirect('departments_page')
 
     except:
+        messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
+
+        return redirect('departments_page')
+
+def edit_department(request, id):
+    try:
+        if request.method == "POST":
+            department = Departments.objects.get(pk=id)
+            dep_name = request.POST["dep_name"]
+            hod = request.POST["hod"]     
+                    
+            #department = Departments.objects.get(pk=id)#.update(name=dep_name, hod=hod)
+
+            department.save()
+
+            messages.success(request, f'Department Infor Updated Successfully')
+            return redirect('departments_page')
+            context = {
+                "employees_page": "active",
+                "department": department
+            }
+            return render(request, 'employees/departments.html', context)
+           
+        else:
+            messages.error(request, f'Update NOT Successfull')
+            context = {
+                "employees_page": "active",                
+            }
+
+            return render(request, "employees/departments.html", context)
+
+    except:
          messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
 
          return redirect('departments_page')
 
+def edit_department_page(request, id):
+    # redirect according to roles
+    # If user is a manager
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
 
-def teams_page(request, id):
-     # The line requires the user to be authenticated before accessing the view responses.
+    # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
-
-    ts = Teams.objects.filter(department=id)
+    
+    department = Departments.objects.get(pk=id)  
 
     context = {
-        "departments_page": "active",
-        "teams": ts,
-        "dep": Departments.objects.get(pk=id),
-        "emps":Employee.objects.all(),
-        #"team_emps": ts.employee_set.all()
+        "user": user,
+        "employee": Employee.objects.all(),
+        "deps": department,
     }
+    return render(request, 'employees/departments.html', context)  
 
-    return render(request, "employees/teams.html", context)
+def delete_department(request, id):
+    try:
+        department = Departments.objects.get(pk=id)
 
+        department.delete()
+        messages.success(request, f'Department Deleted Successfully')
+        return redirect('departments_page')
+    except Departments.DoesNotExist:      
+        messages.error(request, f'The department no longer exists on the system')
+        return redirect('departments_page')
+         
 
+#Team Section
 def add_new_team(request):
     if request.method == "POST":
         team_name = request.POST["team_name"]
@@ -971,7 +1274,7 @@ def add_new_team(request):
         dpt = request.POST["dept"]
 
     try:
-        team = Teams(department_id = dpt, name=team_name, supervisors=sup)
+        team = Team(department_id=dpt, name=team_name, supervisors=sup)
 
         team.save()
 
@@ -981,29 +1284,16 @@ def add_new_team(request):
     except:
         messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
 
-        return redirect('teams_page') 
+        return redirect('teams_page')
 
-def job_titles_page(request):
-     # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
-        
-    context = {
-        "job_titles_page": "active",
-        "titles": Job_Titles.objects.all()
-    }
-
-    return render(request, "employees/job_titles.html", context)
-
-
+# Job Titles
 def add_new_title(request):
     if request.method == "POST":
         job_title = request.POST["job_title"]
         pos = request.POST["positions"]
 
     try:
-        job = Job_Titles(title=job_title, positions=pos)
+        job = Position(title=job_title, positions=pos)
 
         job.save()
 
@@ -1011,32 +1301,80 @@ def add_new_title(request):
         return redirect('job_titles_page')
 
     except:
-         messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
+        messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
 
-         return redirect('job_titles_page')
+        return redirect('job_titles_page')
 
-@login_required
-def employee_team_page(request, id):
+    return render(request, 'employees/employee.html', context)
+
+def edit_job_title_page(request, id):
+     # redirect according to roles
+    # If user is a manager
+    user = request.user
+    # If user is an employee
+    if str(user.solitonuser.soliton_role) == 'Employee':
+        return render(request,"role/employee.html")
+    # If user is HOD
+    if str(user.solitonuser.soliton_role) == 'HOD':
+        return render(request,"role/hod.html")
+
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'registration/login.html', {"message": None})
-
-    employee = Employee.objects.get(pk=id)
+    
+    title = Job_Titles.objects.get(pk=id)  
 
     context = {
-        "employees_page": "active",
-        "employee": employee,
-        "certifications": employee.certification_set.all(),
-        "emergency_contacts": employee.emergencycontact_set.all(),
-        "beneficiaries": employee.beneficiary_set.all(),
-        "spouses": employee.spouse_set.all(),
-        "dependants": employee.dependant_set.all()
+        "user": user,
+        "employee": Employee.objects.all(),
+        "title": title,
     }
-    return render(request, 'employees/employee.html', context)
+    return render(request, 'employees/job_titles.html', context)  
 
+def edit_job_title(request, id):
+    try:
+        if request.method == "POST":
+            job = Job_Titles.objects.get(pk=id)
+            title = request.POST["title"]
+            positions = request.POST["positions"]     
+                    
+            job.save()
+
+            messages.success(request, f'Job Infor Updated Successfully')
+            return redirect('job_titles_page')
+            context = {
+                "employees_page": "active",
+                "job": job
+            }
+            return render(request, 'employees/job_titles.html', context)
+           
+        else:
+            messages.error(request, f'Update NOT Successfull')
+            context = {
+                "employees_page": "active",                
+            }
+
+            return render(request, "employees/job_titles.html", context)
+
+    except:
+         messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
+
+         return redirect('job_titles_page')
+
+def delete_job_title(request, id):
+    try:
+        job = Job_Titles.objects.get(pk=id)
+
+        job.delete()
+        messages.success(request, f'Job Title Deleted Successfully')
+        return redirect('job_titles_page')
+    except Departments.DoesNotExist:      
+        messages.error(request, f'The Job Title no longer exists on the system')
+        return redirect('job_titles_page')
+
+#Deductions
 def add_deduction(request):
-
     if request.method == 'POST':
         # Fetching data from the add deductions' form
         name = request.POST['deduction_name']
@@ -1065,8 +1403,40 @@ def add_deduction(request):
         }
 
         return render(request, "employees/failed.html", context)
-    
-def delete_deduction(request,id):
+
+
+def add_allowance(request):
+    if request.method == 'POST':
+        # Fetching data from the add allowances form
+        name = request.POST['allowance_name']
+        amount = request.POST['allowance_amount']
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+
+        # Creating instance of Allowance
+        allowance = Allowance(employee=employee, name=name, amount=amount)
+
+        # Saving the Allowance instance
+        allowance.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the allowances" % (allowance.name),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+def delete_deduction(request, id):
     try:
         # Grab the Deduction
         deduction = Deduction.objects.get(pk=id)
@@ -1090,3 +1460,135 @@ def delete_deduction(request,id):
         "employee": employee
     }
     return render(request, 'employees/deleted.html', context)
+
+def edit_leave_details(request, id):
+    if request.method == 'POST':
+        # Fetching data from the edit leave' form
+        name = request.POST['name']
+        dob = request.POST['dob']
+        gender = request.POST['gender']
+
+        employee_id = request.POST['employee_id']
+        employee = Employee.objects.get(pk=employee_id)
+
+        # Creating instance of Dependent
+        #dependant = Dependant(employee=employee, name=name, dob=dob, gender=gender)
+
+        # Saving the Dependant instance
+        #dependant.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the dependants" % (dependant.name),
+        }
+
+def delete_allowance(request, id):
+    try:
+        # Grab the Allowance
+        allowance = Allowance.objects.get(pk=id)
+
+        name = allowance.name
+        employee = allowance.employee
+        # Delete the Allowance
+        allowance.delete()
+
+    except Allowance.DoesNotExist:
+        context = {
+            "employees_page": "active",
+            "deleted_msg": "The allowance no longer exists on the system"
+        }
+
+        return render(request, 'employees/deleted.html', context)
+
+    context = {
+        "employees_page": "active",
+        "deleted_msg": "You have deleted %s from the allowances" % (name),
+        "employee": employee
+    }
+    return render(request, 'employees/deleted.html', context)
+
+
+def add_supervisee(request):
+    if request.method == 'POST':
+        # Fetching data from the add deductions' form
+        supervisee_id = request.POST['supervisee_id']
+        employee_id = request.POST['employee_id']
+
+        # Fetch employee instance
+        employee = Employee.objects.get(pk=employee_id)
+
+        # Fetch employee instance of type supervisee
+        supervisee = Employee.objects.get(pk=supervisee_id)
+
+        # Create instance of supervision
+        supervision = Supervision(supervisee=supervisee, supervisor=employee)
+        # Save supervision instance
+        supervision.save()
+        context = {
+            "employees_page": "active",
+            "success_msg": "You have successfully added %s to the supervisees" % (supervision.supervisee),
+            "employee": employee
+        }
+
+        return render(request, 'employees/success.html', context)
+
+    else:
+        context = {
+            "employees_page": "active",
+            "failed_msg": "Failed! You performed a GET request"
+        }
+
+        return render(request, "employees/failed.html", context)
+
+
+def delete_supervisee(request, id):
+    try:
+        # Grab the supervision
+        supervision = Supervision.objects.get(pk=id)
+
+        name = supervision.supervisee.first_name
+        employee = supervision.supervisor
+        # Delete the Allowance
+        supervision.delete()
+
+    except Supervision.DoesNotExist:
+        context = {
+            "employees_page": "active",
+            "deleted_msg": "The supervisee no longer exists on the system"
+        }
+
+        return render(request, 'employees/deleted.html', context)
+
+    context = {
+        "employees_page": "active",
+        "deleted_msg": "You have deleted %s from the supervisees" % (name),
+        "employee": employee
+    }
+    return render(request, 'employees/deleted.html', context)
+
+
+@login_required
+def employees_download(request):
+    # Get all the associated Employee objects
+    employees = Employee.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    # Name the csv file
+    filename = "employees.csv"
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    writer = csv.writer(response, delimiter=',')
+    # Writing the first row of the csv
+    heading_text = "Soliton Employees"
+    writer.writerow([heading_text.upper()])
+    writer.writerow(
+        ['ID', 'Title', 'Name', 'Workstation', 'Status', 'Renumeration Currency', 'Basic Salary', 'Grade', 'Gender',
+         'Hired Date', 'Marital Status', 'Date of Birth', 'Nationality', 'NSSF NO.', 'Telephone', 'Residence Adddress',
+         'National ID', 'URA TIN'])
+    # Writing other rows
+    for employee in employees:
+        name = employee.first_name + " " + employee.last_name
+        writer.writerow([employee.id, employee.title, name, employee.work_station, employee.status, employee.currency,
+                         employee.basic_salary, employee.grade, employee.gender, employee.start_date,
+                         employee.marital_status, employee.dob, employee.nationality, employee.nssf_no,
+                         employee.telephone_no, employee.residence_address, employee.national_id, employee.ura_tin])
+
+    # Return the response
+    return response

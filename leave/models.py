@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from employees.models import Employee
 
 class Leave_Types(models.Model):
     leave_type = models.CharField(max_length=45)
@@ -23,11 +24,12 @@ class Approval_Path(models.Model):
     fourth_approval =models.CharField(max_length=45)
 
 class LeaveApplication(models.Model):
-    Employee_Name =models.CharField(max_length=60)
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE, default=1) 
     leave_type = models.ForeignKey(Leave_Types, on_delete=models.CASCADE)
     apply_date=models.DateField(default=timezone.now)
     start_date = models.DateField()
     end_date=models.DateField()
+    no_of_days = models.IntegerField(default=1)
     supervisor=models.CharField(max_length=45, default="")
     sup_Status=models.CharField(max_length=15, default="Pending")
     hod=models.CharField(max_length=45, default="")
@@ -36,3 +38,14 @@ class LeaveApplication(models.Model):
     hr_status = models.CharField(max_length=15, default="Pending")
     app_status = models.CharField(max_length=10, default="Pending")
     remarks = models.TextField()
+    balance = models.IntegerField(default=0)
+
+class annual_planner(models.Model):
+    leave_year = models.CharField(max_length = 5)
+    leave_month = models.CharField(max_length = 4,default='Jan')
+    employee = models.ForeignKey(Employee, on_delete = models.CASCADE)
+    leave = models.ForeignKey(Leave_Types, on_delete=models.CASCADE, default=1)
+    date_from = models.DateField()
+    date_to = models.DateField()
+    no_of_days = models.IntegerField(default=0)
+    status = models.CharField(max_length = 15, default = 'Pending')

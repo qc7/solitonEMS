@@ -1,0 +1,23 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+  <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>    
+  <h2>About Us</h2>
+{% endblock %}
+
+{% block content %} 
+<div class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card-body">
+      {% load static %}
+        <div class="img">
+          <img src=" {% static 'registration/images/machineryy.png' %} " class="img-fluid. max-width: 100%"/>
+      
+        </div>  
+        
+  </div>
+  </div>
+  </div>
+</div>
+ 
+{% endblock content %} 

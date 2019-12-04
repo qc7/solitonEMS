@@ -1,0 +1,37 @@
+{%extends './overtime_application.html'%}
+{%block overtime_applications %}
+
+<a href="{%url 'employee_overtime_page' user.solitonuser.employee.id%}">
+    <button class="btn btn-outline">Pending</button>
+</a>
+<a href="{%url 'employee_approved_overtime_page' user.solitonuser.employee.id%}">
+    <button class="btn btn-outline">Approved</button>
+</a>
+<a href="{%url 'employee_rejected_overtime_page' user.solitonuser.employee.id%}">
+    <button class="btn btn-outline-danger">Rejected</button>
+</a>
+{%if rejected_applications %}
+<h3>Pending applications</h3>
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Start time</th>
+        <th>End time</th>
+        <th>Description</th>
+    </tr>
+    {%for rejected_application in rejected_applications %}
+    <tr>
+        <td>{{rejected_application.id }}</td>
+        <td>{{rejected_application.date}}</td>
+        <td>{{rejected_application.start_time}}</td>
+        <td>{{rejected_application.end_time}}</td>
+        <td>{{rejected_application.description}}</td>
+
+    </tr>
+    {%endfor%}
+</table>
+{%else%}
+<h3>No rejected applications</h3>
+{%endif%}
+{%endblock%}

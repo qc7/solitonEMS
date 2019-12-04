@@ -14,12 +14,12 @@
                     <i class="material-icons">pregnant_woman</i>
                   </div>
                   <p class="card-category">Maternity</p>
-                  <h3 class="card-title">20 
-                      
+                  <h3 class="card-title">{{ maternity }}
+
                   </h3>
                 </div>
                 <div class="card-footer">
-                  
+
                 </div>
               </div>
             </div>
@@ -30,14 +30,14 @@
                     <i class="material-icons">note_add</i>
                   </div>
                   <p class="card-category">Sick</p>
-                  <h3 class="card-title">2
-                      
+                  <h3 class="card-title">{{sick}}
+
                   </h3>
                 </div>
                 <div class="card-footer">
                 </div>
               </div>
-            </div> 
+            </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
@@ -45,32 +45,71 @@
                     <i class="material-icons">perm_identity</i>
                   </div>
                   <p class="card-category">Paternity</p>
-                  <h3 class="card-title">2
-                      
+                  <h3 class="card-title">{{paternity}}
+
                   </h3>
                 </div>
                 <div class="card-footer">
                 </div>
               </div>
-            </div> 
-            <div class="col-lg-3 col-md-6 col-sm-6">
+            </div>
+            {% comment %} <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
                   <div class="card-icon">
                     <i class="material-icons">hourglass_empty</i>
                   </div>
                   <p class="card-category">Compassionate</p>
-                  <h3 class="card-title">2
-                      
+                  <h3 class="card-title">{{ compassionate }}
+
                   </h3>
                 </div>
-                
+
                 <div class="card-footer">
                 </div>
               </div>
-            </div>                
+            </div> {% endcomment %}
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">hourglass_empty</i>
+                  </div>
+                  <p class="card-category">Annual</p>
+                  <h3 class="card-title">{{ annual }}
+
+                  </h3>
+                </div>
+
+                <div class="card-footer">
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-12">
+         
+          
+        <!-- buttons -->
+         <div class="col-md-12">
+           <a href="{%url 'leave_types_page'%}"><button class="btn btn-outline-primary">Manage Leave Types</button></a>
+           <a href="{%url 'holidays_page'%}"><button class="btn btn-outline-primary">Manage Holidays</button></a>
+           <a href="{%url 'apply_leave_page'%}"><button class="btn btn-outline-primary">Apply For Leave</button></a>
+           {% if role == "HR"%}
+        <a href="#"> {% comment %} {% url 'leave_balance_page' %}"> {% endcomment %}
+        <button class="btn btn-outline-info waves-effect" type="submit">Leave Balance</button></a>
+        {% endif %}
+         </div>
+
+           <!-- Status Flash Messages -->
+          {% if messages %}
+            {% for msg in messages%}
+              <div class="alert alert-{{ msg.tags }}">
+                {{ msg }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+      <div class="col-md-12">
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-hover thead-dark">
@@ -79,19 +118,49 @@
               <th>Applicant</th>
               <th>Leave Type</th>
               <th>Balance</th>
-              <th>Action</th>
+              {% if role == "Supervisor" %}                
+                <th>Status</th>
+              {% elif role == "HOD" %}                
+                <th>Supervisor<br>Status</th>
+              {% elif role == "HR" %}                
+                <th>Supervisor<br>Status</th>
+                <th> HOD<br>Status </th>
+              {% endif %}
+              <th colspan=2 align="center">Action</th>
             </thead>
             <tbody>
-              {% comment %} {% for employee in employees  %} {% endcomment %}
+              {% for app in applications  %}
               <tr>
-                <td><a href="#" style="color: inherit">10</a></td>
-                <td>Bright Kanyange<br>04/07/2019 to 14/07/2019</td>
-                <td>Annual</td>
-                <td>10</td>
-                <td><a href="#" style="color:inherit"><i class="fa fa-check-square"></i></a></td>
-                <td><a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')"><i class="fa fa-close"></i></a></td>
+              <form method="POST" action="{% url 'approve_leave' %}"> {% csrf_token %}
+                <td>
+                  <a href="#" style="color: inherit">{{ app.no_of_days}}</a>
+                  <input type="hidden" id="ndays" name="ndays" value="{{ app.no_of_days}}">
+                </td>
+                <td>{{ app.employee}}<br>{{ app.start_date}} to {{ app.end_date}}</td>
+                <td>
+                  <input type="hidden" id="ltype" name="ltype" value="{{ app.leave_type_id}}">
+                  {{ app.leave_type}}
+                </td>
+                <td>{{app.balance }}</td>                
+                {% if role == "Supervisor" %}                
+                  <td>{{app.supervisor}}<br>({{app.sup_Status }})</td>
+                {% elif role == "HOD" %}                
+                  <td>{{app.supervisor}}<br>({{app.sup_Status }})</td>
+                {% elif role == "HR" %}                
+                  <td>{{app.supervisor}}<br>({{app.sup_Status }})</td>
+                  <td>{{app.hod}}<br>{{app.hod_status }}</td>
+                {% endif %}
+                <td>                  
+                    <input type="hidden" id="app_id" name="app_id" value="{{app.id }}">
+                    <button type="submit" class="btn btn-outline-success btn-rounded waves-effect" 
+                    ... onclick="return confirm('Are you sure you want to Approve this request?')">
+                      Approve</button>
+                    <button type="button" class="btn btn-outline-danger btn-rounded waves-effect">
+                      Reject</button>                  
+                </td>
+                </form>
               </tr>
-              {% comment %} {% endfor %} {% endcomment %}
+              {% endfor %}
             </tbody>
           </table>
         </div>

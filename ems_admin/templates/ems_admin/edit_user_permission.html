@@ -1,0 +1,23 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<h1>Edit Permission</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+            {{permission}} for {{permission_user}}
+           <form method="POST" action="#">{%csrf_token%}
+               {{emspermission_form}}
+             <button class="btn btn-danger" type="submit">Edit Permission</button>
+           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{%endblock content%}
