@@ -1,8 +1,11 @@
 import csv
+
+from django.contrib import messages
 from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseRedirect
 
+from ems_auth.models import SolitonUser
 from payroll.selectors import get_payroll_record_by_id
 from payroll.services import create_payslip_list_service
 from .models import PayrollRecord, Payslip
@@ -22,6 +25,15 @@ def payroll_page(request):
 
 
 def manage_payroll_records_page(request):
+    context = {
+        "user": request.user,
+        "payroll_page": "active",
+        "payroll_records": PayrollRecord.objects.all(),
+    }
+    return render(request, 'payroll/manage_payroll_records.html', context)
+
+
+def view_payroll_records_page(request):
     context = {
         "user": request.user,
         "payroll_page": "active",
@@ -91,6 +103,63 @@ def payslip_page(request, id):
     return render(request, 'payroll/payslip.html', context)
 
 
+def view_payslip_page(request):
+    # Get the payroll
+    # Get the notifications
+    user = request.user
+
+    context = {
+        "payroll_page": "active",
+    }
+
+    return render(request, 'payroll/view_payslip.html', context)
+
+
+def your_payslip_page(request):
+    # Get the payroll record from from
+    year = request.POST.get('year')
+    month = request.POST.get('month')
+
+    try:
+        employee = request.user.solitonuser.employee
+    except SolitonUser.DoesNotExist:
+        messages.error(request, 'This account is not yet linked to a soliton employee')
+        return HttpResponseRedirect(reverse(view_payslip_page))
+
+    try:
+        payroll_record = PayrollRecord.objects.get(year=year, month=month)
+        payslip = Payslip.objects.get(payroll_record=payroll_record, employee=employee)
+
+    except:
+        messages.error(request, 'The payroll for that period has not been generated.')
+        return HttpResponseRedirect(reverse(view_payslip_page))
+
+    context = {
+        "payroll_page": "active",
+        "payslip": payslip,
+        "month": payslip.payroll_record.month,
+        "year": payslip.payroll_record.year,
+        "name_of_employee": "{} {}".format(payslip.employee.first_name, payslip.employee.last_name),
+    }
+
+    return render(request, 'payroll/payslip.html', context)
+
+
+def payslips_page(request, payroll_record_id):
+    payroll_record = get_payroll_record_by_id(payroll_record_id)
+    payslips = Payslip.objects.filter(payroll_record=payroll_record)
+
+    context = {
+        "payroll_page": "active",
+        "payroll_record": payroll_record,
+        "payslips": payslips,
+        "month": payroll_record.month,
+        "year": payroll_record.year
+    }
+
+    return render(request, 'payroll/payslips.html', context)
+
+
 def generate_payslip_pdf(request, id):
     # Get the payslip
     payslip = Payslip.objects.get(pk=id)
@@ -120,7 +189,7 @@ def add_period(request):
     # Save payroll
     payroll_record.save()
 
-    return HttpResponseRedirect(reverse('payroll_records_page'))
+    return HttpResponseRedirect(reverse('manage_payroll_records_page'))
 
 
 def delete_period(request, id):
@@ -128,7 +197,7 @@ def delete_period(request, id):
     payroll_record = PayrollRecord.objects.get(pk=id)
     # Delete the payrool_record
     payroll_record.delete()
-    return HttpResponseRedirect(reverse('payroll_records_page'))
+    return HttpResponseRedirect(reverse('manage_payroll_records_page'))
 
 
 def edit_period(request):
@@ -144,7 +213,7 @@ def edit_period(request):
     # Save payroll record
     payroll_record.save()
 
-    return HttpResponseRedirect(reverse('payroll_records_page'))
+    return HttpResponseRedirect(reverse('manage_payroll_records_page'))
 
 
 def create_payroll_payslips(request, id):
