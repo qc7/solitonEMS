@@ -17,7 +17,7 @@ def overtime_page(request):
 
     # Get the notifications
     user = request.user.solitonuser
-    notifications = Notification.objects.filter(user=user)
+    notifications = Notifications.objects.filter(user=user)
     number_of_notifications = notifications.count()
     # Get the pending overtime applications
     pending_applications = OvertimeApplication.objects.filter(status="Pending")
