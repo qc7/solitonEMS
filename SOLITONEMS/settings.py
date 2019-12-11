@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,7 +25,7 @@ SECRET_KEY = '0d1*j&^q381!@3^^4htw!n-1p!yxxy93s3^2exrw7%4bf_!hcf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['solitonug.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['solitonems.herokuapp.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -150,3 +151,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
 DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
+
+django_heroku.settings(locals())
