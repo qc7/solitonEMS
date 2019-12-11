@@ -1,0 +1,70 @@
+{%extends './base.html'%}
+{% load humanize %}
+{%block page_title %}
+<h2>View your payslip</h2>
+{%endblock%}
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                {% if messages %}
+                {% for msg in messages%}
+                <div class="alert alert-warning }}">
+                    {{ msg }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                <form method="POST" action="{%url 'your_payslip' %}"> {%csrf_token%}
+                    <div class="form-group">
+                        <label for="month">Month</label>
+                        <select class="form-control" id="month" name="month" required>
+                            <option>January</option>
+                            <option>February</option>
+                            <option>March</option>
+                            <option>April</option>
+                            <option>May</option>
+                            <option>June</option>
+                            <option>July</option>
+                            <option>August</option>
+                            <option>September</option>
+                            <option>October</option>
+                            <option>November</option>
+                            <option>December</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Year</label>
+                        <select class="form-control" id="year" name="year" required>
+                            <option>2019</option>
+                            <option>2020</option>
+                            <option>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
+                            <option>2026</option>
+                            <option>2027</option>
+                            <option>2028</option>
+                            <option>2029</option>
+                            <option>2030</option>
+                            <option>2031</option>
+                            <option>2032</option>
+                            <option>2033</option>
+                            <option>2034</option>
+                            <option>2035</option>
+                            <option>2036</option>
+                            <option>2037</option>
+                            <option>2038</option>
+                            <option>2039</option>
+                            <option>2040</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-danger" type="submit">Fetch Payslip</button>
+                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
