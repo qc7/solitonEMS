@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 django = "*"
 xhtml2pdf = "*"
+django-heroku = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"
