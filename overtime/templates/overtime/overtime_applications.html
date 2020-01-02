@@ -1,0 +1,45 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+<h3>Overtime Applications</h3>
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <a href="{%url 'approved_overtime_page'%}">
+                    <button class="btn btn-outline">View Approved Applications</button>
+                </a>
+                {%if overtime_applications%}
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                    {%for overtime_application in overtime_applications%}
+                    <tr>
+                        <td>{{overtime_application.applicant.first_name}} {{overtime_application.applicant.last_name}}
+                        </td>
+                        <td>{{ overtime_application.date }}</td>
+                        <td>{{ overtime_application.start_time }}</td>
+                        <td>{{ overtime_application.end_time }}</td>
+                        <td>{{ overtime_application.description }}</td>
+                        <td>{{ overtime_application.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <h3>No overtime applications</h3>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from role.models import Notification
+
 
 # Create your views here.
 @login_required
@@ -13,12 +13,8 @@ def holidays_page(request):
     # Get the notifications
     user = request.user.solitonuser
 
-    notifications = Notification.objects.filter(user=user)
-    number_of_notifications = notifications.count()
-
     context = {
         "holidays_page": "active",
-        "number_of_notifications": number_of_notifications,
     }
 
-    return render(request, 'holidays/holidays_page.html',context)
+    return render(request, 'holidays/holidays_page.html', context)
