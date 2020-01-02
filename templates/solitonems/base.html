@@ -93,11 +93,16 @@
                     </ul>
                 </li>
 
-                <li class="nav-item {{overtime_page}}">
-                    <a class="nav-link" href="{% url 'overtime_page' %}">
+                <li class="nav-item {{overtime_page}}" data-toggle="popover-overtime" title="Overtime">
+                    <a class="nav-link" href="#">
                         <i class="material-icons">hourglass_empty</i>
                         <p>Overtime</p>
                     </a>
+                    <ul id="popover-overtime" class="nav list-group" style="display:none">
+                        <a href="{%url 'approve_overtime_page'%}" class="list-group-item">Approve Overtime</a>
+                        <a href="{%url 'apply_for_overtime_page'%}" class="list-group-item">Apply for overtime</a>
+                        <a href="{%url 'overtime_applications_page'%}" class="list-group-item">View overtime applications</a>
+                    </ul>
                 </li>
 
                 <li class="nav-item {{holidays_page}}">
@@ -499,6 +504,14 @@
             trigger: 'click',
             content: function() {
             return $('#popover-payroll').html();
+          }
+       });
+
+       $('[data-toggle="popover-overtime"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function() {
+            return $('#popover-overtime').html();
           }
        });
 

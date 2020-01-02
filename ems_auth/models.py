@@ -37,6 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_hr = models.BooleanField(max_length=10, default=False)
     is_cfo = models.BooleanField(default=False)
     is_ceo = models.BooleanField(default=False)
+    is_supervisor = models.BooleanField(default=False)
     password_changed = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'

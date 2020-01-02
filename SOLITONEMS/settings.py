@@ -33,7 +33,6 @@ SOLITONEMS_APPS = [
     'employees',
     'payroll',
     'leave',
-    'role',
     'organisation_details',
     'settings',
     'overtime',
@@ -117,7 +116,6 @@ AUTH_USER_MODEL = 'ems_auth.User'
 
 AUTHENTICATION_BACKENDS = ['ems_auth.backends.EmailBackend']
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -136,7 +134,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/solitonug/solitonEMS/static'
-
 
 #  Email smtp setup for production
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

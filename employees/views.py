@@ -21,7 +21,7 @@ from .models import (
     Supervision
 )
 
-from role.models import Notification
+
 from settings.models import Currency
 import csv
 

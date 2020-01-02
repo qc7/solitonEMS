@@ -22,7 +22,7 @@
                     </tr>
                     {%for approved_application in approved_applications%}
                     <tr>
-                        <td>{{approved_application.supervisee.first_name}} {{approved_application.supervisee.last_name}}
+                        <td>{{approved_application.applicant.first_name}} {{approved_application.applicant.last_name}}
                         </td>
                         <td>{{ approved_application.date }}</td>
                         <td>{{ approved_application.start_time }}</td>
@@ -32,7 +32,7 @@
                     {% endfor %}
                 </table>
                 {% else %}
-                <h3>No approved leave applications</h3>
+                <h3>No approved overtime applications</h3>
                 {%endif%}
             </div>
         </div>
