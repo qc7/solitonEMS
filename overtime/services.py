@@ -132,3 +132,12 @@ def approve_overtime_application_service(approver, overtime_application):
         approved_overtime_application = ceo_approve(overtime_application)
 
     return approved_overtime_application
+
+
+def update_overtime_application(overtime_application_id, start_time, end_time, description):
+    OvertimeApplication.objects.filter(pk=overtime_application_id).update(
+        start_time=start_time,
+        end_time=end_time,
+        description=description
+    )
+

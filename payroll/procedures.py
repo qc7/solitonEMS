@@ -1,8 +1,12 @@
+import datetime
+
 from django.db.models import Sum
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+
+from overtime.models import OvertimeApplication
 
 
 def get_total_non_statutory_deductions(employee):
@@ -50,3 +54,18 @@ def render_to_pdf(template_src, context_dict={}):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
+
+
+def get_overtime_pay(applicant):
+    current_month = datetime.datetime.today().month
+    overtime_applications = OvertimeApplication.objects.filter(date__month=current_month, applicant=applicant)
+
+    total_overtime_pay=0
+    if not overtime_applications:
+        return None
+    else:
+        for overtime_application in overtime_applications:
+            total_overtime_pay = total_overtime_pay + float(overtime_application.overtime_pay)
+
+        return total_overtime_pay
+

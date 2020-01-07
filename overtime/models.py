@@ -1,10 +1,7 @@
 from django.db import models
-from django.utils import timezone
-
 from employees.models import Employee
-
-
-# Create your models here.
+from holidays.selectors import is_on_holiday
+from overtime.procedures import get_overtime_application_hours
 
 
 class OvertimeApplication(models.Model):
@@ -25,5 +22,26 @@ class OvertimeApplication(models.Model):
 
     @property
     def number_of_hours(self):
-        duration = self.end_time - self.start_time
-        return round(duration.total_seconds() / 3600)
+        hours = get_overtime_application_hours(self.start_time, self.end_time)
+        return round(hours, 2)
+
+    @property
+    def is_on_sunday(self):
+        return self.start_time.weekday() == 6
+
+    @property
+    def is_on_holiday(self):
+        return is_on_holiday(self.start_time)
+
+    @property
+    def overtime_pay(self):
+        if self.is_on_holiday or self.is_on_sunday:
+            overtime_amount = self.number_of_hours * 2 * self.applicant. \
+                overtime_hourly_rate
+            return int(overtime_amount)
+        else:
+            overtime_amount = self.number_of_hours * 1.5 * self.applicant. \
+                overtime_hourly_rate
+            return int(overtime_amount)
+
+
