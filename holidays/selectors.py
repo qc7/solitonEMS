@@ -13,3 +13,12 @@ def is_on_holiday(date_time):
         return False
 
 
+def get_all_holidays():
+    holidays = Holiday.objects.all()
+    return holidays
+
+
+def get_holiday(holiday_id):
+    holiday = Holiday.objects.get(pk=holiday_id)
+    return holiday
+
