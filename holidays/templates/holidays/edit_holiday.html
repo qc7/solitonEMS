@@ -1,0 +1,29 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+<h3>Edit Holiday</h3>
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <form method="post">
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input class="form-control" type="date" name="date" value={{holiday.date.isoformat}} required/>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control" type="text" name="name" value={{holiday.name}} required/>
+                    </div>
+                    <input type="submit" value="submit" class="btn btn-danger"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
