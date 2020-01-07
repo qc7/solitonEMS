@@ -10,9 +10,6 @@ def holidays_page(request):
         # if the user is not authenticated it renders a login page
         return render(request, 'ems_auth/login.html', {"message": None})
 
-    # Get the notifications
-    user = request.user.solitonuser
-
     context = {
         "holidays_page": "active",
     }

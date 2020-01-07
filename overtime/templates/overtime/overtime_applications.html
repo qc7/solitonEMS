@@ -22,6 +22,8 @@
                         <th>End Time</th>
                         <th>Description</th>
                         <th>Status</th>
+                        <th>Overtime Pay</th>
+                        <th>Number of hours</th>
                     </tr>
                     {%for overtime_application in overtime_applications%}
                     <tr>
@@ -32,6 +34,8 @@
                         <td>{{ overtime_application.end_time }}</td>
                         <td>{{ overtime_application.description }}</td>
                         <td>{{ overtime_application.status }}</td>
+                        <td>{{ overtime_application.overtime_pay }}</td>
+                        <td>{{ overtime_application.number_of_hours }}</td>
                     </tr>
                     {% endfor %}
                 </table>

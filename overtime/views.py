@@ -4,11 +4,14 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from ems_auth.decorators import ems_login_required
-from overtime.forms import OvertimeApplicationForm
+from ems_auth.models import SolitonUser
+from holidays.selectors import is_on_holiday
 from overtime.models import OvertimeApplication
+from overtime.procedures import is_duration_valid
 from overtime.selectors import get_all_overtime_applications, get_pending_overtime_applications, \
     get_overtime_application, get_recent_overtime_applications
-from overtime.services import reject_overtime_application_service, approve_overtime_application_service
+from overtime.services import reject_overtime_application_service, approve_overtime_application_service, \
+    update_overtime_application
 
 
 # Create your views here.
@@ -29,8 +32,16 @@ def apply_for_overtime_page(request):
         start_time = request.POST.get('start_time')
         end_time = request.POST.get('end_time')
         description = request.POST.get('description')
+        applicant = None
+        try:
+            applicant = request.user.solitonuser.employee
+        except:
+            messages.error(request, "The user has no employee associated with their account")
+            return HttpResponseRedirect(reverse("apply_for_overtime_page"))
 
-        applicant = request.user.solitonuser.employee
+        if not is_duration_valid(start_time, end_time):
+            messages.error(request, "Duration for the overtime application is not valid")
+            return HttpResponseRedirect(reverse("apply_for_overtime_page"))
 
         overtime_application = OvertimeApplication.objects.create(
             start_time=start_time,
@@ -38,6 +49,7 @@ def apply_for_overtime_page(request):
             description=description,
             applicant=applicant
         )
+
         messages.success(request, "You have successfully submitted your overtime application")
 
         return HttpResponseRedirect(reverse('apply_for_overtime_page'))
@@ -47,7 +59,7 @@ def apply_for_overtime_page(request):
         "overtime_page": "active",
         "recent_applications": recent_applications
     }
-    return render(request, 'overtime/overtime_application.html', context)
+    return render(request, 'overtime/apply_for_overtime.html', context)
 
 
 @ems_login_required
@@ -74,11 +86,11 @@ def approved_overtime_applications_page(request):
 def amend_overtime_application_page(request, overtime_application_id):
     overtime_application = get_overtime_application(overtime_application_id)
     if request.POST:
-        OvertimeApplication.objects.filter(pk=overtime_application.id).update(
-            start_time=request.POST.get('start_time'),
-            end_time=request.POST.get('end_time'),
-            description=request.POST.get('description')
-        )
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+        description = request.POST.get('description')
+        update_overtime_application(overtime_application.id, start_time, end_time, description)
+        print(overtime_application.is_on_sunday)
         messages.success(request, "Successfully amended the overtime application")
         return HttpResponseRedirect(reverse('approve_overtime_page'))
 
