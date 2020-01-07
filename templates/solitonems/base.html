@@ -60,11 +60,15 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{organisation_page}}" data-toggle="popover-organisation" title="Organisation">
                     <a class="nav-link" href="#">
                         <i class="material-icons">account_balance</i>
                         <p>Organisation</p>
                     </a>
+                    <ul id="popover-organisation" class="nav list-group" style="display: none">
+                        <a href="{%url 'job_titles_page'%}" class="list-group-item">Manage Job Titles</a>
+                        <a href="{%url 'departments_page'%}" class="list-group-item">Manage Departments</a>
+                    </ul>
                 </li>
 
                 <li class="nav-item  {{ employees_page }}">
@@ -72,6 +76,7 @@
                         <i class="material-icons">content_paste</i>
                         <p>Employees</p>
                     </a>
+
                 </li>
 
                 <li class="nav-item  {{ leave_dashboard_page }}">
@@ -512,6 +517,14 @@
             trigger: 'click',
             content: function() {
             return $('#popover-overtime').html();
+          }
+       });
+
+       $('[data-toggle="popover-organisation"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function() {
+            return $('#popover-organisation').html();
           }
        });
 

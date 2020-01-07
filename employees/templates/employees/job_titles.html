@@ -1,6 +1,5 @@
 {% extends './base.html' %}
 {% block page_title %}
-  <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>    
   <h2>Job Titles</h2>
 {% endblock %}
 
@@ -22,17 +21,17 @@
               <th colspan=2>#</th>
             </thead>
             <tbody>
-              {% for job in titles  %}
+              {% for position in positions  %}
               <tr>
-                <td>{{ job.id }}</td>
-                <td><a href="#" style="color: inherit">{{ job.title }}</a></td>
-                <td>{{ job.positions }}</td>
+                <td>{{ position.id }}</td>
+                <td><a href="#" style="color: inherit">{{ position.name }}</a></td>
+                <td>{{ position.number_of_slots }}</td>
                 <td>
-                  <a href="{% url 'edit_job_title_page' job.id %}" data-toggle="modal" data-target="#modal_edit_job" style="color:inherit">
+                  <a href="{% url 'edit_job_title_page' position.id %}" data-toggle="modal" data-target="#modal_edit_job" style="color:inherit">
                     <i class="fa fa-edit"></i></a>
                 </td>
                 <td>
-                  <a  href = "{% url 'delete_job_title' job.id %}" 
+                  <a  href = "{% url 'delete_job_title' position.id %}"
                   style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
                 </a></td>
               </tr>

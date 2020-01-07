@@ -1,6 +1,5 @@
 {% extends './base.html' %}
 {% block page_title %}
-  <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>    
   <h2>Departments</h2>
 {% endblock %}
 
@@ -11,16 +10,6 @@
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_depart">
       Add Department +
     </button>
-    
-    <!-- Status Flash Messages -->
-      {% if messages %}
-          {% for msg in messages%}
-            <div class="alert alert-{{ msg.tags }}">
-              {{ msg }}
-            </div>
-          {% endfor %}
-      {% endif %}
-
     <div class="col-md-12">
       <div class="card-body">
         <div class="table-responsive">
