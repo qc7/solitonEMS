@@ -72,9 +72,6 @@ def employee_page(request, id):
 
     employee = Employee.objects.get(pk=id)
 
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
-    number_of_notifications = notifications.count()
-
     context = {
         "user": user,
         "employees_page": "active",
@@ -87,9 +84,7 @@ def employee_page(request, id):
         "deductions": employee.deduction_set.all(),
         "deps": Department.objects.all(),
         "titles": Position.objects.all(),
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications,
-        "teams": Teams.objects.all(),
+        "teams": Team.objects.all(),
         "allowances": Allowance.objects.all(),
         "supervisee_options": Employee.objects.exclude(pk=employee.id),
         "supervisions": Supervision.objects.filter(supervisor=employee)
@@ -108,8 +103,6 @@ def edit_employee_page(request, id):
         # if the user is not authenticated it renders a login page
         return render(request, 'ems_auth/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
-    number_of_notifications = notifications.count()
 
     context = {
         "user": user,
@@ -117,8 +110,6 @@ def edit_employee_page(request, id):
         "employee": employee,
         "deps": Department.objects.all(),
         "titles": Position.objects.all(),
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications,
         "currencies": Currency.objects.all()
     }
     return render(request, 'employees/edit_employee.html', context)
