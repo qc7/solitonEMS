@@ -15,7 +15,8 @@ def create_payslip_list_service(payroll_record, bonus=None, overtime_pay=None):
     return list_of_payslips
 
 
-def create_payslip_service(employee: object, payroll_record: object, overtime_pay: object = None, bonus: object = None) -> object:
+def create_payslip_service(employee: object, payroll_record: object, overtime_pay: object = None,
+                           bonus: object = None) -> object:
     simple_payslip = SimplePayslip(employee, overtime_pay=overtime_pay, bonus=bonus)
 
     payslip = Payslip.objects.create(
@@ -31,9 +32,7 @@ def create_payslip_service(employee: object, payroll_record: object, overtime_pa
         bonus=simple_payslip.bonus,
         sacco_deduction=simple_payslip.sacco_deduction_amount,
         damage_deduction=simple_payslip.damage_deduction_amount,
-        lunch_allowance = simple_payslip.lunch_allowance
+        lunch_allowance=simple_payslip.lunch_allowance
     )
 
     return payslip
-
-
