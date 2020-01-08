@@ -18,15 +18,16 @@ from django.db.models import (
     Count
 )
 from .models import (
-    Leave_Types, 
+    Leave_Types,
     Holidays,
     LeaveApplication,
     annual_planner,
     Leave_Records
 )
 
+
 def get_current_user(request, need):
-    user = request.user #getting the current logged in User
+    user = request.user  # getting the current logged in User
 
     cur_user = f'{user.solitonuser.employee.first_name} {user.solitonuser.employee.last_name}'
     #cur_role = user.solitonuser.soliton_role.name
@@ -48,6 +49,7 @@ def get_current_user(request, need):
     else:
         return 0
 
+
 @login_required
 def leave_dashboard_page(request):
     applications=""
@@ -55,7 +57,9 @@ def leave_dashboard_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'ems_auth/login.html',{"message":None})
+        return render(request, 'ems_auth/login.html', {"message": None})
+
+    user_role = get_current_user(request, "role")
 
     is_team_supervisor = Team.objects.filter(id=get_current_user(request,"team"),\
          supervisors=get_current_user(request,"id")).count()
@@ -84,11 +88,11 @@ def leave_dashboard_page(request):
         applications = ""
 
     leave_types = Leave_Types.objects.all()
-    
+
     leave_types_dict = {}
     for typ in leave_types:
         leave_count = LeaveApplication.objects.filter(leave_type=typ).count()
-        leave_types_dict.update({typ:leave_count})
+        leave_types_dict.update({typ: leave_count})
 
     context = {
         "leave_dashboard_page": "active",
@@ -102,17 +106,19 @@ def leave_dashboard_page(request):
     }
     return render(request, 'leave/dashboard.html', context)
 
+
 def leave_types_page(request):
-     # The line requires the user to be authenticated before accessing the view responses.
+    # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'ems_auth/login.html',{"message":None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     context = {
         "leave_page": "active",
         "types": Leave_Types.objects.all()
     }
     return render(request, 'leave/leave_types.html', context)
+
 
 def add_new_type(request):
     if request.method == 'POST':
@@ -123,9 +129,9 @@ def add_new_type(request):
 
         try:
             # Creating instance of Leave Types
-            type_leave = Leave_Types(leave_type=leave_type, leave_days=leave_days,description=desc)
-            
-            #Saving the leave type instance
+            type_leave = Leave_Types(leave_type=leave_type, leave_days=leave_days, description=desc)
+
+            # Saving the leave type instance
             type_leave.save()
             messages.success(request, f'Info Successfully Saved')
 
@@ -134,7 +140,7 @@ def add_new_type(request):
         except:
             messages.error(request, f'Info Not Saved, Check Your inputs and try again!!!')
 
-            return redirect('leave_types_page')            
+            return redirect('leave_types_page')
 
     else:
         context = {
@@ -144,32 +150,35 @@ def add_new_type(request):
 
         return render(request, "employees/failed.html", context)
 
+
 @login_required
 def edit_leave_type_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'ems_auth/login.html', {"message": None})
-    
+
     leave = Leave_Types.objects.get(pk=id)
 
     context = {
         "leave_page": "active",
-        "leave": leave  
+        "leave": leave
     }
     return render(request, 'leave/leave_type.html', context)
 
+
 def holidays_page(request):
-     # The line requires the user to be authenticated before accessing the view responses.
+    # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'ems_auth/login.html',{"message":None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
-    context = { 
+    context = {
         "leave_page": "active",
         "holidays": Holidays.objects.all()
     }
     return render(request, 'leave/holidays.html', context)
+
 
 def add_new_holiday(request):
     if request.method == 'POST':
@@ -180,22 +189,22 @@ def add_new_holiday(request):
 
         try:
 
-            hols = Holidays(holiday_date = hol_date, holiday_name=hol_name, duration=duration)
+            hols = Holidays(holiday_date=hol_date, holiday_name=hol_name, duration=duration)
             hols.save()
 
             messages.success(request, f'Info Successfully Saved')
             return redirect('holidays_page')
 
         except:
-           messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
+            messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
 
-           return redirect('holidays_page') 
+            return redirect('holidays_page')
 
 def apply_leave_page(request):
-     #The line requires the user to be authenticated before accessing the view responses.
+    # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'ems_auth/login.html',{"message":None})
+        return render(request, 'ems_auth/login.html', {"message": None})
 
     employee = Employee.objects.filter(pk = get_current_user(request, "id"))
     leave_record = Leave_Records.objects.all()
@@ -212,12 +221,11 @@ def apply_leave_page(request):
     return render(request, "leave/leave.html", context)
 
 
-
 @login_required
 def apply_leave(request):
-    if request.method=="POST":
-        
-        user = request.user #getting the current logged in user
+    if request.method == "POST":
+
+        user = request.user  # getting the current logged in user
         employee = user.solitonuser.employee
         department = Department.objects.get(pk = employee.organisationdetail.department.id)
         team = Team.objects.get(pk = employee.organisationdetail.team.id)
@@ -230,15 +238,15 @@ def apply_leave(request):
         s_date = request.POST["s_date"]
         e_date = request.POST["e_date"]
 
-        #getting the leave type entitlement
+        # getting the leave type entitlement
         n_days = calculate_leave_days(s_date, e_date)
-        l_days =  l_type.leave_days         
-        
+        l_days = l_type.leave_days
+
         if n_days <= l_days:
-            new_balance=0
+            new_balance = 0
             if l_type.leave_type == "Annual":
                 curr_balance = employee.leave_balance
-                new_balance = curr_balance - n_days 
+                new_balance = curr_balance - n_days
 
             if n_days <= new_balance:
                 leave_app = LeaveApplication(employee = employee, leave_type = l_type,\
@@ -248,8 +256,8 @@ def apply_leave(request):
 
                 leave_app.save()
 
-                subject = 'New Leave Request' 
-                from_mail = settings.EMAIL_HOST_USER 
+                subject = 'New Leave Request'
+                from_mail = settings.EMAIL_HOST_USER
                 msg = 'You have a new leave request that requires your attention'
                 to_mails = [user.email, 'walusimbi96@gmail.com']
 
@@ -261,10 +269,10 @@ def apply_leave(request):
 
             else:
                 messages.warning(request, f'You have insufficient {l_type} leave Balance {n_days}')
-                if str(user.solitonuser.soliton_role) =='Employee':
+                if str(user.solitonuser.soliton_role) == 'Employee':
                     context = {
-                    "employee": user.solitonuser.employee,
-                    "employee_leave_page":'active'
+                        "employee": user.solitonuser.employee,
+                        "employee_leave_page": 'active'
                     }
                     return render(request,"leave/leave.html",context)
                 else:
@@ -275,16 +283,14 @@ def apply_leave(request):
                 {l_type.leave_type} leave days ({l_type.leave_days})')
             return render(request,"leave/leave.html")
 
-#def send_mail_alert(subject, msg, from_mail, to_mail):
-    
 
 def approve_leave(request):
-    if request.method=="POST":
-        user = request.user #getting the current logged in User  
+    if request.method == "POST":
+        user = request.user  # getting the current logged in User
         employee = user.solitonuser.employee
         role = get_current_user(request, "role")
 
-        l_type = Leave_Types.objects.get(pk = request.POST.get("ltype"))
+        l_type = Leave_Types.objects.get(pk=request.POST.get("ltype"))
         n_days = request.POST.get("ndays")
         leave = LeaveApplication.objects.get(pk=request.POST["app_id"])
         leave_record = Leave_Records.objects.\
@@ -405,46 +411,46 @@ def calculate_leave_days(start_date, end_date):
     date_format = "%Y-%m-%d"
     from_date = datetime.datetime.strptime(start_date, date_format)
     to_date = datetime.datetime.strptime(end_date, date_format)
-    
-    date_difference = to_date - from_date  
+
+    date_difference = to_date - from_date
 
     all_days_between = (date_difference.days + 1)
 
     holidays = Holidays.objects.filter(holiday_date__range=(from_date, to_date)).count()
 
-
     all_working_days = all_days_between - holidays
-    k=0
+    k = 0
     while k <= all_days_between:
-        check_date = from_date + datetime.timedelta(days = k)
-        
+        check_date = from_date + datetime.timedelta(days=k)
+
         if check_date.weekday() == 6:
             all_working_days = all_working_days - 1
-        
+
         k = k + 1
-       
+
     return all_working_days
-        
+
 
 def annual_calendar(request):
     # first_day = calendar.TextCalendar(calendar.MONDAY)
     # annual_calendar = first_day.formatyear(2019)
-    context = { 
+    context = {
         "annual_calendar": "active",
         "employees": Employee.objects.all()
     }
-        
+
     return render(request, 'leave/annual_calendar.html', context)
 
+
 def leave_planer(request):
-     # The line requires the user to be authenticated before accessing the view responses.
+    # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'registration/login.html',{"message":None})
+        return render(request, 'registration/login.html', {"message": None})
 
     current_year = datetime.datetime.now().year
 
-    context = { 
+    context = {
         "leave_planner": "active",
         "planner": annual_planner.objects.all(),
         "leave_types": Leave_Types.objects.all(),
@@ -452,9 +458,10 @@ def leave_planer(request):
         "year": current_year
     }
     return render(request, 'leave/leave_planner.html', context)
-    
+
+
 def add_new_absence(request):
-    if request.method=="POST":
+    if request.method == "POST":
         employee = Employee.objects.get(pk=request.user.id)
         leave = Leave_Types.objects.get(pk=request.POST["leave_type"])
         from_date = request.POST["from_date"]
@@ -467,8 +474,9 @@ def add_new_absence(request):
 
     try:
         if leave_days >= 1:
-            planner = annual_planner(leave_year=leave_year, date_from = from_date, date_to = to_date,\
-                employee=employee, leave = leave, leave_month = leave_month[0:3], no_of_days = leave_days)
+            planner = annual_planner(leave_year=leave_year, date_from=from_date, date_to=to_date, \
+                                     employee=employee, leave=leave, leave_month=leave_month[0:3],
+                                     no_of_days=leave_days)
 
             planner.save()
 
@@ -477,11 +485,11 @@ def add_new_absence(request):
             overlaps = get_leave_overlap(from_date, to_date)
 
             if overlaps > 1:
-                messages.warning(request,f'There are {overlaps - 1} Overlap(s) during the selected period.\
+                messages.warning(request, f'There are {overlaps - 1} Overlap(s) during the selected period.\
                     \n Click to View Overlaps')
 
         else:
-            messages.warning(request,f'Invalid Date Range')
+            messages.warning(request, f'Invalid Date Range')
 
         return redirect('leave_planner')
 
@@ -489,7 +497,8 @@ def add_new_absence(request):
         messages.error(request, f'Data Not Saved, Check you inputs and try again!')
 
         #  return redirect('leave_planner')
-    
+
+
 def get_leave_overlap(start_date, end_date):
     absences = annual_planner.objects.all()
 
@@ -498,9 +507,9 @@ def get_leave_overlap(start_date, end_date):
     date_format = "%Y-%m-%d"
     from_date = datetime.datetime.strptime(start_date, date_format)
     to_date = datetime.datetime.strptime(end_date, date_format)
-    
+
     r1 = Range(start=from_date.date(), end=to_date.date())
-    
+
     overlap = 0
     overlap_count = 0
     for absence in absences:
@@ -513,21 +522,21 @@ def get_leave_overlap(start_date, end_date):
         if overlap > 0:
             overlap_count += 1
 
-    
     return overlap_count
 
+
 def Leave_planner_summary(request):
-     # The line requires the user to be authenticated before accessing the view responses.
+    # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
-        return render(request,'registration/login.html',{"message":None})  
-    
+        return render(request, 'registration/login.html', {"message": None})
+
     department_id = 0
     team_id = 0
-    if request.method=="POST":
+    if request.method == "POST":
         department_id = request.POST["department"]
         team_id = request.POST["team"]
-    
+
     # Select multiple records
     all_plans = None
     with connection.cursor() as cursor:
@@ -547,7 +556,7 @@ def Leave_planner_summary(request):
         FROM employees_employee e LEFT OUTER JOIN leave_annual_planner l ON e.id=l.employee_id\
 		WHERE e.id IN \
             (SELECT employee_id FROM employees_organisationdetail \
-                WHERE department_id={ department_id } AND team_id={ team_id })\
+                WHERE department_id={department_id} AND team_id={team_id})\
         GROUP BY e.id;")
         all_plans = cursor.fetchall()
     # DB API fetchall produces a list of tuples
@@ -559,14 +568,15 @@ def Leave_planner_summary(request):
     }
     return render(request, 'leave/annual_calendar.html', context)
 
+
 def leave_calendar(request, month=date.today().month, year=date.today().year):
     year = int(year)
     month = int(month)
 
-    if year < 1900 or year > 2099: 
-        year=date.today().year
-    
-    month_name=calendar.month_name[month]
+    if year < 1900 or year > 2099:
+        year = date.today().year
+
+    month_name = calendar.month_name[month]
 
     cal = HTMLCalendar.formatmonth(year, month)
 

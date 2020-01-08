@@ -14,7 +14,7 @@ from .simple_payslip import SimplePayslip
 from employees.models import Employee
 from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_total_paye, get_total_gross_pay, \
     get_total_basic_pay, \
-    get_total_net_pay, render_to_pdf
+    get_total_net_pay, render_to_pdf, get_overtime_pay
 
 
 def payroll_page(request):
@@ -218,6 +218,7 @@ def edit_period(request):
 
 def create_payroll_payslips(request, id):
     payroll_record = get_payroll_record_by_id(id)
+
     create_payslip_list_service(payroll_record)
     return HttpResponseRedirect(reverse('payroll_record_page', args=[payroll_record.id]))
 

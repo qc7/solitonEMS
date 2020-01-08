@@ -12,7 +12,8 @@ class UserForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'is_superuser', 'is_staff', 'is_active', 'is_hr', 'is_hod', 'is_cfo', 'is_ceo']
+        fields = ['email', 'is_superuser', 'is_staff', 'is_active', 'is_hr', 'is_hod', 'is_cfo', 'is_ceo',
+                  'is_supervisor']
 
 
 class SolitonUserForm(ModelForm):

@@ -53,18 +53,22 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{dashboard_page}}">
                     <a class="nav-link" href="{% url 'dashboard_page' %}">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
                     </a>
                 </li>
 
-                <li class="nav-item {{holidays_page}}">
-                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                <li class="nav-item {{organisation_page}}" data-toggle="popover-organisation" title="Organisation">
+                    <a class="nav-link" href="#">
                         <i class="material-icons">account_balance</i>
                         <p>Organisation</p>
                     </a>
+                    <ul id="popover-organisation" class="nav list-group" style="display: none">
+                        <a href="{%url 'job_titles_page'%}" class="list-group-item">Manage Job Titles</a>
+                        <a href="{%url 'departments_page'%}" class="list-group-item">Manage Departments</a>
+                    </ul>
                 </li>
 
                 <li class="nav-item  {{ employees_page }}">
@@ -72,6 +76,7 @@
                         <i class="material-icons">content_paste</i>
                         <p>Employees</p>
                     </a>
+
                 </li>
 
                 <li class="nav-item  {{ leave_dashboard_page }}">
@@ -93,11 +98,16 @@
                     </ul>
                 </li>
 
-                <li class="nav-item {{overtime_page}}">
-                    <a class="nav-link" href="{% url 'overtime_page' %}">
+                <li class="nav-item {{overtime_page}}" data-toggle="popover-overtime" title="Overtime">
+                    <a class="nav-link" href="#">
                         <i class="material-icons">hourglass_empty</i>
                         <p>Overtime</p>
                     </a>
+                    <ul id="popover-overtime" class="nav list-group" style="display:none">
+                        <a href="{%url 'approve_overtime_page'%}" class="list-group-item">Approve Overtime</a>
+                        <a href="{%url 'apply_for_overtime_page'%}" class="list-group-item">Apply for overtime</a>
+                        <a href="{%url 'overtime_applications_page'%}" class="list-group-item">View overtime applications</a>
+                    </ul>
                 </li>
 
                 <li class="nav-item {{holidays_page}}">
@@ -107,26 +117,26 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{holidays_page}}">
-                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
                         <i class="material-icons">people</i>
                         <p>Recruitment</p>
                     </a>
                 </li>
-                <li class="nav-item {{holidays_page}}">
-                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
                         <i class="material-icons">assignment</i>
                         <p>Contracts</p>
                     </a>
                 </li>
-                <li class="nav-item {{holidays_page}}">
-                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
                         <i class="material-icons">bookmarks</i>
                         <p>Training</p>
                     </a>
                 </li>
-                <li class="nav-item {{holidays_page}}">
-                    <a class="nav-link" href="{% url 'holidays_page' %}">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
                         <i class="material-icons">book</i>
                         <p>Learning and Development</p>
                     </a>
@@ -499,6 +509,22 @@
             trigger: 'click',
             content: function() {
             return $('#popover-payroll').html();
+          }
+       });
+
+       $('[data-toggle="popover-overtime"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function() {
+            return $('#popover-overtime').html();
+          }
+       });
+
+       $('[data-toggle="popover-organisation"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function() {
+            return $('#popover-organisation').html();
           }
        });
 

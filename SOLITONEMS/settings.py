@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,7 +25,7 @@ SECRET_KEY = '0d1*j&^q381!@3^^4htw!n-1p!yxxy93s3^2exrw7%4bf_!hcf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['solitonug.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['solitonems.herokuapp.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -32,7 +33,6 @@ SOLITONEMS_APPS = [
     'employees',
     'payroll',
     'leave',
-    'role',
     'organisation_details',
     'settings',
     'overtime',
@@ -116,7 +116,6 @@ AUTH_USER_MODEL = 'ems_auth.User'
 
 AUTHENTICATION_BACKENDS = ['ems_auth.backends.EmailBackend']
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -135,7 +134,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/solitonug/solitonEMS/static'
-
 
 #  Email smtp setup for production
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
