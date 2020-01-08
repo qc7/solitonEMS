@@ -6,7 +6,7 @@ This is a simple Django 2.0+ project template with my preferred setup. Most Djan
 
 - Django 2.0+
 - Uses [Pipenv](https://github.com/kennethreitz/pipenv) - the officially recommended Python packaging tool from Python.org.
-- Development, Staging and Production settings with [django-configurations](https://django-configurations.readthedocs.org).
+- Development, Staging and Production settings with [django-configurations](https://django-configurations.readthedocs.org). 
 - Get value insight and debug information while on Development with [django-debug-toolbar](https://django-debug-toolbar.readthedocs.org).
 - Collection of custom extensions with [django-extensions](http://django-extensions.readthedocs.org).
 - HTTPS and other security related settings on Staging and Production.
