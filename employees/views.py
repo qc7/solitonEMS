@@ -300,17 +300,14 @@ def teams_page(request, id):
 
     user = request.user
 
-    ts = Teams.objects.filter(department=id)
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
-    number_of_notifications = notifications.count()
+    ts = Team.objects.filter(department=id)
+
     context = {
         "user": user,
         "employees_page": "active",
         "teams": ts,
         "dep": Department.objects.get(pk=id),
         "emps": Employee.objects.all(),
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
     }
 
     return render(request, "employees/teams.html", context)

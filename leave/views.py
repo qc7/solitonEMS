@@ -66,10 +66,13 @@ def leave_dashboard_page(request):
 
     is_hod = Department.objects.filter(id=get_current_user(request,"dept"),\
          hod=get_current_user(request,"id")).count()
-   
+
+    print("is Supervisor: ", is_team_supervisor)
+
     if is_team_supervisor == 1:
         print("As Supervisor")
         print("Team: ", get_current_user(request,"team"))
+        print("ID: ", get_current_user(request,"id"))
         applications = LeaveApplication.objects.filter(supervisor_status="Pending",\
              team=get_current_user(request,"team")).order_by('apply_date')
     
@@ -299,7 +302,10 @@ def approve_leave(request):
         is_supervisor = Team.objects.filter(id=get_current_user(request,"team"),\
          supervisors=get_current_user(request,"id")).count()
 
+        
         if is_supervisor == 1: 
+            print("User Id: ", get_current_user(request,"id"))
+            print("User Team: ", get_current_user(request,"team"))
             LeaveApplication.objects.filter(pk=leave.id).update(supervisor=get_current_user(request, "id"),
             supervisor_status="Approved",)
 
@@ -405,7 +411,6 @@ def add_leave_records(request, yr):
         
         
     return redirect('leave_records') 
-
             
 def calculate_leave_days(start_date, end_date):    
     date_format = "%Y-%m-%d"
