@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\USER\\envs\\pyshop\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\USER\\envs\\pyshop\\Scripts\\python.exe",
+    "files.autoSave": "onWindowChange"
 }

@@ -1,13 +1,13 @@
       {% extends './base.html' %}
       {% block page_title %}
-      <h1>Leave Dashboard</h1>
+      <h1>Leave Applications</h1>
       {% endblock %}
 
       {% block content %}
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
+            {% comment %}<div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-success card-header-icon">
                   <div class="card-icon">
@@ -53,7 +53,7 @@
                 </div>
               </div>
             </div>
-            {% comment %} <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
                   <div class="card-icon">
@@ -68,7 +68,7 @@
                 <div class="card-footer">
                 </div>
               </div>
-            </div> {% endcomment %}
+            </div> 
 
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
@@ -85,7 +85,7 @@
                 <div class="card-footer">
                 </div>
               </div>
-            </div>
+            </div>{% endcomment %}
           </div>
          
           
@@ -94,16 +94,20 @@
            <a href="{%url 'leave_types_page'%}"><button class="btn btn-outline-primary">Manage Leave Types</button></a>
            <a href="{%url 'holidays_page'%}"><button class="btn btn-outline-primary">Manage Holidays</button></a>
            <a href="{%url 'apply_leave_page'%}"><button class="btn btn-outline-primary">Apply For Leave</button></a>
-           {% if role == "HR"%}
-        <a href="#"> {% comment %} {% url 'leave_balance_page' %}"> {% endcomment %}
+           <a href="{%url 'leave_records'%}"><button class="btn btn-outline-primary">Leave Records</button></a>
+           
+           {% comment %} {% if role == "HR"%}
+        <a href="#"> {% url 'leave_balance_page' %}">
         <button class="btn btn-outline-info waves-effect" type="submit">Leave Balance</button></a>
-        {% endif %}
+        {% endif %} {% endcomment %}
          </div>
 
            <!-- Status Flash Messages -->
           {% if messages %}
             {% for msg in messages%}
-              <div class="alert alert-{{ msg.tags }}">
+              <div class="alert alert-{{ msg.tags }} alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+              &times;</button>
                 {{ msg }}
               </div>
             {% endfor %}
@@ -169,3 +173,13 @@
         </div>
       </div>
       {% endblock content %}
+
+      <script>
+        $(document).ready(function(){
+        window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove();
+        });
+      }, 5000);
+
+    </script>

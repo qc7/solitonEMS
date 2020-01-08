@@ -62,7 +62,7 @@
           <div class="modal-body">
             <form method="POST" action="{% url 'add_new_team' %}"> {% csrf_token %}
               <div class="form-group">
-                <input type="text" class="form-control"  name="dept" value="{{ dep.id }}">
+                <input type="hidden" class="form-control"  name="dept" value="{{ dep.id }}">
               </div>
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Team Name"
@@ -72,11 +72,11 @@
                   <label for="">Supervisor</label>
                   <select class="form-control" id="hod" name="sups" required>                                
                                 {% for emp in emps %}                                    
-                                    {% if depart.hod == emp %}
+                                    {% comment %} {% if depart.hod == emp %}
                                         <option selected>{{emp.first_name }}{{emp.last_name }}</option>
-                                    {% else %}
-                                        <option>{{emp.first_name }}{{emp.last_name }}</option>
-                                    {% endif %}
+                                    {% else %} {% endcomment %}
+                                    <option value={{ emp.id }}>{{emp.first_name }}{{emp.last_name }}</option>
+                                    {% comment %} {% endif %} {% endcomment %}
                                 {% endfor %}
                             </select>
               </div>          

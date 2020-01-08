@@ -68,4 +68,5 @@ urlpatterns = [
     path('edit_organisation_details/',views.edit_organisation_details,name="edit_organisation_details"),
     path('employees_download/',views.employees_download,name="employees_download"),
 
+    path('edit_leave_details/',views.edit_leave_details,name="edit_leave_details"),    
 ]

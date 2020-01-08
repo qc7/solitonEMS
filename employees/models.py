@@ -11,14 +11,6 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
-
-class Team(models.Model):
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    name = models.CharField(max_length=45)
-    supervisors = models.CharField(max_length=45)
-    status = models.CharField(max_length=15, default="Active")
-
-
 class Position(models.Model):
     name = models.CharField(max_length=45)
     number_of_slots = models.IntegerField()
@@ -62,6 +54,10 @@ class Employee(models.Model):
         return self.organisationdetail.position.name
 
     @property
+    def team(self):
+        return self.organisationdetail.team.name
+
+    @property
     def initial_gross_salary(self) -> int:
         return self.basic_salary + self.lunch_allowance
 
@@ -73,11 +69,20 @@ class Employee(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+class Team(models.Model):
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    name = models.CharField(max_length=45)
+    supervisors = models.ForeignKey(Employee, on_delete=models.CASCADE, null = True, blank=True)
+    status = models.CharField(max_length=15, default="Active")
+
+    def __str__(self):
+        return self.name
 
 class OrganisationDetail(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, blank=True)
     position = models.ForeignKey(Position, on_delete=models.CASCADE, blank=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, blank=True)
 
     def __str__(self):
         return self.position.name + " " + self.department.name

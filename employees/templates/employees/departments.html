@@ -39,7 +39,7 @@
                 <td>{{ depart.id }}</td>
                 <td><a href="#" style="color: inherit">{{ depart.name }}</a></td>
                 <td>{{ depart.hod }}</td>
-                <td><a href="{% url 'teams_page' depart.id %}" style="color: inherit">{{ depart.teams_set.all.count }}</a></td>
+                <td><a href="{% url 'teams_page' depart.id %}" style="color: inherit">{{ depart.team_set.all.count }}</a></td>
                 <td>{{ depart.status }}</td>
                 <td>
                   <a href="{% url 'edit_department_page' depart.id %}" data-toggle="modal" data-target="#modal_edit_department" style="color:inherit">

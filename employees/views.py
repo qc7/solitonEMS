@@ -72,7 +72,7 @@ def employee_page(request, id):
 
     employee = Employee.objects.get(pk=id)
 
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    notifications = Notification.objects.filter(user=user, status='unread')
     number_of_notifications = notifications.count()
 
     context = {
@@ -89,7 +89,7 @@ def employee_page(request, id):
         "titles": Position.objects.all(),
         "notifications": notifications,
         "number_of_notifications":number_of_notifications,
-        "teams":Teams.objects.all(),
+        "teams":Team.objects.all(),
         "allowances": Allowance.objects.all(),
         "supervisee_options": Employee.objects.exclude(pk=employee.id),
         "supervisions": Supervision.objects.filter(supervisor=employee)
@@ -108,7 +108,7 @@ def edit_employee_page(request, id):
         # if the user is not authenticated it renders a login page
         return render(request, 'ems_auth/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    notifications = Notification.objects.filter(user=user, status='unread')
     number_of_notifications = notifications.count()
 
     context = {
@@ -141,7 +141,7 @@ def edit_certification_page(request, id):
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request, "role/ceo.html")
 
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    notifications = Notification.objects.filter(user=user, status='unread')
     number_of_notifications = notifications.count()
 
     certification = Certification.objects.get(pk=id)
@@ -208,7 +208,7 @@ def edit_beneficiary_page(request, id):
         return render(request, "role/ceo.html")
 
     beneficiary = Beneficiary.objects.get(pk=id)
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    notifications = Notification.objects.filter(user=user, status='unread')
     number_of_notifications = notifications.count()
 
     context = {
@@ -241,7 +241,7 @@ def edit_spouse_page(request, id):
     spouse = Spouse.objects.get(pk=id)
     spouse.save()
 
-    notifications = Notification.objects.filter(user=user.solitonuser)
+    notifications = Notification.objects.filter(user=user)
     number_of_notifications = notifications.count()
     context = {
         "user": user,
@@ -290,7 +290,7 @@ def departments_page(request):
         # if the user is not authenticated it renders a login page
         return render(request, 'ems_auth/login.html', {"message": None})
     user = request.user
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
+    notifications = Notification.objects.filter(user=user, status='unread')
     number_of_notifications = notifications.count()
     context = {
         "user": request.user,
@@ -300,6 +300,7 @@ def departments_page(request):
         "notifications": notifications,
         "number_of_notifications": number_of_notifications
     }
+    print("departs ", )
 
     return render(request, "employees/departments.html", context)
 
@@ -312,8 +313,8 @@ def teams_page(request, id):
 
     user = request.user
 
-    ts = Teams.objects.filter(department=id)
-    notifications = Notification.objects.filter(user=user.solitonuser,status='unread')
+    ts = Team.objects.filter(department=id)
+    notifications = Notification.objects.filter(user=user,status='unread')
     number_of_notifications = notifications.count() 
     context = {
         "user": user,
@@ -571,7 +572,7 @@ def add_organisation_details(request):
         # Get the department instance
         department = Department.objects.get(pk=depart)
         # Get the Job title instance
-        team = Teams.objects.get(pk=team)
+        team = Team.objects.get(pk=team)
         position = Position.objects.get(pk=position)
         # Creating instance of organisation Detail
         organisation_detail = OrganisationDetail(employee=employee, department=department,\
@@ -1273,18 +1274,16 @@ def add_new_team(request):
         sup = request.POST["sups"]
         dpt = request.POST["dept"]
 
-    try:
-        team = Team(department_id=dpt, name=team_name, supervisors=sup)
+        try:
+            supervisor = Employee.objects.get(pk=sup)
+            team = Team(department_id=dpt, name=team_name, supervisors=supervisor)
+            team.save()
+            messages.success(request, f'Info Successfully Saved')
 
-        team.save()
+        except:
+            messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
 
-        messages.success(request, f'Info Successfully Saved')
-        return redirect("teams_page")
-
-    except:
-        messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
-
-        return redirect('teams_page')
+        return redirect('teams_page', id=dpt)
 
 # Job Titles
 def add_new_title(request):
