@@ -5,103 +5,8 @@
 
       {% block content %}
       <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-            {% comment %}<div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-success card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">pregnant_woman</i>
-                  </div>
-                  <p class="card-category">Maternity</p>
-                  <h3 class="card-title">{{ maternity }}
-
-                  </h3>
-                </div>
-                <div class="card-footer">
-
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-danger card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">note_add</i>
-                  </div>
-                  <p class="card-category">Sick</p>
-                  <h3 class="card-title">{{sick}}
-
-                  </h3>
-                </div>
-                <div class="card-footer">
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-danger card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">perm_identity</i>
-                  </div>
-                  <p class="card-category">Paternity</p>
-                  <h3 class="card-title">{{paternity}}
-
-                  </h3>
-                </div>
-                <div class="card-footer">
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-danger card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">hourglass_empty</i>
-                  </div>
-                  <p class="card-category">Compassionate</p>
-                  <h3 class="card-title">{{ compassionate }}
-
-                  </h3>
-                </div>
-
-                <div class="card-footer">
-                </div>
-              </div>
-            </div> 
-
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-danger card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">hourglass_empty</i>
-                  </div>
-                  <p class="card-category">Annual</p>
-                  <h3 class="card-title">{{ annual }}
-
-                  </h3>
-                </div>
-
-                <div class="card-footer">
-                </div>
-              </div>
-            </div>{% endcomment %}
-          </div>
-         
-          
-        <!-- buttons -->
-         <div class="col-md-12">
-           <a href="{%url 'leave_types_page'%}"><button class="btn btn-outline-primary">Manage Leave Types</button></a>
-           <a href="{%url 'holidays_page'%}"><button class="btn btn-outline-primary">Manage Holidays</button></a>
-           <a href="{%url 'apply_leave_page'%}"><button class="btn btn-outline-primary">Apply For Leave</button></a>
-           <a href="{%url 'leave_records'%}"><button class="btn btn-outline-primary">Leave Records</button></a>
-           
-           {% comment %} {% if role == "HR"%}
-        <a href="#"> {% url 'leave_balance_page' %}">
-        <button class="btn btn-outline-info waves-effect" type="submit">Leave Balance</button></a>
-        {% endif %} {% endcomment %}
-         </div>
-
+        <div class="container-fluid">              
+        
            <!-- Status Flash Messages -->
           {% if messages %}
             {% for msg in messages%}
@@ -112,9 +17,12 @@
               </div>
             {% endfor %}
           {% endif %}
-
-      <div class="col-md-12">
-      <div class="card-body">
+      
+      <div class="card animated fadeInUp">
+        <div class="card-body">
+        {% if not applications %}
+        <h3>No Pending Applications</h3>
+      {% else %}
         <div class="table-responsive">
           <table class="table table-hover thead-dark">
             <thead class="">
@@ -169,6 +77,7 @@
           </table>
         </div>
       </div>
+      {% endif%}
     </div>
         </div>
       </div>

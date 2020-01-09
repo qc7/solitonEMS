@@ -67,17 +67,22 @@ def leave_dashboard_page(request):
     is_hod = Department.objects.filter(id=get_current_user(request, "dept"), \
                                        hod=get_current_user(request, "id")).count()
 
+    is_hod = Department.objects.filter(id=get_current_user(request,"dept"),\
+         hod=get_current_user(request,"id")).count()
+
+    print("is Supervisor: ", is_team_supervisor)
+
     if is_team_supervisor == 1:
         print("As Supervisor")
-        print("Team: ", get_current_user(request, "team"))
-        applications = LeaveApplication.objects.filter(supervisor_status="Pending", \
-                                                       team=get_current_user(request, "team")).order_by('apply_date')
-
+        print("Team: ", get_current_user(request,"team"))
+        print("ID: ", get_current_user(request,"id"))
+        applications = LeaveApplication.objects.filter(supervisor_status="Pending",\
+             team=get_current_user(request,"team")).order_by('apply_date')
+    
     elif is_hod == 1:
         print("As HOD")
         applications = LeaveApplication.objects.filter(hod_status="Pending", \
-                                                       supervisor_status="Approved",
-                                                       department=get_current_user(request, "team")) \
+            supervisor_status="Approved", department=get_current_user(request, "team")) \
             .order_by('apply_date')
 
     if user.is_hr:
@@ -98,7 +103,6 @@ def leave_dashboard_page(request):
     context = {
         "leave_dashboard_page": "active",
         "applications": applications,
-        # "role": user_role,
         "maternity": LeaveApplication.objects.filter(leave_type=1).count(),
         "paternity": LeaveApplication.objects.filter(leave_type=2).count(),
         "compassionate": LeaveApplication.objects.filter(leave_type=3).count(),
@@ -252,9 +256,9 @@ def apply_leave(request):
 
             if n_days <= new_balance:
                 leave_app = LeaveApplication(employee=employee, leave_type=l_type, \
-                                             start_date=s_date, end_date=e_date, no_of_days=n_days, \
-                                             balance=curr_balance, department=department, \
-                                             team=team)
+                start_date=s_date, end_date=e_date, no_of_days=n_days, \
+                balance=curr_balance, department=department, \
+                team=team)
 
                 leave_app.save()
 
@@ -301,7 +305,10 @@ def approve_leave(request):
         is_supervisor = Team.objects.filter(id=get_current_user(request, "team"), \
                                             supervisors=get_current_user(request, "id")).count()
 
-        if is_supervisor == 1:
+        
+        if is_supervisor == 1: 
+            print("User Id: ", get_current_user(request,"id"))
+            print("User Team: ", get_current_user(request,"team"))
             LeaveApplication.objects.filter(pk=leave.id).update(supervisor=get_current_user(request, "id"),
                                                                 supervisor_status="Approved", )
 
@@ -324,8 +331,7 @@ def approve_leave(request):
                 new_balance = curr_balance
 
             LeaveApplication.objects.filter(pk=leave.id).update(hr=get_current_user(request, "id"),
-                                                                hr_status="Approved", overall_status="Approved",
-                                                                balance=new_balance)
+                hr_status="Approved", overall_status="Approved",balance=new_balance)
 
             leave_record.update(leave_applied=total_applied, total_taken=total_taken, \
                                 balance=new_balance)
@@ -342,6 +348,71 @@ def leave_records(request):
         return render(request, "ems_auth/login.html", {"message": None})
 
     current_year = date.today().year
+    context = {
+        "leave_page": "active",
+        "leave_records": Leave_Records.objects.filter(leave_year=current_year),
+        "current_year": current_year,
+        "years": generate_years(),
+    }
+    return render(request, "leave/leave_records.html", context)
+
+
+def add_leave_records(request):
+    yr = 0
+
+    if request.method == "POST":
+        yr = request.POST["leave_yr"]
+    
+        leave_records = Leave_Records.objects.all()
+        employees = Employee.objects.all()
+
+        if not leave_records:
+            for employee in employees:
+                employee_name = employee.id
+
+                leave_record = Leave_Records(employee=employee, leave_year=yr, \
+                    entitlement=21, residue=0, leave_applied=0, total_taken=0, \
+                    balance=21)
+
+                leave_record.save()
+            messages.success(request, f'Leave Records Generated for the Year - {yr}')
+        else:
+            year_count = leave_records.filter(leave_year=yr).count()
+
+            entitlement = 21
+
+            if year_count == 0:
+                for employee in employees:
+                    employee_name = employee.id
+
+                    leave_balance = leave_records.get(employee=employee, leave_year=yr - 1)
+
+                    balance = leave_balance.balance
+
+                    residue = 0
+                    if balance > 5:
+                        residue = 5
+                    else:
+                        residue = balance
+
+                    initial_balance = entitlement + residue
+
+                    leave_record = Leave_Records(employee=employee, leave_year=yr, \
+                                                entitlement=entitlement, residue=residue, leave_applied=0, total_taken=0, \
+                                                balance=initial_balance)
+
+                    leave_record.save()
+                messages.success(request, f'Leave Records Generated for the Year - {yr}')
+                                  
+        context = {
+        "leave_page": "active",
+        "leave_records": Leave_Records.objects.filter(leave_year=yr),
+        "years": generate_years()
+    }
+    return render(request, "leave/leave_records.html", context)
+
+def generate_years():
+    current_year = date.today().year
 
     next_years = []
 
@@ -351,68 +422,10 @@ def leave_records(request):
         next_years.append(start_year + 1)
         start_year += 1
         i += 1
+    
+    return next_years
 
-    context = {
-        "leave_page": "active",
-        "leave_records": Leave_Records.objects.filter(leave_year=current_year),
-        "current_year": current_year,
-        "years": next_years,
-    }
-    return render(request, "leave/leave_records.html", context)
-
-
-def add_leave_records(request, yr):
-    if not request.user.is_authenticated:
-        return render(request, "ems_auth/login.htm", {"Message": None})
-
-    leave_records = Leave_Records.objects.all()
-    employees = Employee.objects.all()
-
-    if not leave_records:
-        for employee in employees:
-            employee_name = employee.id
-
-            leave_record = Leave_Records(employee=employee, leave_year=yr, \
-                                         entitlement=21, residue=0, leave_applied=0, total_taken=0, \
-                                         balance=21)
-
-            leave_record.save()
-        messages.success(request, f'Leave Records Generated for the Year - {yr}')
-    else:
-        year_count = leave_records.filter(leave_year=yr).count()
-
-        entitlement = 21
-
-        if year_count == 0:
-            for employee in employees:
-                employee_name = employee.id
-
-                leave_balance = leave_records.get(employee=employee, leave_year=yr - 1)
-
-                balance = leave_balance.balance
-
-                residue = 0
-                if balance > 5:
-                    residue = 5
-                else:
-                    residue = balance
-
-                initial_balance = entitlement + residue
-
-                leave_record = Leave_Records(employee=employee, leave_year=yr, \
-                                             entitlement=entitlement, residue=residue, leave_applied=0, total_taken=0, \
-                                             balance=initial_balance)
-
-                leave_record.save()
-            messages.success(request, f'Leave Records Generated for the Year - {yr}')
-        else:
-            # leave_records.filter(leave_year=yr)
-            return redirect('leave_records')
-
-    return redirect('leave_records')
-
-
-def calculate_leave_days(start_date, end_date):
+def calculate_leave_days(start_date, end_date):    
     date_format = "%Y-%m-%d"
     from_date = datetime.datetime.strptime(start_date, date_format)
     to_date = datetime.datetime.strptime(end_date, date_format)
