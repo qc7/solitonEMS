@@ -17,9 +17,10 @@
                         <h4 class="card-title ">Currency</h4>
                     </div>
                     <div class="card-body">
-                        <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_spouse">Add a
+                        <button class="btn-outline-danger" data-toggle="modal" data-target="#modal_add_currency">Add a
                             currency
                         </button>
+
                         {%if spouses%}
                         <div class="table-responsive">
                             <table class="table">
@@ -84,6 +85,52 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal Add a currency -->
+<div class="modal fade" id="modal_add_currency" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Certification</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+
+                <form method="POST" action="{%url 'add_certification'%}"> {%csrf_token%}
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Enter institution"
+                               name="institution" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Enter year completed"
+                               name="year_completed" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Enter certification"
+                               name="certification" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Enter grade" name="grade" required>
+                    </div>
+
+                    <input type="hidden" name="employee_id" value={{employee.id}}>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
+                <button class="btn btn-danger" type="submit">Save</button>
+            </div>
+            </form>
+
         </div>
     </div>
 </div>
