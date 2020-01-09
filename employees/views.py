@@ -301,7 +301,6 @@ def teams_page(request, id):
     user = request.user
 
     ts = Team.objects.filter(department=id)
-
     context = {
         "user": user,
         "employees_page": "active",

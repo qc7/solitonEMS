@@ -6,20 +6,7 @@
       {% block content %}
       <div class="content">
         <div class="container-fluid">              
-          
-        <!-- buttons -->
-         <div class="col-md-12">
-           <a href="{%url 'leave_types_page'%}"><button class="btn btn-outline-primary">Manage Leave Types</button></a>
-           <a href="{%url 'holidays_page'%}"><button class="btn btn-outline-primary">Manage Holidays</button></a>
-           <a href="{%url 'apply_leave_page'%}"><button class="btn btn-outline-primary">Apply For Leave</button></a>
-           <a href="{%url 'leave_records'%}"><button class="btn btn-outline-primary">Leave Records</button></a>
-           
-           {% comment %} {% if role == "HR"%}
-        <a href="#"> {% url 'leave_balance_page' %}">
-        <button class="btn btn-outline-info waves-effect" type="submit">Leave Balance</button></a>
-        {% endif %} {% endcomment %}
-         </div>
-
+        
            <!-- Status Flash Messages -->
           {% if messages %}
             {% for msg in messages%}
