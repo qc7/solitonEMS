@@ -1,0 +1,88 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+<h3>Manage Job Advertisement</h3>
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+
+                <button class="btn btn-danger" data-toggle="modal"
+                        data-target="#modal_create_holiday">Create Job Advertisement</button>
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-warning">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                <h3>Job Vacancies</h3>
+                <div>
+                    <table class="table">
+                    <tr>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                      {%for holiday in holidays%}
+                    <tr>
+                        <td>{{holiday.date}}</td>
+                        <td>{{holiday.name}}</td>
+                        <td><a href="{%url 'edit_holiday_page' holiday.id%}">Edit</a> | <a href="{%url 'delete_holiday' holiday.id%}">Delete</a></td>
+
+                    </tr>
+                    {%endfor%}
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: modalApplyOvertime -->
+<div class="modal fade" id="modal_create_holiday" tabindex="-1" role="dialog"
+     aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Create Job Advertisement</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!-- Body -->
+            <div class="modal-body">
+                <form method="post">
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <label>Position</label>
+                        <select class="form-control" name="job_type" required>
+                            {%for position in positions%}
+                            <option value={{position.id}}>{{position.name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Job Type</label>
+                        <select class="form-control" name="job_type" required>
+                            <option value={{currency.id}}>Full Time</option>
+                            <option value={{currency.id}}>Part Time</option>
+                            <option value={{currency.id}}>Consultant</option>
+                            <option value={{currency.id}}>Internship</option>
+                        </select>
+                    </div>
+
+
+
+                    <input type="submit" value="submit" class="btn btn-danger"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -5,6 +5,7 @@ urlpatterns = [
     path('ems_auth/', include('ems_auth.urls')),
     path('admin/', admin.site.urls),
     path('payroll/', include('payroll.urls')),
+    path('recruitment/', include('recruitment.urls')),
     path('leave/', include('leave.urls')),
     path('settings/', include('settings.urls')),
     path('overtime/', include('overtime.urls')),

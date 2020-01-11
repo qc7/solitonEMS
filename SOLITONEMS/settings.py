@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['solitonems.herokuapp.com', 'localhost', '127.0.0.1']
 # Application definition
 
 SOLITONEMS_APPS = [
+    'recruitment',
     'employees',
     'payroll',
     'leave',

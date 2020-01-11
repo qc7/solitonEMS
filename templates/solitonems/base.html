@@ -123,11 +123,16 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{recruitment_page}}" data-toggle="popover-recruitment" title="Recruitment">
                     <a class="nav-link" href="#">
                         <i class="material-icons">people</i>
                         <p>Recruitment</p>
                     </a>
+                    <ul id="popover-recruitment" class="nav list-group" style="display:none">
+                        <a href="{% url 'manage_job_advertisement_page' %}" class="list-group-item">Manage Job Advertisement</a>
+                        <a href="#" class="list-group-item">View Available Jobs</a>
+                        <a href="#" class="list-group-item">View Job Applications</a>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">
@@ -539,6 +544,14 @@
             trigger: 'click',
             content: function() {
             return $('#popover-leave').html();
+          }
+       });
+
+       $('[data-toggle="popover-recruitment"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function() {
+            return $('#popover-recruitment').html();
           }
        });
 
