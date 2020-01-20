@@ -17,7 +17,7 @@ class Position(models.Model):
     number_of_slots = models.IntegerField()
     type = models.CharField(max_length=20, default="Full Time")
     salary = models.IntegerField(default=0)
-    salary_currency = models.ForeignKey(Currency, on_delete=models.CASCADE, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, blank=True)
     description = models.TextField(blank=True)
 
     def __str__(self):
