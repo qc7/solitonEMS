@@ -23,20 +23,24 @@
                 <h3>Job Vacancies</h3>
                 <div>
                     <table class="table">
-                    <tr>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Actions</th>
-                    </tr>
-                      {%for holiday in holidays%}
-                    <tr>
-                        <td>{{holiday.date}}</td>
-                        <td>{{holiday.name}}</td>
-                        <td><a href="{%url 'edit_holiday_page' holiday.id%}">Edit</a> | <a href="{%url 'delete_holiday' holiday.id%}">Delete</a></td>
-
-                    </tr>
-                    {%endfor%}
-                </table>
+                        <tr>
+                            <th>Position</th>
+                            <th>Vacancy</th>
+                            <th>Deadline</th>
+                            <th>Actions</th>
+                        </tr>
+                        {%for job_ad in job_ads%}
+                        <tr>
+                            <td>{{job_ad.position}}</td>
+                            <td>{{job_ad.vacancy}}</td>
+                            <td>{{job_ad.deadline}}</td>
+                            <td><a href="{%url 'edit_job_advertisement_page' job_ad.id%}"><i class="fa fa-edit"></i></a> |
+                                <a ...
+                                   onclick="return confirm('Are you sure you want to delete this job application?')"
+                                   href="{%url 'delete_job_advertisement' job_ad.id%}"><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                        {%endfor%}
+                    </table>
                 </div>
             </div>
         </div>
@@ -61,23 +65,42 @@
                     {%csrf_token%}
                     <div class="form-group">
                         <label>Position</label>
-                        <select class="form-control" name="job_type" required>
+                        <select class="form-control" name="position_id" required>
                             {%for position in positions%}
                             <option value={{position.id}}>{{position.name}}</option>
                             {%endfor%}
                         </select>
                     </div>
+
                     <div class="form-group">
-                        <label>Job Type</label>
-                        <select class="form-control" name="job_type" required>
-                            <option value={{currency.id}}>Full Time</option>
-                            <option value={{currency.id}}>Part Time</option>
-                            <option value={{currency.id}}>Consultant</option>
-                            <option value={{currency.id}}>Internship</option>
+                        <label>Vacancy</label>
+                        <input type="number" class="form-control" name="vacancy"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Education Level</label>
+                        <select class="form-control" name="education" required>
+                            <option value="Degree">Degree</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="Masters">Masters</option>
+                            <option value="Doctorate">Doctorate</option>
                         </select>
                     </div>
 
+                    <div class="form-group">
+                        <label>Experience(Years)</label>
+                        <input type="number" class="form-control" name="experience"/>
+                    </div>
 
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" rows="16" cols="200" name="description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Deadline</label>
+                        <input type="date" class="form-control" name="deadline">
+                    </div>
 
                     <input type="submit" value="submit" class="btn btn-danger"/>
                 </form>

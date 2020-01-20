@@ -1,0 +1,42 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+<h3>Job Advertisements</h3>
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-warning">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <table class="table">
+                    <tr>
+                        <th>Position</th>
+                        <th>Vacancy</th>
+                        <th>Deadline</th>
+                        <th>Actions</th>
+                    </tr>
+                    {%for job_ad in job_ads%}
+                    <tr>
+                        <td>{{job_ad.position}}</td>
+                        <td>{{job_ad.vacancy}}</td>
+                        <td>{{job_ad.deadline}}</td>
+                        <td><a  href="{% url 'job_advertisement' job_ad.id %}">View Details</a></td>
+                    </tr>
+                    {%endfor%}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

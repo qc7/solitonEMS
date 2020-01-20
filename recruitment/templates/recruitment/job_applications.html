@@ -1,0 +1,68 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+
+{%block page_title %}
+<span>
+    <h2 class="animated fadeInDown">{{job_advertisement.position}} Applications</h2>
+</span>
+{%endblock%}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <h3>Applicants</h3>
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Actions</th>
+                    </tr>
+                    {%for job_application in job_applications%}
+                    <tr>
+                        <td>{{job_application.applicant}}</td>
+                        <td>{{job_application.applicant.solitonuser.user.email}}</td>
+                        <td>{{job_application.applicant.telephone_no}}</td>
+                        <td>
+                            <a href="/media/{{job_application.cv}}">
+                                Download CV
+                            </a>
+
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: modalApplyOvertime -->
+<div class="modal fade" id="modal_apply_for_job" tabindex="-1" role="dialog"
+     aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Upload CV</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!-- Body -->
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    {{job_application_form}}
+                    <input type="submit" value="Upload" class="btn btn-danger"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+

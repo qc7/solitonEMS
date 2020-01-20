@@ -139,8 +139,8 @@ STATIC_ROOT = '/home/solitonug/solitonEMS/static'
 #  Email smtp setup for production
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "mail3.soliton.co.ug"
-EMAIL_HOST_USER = 'walusimbi96@gmail.com' #Put the email account for the soliton system
-EMAIL_HOST_PASSWORD = 'Berba70&' #Put the password for the email account
+EMAIL_HOST_USER = 'walusimbi96@gmail.com'  # Put the email account for the soliton system
+EMAIL_HOST_PASSWORD = 'Berba70&'  # Put the password for the email account
 EMAIL_PORT = 1025
 DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
 EMAIL_USE_TLS = True
@@ -148,4 +148,8 @@ EMAIL_USE_TLS = True
 #  Email smtp setup for development
 # EMAIL_HOST = "localhost"
 # EMAIL_PORT = 1025
-#DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
+# DEFAULT_FROM_EMAIL = 'no-reply@solitonems.
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
