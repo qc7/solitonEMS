@@ -1,0 +1,71 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+<h3>Edit Job Advertisement</h3>
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-warning">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post">
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <label>Position</label>
+                        <select class="form-control" name="position_id" required>
+                            <option value={{job_ad.position.id}}>{{job_ad.position.name}}</option>
+                            {%for position in positions%}
+                            <option value={{position.id}}>{{position.name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Vacancy</label>
+                        <input type="number" class="form-control" name="vacancy" value={{job_ad.vacancy}} />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Education Level</label>
+                        <select class="form-control" name="education" required>
+                            <option value={{job_ad.education}}>{{job_ad.education}}</option>
+                            <option value="Degree">Degree</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="Masters">Masters</option>
+                            <option value="Doctorate">Doctorate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Experience(Years)</label>
+                        <input type="number" class="form-control" name="experience" value={{job_ad.experience}} />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" rows="16" cols="200" name="description">{{job_ad.description}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Deadline</label>
+                        <input type="date" class="form-control" name="deadline" value={{job_ad.deadline.isoformat}}>
+                    </div>
+
+                    <input type="submit" value="submit" class="btn btn-danger"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

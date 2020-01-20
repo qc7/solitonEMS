@@ -1,0 +1,101 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+
+{%block page_title %}
+<span>
+    <h2 class="animated fadeInDown">Job Advertisement</h2>
+</span>
+{%endblock%}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <h3>{{job_advertisement.position}}</h3>
+                <i class="fa fa-calendar"></i>
+                <span> Post Date: {{job_advertisement.post_date}}</span>
+                &nbsp; &nbsp; &nbsp;
+                <i style="color:red" class="fa fa-calendar"></i>
+                <span style="color:red">Deadline: May 18, 2019  </span>
+
+                &nbsp; &nbsp; &nbsp;
+                <i class="fa fa-user"></i>
+                <span>Applications: {{job_advertisement.number_of_applications}}  </span>
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card animated fadeInUp">
+                    <div class="card-body">
+                        <div class="card-body">
+
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-warning">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                {{ message }}</div>
+                            {% endfor %}
+                            {% endif %}
+                            <h3>Description</h3>
+                            <h4>Position</h4>
+                            <div>
+                                {{job_advertisement.position.description}}
+                            </div>
+                            <h4>Job</h4>
+                            <div>
+                                 {{job_advertisement.description}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card animated fadeInUp">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <button class="btn btn-primary" data-toggle="modal"
+                                    data-target="#modal_apply_for_job">Apply for this job</button>
+                            <div>
+                                <p><i class="fa fa-hard-hat"></i>&nbsp; Job Type: {{job_advertisement.position.type}}</p>
+                                <p><i class="fa fa-dollar-sign"></i>&nbsp; Salary: {{job_advertisement.position.currency}} {{job_advertisement.position.salary}}</p>
+                                <p><i class="fa fa-briefcase"></i> &nbsp; Experience(Years): {{job_advertisement.experience}} </p>
+                                <p><i class="fa fa-user-plus"></i>&nbsp; Vacancy: {{job_advertisement.vacancy}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: modalApplyOvertime -->
+<div class="modal fade" id="modal_apply_for_job" tabindex="-1" role="dialog"
+     aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Upload CV</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!-- Body -->
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    {{job_application_form}}
+                    <input type="submit" value="Upload" class="btn btn-danger"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+
