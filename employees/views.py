@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from employees.services import create_employee_instance
 from ems_auth.decorators import ems_login_required
 from ems_auth.models import User
-from settings.selectors import get_all_currencies
+from settings.selectors import get_all_currencies, get_currency
 from .models import (
     Employee,
     HomeAddress,
@@ -304,10 +304,12 @@ def teams_page(request, id):
 
 @ems_login_required
 def job_titles_page(request):
+    currencies = get_all_currencies()
     context = {
         "user": request.user,
         "organisation_page": "active",
         "positions": Position.objects.all(),
+        "currencies": currencies
     }
 
     return render(request, "employees/job_titles.html", context)
@@ -1256,9 +1258,16 @@ def add_new_title(request):
     if request.method == "POST":
         job_title = request.POST["job_title"]
         pos = request.POST["positions"]
+        type = request.POST.get('type')
+        salary = request.POST.get('salary')
+        currency_id = request.POST.get('currency')
+        description = request.POST.get('description')
+
+        currency = get_currency(currency_id)
 
     try:
-        job = Position(name=job_title, number_of_slots=pos)
+        job = Position(name=job_title, number_of_slots=pos, type=type, salary=salary,
+                       currency=currency, description=description)
 
         job.save()
 

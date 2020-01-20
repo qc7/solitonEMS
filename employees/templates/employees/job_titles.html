@@ -65,7 +65,37 @@
               <div class="form-group">
                 <input type="text" class="form-control"  placeholder="No.of Positions"
                   name="positions" required>
-              </div>          
+              </div>
+
+              <div class="form-group">
+                <label>Type</label>
+                <select class="form-control" name="type">
+                  <option>Full Time</option>
+                  <option>Internship</option>
+                   <option>Private Contractor</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control"  placeholder="Salary"
+                  name="salary" required>
+              </div>
+
+              <div class="form-group">
+                <label>Currency</label>
+                <select class="form-control" name="currency">
+                  {%for currency in currencies%}
+                   <option value={{currency.id}}>{{currency.code}}</option>
+                 {%endfor%}
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-control" name="description"></textarea>
+
+              </div>
+
 
           <!--Footer-->
           <div class="modal-footer">
