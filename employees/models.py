@@ -48,7 +48,7 @@ class Employee(models.Model):
     title = models.CharField(max_length=10, blank=True)
     work_station = models.CharField(max_length=20, blank=True)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, blank=True, default=1)
-    lunch_allowance = models.IntegerField(default=150000)
+    lunch_allowance = models.IntegerField(default=0)
 
     @property
     def department(self):
