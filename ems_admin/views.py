@@ -64,12 +64,13 @@ def edit_user_page(request, id):
         user_form = UserForm(request.POST, instance=user)
         user_form.save()
         soliton_user = get_solitonuser(user)
-        try:
+        try: 
             soliton_user_form = SolitonUserForm(request.POST, instance=soliton_user)
             soliton_user_form.save(commit=False)
             soliton_user_form.user = user
             soliton_user_form.save()
             return HttpResponseRedirect(reverse(manage_users_page))
+
         except ValueError:
             messages.error(request, "The employee can not be assigned to more than one user")
             return HttpResponseRedirect(reverse(manage_users_page))
