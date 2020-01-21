@@ -218,7 +218,6 @@ def edit_period(request):
 
 def create_payroll_payslips(request, id):
     payroll_record = get_payroll_record_by_id(id)
-
     create_payslip_list_service(payroll_record)
     return HttpResponseRedirect(reverse('payroll_record_page', args=[payroll_record.id]))
 
