@@ -1,7 +1,10 @@
+from datetime import date
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
 from employees.services import create_employee_instance
 from ems_auth.decorators import ems_login_required
@@ -19,8 +22,9 @@ from .models import (
     Team,
     Position,
     BankDetail, OrganisationDetail, Allowance,
-    Supervision
+    Supervision,
 )
+from leave.models import Leave_Records
 
 from settings.models import Currency
 import csv
@@ -1429,25 +1433,29 @@ def delete_deduction(request, id):
     return render(request, 'employees/deleted.html', context)
 
 
-def edit_leave_details(request, id):
+def edit_leave_details(request):
     if request.method == 'POST':
         # Fetching data from the edit leave' form
-        name = request.POST['name']
-        dob = request.POST['dob']
-        gender = request.POST['gender']
 
         employee_id = request.POST['employee_id']
         employee = Employee.objects.get(pk=employee_id)
 
-        # Creating instance of Dependent
-        # dependant = Dependant(employee=employee, name=name, dob=dob, gender=gender)
+        entitlement = request.POST['entitlement']
+        balance = request.POST['leave_balance']
+        last_year_balance = request.POST['balance_last_year']
+        no_of_leaves = request.POST['no_of_leaves']
+        total_taken = request.POST['total_taken']
 
-        # Saving the Dependant instance
-        # dependant.save()
+        leave_record = Leave_Records(employee=employee, leave_year=date.today().year, entitlement=entitlement, \
+                                     residue=last_year_balance, balance=balance, \
+                                     leave_applied=no_of_leaves, total_taken=total_taken)
+        leave_record.save()
+
         context = {
             "employees_page": "active",
-            "success_msg": "You have successfully added %s to the dependants" % (dependant.name),
+            "success_msg": "You have successfully added leave records",
         }
+        return HttpResponseRedirect(reverse('employee_page', args=[employee_id]))
 
 
 def delete_allowance(request, id):
