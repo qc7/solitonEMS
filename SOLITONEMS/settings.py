@@ -144,10 +144,10 @@ EMAIL_HOST_PASSWORD = 'solitonug'  # Put the password for the email account
 DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
 EMAIL_USE_TLS = True
 
-#  Email smtp setup for development
+ # Email smtp setup for development
 # EMAIL_HOST = "localhost"
 # EMAIL_PORT = 1025
-# DEFAULT_FROM_EMAIL = 'no-reply@solitonems.
+# DEFAULT_FROM_EMAIL = 'no-reply@solitonems'
 
 
 MEDIA_URL = '/media/'
