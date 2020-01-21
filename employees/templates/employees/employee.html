@@ -217,7 +217,7 @@
                         <div class="card-description">                            
                             <table class="table">
                                 <tr>
-                                    <td>Annual Allowance</td>
+                                    <td>Entitlement</td>
                                     <td>{{employee.annual_allowance}}</td>
                                 </tr>
                                 <tr>
@@ -1460,19 +1460,29 @@
                     <div class="modal-body">
                         <form method="POST" action="{% url 'edit_leave_details' %}"> {%csrf_token%}
                             <div class="form-group">
-                                <label>Annual Allowance</label>
-                                <input type="text" class="form-control" placeholder="Annual Leave Allowance" name="bank_name"
+                                <label>Entitlement: </label>
+                                <input type="text" class="form-control" placeholder="Entitlement" name="entitlement"
                                     value="{{employee.annual_allowance}}" required>
                             </div>
                             <div class="form-group">
-                                <label>Balance</label>
-                                <input type="text" class="form-control" placeholder="Leave Balance this Year:"
-                                    value="{{employee.leave_balance}}" name="leave_balance" required>
+                                <label>No. of Leaves: </label>
+                                <input type="text" class="form-control" placeholder="No. of Leaves"
+                                    value="0" name="no_of_leaves" required>
                             </div>
                             <div class="form-group">
-                                <label>Balance Last Year</label>
+                                <label>Total Taken: </label>
+                                <input type="text" class="form-control" placeholder="Total Taken"
+                                    value="0" name="total_taken" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Current Balance: </label>
+                                <input type="text" class="form-control" placeholder="Leave Balance this Year:"
+                                    value="0" name="leave_balance" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Balance Last Year: </label>
                                 <input type="number" class="form-control" placeholder="Leave Balance last Year:"
-                                    name="balance_last_year" value="{{employee.balance_last_year}}" required>
+                                    name="balance_last_year" value="0" required>
                             </div>
 
                             <input type="hidden" name="employee_id" value={{employee.id}}>
