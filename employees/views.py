@@ -29,8 +29,8 @@ from leave.models import Leave_Records
 from settings.models import Currency
 import csv
 
-
 # dashboard
+from .selectors import get_employee, get_active_employees
 
 
 @ems_login_required
@@ -54,11 +54,12 @@ def dashboard_page(request):
 @ems_login_required
 def employees_page(request):
     all_currencies = get_all_currencies()
+    active_employees = get_active_employees()
     context = {
         "user": request.user,
         "currencies": all_currencies,
         "employees_page": "active",
-        "employees": Employee.objects.all(),
+        "employees": active_employees,
     }
     return render(request, 'employees/employees.html', context)
 
@@ -1578,3 +1579,65 @@ def employees_download(request):
 
     # Return the response
     return response
+
+
+def suspend_employee(request, employee_id):
+    employee = get_employee(employee_id)
+    employee.status = "Suspended"
+    employee.save()
+
+    return HttpResponseRedirect(reverse('employees_page'))
+
+
+def employee_profile_page(request, employee_id):
+    employee = get_employee(employee_id)
+
+    context = {
+        "user": request.user,
+        "employees_page": "active",
+        "employee": employee,
+    }
+
+    return render(request, 'employees/employee_profile.html', context)
+
+
+def add_more_details_page(request, employee_id):
+    employee = get_employee(employee_id)
+
+    context = {
+        "user": request.user,
+        "employees_page": "active",
+        "employee": employee,
+        "certifications": employee.certification_set.all(),
+        "emergency_contacts": employee.emergencycontact_set.all(),
+        "beneficiaries": employee.beneficiary_set.all(),
+        "spouses": employee.spouse_set.all(),
+        "dependants": employee.dependant_set.all(),
+        "deductions": employee.deduction_set.all(),
+        "deps": Department.objects.all(),
+        "titles": Position.objects.all(),
+        "teams": Team.objects.all(),
+        "allowances": Allowance.objects.all(),
+        "supervisee_options": Employee.objects.exclude(pk=employee.id),
+        "supervisions": Supervision.objects.filter(supervisor=employee)
+    }
+
+    return render(request, 'employees/add_more_details.html', context)
+
+
+def activate_employees_page(request):
+    passive_employees = Employee.objects.exclude(status="Active")
+    context = {
+        "user": request.user,
+        "employees_page": "active",
+        "employees": passive_employees
+    }
+    return render(request, 'employees/activate_employees.html', context)
+
+
+def activate_employee(request, employee_id):
+    employee = get_employee(employee_id)
+    employee.status = "Active"
+    employee.save()
+    messages.success(request, "Employee activated")
+    return HttpResponseRedirect(reverse('activate_employees_page'))
