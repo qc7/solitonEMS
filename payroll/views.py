@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 from django.contrib import messages
 from django.shortcuts import render
@@ -25,10 +26,16 @@ def payroll_page(request):
 
 
 def manage_payroll_records_page(request):
+    date_now = datetime.datetime.now()
+
+    today_month = date_now.strftime("%B")
+    today_year = date_now.strftime("%Y")
     context = {
         "user": request.user,
         "payroll_page": "active",
         "payroll_records": PayrollRecord.objects.all(),
+        "default_month": today_month,
+        "default_year": today_year
     }
     return render(request, 'payroll/manage_payroll_records.html', context)
 
