@@ -1,6 +1,6 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Employees</h1>
+<h2>Manage Employees</h2>
 {% endblock %}
 
 {% block content %}
@@ -11,52 +11,74 @@
       Add New Employee +
     </button>
 
+    <a href="{%url 'activate_employees_page'%}">
+      <button type="button" class="btn">
+        Activate Passive Employee Records
+      </button>
+    </a>
+
     <div class="col-md-12">
       <div class="card">
         <div class="card-body">
+          {%if employees%}
+          <h3 style="text-align:center;">Active Employees</h3>
+          <hr>
           <div class="table-responsive">
             <table class="table table-hover">
               <thead class="">
-                <th>Name</th>
-                <th>Hired Date</th>
-                <th>Position</th>
-                <th>Department</th>
-                <th>Gender</th>
-                <th>Actions</th>
+              <th>Name</th>
+              <th>Hired Date</th>
+              <th>Position</th>
+              <th>Department</th>
+              <th>Gender</th>
+              <th>Actions</th>
               </thead>
               <tbody>
-                {% for employee in employees  %}
-                <tr>
-                  <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}}
-                      {{employee.last_name}}</a></td>
-                  <td>{{employee.start_date}}</td>
-                  <td>{{employee.organisationdetail.position}}</td>
-                  <td>{{employee.organisationdetail.department.name}}</td>
-                  <td>{{employee.gender}}</td>
-                  <td>
-                    <a href="{% url 'edit_employee_page' employee.id %}" style="color:inherit">
-                      <i class="fa fa-edit"></i>
-                    </a> |
-                    <a href="{% url 'delete_employee' employee.id %}" style="color: inherit" ...
-                      onclick="return confirm('Are you sure you want to delete {{employee.first_name}} {{employee.last_name}}?')">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                  </td>
-                </tr>
-                {% endfor %}
+              {% for employee in employees  %}
+              <tr>
+                <td><a href="{% url 'employee_page' employee.id %}" style="color: inherit">{{employee.first_name}}
+                  {{employee.last_name}}</a></td>
+                <td>{{employee.start_date}}</td>
+                <td>{{employee.organisationdetail.position}}</td>
+                <td>{{employee.organisationdetail.department.name}}</td>
+                <td>{{employee.gender}}</td>
+                <td>
+                  <a href="{% url 'edit_employee_page' employee.id %}" style="color:inherit">
+                    <i class="fa fa-edit"></i>
+                  </a> |
+                  <a href="{% url 'employee_profile_page' employee.id %}" style="color:inherit">
+                    Profile
+                  </a> |
+                  <a href="{% url 'add_more_details_page' employee.id %}" style="color: inherit">
+                    Manage Details
+                  </a> |
+                  <a href="{% url 'suspend_employee' employee.id %}" style="color: inherit" ...
+                     onclick="return confirm('Are you sure you want to suspend {{employee.first_name}} {{employee.last_name}}?')">
+                    Suspend
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
               </tbody>
             </table>
             <a href="{%url 'employees_download' %}">
               <button class="btn btn-outline">Export CSV Report</button>
             </a>
           </div>
+
+          {%else%}
+
+          <h3>No active employees available</h3>
+
+          {%endif%}
         </div>
       </div>
     </div>
 
+
     <!-- Modal: modalAddNewEmployee -->
     <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="overflow-y: auto !important">
+         aria-hidden="true" style="overflow-y: auto !important">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <!--Header-->
@@ -137,17 +159,17 @@
 
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Enter National ID Number" name="national_id"
-                  required>
+                       required>
               </div>
 
               <div class="form-group">
                 <input type="number" class="form-control" placeholder="Enter Telephone Number" name="telephone"
-                  required>
+                       required>
               </div>
 
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Enter Residence Address" name="residence_address"
-                  required>
+                       required>
               </div>
 
               <div class="form-group">

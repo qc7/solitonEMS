@@ -1,4 +1,3 @@
-
 from django.urls import path
 from . import views
 
@@ -9,18 +8,19 @@ urlpatterns = [
     path('employee/<int:id>/', views.employee_page, name="employee_page"),
     path('edit_employee_page/<int:id>/', views.edit_employee_page, name="edit_employee_page"),
     path('edit_certification_page/<int:id>/', views.edit_certification_page, name="edit_certification_page"),
-    path('edit_emergency_contact_page/<int:id>/',views.edit_emergency_contact_page, name="edit_emergency_contact_page"),
-    path('edit_beneficiary_page/<int:id>/',views.edit_beneficiary_page, name="edit_beneficiary_page"),
-    path('edit_spouse_page/<int:id>/',views.edit_spouse_page, name="edit_spouse_page"),
-    path('edit_dependant_page/<int:id>/',views.edit_dependant_page, name="edit_dependant_page"), 
-    path('edit_department_page/<int:id>/',views.edit_department_page, name="edit_department_page"),
-   
-    path('notifications/',views.notifications_page,name="notifications_page"),
+    path('edit_emergency_contact_page/<int:id>/', views.edit_emergency_contact_page,
+         name="edit_emergency_contact_page"),
+    path('edit_beneficiary_page/<int:id>/', views.edit_beneficiary_page, name="edit_beneficiary_page"),
+    path('edit_spouse_page/<int:id>/', views.edit_spouse_page, name="edit_spouse_page"),
+    path('edit_dependant_page/<int:id>/', views.edit_dependant_page, name="edit_dependant_page"),
+    path('edit_department_page/<int:id>/', views.edit_department_page, name="edit_department_page"),
+
+    path('notifications/', views.notifications_page, name="notifications_page"),
 
     # Process
     path('add_new_employee/', views.add_new_employee, name="add_new_employee"),
-    path('delete_employee/<int:id>',views.delete_employee, name="delete_employee"),
-    path('edit_employee/<int:id>',views.edit_employee, name="edit_employee"),
+    path('delete_employee/<int:id>', views.delete_employee, name="delete_employee"),
+    path('edit_employee/<int:id>', views.edit_employee, name="edit_employee"),
     path('add_new_home_address/', views.add_new_home_address, name="add_new_home_address"),
     path('edit_home_address/', views.edit_home_address, name="edit_home_address"),
     path('add_certification/', views.add_certification, name="add_certification"),
@@ -39,34 +39,39 @@ urlpatterns = [
     path('edit_dependant/', views.edit_dependant, name="edit_dependant"),
     path('delete_dependant/<int:id>', views.delete_dependant, name="delete_dependant"),
 
-    #departments 
+    # departments
     path('departments/', views.departments_page, name="departments_page"),
     path('add_new_deparment/', views.add_new_department, name="add_new_department"),
     path('edit_department/<int:id>', views.edit_department, name="edit_department"),
     path('delete_department/<int:id>', views.delete_department, name="delete_department"),
 
-    #Teams
+    # Teams
     path('add_new_team/', views.add_new_team, name="add_new_team"),
     path('teams/<int:id>/', views.teams_page, name="teams_page"),
 
     # Job Titles
     path('jobs/', views.job_titles_page, name="job_titles_page"),
-    path('add_new_title/', views.add_new_title, name="add_new_title"), 
-    path('edit_job_title_page/<int:id>', views.edit_job_title_page, name="edit_job_title_page"), 
-    path('edit_job_title/<int:id>', views.edit_job_title, name="edit_job_title"), 
+    path('add_new_title/', views.add_new_title, name="add_new_title"),
+    path('edit_job_title_page/<int:id>', views.edit_job_title_page, name="edit_job_title_page"),
+    path('edit_job_title/<int:id>', views.edit_job_title, name="edit_job_title"),
     path('delete_job_title/<int:id>', views.delete_job_title, name="delete_job_title"),
 
-    path('add_deduction/', views.add_deduction,name="add_deduction"),
-    path('add_allowance/', views.add_allowance,name="add_allowance"),
-    path('add_supervisee/', views.add_supervisee,name="add_supervisee"),
-    path('delete_superviser/<int:id>/', views.delete_supervisee,name="delete_supervisee"),
-    path('delete_deduction/<int:id>',views.delete_deduction,name="delete_deduction"),
-    path('delete_allowance/<int:id>',views.delete_allowance,name="delete_allowance"),
-    path('edit_bank_details/',views.edit_bank_details,name="edit_bank_details"),
-    path('add_bank_details/',views.add_bank_details,name="add_bank_details"),
-    path('add_organisation_details/',views.add_organisation_details,name="add_organisation_details"),
-    path('edit_organisation_details/',views.edit_organisation_details,name="edit_organisation_details"),
-    path('employees_download/',views.employees_download,name="employees_download"),
+    path('add_deduction/', views.add_deduction, name="add_deduction"),
+    path('add_allowance/', views.add_allowance, name="add_allowance"),
+    path('add_supervisee/', views.add_supervisee, name="add_supervisee"),
+    path('delete_superviser/<int:id>/', views.delete_supervisee, name="delete_supervisee"),
+    path('delete_deduction/<int:id>', views.delete_deduction, name="delete_deduction"),
+    path('delete_allowance/<int:id>', views.delete_allowance, name="delete_allowance"),
+    path('edit_bank_details/', views.edit_bank_details, name="edit_bank_details"),
+    path('add_bank_details/', views.add_bank_details, name="add_bank_details"),
+    path('add_organisation_details/', views.add_organisation_details, name="add_organisation_details"),
+    path('edit_organisation_details/', views.edit_organisation_details, name="edit_organisation_details"),
+    path('employees_download/', views.employees_download, name="employees_download"),
 
-    path('edit_leave_details/',views.edit_leave_details,name="edit_leave_details"),    
+    path('edit_leave_details/', views.edit_leave_details, name="edit_leave_details"),
+    path('suspend_employee/<int:employee_id>/', views.suspend_employee, name="suspend_employee"),
+    path('employee_profile_page/<int:employee_id>/', views.employee_profile_page, name="employee_profile_page"),
+    path('add_more_details_page/<int:employee_id>/', views.add_more_details_page, name="add_more_details_page"),
+    path('activate_employees_page', views.activate_employees_page, name="activate_employees_page"),
+    path('activate_employee/<int:employee_id>/', views.activate_employee, name="activate_employee"),
 ]
