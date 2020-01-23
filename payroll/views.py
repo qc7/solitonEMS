@@ -15,7 +15,7 @@ from .simple_payslip import SimplePayslip
 from employees.models import Employee
 from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_total_paye, get_total_gross_pay, \
     get_total_basic_pay, \
-    get_total_net_pay, render_to_pdf, get_overtime_pay
+    get_total_net_pay, render_to_pdf
 
 
 def payroll_page(request):

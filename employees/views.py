@@ -23,7 +23,7 @@ from .models import (
     Position,
     BankDetail, OrganisationDetail, Allowance,
     Supervision,
-)
+    Deduction)
 from leave.models import Leave_Records
 
 from settings.models import Currency
@@ -127,27 +127,19 @@ def edit_certification_page(request, id):
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request, "role/ceo.html")
 
-    notifications = Notification.objects.filter(user=user, status='unread')
-    number_of_notifications = notifications.count()
 
     certification = Certification.objects.get(pk=id)
     context = {
         "user": user,
         "employees_page": "active",
         "certification": certification,
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
     }
 
     return render(request, 'employees/edit_cert.html', context)
 
 
-@login_required
+@ems_login_required
 def edit_emergency_contact_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     user = request.user
@@ -158,16 +150,11 @@ def edit_emergency_contact_page(request, id):
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request, "role/ceo.html")
 
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
-    number_of_notifications = notifications.count()
-
     emergency_contact = EmergencyContact.objects.get(pk=id)
     context = {
         "user": user,
         "employees_page": "active",
         "emergency_contact": emergency_contact,
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
     }
 
     return render(request, 'employees/edit_emergency.html', context)
@@ -177,13 +164,8 @@ def edit_emergency_contact_page(request, id):
 # The view also renders the login page
 
 
-@login_required
+@ems_login_required
 def edit_beneficiary_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
     # redirect according to roles
     user = request.user
     # If user is an employee
@@ -227,14 +209,10 @@ def edit_spouse_page(request, id):
     spouse = Spouse.objects.get(pk=id)
     spouse.save()
 
-    notifications = Notification.objects.filter(user=user)
-    number_of_notifications = notifications.count()
     context = {
         "user": user,
         "employees_page": "active",
-        "spouse": spouse,
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
+        "spouse": spouse
     }
 
     return render(request, 'employees/edit_spouse.html', context)
@@ -242,10 +220,6 @@ def edit_spouse_page(request, id):
 
 @login_required
 def edit_dependant_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     user = request.user
@@ -263,18 +237,13 @@ def edit_dependant_page(request, id):
         "user": user,
         "employees_page": "active",
         "dependant": dependant,
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
+
     }
 
     return render(request, 'employees/edit_dependant.html', context)
 
 
 def departments_page(request):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
     user = request.user
     context = {
         "user": request.user,
@@ -288,11 +257,6 @@ def departments_page(request):
 
 
 def teams_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
     user = request.user
 
     ts = Team.objects.filter(department=id)
@@ -320,43 +284,6 @@ def job_titles_page(request):
     return render(request, "employees/job_titles.html", context)
 
 
-@login_required
-def employee_team_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
-    employee = Employee.objects.get(pk=id)
-    user = request.user
-    context = {
-        "user": user,
-        "employees_page": "active",
-        "employee": employee,
-        "certifications": employee.certification_set.all(),
-        "emergency_contacts": employee.emergencycontact_set.all(),
-        "beneficiaries": employee.beneficiary_set.all(),
-        "spouses": employee.spouse_set.all(),
-        "dependants": employee.dependant_set.all(),
-    }
-
-
-def notifications_page(request):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
-    user = request.user
-    notifications = Notification.objects.filter(user=user.solitonuser)
-    number_of_notifications = notifications.count()
-    context = {
-        "user": user,
-        "employees_page": "active",
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
-    }
-    return render(request, 'solitonems/notifications.html', context)
 
 
 ###################################################################
@@ -420,6 +347,7 @@ def edit_employee(request, id):
         employee.last_name = request.POST['last_name']
         employee.grade = request.POST['grade']
         employee.basic_salary = request.POST['basic_salary']
+        employee.lunch_allowance = request.POST['lunch_allowance']
         employee.gender = request.POST['gender']
         employee.marital_status = request.POST['marital_status']
         employee.start_date = request.POST['start_date']
