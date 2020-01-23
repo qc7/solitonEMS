@@ -36,3 +36,5 @@ def create_payslip_service(employee: object, payroll_record: object, overtime_pa
     )
 
     return payslip
+
+
