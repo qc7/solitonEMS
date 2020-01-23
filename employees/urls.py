@@ -15,8 +15,6 @@ urlpatterns = [
     path('edit_dependant_page/<int:id>/', views.edit_dependant_page, name="edit_dependant_page"),
     path('edit_department_page/<int:id>/', views.edit_department_page, name="edit_department_page"),
 
-    path('notifications/', views.notifications_page, name="notifications_page"),
-
     # Process
     path('add_new_employee/', views.add_new_employee, name="add_new_employee"),
     path('delete_employee/<int:id>', views.delete_employee, name="delete_employee"),
