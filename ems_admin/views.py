@@ -6,7 +6,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
-from ems_admin.forms import UserForm, SolitonUserForm, EMSPermissionForm
+from ems_admin.forms import UserForm, SolitonUserForm, EMSPermissionForm, SolitonUserEditForm
 from ems_admin.selectors import get_bound_user_form, get_user, get_solitonuser, get_bound_soliton_user_form, \
     fetch_all_permissions_or_create, get_permission
 from ems_auth.decorators import super_admin_required, ems_login_required
@@ -69,11 +69,10 @@ def edit_user_page(request, id):
         user_form.save()
         soliton_user = get_solitonuser(user)
         try:
-            soliton_user_form = SolitonUserForm(request.POST, instance=soliton_user)
-            soliton_user_form.save(commit=False)
-            soliton_user_form.user = user
+            soliton_user_form = SolitonUserEditForm(request.POST, instance=soliton_user)
             soliton_user_form.save()
             return HttpResponseRedirect(reverse(manage_users_page))
+
         except ValueError:
             messages.error(request, "The employee can not be assigned to more than one user")
             return HttpResponseRedirect(reverse(manage_users_page))

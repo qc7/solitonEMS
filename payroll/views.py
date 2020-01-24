@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 from django.contrib import messages
 from django.shortcuts import render
@@ -14,7 +15,7 @@ from .simple_payslip import SimplePayslip
 from employees.models import Employee
 from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_total_paye, get_total_gross_pay, \
     get_total_basic_pay, \
-    get_total_net_pay, render_to_pdf, get_overtime_pay
+    get_total_net_pay, render_to_pdf
 
 
 def payroll_page(request):
@@ -25,10 +26,16 @@ def payroll_page(request):
 
 
 def manage_payroll_records_page(request):
+    date_now = datetime.datetime.now()
+
+    today_month = date_now.strftime("%B")
+    today_year = date_now.strftime("%Y")
     context = {
         "user": request.user,
         "payroll_page": "active",
         "payroll_records": PayrollRecord.objects.all(),
+        "default_month": today_month,
+        "default_year": today_year
     }
     return render(request, 'payroll/manage_payroll_records.html', context)
 
@@ -218,7 +225,6 @@ def edit_period(request):
 
 def create_payroll_payslips(request, id):
     payroll_record = get_payroll_record_by_id(id)
-
     create_payslip_list_service(payroll_record)
     return HttpResponseRedirect(reverse('payroll_record_page', args=[payroll_record.id]))
 

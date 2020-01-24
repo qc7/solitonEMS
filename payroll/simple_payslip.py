@@ -19,8 +19,10 @@ def calculate_employer_nssf_contribution(gross_salary):
     return nssf_contribution
 
 
-def calculate_paye(gross_salary):
-    paye = 0.3 * (gross_salary - 410000) + 25000
+def calculate_paye(gross_salary, currency_cost):
+    # Assume the base currency is Uganda Shillings
+
+    paye = 0.3 * (gross_salary - (410000 / currency_cost)) + (25000 / currency_cost)
     return paye
 
 
@@ -51,11 +53,12 @@ class SimplePayslip:
         self.gross_salary = self.sum_all_income(employee)
         self.employee_nssf = calculate_employee_nssf_contribution(self.gross_salary)
         self.employer_nssf = calculate_employer_nssf_contribution(self.gross_salary)
-        self.paye = calculate_paye(self.gross_salary)
+        self.currency_cost = int(self.employee.currency.cost)
+        self.paye = calculate_paye(self.gross_salary, self.currency_cost)
         self.sacco_deduction_amount = get_sacco_deduction_amount(employee)
         self.damage_deduction_amount = get_damage_deduction_amount(employee)
         self.total_deductions = self.total_statutory_deductions + self.total_non_statutory_deductions
-        self.lunch_allowance = self.employee.lunch_allowance
+        self.lunch_allowance = int(self.employee.lunch_allowance/self.currency_cost)
 
     def sum_all_income(self, employee):
         return employee.initial_gross_salary + self.overtime_pay + self.bonus
