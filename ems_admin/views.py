@@ -6,7 +6,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
-from ems_admin.forms import UserForm, SolitonUserForm, EMSPermissionForm
+from ems_admin.forms import UserForm, SolitonUserForm, EMSPermissionForm, SolitonUserEditForm
 from ems_admin.selectors import get_bound_user_form, get_user, get_solitonuser, get_bound_soliton_user_form, \
     fetch_all_permissions_or_create, get_permission
 from ems_auth.models import SolitonUser
@@ -64,10 +64,8 @@ def edit_user_page(request, id):
         user_form = UserForm(request.POST, instance=user)
         user_form.save()
         soliton_user = get_solitonuser(user)
-        try: 
-            soliton_user_form = SolitonUserForm(request.POST, instance=soliton_user)
-            soliton_user_form.save(commit=False)
-            soliton_user_form.user = user
+        try:
+            soliton_user_form = SolitonUserEditForm(request.POST, instance=soliton_user)
             soliton_user_form.save()
             return HttpResponseRedirect(reverse(manage_users_page))
 
