@@ -19,7 +19,13 @@ class UserForm(ModelForm):
 class SolitonUserForm(ModelForm):
     class Meta:
         model = SolitonUser
-        fields = ['employee','user']
+        fields = ['employee']
+
+
+class SolitonUserEditForm(ModelForm):
+    class Meta:
+        model = SolitonUser
+        fields = ['employee', 'user']
 
 
 class EMSPermissionForm(ModelForm):
