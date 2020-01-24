@@ -27,3 +27,16 @@ def login_page(request):
 def logout_view(request):
     logout(request)
     return render(request, "ems_auth/login.html", {"message": "Logged Out", "info": "info"})
+
+
+def super_admin_required_page(request):
+    context = {
+        "admin": "active",
+    }
+
+    return render(request, "ems_auth/super_admin_required.html", context)
+
+
+def hr_required_page(request):
+
+    return render(request, "ems_auth/hr_required.html",)

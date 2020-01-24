@@ -9,11 +9,14 @@ from django.urls import reverse
 from ems_admin.forms import UserForm, SolitonUserForm, EMSPermissionForm, SolitonUserEditForm
 from ems_admin.selectors import get_bound_user_form, get_user, get_solitonuser, get_bound_soliton_user_form, \
     fetch_all_permissions_or_create, get_permission
+from ems_auth.decorators import super_admin_required, ems_login_required
 from ems_auth.models import SolitonUser
 
 User = get_user_model()
 
 
+@ems_login_required
+@super_admin_required
 def manage_users_page(request):
     user = request.user
     if request.method == 'POST':
@@ -51,6 +54,7 @@ def manage_users_page(request):
         return render(request, 'ems_admin/manage_users.html', context)
 
 
+@super_admin_required
 def edit_user_page(request, id):
     user = get_user(id)
     user_form = get_bound_user_form(user)
@@ -85,6 +89,7 @@ def edit_user_page(request, id):
         return render(request, 'ems_admin/edit_user.html', context)
 
 
+@super_admin_required
 def manage_user_permissions_page(request, id):
     user = get_user(id)
     permissions = fetch_all_permissions_or_create(user)
@@ -97,6 +102,7 @@ def manage_user_permissions_page(request, id):
     return render(request, 'ems_admin/manage_user_permissions.html', context)
 
 
+@super_admin_required
 def edit_user_permission_page(request, id):
     permission = get_permission(id)
     permission_user = permission.user
@@ -119,6 +125,7 @@ def edit_user_permission_page(request, id):
     return render(request, 'ems_admin/edit_user_permission.html', context)
 
 
+@super_admin_required
 def view_users_page(request):
     user = request.user
     context = {

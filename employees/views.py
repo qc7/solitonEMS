@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
 from employees.services import create_employee_instance
-from ems_auth.decorators import ems_login_required
+from ems_auth.decorators import ems_login_required, hr_required
 from ems_auth.models import User
 from settings.selectors import get_all_currencies, get_currency
 from .models import (
@@ -52,6 +52,7 @@ def dashboard_page(request):
 
 
 @ems_login_required
+@hr_required
 def employees_page(request):
     all_currencies = get_all_currencies()
     active_employees = get_active_employees()
@@ -218,7 +219,8 @@ def edit_spouse_page(request, id):
     return render(request, 'employees/edit_spouse.html', context)
 
 
-@login_required
+@ems_login_required
+@hr_required
 def edit_dependant_page(request, id):
 
     # redirect according to roles
@@ -243,6 +245,7 @@ def edit_dependant_page(request, id):
     return render(request, 'employees/edit_dependant.html', context)
 
 
+@hr_required
 def departments_page(request):
     user = request.user
     context = {
@@ -256,6 +259,7 @@ def departments_page(request):
     return render(request, "employees/departments.html", context)
 
 
+@hr_required
 def teams_page(request, id):
     user = request.user
 
@@ -272,6 +276,7 @@ def teams_page(request, id):
 
 
 @ems_login_required
+@hr_required
 def job_titles_page(request):
     currencies = get_all_currencies()
     context = {
@@ -290,6 +295,7 @@ def job_titles_page(request):
 # Processes
 ###################################################################
 @login_required
+@hr_required
 def add_new_employee(request):
     if request.method == 'POST':
         employee = create_employee_instance(request)
@@ -311,6 +317,7 @@ def add_new_employee(request):
 
 
 @login_required
+@hr_required
 def delete_employee(request, id):
     try:
         # Grab the employee
@@ -338,6 +345,7 @@ def delete_employee(request, id):
 
 
 @login_required
+@hr_required
 def edit_employee(request, id):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -385,6 +393,7 @@ def edit_employee(request, id):
 
 
 @login_required
+@hr_required
 def add_new_home_address(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -423,6 +432,7 @@ def add_new_home_address(request):
 
 
 @login_required
+@hr_required
 def add_bank_details(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -455,6 +465,7 @@ def add_bank_details(request):
 
 
 @login_required
+@hr_required
 def add_organisation_details(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -493,6 +504,7 @@ def add_organisation_details(request):
 
 
 @login_required
+@hr_required
 def edit_organisation_details(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -531,6 +543,7 @@ def edit_organisation_details(request):
 
 
 @login_required
+@hr_required
 def edit_home_address(request):
     if request.method == 'POST':
         # Fetch the employee
@@ -567,7 +580,8 @@ def edit_home_address(request):
         return render(request, "employees/failed.html", context)
 
 
-@login_required
+@ems_login_required
+@hr_required
 def edit_bank_details(request):
     if request.method == 'POST':
         # Fetching data from the edit home address form
@@ -601,7 +615,7 @@ def edit_bank_details(request):
         return render(request, "employees/failed.html", context)
 
 
-@login_required
+@hr_required
 def add_certification(request):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -667,7 +681,8 @@ def edit_certification(request):
         return render(request, "employees/failed.html", context)
 
 
-@login_required
+@ems_login_required
+@hr_required
 def delete_certification(request, id):
     try:
         # Grab the certification
@@ -696,6 +711,7 @@ def delete_certification(request, id):
     return render(request, 'employees/deleted.html', context)
 
 
+@hr_required
 def add_emergency_contact(request):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -729,7 +745,7 @@ def add_emergency_contact(request):
         return render(request, "employees/failed.html", context)
 
 
-@login_required
+@hr_required
 def delete_emergency_contact(request, id):
     try:
         # Grab the emergency contact

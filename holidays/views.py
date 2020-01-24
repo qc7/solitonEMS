@@ -6,13 +6,14 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
-from ems_auth.decorators import ems_login_required
+from ems_auth.decorators import ems_login_required, hr_required
 from holidays.models import Holiday
 from holidays.selectors import get_all_holidays, get_holiday
 from holidays.services import create_holiday
 
 
 @ems_login_required
+@hr_required
 def holidays_page(request):
     if request.POST:
         date = request.POST.get('date')

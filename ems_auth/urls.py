@@ -15,6 +15,10 @@ urlpatterns = [
     path('reset_password/confirm/<uidb64>/<token>/',
          PasswordResetConfirmView.as_view(template_name="ems_auth/password_reset_confirm.html"),
          name="password_reset_confirm"),
-    path('reset_password/complete/', PasswordResetCompleteView.as_view(template_name="ems_auth/password_reset_complete.html"),
+    path('reset_password/complete/',
+         PasswordResetCompleteView.as_view(template_name="ems_auth/password_reset_complete.html"),
          name="password_reset_complete"),
+    path('super_admin_required/', views.super_admin_required_page, name="super_admin_required_page"),
+    path('hr_required/', views.hr_required_page, name="hr_required_page"),
+
 ]
