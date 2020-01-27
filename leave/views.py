@@ -1,22 +1,18 @@
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.mail import send_mail
+
 from django.contrib.auth.decorators import login_required
-from django.utils.dateparse import parse_date
-from django.utils import timezone
+
 import datetime
-from datetime import timedelta
 from datetime import date
 import calendar
 from calendar import HTMLCalendar
 from collections import namedtuple
 from employees.models import Employee, Department, Team
 from django.db import connection
-from django.db.models import (
-    Sum,
-    Count
-)
+
+from organisation_details.decorators import organisationdetail_required
 from .models import (
     Leave_Types,
     Holidays,
@@ -51,6 +47,7 @@ def get_current_user(request, need):
 
 
 @login_required
+@organisationdetail_required
 def leave_dashboard_page(request):
     applications = ""
     user = request.user
@@ -207,6 +204,7 @@ def add_new_holiday(request):
             return redirect('holidays_page')
 
 
+@organisationdetail_required
 def apply_leave_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
