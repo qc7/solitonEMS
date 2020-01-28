@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.mail import send_mail
 
 from django.contrib.auth.decorators import login_required
 
@@ -58,33 +59,17 @@ def leave_dashboard_page(request):
 
     user_role = get_current_user(request, "role")
 
-    is_team_supervisor = Team.objects.filter(id=get_current_user(request, "team"), \
-                                             supervisors=get_current_user(request, "id")).count()
-
-    is_hod = Department.objects.filter(id=get_current_user(request, "dept"), \
-                                       hod=get_current_user(request, "id")).count()
-
-    is_hod = Department.objects.filter(id=get_current_user(request, "dept"), \
-                                       hod=get_current_user(request, "id")).count()
-
-    print("is Supervisor: ", is_team_supervisor)
-
-    if is_team_supervisor == 1:
-        print("As Supervisor")
-        print("Team: ", get_current_user(request, "team"))
-        print("ID: ", get_current_user(request, "id"))
+    if user.is_supervisor:
         applications = LeaveApplication.objects.filter(supervisor_status="Pending", \
                                                        team=get_current_user(request, "team")).order_by('apply_date')
 
-    elif is_hod == 1:
-        print("As HOD")
+    elif user.is_hod:
         applications = LeaveApplication.objects.filter(hod_status="Pending", \
                                                        supervisor_status="Approved",
                                                        department=get_current_user(request, "team")) \
             .order_by('apply_date')
 
     if user.is_hr:
-        print("As Hr")
         applications = LeaveApplication.objects \
             .filter(hr_status="Pending", supervisor_status="Approved", \
                     hod_status="Approved").order_by('apply_date')
@@ -254,19 +239,20 @@ def apply_leave(request):
                 new_balance = curr_balance - n_days
 
             if n_days <= new_balance:
-                leave_app = LeaveApplication(employee=employee, leave_type=l_type, \
-                                             start_date=s_date, end_date=e_date, no_of_days=n_days, \
-                                             balance=curr_balance, department=department, \
-                                             team=team)
+                leave_app = LeaveApplication(
+                            employee=employee, leave_type=l_type, \
+                            start_date=s_date, end_date=e_date, no_of_days=n_days, \
+                            balance=curr_balance, department=department, \
+                            team=team)
 
                 leave_app.save()
 
                 subject = 'New Leave Request'
                 from_mail = settings.EMAIL_HOST_USER
                 msg = 'You have a new leave request that requires your attention'
-                to_mails = [user.email, 'walusimbi96@gmail.com']
+                to_mails = [user.email]
 
-                # send_mail(subject, msg, from_mail, to_mails,fail_silently=False)
+                send_mail(subject, msg, from_mail, to_mails,fail_silently=False)
 
                 messages.success(request, 'Leave Request Sent Successfully')
 
@@ -277,7 +263,7 @@ def apply_leave(request):
                 if str(user.solitonuser.soliton_role) == 'Employee':
                     context = {
                         "employee": user.solitonuser.employee,
-                        "employee_leave_page": 'active'
+                        #"employee_leave_page": 'active'
                     }
                     return render(request, "leave/leave.html", context)
                 else:
