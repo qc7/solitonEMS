@@ -12,7 +12,7 @@ class Contract(models.Model):
     expiry_date = models.DateField()
     status = models.CharField(max_length=10, default="Active")
     risk = models.CharField(max_length=10)
-    document = models.FileField()
+    document = models.FileField(upload_to="contracts")
 
     def __str__(self):
         return "Contract {}".format(str(self.reference_number))

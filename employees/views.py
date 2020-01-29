@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
-from employees.services import create_employee_instance
+from employees.services import create_employee_instance, suspend
 from ems_auth.decorators import ems_login_required, hr_required
 from ems_auth.models import User
 from settings.selectors import get_all_currencies, get_currency
@@ -1527,9 +1527,7 @@ def employees_download(request):
 
 def suspend_employee(request, employee_id):
     employee = get_employee(employee_id)
-    employee.status = "Suspended"
-    employee.save()
-
+    suspend(employee)
     return HttpResponseRedirect(reverse('employees_page'))
 
 
