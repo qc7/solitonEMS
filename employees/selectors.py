@@ -1,6 +1,7 @@
 from employees.models import Employee
 
 
+
 def get_employee(employee_id):
     return Employee.objects.get(pk=employee_id)
 

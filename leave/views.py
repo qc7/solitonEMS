@@ -254,10 +254,9 @@ def apply_leave(request):
                 new_balance = curr_balance - n_days
 
             if n_days <= new_balance:
-                leave_app = LeaveApplication(employee=employee, leave_type=l_type, \
-                                             start_date=s_date, end_date=e_date, no_of_days=n_days, \
-                                             balance=curr_balance, department=department, \
-                                             team=team)
+                leave_app = LeaveApplication(employee=employee, leave_type=l_type, start_date=s_date, end_date=e_date,
+                                             no_of_days=n_days,
+                                             balance=curr_balance, department=department, team=team)
 
                 leave_app.save()
 
