@@ -8,3 +8,12 @@ def terminate(contract):
     contract.status = "Passive"
     contract.save()
     return contract
+
+
+def activate(contract):
+    employee = contract.employee
+    employee.status = "Active"
+    employee.save()
+    contract.status = "Active"
+    contract.save()
+    return contract

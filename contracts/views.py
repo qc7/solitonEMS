@@ -7,8 +7,8 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from contracts.models import Contract
-from contracts.selectors import get_contract, get_active_contracts, get_terminated_contracts
-from contracts.services import terminate
+from contracts.selectors import get_contract, get_active_contracts, get_terminated_contracts, get_employee_contracts
+from contracts.services import terminate, activate
 from employees.selectors import get_active_employees, get_employee
 from employees.services import suspend
 from organisation_details.selectors import get_all_positions, get_position
@@ -51,14 +51,6 @@ def manage_job_contracts(request):
         "contracts": contracts,
     }
     return render(request, 'contracts/manage_job_contracts.html', context)
-
-
-def view_user_contracts(request):
-    context = {
-        "contracts_page": "active"
-    }
-
-    return render(request, 'contracts/view_user_contracts.html', context)
 
 
 def terminate_contract(request, contract_id):
@@ -113,3 +105,23 @@ def terminated_contracts_page(request):
     }
 
     return render(request, 'contracts/terminated_contracts.html', context)
+
+
+def activate_contract(request, contract_id):
+    contract = get_contract(contract_id)
+    activate(contract)
+
+    return HttpResponseRedirect(reverse(manage_job_contracts))
+
+
+def user_contracts_page(request):
+    user = request.user
+    employee = user.solitonuser.employee
+
+    contracts = get_employee_contracts(employee)
+    context = {
+        "contracts_page": "active",
+        "contracts": contracts,
+    }
+
+    return render(request, 'contracts/user_contracts.html', context)

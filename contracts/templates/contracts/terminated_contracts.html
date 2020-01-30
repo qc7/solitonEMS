@@ -32,11 +32,11 @@
                                     <td>{{contract.employee}}</td>
                                     <td>{{contract.effective_date}}</td>
                                     <td>{{contract.expiry_date}}</td>
-                                    <td>{{contract.risk}}</td>
-                                    <td>{{contract.document}}</td>
+                                    <td>{{contract.risk | title}}</td>
+                                    <td><a href="/media/{{contract.document}}"><button>View</button></a></td>
                                     <td>
-                                        <a href="#" style="color:inherit">
-                                            Activate Contract
+                                        <a href="{%url 'activate_contract' contract.id%}" style="color:inherit">
+                                            <button>Activate Contract</button>
                                         </a>
                                     </td>
                                 </tr>

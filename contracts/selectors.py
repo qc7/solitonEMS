@@ -16,3 +16,7 @@ def get_active_contracts():
 
 def get_terminated_contracts():
     return Contract.objects.exclude(status="Active")
+
+
+def get_employee_contracts(employee):
+    return Contract.objects.filter(status="Active", employee=employee)
