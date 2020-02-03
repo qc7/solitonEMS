@@ -155,14 +155,14 @@
                         <a href="#" class="list-group-item">Schedule Training</a>
                     </ul>
                 </li>
-                <li class="nav-item" data-toggle="popover-learning-and-development" title="Learning and Development">
+                <li class="nav-item {{learning_and_development_page}}" data-toggle="popover-learning-and-development" title="Learning and Development">
                     <a class="nav-link" href="#">
                         <i class="material-icons">book</i>
                         <p>Learning and Development</p>
                     </a>
                     <ul id="popover-learning-and-development" class="nav list-group" style="display:none">
-                        <a href="#" class="list-group-item">Manage Resources</a>
-                        <a href="#" class="list-group-item">View Your Resources</a>
+                        <a href="{%url 'manage_resources_page'%}" class="list-group-item">Manage Resources</a>
+                        <a href="{%url 'resources_page' %}" class="list-group-item">View Your Resources</a>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -177,8 +177,6 @@
                         <p></p>
                     </a>
                 </li>
-
-
             </ul>
         </div>
     </div>
