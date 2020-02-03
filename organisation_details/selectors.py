@@ -1,4 +1,8 @@
-from employees.models import Position, OrganisationDetail
+from employees.models import Position, OrganisationDetail, Department
+
+
+def get_all_departments():
+    return Department.objects.all()
 
 
 def get_all_positions():
@@ -15,3 +19,7 @@ def get_organisationdetail(user):
         return organisationdetail
     except OrganisationDetail.DoesNotExist:
         return None
+
+
+def get_department(department_id):
+    return Department.objects.get(pk=department_id)

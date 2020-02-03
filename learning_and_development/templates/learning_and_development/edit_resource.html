@@ -1,0 +1,73 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<h2>Edit Resource</h2>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="#" enctype="multipart/form-data"> {%csrf_token%}
+
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input id="name" type="text" class="form-control" placeholder="Enter Title"
+                                   name="name" value="{{resource.name}}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="year">Year</label>
+                            <input type="number" class="form-control" id="year"
+                                   placeholder="Enter Year" name="year_published"
+                                   value="{{resource.year_published}}"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="producer">Producer</label>
+                            <input type="text" class="form-control" id="producer"
+                                   placeholder="Enter Producer" name="producer"
+                                   value="{{resource.producer}}"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label>Format:</label>
+                            <select class="form-control" name="file_format" required>
+                                <option value="{{resource.file_format}}">{{resource.file_format}}</option>
+                                <option>=== Select Format ===</option>
+                                <option value="video">Video</option>
+                                <option value="audio">Audio</option>
+                                <option value="book">Book</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="department">Department:</label>
+                            <select id="department" class="form-control" name="department" required>
+                                <option value={{resource.department.id}}>{{resource.department}}</option>
+                                <option>=== Select Department ===</option>
+                                {%for department in departments%}
+                                <option value={{department.id}}>{{department}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description"
+                                      >{{resource.description}}</textarea>
+                        </div>
+                        <div>
+                            <input type="file" name="file" value=/media/{{resource.file}}>
+                        </div>
+                        <button class="btn btn-danger" type="submit">Save</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock content%}
