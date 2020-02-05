@@ -1,0 +1,505 @@
+[33mcommit b23b05b127083ff7d992219f690866161b183bbd[m[33m ([m[1;36mHEAD -> [m[1;32mchore/fix-leave-email[m[33m)[m
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Tue Jan 28 11:44:13 2020 +0300
+
+    fix
+
+[33mcommit 634df24adb158e39990bf689a5340a004421c2fa[m
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Mon Jan 27 12:45:52 2020 +0300
+
+    Leave Email
+
+[33mcommit 9b1ec72b5a65548175725cb571ec7364647fd0f6[m
+Merge: 942fb5d 56e0823
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Fri Jan 24 15:54:58 2020 +0300
+
+    Merge pull request #38 from brightkan/chore/add-more-authorisations
+    
+    Chore/add more authorisations
+
+[33mcommit 56e0823b24f602e966b9eabd71c742b080413582[m
+Merge: 5b42243 942fb5d
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Fri Jan 24 15:40:44 2020 +0300
+
+    Fixing merge conflicts
+
+[33mcommit 942fb5dc7b037aafe539cf8ff01ab64d9e703eb4[m
+Merge: 2a0b388 7e9f48d
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Fri Jan 24 12:45:22 2020 +0300
+
+    Merge pull request #37 from brightkan/chore/fix-edit-user
+    
+    Done fixing error with user edit
+
+[33mcommit 7e9f48dbb453cd4ee82f9b7afa5aff881c7d519c[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Fri Jan 24 12:35:13 2020 +0300
+
+    Done fixing error with user edit
+
+[33mcommit 2a0b38860daaa0492396ef79f9e0f7fedd976068[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Thu Jan 23 17:39:59 2020 +0300
+
+    done with editing services in payroll
+
+[33mcommit 36b6924b77d16835c5193bdcab81423fd4a11c31[m
+Merge: b6822f1 c0408cc
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Thu Jan 23 15:13:35 2020 +0300
+
+    Merge pull request #36 from brightkan/chore/fix-lunch-allowance-payroll
+    
+    Done with correcting issues in payroll
+
+[33mcommit c0408cc7f4bf926fe6e0d29a4b1a1d2230a4dc40[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Thu Jan 23 12:54:17 2020 +0300
+
+    Done with correcting issues in payroll
+
+[33mcommit b6822f194d294fb98baaf9e6f1e5ff986c090d2a[m
+Merge: edaf1a0 22812a2
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Wed Jan 22 16:04:44 2020 +0300
+
+    Merge pull request #35 from brightkan/chore/remove-delete-on-employees
+    
+    Done adding suspend instead of delete employee
+
+[33mcommit 22812a2bdb42bf70aeee71b4f36a3cd294468e98[m[33m ([m[1;31morigin/chore/remove-delete-on-employees[m[33m)[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Wed Jan 22 16:03:00 2020 +0300
+
+    Done adding suspend instead of delete employee
+
+[33mcommit edaf1a0145c768b4b98792e99102199108c58f10[m
+Merge: 4a55096 fb1baac
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Wed Jan 22 11:38:17 2020 +0300
+
+    Merge pull request #34 from brightkan/chore/payroll-fix-issues
+    
+    Chore/payroll fix issues
+
+[33mcommit fb1baac230ec2ab5e1d6d8ec36528ef7dc477a5e[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Wed Jan 22 11:33:43 2020 +0300
+
+    Done fixing issues in payroll
+
+[33mcommit 9035542810601ec24d6d99eb150eaabc5f362828[m[33m ([m[1;31morigin/chore/change-edit-user-form[m[33m)[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Wed Jan 22 09:56:26 2020 +0300
+
+    Changed the fields to vertical layout
+
+[33mcommit 4a55096ef21c11e9ab6e7805b9fb0e04026866d6[m
+Merge: f93e415 fda5240
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Wed Jan 22 09:50:19 2020 +0300
+
+    Merge pull request #33 from walusimbihakim/chore/fix-in-admin
+    
+    Done fixing error in admin
+
+[33mcommit fda5240509e468c6a7d3d326014c350def014998[m[33m ([m[1;31mupstream/chore/fix-in-admin[m[33m, [m[1;32mchore/fix-in-admin[m[33m)[m
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Tue Jan 21 16:29:20 2020 +0300
+
+    Done fixing error in admin
+
+[33mcommit f93e415a9c08ba0919a4e746c22377a24180adc1[m[33m ([m[1;31mupstream/develop[m[33m)[m
+Merge: 5974a96 75a9c0c
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Tue Jan 21 13:34:05 2020 +0300
+
+    Merge pull request #32 from brightkan/chore/fix-job-titles-form
+    
+    Chore/fix job titles form
+
+[33mcommit 75a9c0c54bb795a93a9b977202d7cc6b66588133[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Tue Jan 21 13:33:11 2020 +0300
+
+    Fixed job titles form
+
+[33mcommit 5974a9618877907fc704c5512ab15ad278fea1eb[m
+Merge: ce718a1 e606232
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Tue Jan 21 12:57:01 2020 +0300
+
+    Merge pull request #31 from brightkan/chore/fix-leave-records
+    
+    Done fixing leave records
+
+[33mcommit e60623220eb9b17af597caf034ff2abcb4334455[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Tue Jan 21 12:55:32 2020 +0300
+
+    Done fixing leave records
+
+[33mcommit ce718a1b1b8a4ed1f085d77302f8260fe6336844[m
+Merge: 4caf4a5 2a21af1
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Tue Jan 21 10:58:00 2020 +0300
+
+    Merge pull request #30 from brightkan/chore/fix-payroll-currency
+    
+    Fixed Payroll currency
+
+[33mcommit 2a21af1f1ab6bacef9b091f1d1a4736a4d2e7042[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Tue Jan 21 10:32:42 2020 +0300
+
+    Fixed Payroll currency
+
+[33mcommit e80b4c34adadf3fe73c7ff8e1ceb0c0b77953518[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Tue Jan 21 08:25:06 2020 +0300
+
+    Fixed job titles
+
+[33mcommit a912284c9e17482e972c41ce511e8b48045b425b[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Mon Jan 20 17:57:48 2020 +0300
+
+    Organisation details
+
+[33mcommit 5b42243d643a5ffbff85adc10ca42ca06f273c64[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Mon Jan 20 15:25:10 2020 +0300
+
+    Done with auth
+
+[33mcommit 4caf4a5706c03122790c79bdd6e97a54107c4f68[m
+Merge: 4d187be 78ab753
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Mon Jan 20 10:09:32 2020 +0300
+
+    Merge pull request #28 from brightkan/feature/recruitment
+    
+    Feature/recruitment
+
+[33mcommit 78ab7530afe2619041ad8ddfc86d7e65aa783236[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Mon Jan 20 10:08:34 2020 +0300
+
+    Added all files
+
+[33mcommit 140c4648ce361e5f4e88882de36d857f0c2647d7[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Mon Jan 20 10:04:01 2020 +0300
+
+    Done with recruitment
+
+[33mcommit d91488ef508114c2dbec73798603d966d6ed7ebe[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Sat Jan 11 15:18:32 2020 +0300
+
+    Still having breaking issues
+
+[33mcommit 4d187bed0c4fba0fd0b66fbb39523b4ffc6d6e5f[m
+Merge: ad37c2c 153a42d
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Thu Jan 9 11:45:48 2020 +0300
+
+    Merge pull request #27 from walusimbihakim/feature/leave
+    
+    Feature/leave
+
+[33mcommit 153a42d1dc370f83ac3d3fece8115ee14be4c8b0[m
+Merge: 9d46bc5 b11659c
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Thu Jan 9 11:34:19 2020 +0300
+
+    worked on leave feature
+
+[33mcommit ad37c2c55180969c6eea7aac95cdd3de89bcea02[m
+Merge: bf18014 0853b0d
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Thu Jan 9 11:24:52 2020 +0300
+
+    Merge pull request #26 from brightkan/chore/fix-employees
+    
+    fixed renumeration fee
+
+[33mcommit 0853b0d9ed1a9b4c65f1e29929c4b5b2459f322c[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Thu Jan 9 11:23:54 2020 +0300
+
+    fixed renumeration fee
+
+[33mcommit bf18014e60b37b4a0234c62f3d8f1341e621572e[m
+Merge: b11659c 2a4ec62
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Thu Jan 9 09:32:34 2020 +0300
+
+    Merge pull request #25 from brightkan/chore/fix-issues-in-settings
+    
+    Chore/fix issues in settings
+
+[33mcommit 2a4ec62508053f98f9ce96f06aa6a42b4dfd8a57[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Thu Jan 9 09:30:37 2020 +0300
+
+    updated settings
+
+[33mcommit 220a5355cd87b9f81413cc9be9347bb85470347c[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Thu Jan 9 08:21:22 2020 +0300
+
+    fixed holiday modal title
+
+[33mcommit 9d46bc5ae441323211db9cc9af6206fe409a3323[m
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Wed Jan 8 16:08:58 2020 +0300
+
+    fixing leaving
+
+[33mcommit b11659c2f5a48b0fee7bd09b718ff649c3fd6a3b[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Wed Jan 8 16:04:18 2020 +0300
+
+    Added popover on leave
+
+[33mcommit df268d776817300fe230fd80c0551f77ad44a6ed[m
+Merge: 5ecc4d7 203a167
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Wed Jan 8 14:57:03 2020 +0300
+
+    Merge pull request #24 from walusimbihakim/feature/leave
+    
+    Feature/leave
+
+[33mcommit 203a1678ff1905d73234143aefe6e1feca46afd9[m
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Wed Jan 8 14:40:51 2020 +0300
+
+    fixed Migration issues
+
+[33mcommit 16f02cb95fae937d99f036ec15480ffea6c9d9ee[m
+Merge: f4484df 5ecc4d7
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Wed Jan 8 11:42:51 2020 +0300
+
+    Fixing conflicts
+
+[33mcommit f4484df67f796424641b8e1828136e3176109016[m
+Merge: 2961c6a 327497c
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Wed Jan 8 11:06:47 2020 +0300
+
+    Merge branch 'Develop' into leave_request_email
+
+[33mcommit 2961c6ac46193f11bf6ab50fd68c1baeb48547d3[m
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Wed Jan 8 11:06:42 2020 +0300
+
+    Changes
+
+[33mcommit 5ecc4d7cf874eba20dfe62b958a5fa84d30728da[m
+Merge: d715a0f fe0fc2a
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Wed Jan 8 09:52:44 2020 +0300
+
+    Merge pull request #23 from brightkan/chore/fix-issues-in-employees
+    
+    Fixed issues in employees
+
+[33mcommit fe0fc2a17de8ab6d62b0e1ae273bb3e040305261[m[33m ([m[1;31morigin/chore/fix-issues-in-employees[m[33m)[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Wed Jan 8 09:51:48 2020 +0300
+
+    Fixed issues in employees
+
+[33mcommit d715a0f8d040e7540dc0e6f5a20ab6c4aa101798[m
+Merge: ce27d11 e852215
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Tue Jan 7 19:48:34 2020 +0300
+
+    Merge pull request #22 from brightkan/chore/fix-organisation-details
+    
+    Done with fixing errors in organisation details
+
+[33mcommit e852215a6b06eb006403b97f505b482f42981922[m[33m ([m[1;31morigin/chore/fix-organisation-details[m[33m)[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Tue Jan 7 19:46:38 2020 +0300
+
+    Done with fixing errors in organisation details
+
+[33mcommit ce27d1112bcf698a7efbd71dc20ed003242d5e68[m
+Merge: dde43b9 45bcead
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Tue Jan 7 17:33:58 2020 +0300
+
+    Merge pull request #21 from brightkan/chore/fix-holidays-module
+    
+    Done fixing holiday module
+
+[33mcommit 45bceadf22c0d51a47317b06a36f17478a3920b1[m[33m ([m[1;31morigin/chore/fix-holidays-module[m[33m)[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Tue Jan 7 17:25:05 2020 +0300
+
+    Done fixing holiday module
+
+[33mcommit dde43b9ef2ffd15284c341174193165e94f85595[m
+Merge: d81827a 5b47010
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Tue Jan 7 15:48:48 2020 +0300
+
+    Merge pull request #20 from brightkan/chore/advanced-overtime-features
+    
+    fixing broken commit
+
+[33mcommit 5b47010c98e168939173848f337b48670e285d62[m[33m ([m[1;31morigin/chore/advanced-overtime-features[m[33m)[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Tue Jan 7 15:41:49 2020 +0300
+
+    fixing broken commit
+
+[33mcommit d81827a5e50c2dfe62e8aee0507a9a74ac42dc48[m
+Merge: a863701 2a63c43
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Tue Jan 7 15:04:49 2020 +0300
+
+    Merge pull request #19 from brightkan/chore/advanced-overtime-features
+    
+    Done with advanced overtime features
+
+[33mcommit 2a63c43f81a41caed8d9ba6afe9e9e966851efbf[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Tue Jan 7 13:01:22 2020 +0300
+
+    Done with advanced overtime features
+
+[33mcommit a86370174ea88d46504d156f50ed36e85645d6d6[m
+Merge: 2e67966 cc98c0a
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Thu Jan 2 14:50:40 2020 +0300
+
+    Merge pull request #18 from brightkan/chore/fix-issues-in-overtime
+    
+    Done adding overtime initial features
+
+[33mcommit cc98c0ae06fae6103e74e48992ba48eddbe1b859[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Thu Jan 2 14:42:06 2020 +0300
+
+    Done adding overtime initial features
+
+[33mcommit 2e6796610176316f9f3ff97ab86f03ed9d157f41[m
+Merge: 327497c c5438fb
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Wed Dec 11 16:15:40 2019 +0300
+
+    Merge pull request #17 from brightkan/chore/deploy-to-heroku
+    
+    Set up heroku
+
+[33mcommit c5438fb64e21ebbb156fba2ff96678be209ae967[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Wed Dec 11 15:28:34 2019 +0300
+
+    Set up heroku
+
+[33mcommit cfb399057a3fd2f60ce27cfd12f48f9dd219620f[m
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Wed Dec 11 12:52:19 2019 +0300
+
+    Working on leave_process
+
+[33mcommit 327497c1d60ab5e67da3d753bd299cf3c656a12b[m
+Merge: a6cc247 79e449c
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Wed Dec 11 12:44:49 2019 +0300
+
+    Merge pull request #16 from brightkan/chore/fix-bugs-in-payroll
+    
+    Payslip done
+
+[33mcommit 79e449c898b1d71fea6d32587ad1263c04c4299f[m[33m ([m[1;31morigin/chore/fix-bugs-in-payroll[m[33m)[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Wed Dec 11 12:42:32 2019 +0300
+
+    Payslip done
+
+[33mcommit a6cc247ba756a19dfb60529b95760dab1c834f94[m[33m ([m[1;31mupstream/leave_request_email[m[33m)[m
+Merge: ada3d80 7656b7f
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Fri Dec 6 11:13:12 2019 +0300
+
+    Merge pull request #15 from walusimbihakim/chore/edit-readme-file
+    
+    Done editing readme doc
+
+[33mcommit 7656b7f5f8694029d23686a434e795e96a5ff407[m
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Fri Dec 6 11:08:30 2019 +0300
+
+    Done editing readme doc
+
+[33mcommit ada3d809952b243f02caf0aaceabc6c37f46fa2d[m[33m ([m[1;31morigin/chore/monster-merging-with-hakim[m[33m)[m
+Merge: e4e7e1f b0b3f16
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Wed Dec 4 16:48:36 2019 +0300
+
+    Merge pull request #14 from brightkan/chore/merge-with-hakim
+    
+    Chore/merge with hakim
+
+[33mcommit b0b3f16eb0df96331ec67d412a300e6ed9cc7233[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Wed Dec 4 16:45:46 2019 +0300
+
+    Merged with hakim repository
+
+[33mcommit b9eb3ce6a5346ea645eace2bedf10bb1eb370271[m
+Merge: 78753bc 7c7819e
+Author: walusimbihakim <51823831+walusimbihakim@users.noreply.github.com>
+Date:   Wed Dec 4 15:27:11 2019 +0300
+
+    Merge pull request #2 from walusimbihakim/Hakim
+    
+    Hakim
+
+[33mcommit 7c7819e5efca68c6bb2d00240d809ffa504c1da5[m
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Tue Dec 3 16:52:31 2019 +0300
+
+    Done with fixing merge conflicts
+
+[33mcommit 37d3e65e089b240eec3f422b5d01b768f9e295bf[m
+Merge: d6925fd e4e7e1f
+Author: Walusimbi Hakim <hakim.walusimbi@soliton.co.ug>
+Date:   Tue Dec 3 15:46:40 2019 +0300
+
+    Fixed conflicts
+
+[33mcommit e4e7e1f13c4f236fe74fd0f47edfadc6d2a82896[m
+Merge: f9350ff 4a9f769
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Tue Dec 3 11:27:21 2019 +0300
+
+    Merge pull request #13 from brightkan/chore/add_changes_to_payroll
+    
+    Added popover to payroll
+
+[33mcommit 4a9f769295f12c49df7e79739bfdc528c6b30a89[m
+Author: Bright Kanyange <brightkanyange@outlook.com>
+Date:   Tue Dec 3 11:21:32 2019 +0300
+
+    Added popover to payroll
+
+[33mcommit f9350ffc4488769d8a089d33106f1fc14ad890cd[m
+Merge: e5113fc 89a25b4
+Author: Bright Kanyange <40506019+brightkan@users.noreply.github.com>
+Date:   Fri Nov 29 15:01:42 2019 +0300
+
+    Merge pull request #12 from brightkan/chore/fix_solitonuser_doesnot_exist
+    
+    Done fixing soliton user doesnot exit
