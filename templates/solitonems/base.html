@@ -144,15 +144,16 @@
                         <a href="{%url 'user_contracts_page'%}" class="list-group-item">View User Contracts</a>
                     </ul>
                 </li>
-                <li class="nav-item" data-toggle="popover-training" title="Training">
+                <li class="nav-item {{training_page}}" data-toggle="popover-training" title="Training">
                     <a class="nav-link" href="#">
                         <i class="material-icons">bookmarks</i>
                         <p>Training</p>
                     </a>
                     <ul id="popover-training" class="nav list-group" style="display:none">
-                        <a href="#" class="list-group-item">Approve Training</a>
-                        <a href="#" class="list-group-item">Apply for Training</a>
-                        <a href="#" class="list-group-item">Schedule Training</a>
+                        <a href="{%url 'approve_training_page'%}" class="list-group-item">Approve Training</a>
+                        <a href="{%url 'user_training_page'%}" class="list-group-item">User Training</a>
+                        <a href="{%url 'schedule_training_page'%}" class="list-group-item">Schedule Training</a>
+                        <a href="{%url 'training_schedules_page'%}" class="list-group-item">Training Schedules</a>
                     </ul>
                 </li>
                 <li class="nav-item {{learning_and_development_page}}" data-toggle="popover-learning-and-development" title="Learning and Development">

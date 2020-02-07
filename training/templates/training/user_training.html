@@ -1,0 +1,136 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<h2>Training</h2>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Button trigger modal-->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_employee">
+            Apply for Training
+        </button>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    {%if trainings%}
+                    <h3 style="text-align:center;">Training Programmes</h3>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="">
+                            <th>Programme</th>
+                            <th>Institution</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            </thead>
+                            <tbody>
+                            {% for training in trainings  %}
+                            <tr>
+                                <td><a href="#" style="color: inherit">{{training.programme}}</a></td>
+                                <td>{{training.institution}}</td>
+                                <td>{{training.start_date}}</td>
+                                <td>{{training.end_date}}</td>
+                                <td>{{training.status}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {%else%}
+
+                    <h3>No training programmes available</h3>
+
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal: modalAddNewTraining -->
+        <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Apply for Training</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+                        <form method="POST"> {%csrf_token%}
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter Programme"
+                                       name="programme" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter Institution"
+                                       name="institution" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Enter Duration In Months"
+                                       name="duration" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Cost Currency:</label>
+                                <select class="form-control" name="currency_id" required>
+                                    <option>=== Select Currency ===</option>
+                                    {%for currency in currencies%}
+                                    <option value={{currency.id}}>{{currency}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Enter Cost "
+                                       name="cost" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="start-date">Start Date</label>
+                                <input id="start-date" type="date" class="form-control" placeholder="Enter start date"
+                                       name="start_date" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="end-date">End Date</label>
+                                <input id="end-date" type="date" class="form-control" placeholder="Enter end date"
+                                       name="end_date" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="business-case">Business Case</label>
+                                <textarea id="business-case" name="business_case" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="objectives">Objectives</label>
+                                <textarea id="objectives" name="objectives" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="preparations">Preparations</label>
+                                <textarea id="preparations" name="preparations" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="skills">Skills</label>
+                                <textarea id="skills" name="skills" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="knowledge">Knowledge</label>
+                                <textarea id="knowledge" name="knowledge" class="form-control"></textarea>
+                            </div>
+                            <button class="btn btn-danger" type="submit">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal: modalAddNewEmployee -->
+        </div>
+    </div>
+    {%endblock content%}

@@ -42,6 +42,7 @@ SOLITONEMS_APPS = [
     'ems_admin',
     'contracts',
     'learning_and_development',
+    'training',
 
 
 ]
