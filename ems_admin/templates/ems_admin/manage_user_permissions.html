@@ -16,7 +16,6 @@
                 <th>Process/Module</th>
                 <th>Full Auth</th>
                 <th>View Only</th>
-                <th>No Rights</th>
                 <th>Actions</th>
               </thead>
               <tbody>
@@ -38,15 +37,10 @@
                       <i class="large material-icons">clear</i>
                     {%endif%}
                   </td>
+
                   <td>
-                    {%if permission.no_rights%}
-                      <i class="large material-icons">check</i>
-                    {%else%}
-                      <i class="large material-icons">clear</i>
-                    {%endif%}
-                  </td>
-                  <td>
-                    <a href="{%url 'edit_user_permission_page' permission.id%}">Edit</a>
+                    <a href="{%url 'edit_user_permission_page' permission.id%}">
+                      <button>Edit</button></a>
                   </td>
                 </tr>
                 {% endfor %}
