@@ -50,5 +50,5 @@ def fetch_all_permissions_or_create(user):
 
 
 def get_permission(id):
-    permission = EMSPermission.objects.get(pk=1)
+    permission = EMSPermission.objects.get(pk=id)
     return permission

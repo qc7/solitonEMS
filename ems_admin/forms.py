@@ -31,4 +31,4 @@ class SolitonUserEditForm(ModelForm):
 class EMSPermissionForm(ModelForm):
     class Meta:
         model = EMSPermission
-        fields = ['full_auth', 'view_only', 'no_rights']
+        fields = ['full_auth', 'view_only']

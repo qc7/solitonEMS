@@ -36,18 +36,15 @@
                         <td>{{pending_application.end_date}}</td>
 
                         <td>
-                            <a href="{%url 'reject_training_application' pending_application.id%}"
-                               onclick="return confirm('Are you sure you want to reject
-                               {{pending_application.applicant.first_name}}\'s training application?')">
-                                <button>Reject</button> |
-                            </a>
                             <a href="{%url 'approve_training_application' pending_application.id%}"
                                onclick="return confirm('Are you sure you want to approve
                                {{pending_application.applicant.first_name}}\'s training application?')">
-                                <button>Approve</button> |
-                            </a>
-                            <a href="#">
-                                <button>Amend</button>
+                                <button>Approve</button>
+                            </a> |
+                            <a href="{%url 'reject_training_application' pending_application.id%}"
+                               onclick="return confirm('Are you sure you want to reject
+                               {{pending_application.applicant.first_name}}\'s training application?')">
+                                <button>Reject</button>
                             </a>
 
                         </td>

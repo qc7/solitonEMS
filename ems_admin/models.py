@@ -10,7 +10,6 @@ class EMSPermission(models.Model):
     module = models.CharField(max_length=20, blank=True)
     full_auth = models.BooleanField(default=True)
     view_only = models.BooleanField(default=True)
-    no_rights = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s permission" % self.name
