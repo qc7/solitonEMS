@@ -1,4 +1,4 @@
-from employees.models import Position, OrganisationDetail, Department
+from organisation_details.models import Department, Position, OrganisationDetail
 
 
 def get_all_departments():
