@@ -35,10 +35,10 @@ def departments_page(request):
 
 @hr_required
 def teams_page(request, id):
-    user = request.user
+
     ts = Team.objects.filter(department=id)
     context = {
-        "user": user,
+        "user": request.user,
         "employees_page": "active",
         "teams": ts,
         "dep": get_department(id),
@@ -78,7 +78,7 @@ def add_new_department(request):
     except:
         messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
 
-        return redirect('departments_page')
+    return redirect('departments_page')
 
 
 def edit_department(request, id):
@@ -100,17 +100,15 @@ def edit_department(request, id):
     except:
         messages.error(request, f'Info Not Saved, Check you inputs and try again!')
 
-        return redirect('departments_page')
+    return redirect('departments_page')
 
 
 def edit_department_page(request, id):
-    user = request.user
-    department = get_department(id)
 
     context = {
-        "user": user,
+        "user": request.user,
         "employee": get_active_employees(),
-        "deps": department,
+        "deps": get_department(id),
     }
     return render(request, 'employees/departments.html', context)
 
@@ -123,7 +121,8 @@ def delete_department(request, id):
         return redirect('departments_page')
     except Department.DoesNotExist:
         messages.error(request, f'The department no longer exists on the system')
-        return redirect('departments_page')
+
+    return redirect('departments_page')
 
 
 def add_new_team(request):
@@ -166,7 +165,7 @@ def add_new_title(request):
     except:
         messages.error(request, f'Information Not Saved, Check you inputs and try again!')
 
-        return redirect('job_titles_page')
+    return redirect('job_titles_page')
 
 
 def edit_job_title_page(request, id):
@@ -194,7 +193,7 @@ def edit_job_title(request, id):
             return render(request, "employees/job_titles.html", context)
     except:
         messages.error(request, f'Info Not Saved, Check you inputs and try again!')
-        return redirect('job_titles_page')
+    return redirect('job_titles_page')
 
 
 def delete_job_title(request, id):
@@ -205,4 +204,5 @@ def delete_job_title(request, id):
         return redirect('job_titles_page')
     except Department.DoesNotExist:
         messages.error(request, f'The Job Title no longer exists on the system')
-        return redirect('job_titles_page')
+
+    return redirect('job_titles_page')
