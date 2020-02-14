@@ -6,7 +6,7 @@ from employees.models import Employee
 from employees.selectors import get_active_employees
 from ems_auth.decorators import hr_required, ems_login_required
 from organisation_details.models import Position, Department, Team
-from organisation_details.selectors import get_all_departments, get_department
+from organisation_details.selectors import get_all_departments, get_department, get_position, get_all_positions
 from settings.selectors import get_all_currencies, get_currency
 
 
@@ -52,12 +52,12 @@ def teams_page(request, id):
 @ems_login_required
 @hr_required
 def job_titles_page(request):
-    currencies = get_all_currencies()
+
     context = {
         "user": request.user,
         "organisation_page": "active",
-        "positions": Position.objects.all(),
-        "currencies": currencies
+        "positions": get_all_positions(),
+        "currencies": get_all_currencies()
     }
 
     return render(request, "employees/job_titles.html", context)
@@ -170,15 +170,11 @@ def add_new_title(request):
 
 
 def edit_job_title_page(request, id):
-    # redirect according to roles
-    # If user is a manager
-    user = request.user
-    title = Position.objects.get(pk=id)
 
     context = {
-        "user": user,
-        "employee": Employee.objects.all(),
-        "title": title,
+        "user": request.user,
+        "employee": get_active_employees(),
+        "title": get_position(id),
     }
     return render(request, 'employees/job_titles.html', context)
 
@@ -186,7 +182,7 @@ def edit_job_title_page(request, id):
 def edit_job_title(request, id):
     try:
         if request.method == "POST":
-            job = Position.objects.get(pk=id)
+            job = get_position(id)
             job.save()
             messages.success(request, f'Job Info Updated Successfully')
             return redirect('job_titles_page')
@@ -203,7 +199,7 @@ def edit_job_title(request, id):
 
 def delete_job_title(request, id):
     try:
-        job = Position.objects.get(pk=id)
+        job = get_position(id)
         job.delete()
         messages.success(request, f'Job Title Deleted Successfully')
         return redirect('job_titles_page')
