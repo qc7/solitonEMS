@@ -3,8 +3,10 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from employees.models import Employee
+from employees.selectors import get_active_employees
 from ems_auth.decorators import hr_required, ems_login_required
 from organisation_details.models import Position, Department, Team
+from organisation_details.selectors import get_all_departments, get_department
 from settings.selectors import get_all_currencies, get_currency
 
 
@@ -21,12 +23,11 @@ def no_organisation_detail_page(request):
 
 @hr_required
 def departments_page(request):
-    user = request.user
     context = {
         "user": request.user,
         "organisation_page": "active",
-        "departs": Department.objects.all(),
-        "emps": Employee.objects.all(),
+        "departs": get_all_departments(),
+        "emps": get_active_employees(),
     }
 
     return render(request, "employees/departments.html", context)
@@ -35,14 +36,14 @@ def departments_page(request):
 @hr_required
 def teams_page(request, id):
     user = request.user
-
     ts = Team.objects.filter(department=id)
     context = {
         "user": user,
         "employees_page": "active",
         "teams": ts,
-        "dep": Department.objects.get(pk=id),
-        "emps": Employee.objects.all(),
+        "dep": get_department(id),
+        "emps": get_active_employees(),
+
     }
 
     return render(request, "employees/teams.html", context)
@@ -83,7 +84,7 @@ def add_new_department(request):
 def edit_department(request, id):
     try:
         if request.method == "POST":
-            department = Department.objects.get(pk=id)
+            department = get_department(id)
             department.save()
             messages.success(request, f'Department Infor Updated Successfully')
             return redirect('departments_page')
@@ -103,14 +104,12 @@ def edit_department(request, id):
 
 
 def edit_department_page(request, id):
-    # redirect according to roles
-    # If user is a manager
     user = request.user
-    department = Department.objects.get(pk=id)
+    department = get_department(id)
 
     context = {
         "user": user,
-        "employee": Employee.objects.all(),
+        "employee": get_active_employees(),
         "deps": department,
     }
     return render(request, 'employees/departments.html', context)
@@ -118,7 +117,7 @@ def edit_department_page(request, id):
 
 def delete_department(request, id):
     try:
-        department = Department.objects.get(pk=id)
+        department = get_department(id)
         department.delete()
         messages.success(request, f'Department Deleted Successfully')
         return redirect('departments_page')
@@ -127,7 +126,6 @@ def delete_department(request, id):
         return redirect('departments_page')
 
 
-# Team Section
 def add_new_team(request):
     if request.method == "POST":
         team_name = request.POST["team_name"]
