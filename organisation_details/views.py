@@ -70,9 +70,7 @@ def add_new_department(request):
 
     try:
         depat = Department(name=dep_name, hod=hod)
-
         depat.save()
-
         messages.success(request, f'Info Successfully Saved')
         return redirect('departments_page')
 
@@ -86,13 +84,7 @@ def edit_department(request, id):
     try:
         if request.method == "POST":
             department = Department.objects.get(pk=id)
-            dep_name = request.POST["dep_name"]
-            hod = request.POST["hod"]
-
-            # department = Departments.objects.get(pk=id)#.update(name=dep_name, hod=hod)
-
             department.save()
-
             messages.success(request, f'Department Infor Updated Successfully')
             return redirect('departments_page')
 
@@ -105,7 +97,7 @@ def edit_department(request, id):
             return render(request, "employees/departments.html", context)
 
     except:
-        messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
+        messages.error(request, f'Info Not Saved, Check you inputs and try again!')
 
         return redirect('departments_page')
 
@@ -114,18 +106,6 @@ def edit_department_page(request, id):
     # redirect according to roles
     # If user is a manager
     user = request.user
-    # If user is an employee
-    if str(user.solitonuser.soliton_role) == 'Employee':
-        return render(request, "role/employee.html")
-    # If user is HOD
-    if str(user.solitonuser.soliton_role) == 'HOD':
-        return render(request, "role/hod.html")
-
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
-
     department = Department.objects.get(pk=id)
 
     context = {
@@ -139,7 +119,6 @@ def edit_department_page(request, id):
 def delete_department(request, id):
     try:
         department = Department.objects.get(pk=id)
-
         department.delete()
         messages.success(request, f'Department Deleted Successfully')
         return redirect('departments_page')
@@ -162,7 +141,7 @@ def add_new_team(request):
             messages.success(request, f'Info Successfully Saved')
 
         except:
-            messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
+            messages.error(request, f'Info Not Saved, Check you inputs and try again!')
 
         return redirect('teams_page', id=dpt)
 
@@ -182,9 +161,7 @@ def add_new_title(request):
     try:
         job = Position(name=job_title, number_of_slots=pos, type=type, salary=salary,
                        currency=currency, description=description)
-
         job.save()
-
         messages.success(request, f'Info Successfully Saved')
         return redirect('job_titles_page')
 
@@ -198,18 +175,6 @@ def edit_job_title_page(request, id):
     # redirect according to roles
     # If user is a manager
     user = request.user
-    # If user is an employee
-    if str(user.solitonuser.soliton_role) == 'Employee':
-        return render(request, "role/employee.html")
-    # If user is HOD
-    if str(user.solitonuser.soliton_role) == 'HOD':
-        return render(request, "role/hod.html")
-
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'registration/login.html', {"message": None})
-
     title = Position.objects.get(pk=id)
 
     context = {
@@ -224,36 +189,26 @@ def edit_job_title(request, id):
     try:
         if request.method == "POST":
             job = Position.objects.get(pk=id)
-            title = request.POST["title"]
-            positions = request.POST["positions"]
-
             job.save()
-
-            messages.success(request, f'Job Infor Updated Successfully')
+            messages.success(request, f'Job Info Updated Successfully')
             return redirect('job_titles_page')
-
         else:
             messages.error(request, f'Update NOT Successfull')
             context = {
                 "employees_page": "active",
             }
-
             return render(request, "employees/job_titles.html", context)
-
     except:
-        messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
-
+        messages.error(request, f'Info Not Saved, Check you inputs and try again!')
         return redirect('job_titles_page')
 
 
 def delete_job_title(request, id):
     try:
         job = Position.objects.get(pk=id)
-
         job.delete()
         messages.success(request, f'Job Title Deleted Successfully')
         return redirect('job_titles_page')
     except Department.DoesNotExist:
         messages.error(request, f'The Job Title no longer exists on the system')
         return redirect('job_titles_page')
-
