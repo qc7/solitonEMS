@@ -23,3 +23,5 @@ def get_organisationdetail(user):
 
 def get_department(department_id):
     return Department.objects.get(pk=department_id)
+
+

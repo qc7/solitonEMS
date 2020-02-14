@@ -1,5 +1,4 @@
 from employees.models import Employee
-from employees.selectors import get_employee
 from settings.models import Currency
 
 
