@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-from employees.models import Department
+from organisation_details.models import Department
 
 
 class Resource(models.Model):

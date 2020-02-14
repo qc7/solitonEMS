@@ -9,10 +9,11 @@ from datetime import date
 import calendar
 from calendar import HTMLCalendar
 from collections import namedtuple
-from employees.models import Employee, Department, Team
+from employees.models import Employee
 from django.db import connection
 
 from organisation_details.decorators import organisationdetail_required
+from organisation_details.models import Department, Team
 from .models import (
     Leave_Types,
     Holidays,
@@ -51,10 +52,6 @@ def get_current_user(request, need):
 def leave_dashboard_page(request):
     applications = ""
     user = request.user
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
 
     user_role = get_current_user(request, "role")
 

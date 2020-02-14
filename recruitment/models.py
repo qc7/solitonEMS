@@ -1,6 +1,7 @@
 from django.db import models
 
-from employees.models import Employee, Position
+from employees.models import Employee
+from organisation_details.models import Position
 
 
 class JobAdvertisement(models.Model):

@@ -1,4 +1,4 @@
-from employees.models import Position
+
 from recruitment.models import JobAdvertisement, JobApplication
 
 

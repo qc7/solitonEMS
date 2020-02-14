@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Employee,HomeAddress,Certification,EmergencyContact,Beneficiary,Spouse,Dependant,Deduction,BankDetail,Team,Department,Position,OrganisationDetail,Allowance
+from organisation_details.models import Team, Department, Position, OrganisationDetail
+from .models import Employee,HomeAddress,Certification,EmergencyContact,Beneficiary,Spouse,Dependant,Deduction,BankDetail,Allowance
 admin.site.site_header = "Soliton Telmec EMS Admin"
 admin.site.register(Employee)
 admin.site.register(HomeAddress)

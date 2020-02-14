@@ -1,7 +1,8 @@
 from django.db import models
 
 # Create your models here.
-from employees.models import Position, Employee
+from employees.models import Employee
+from organisation_details.models import Position
 
 
 class Contract(models.Model):
