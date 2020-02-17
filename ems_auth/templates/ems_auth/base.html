@@ -54,6 +54,13 @@
 {% endblock %}
 <div id="dropDownSelect1"></div>
 
+<script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/v2.2.0/dist/bootstrap-validate.js"></script>
+<script>
+    bootstrapValidate('#new_password1', 'min:8:####  Enter Atleast 8 characters ####')
+    bootstrapValidate('#new_password2', 'matches:#new_password1:####  Your passwords should match  ####')
+
+</script>
+
 <!--===============================================================================================-->
 <script src=" {% static 'registration/vendor/jquery/jquery-3.2.1.min.js' %} "></script>
 <!--===============================================================================================-->
