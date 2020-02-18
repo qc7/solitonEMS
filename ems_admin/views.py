@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from ems_admin.forms import UserForm, SolitonUserForm, EMSPermissionForm, SolitonUserEditForm
 from ems_admin.selectors import get_bound_user_form, get_user, get_solitonuser, get_bound_soliton_user_form, \
-    fetch_all_permissions_or_create, get_permission
+    fetch_all_permissions_or_create, get_permission, get_audit_trails, get_all_audit_trails
 from ems_auth.decorators import super_admin_required, ems_login_required
 from ems_auth.models import SolitonUser
 
@@ -135,3 +135,23 @@ def view_users_page(request):
 
     }
     return render(request, 'ems_admin/view_users.html', context)
+
+
+def user_audit_trail(request, user_id):
+    audit_trails = get_audit_trails(user_id)
+    context = {
+        "admin": "active",
+        "audit_trails": audit_trails,
+    }
+
+    return render(request, "ems_admin/user_audit_trail.html", context)
+
+
+def audit_trails(request):
+    audit_trails = get_all_audit_trails()
+    context = {
+        "admin": "active",
+        "audit_trails": audit_trails,
+    }
+
+    return render(request, "ems_admin/audit_trails.html", context)
