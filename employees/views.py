@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
 from employees.services import create_employee_instance, suspend
+from ems_admin.decorators import log_activity
 from ems_auth.decorators import ems_login_required, hr_required
 from ems_auth.models import User
 from organisation_details.models import Department, Position, Team, OrganisationDetail
@@ -32,6 +33,7 @@ from .selectors import get_employee, get_active_employees
 
 
 @ems_login_required
+@log_activity
 def dashboard_page(request):
     # Get the user
     user = request.user
@@ -51,6 +53,7 @@ def dashboard_page(request):
 
 @ems_login_required
 @hr_required
+@log_activity
 def employees_page(request):
     all_currencies = get_all_currencies()
     active_employees = get_active_employees()
@@ -87,6 +90,7 @@ def employee_page(request, id):
 
 
 @login_required
+@log_activity
 def edit_employee_page(request, id):
     # redirect according to roles
     # If user is a manager
@@ -110,6 +114,7 @@ def edit_employee_page(request, id):
 
 
 @login_required
+@log_activity
 def edit_certification_page(request, id):
     # The ems_authline requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
@@ -137,6 +142,7 @@ def edit_certification_page(request, id):
 
 
 @ems_login_required
+@log_activity
 def edit_emergency_contact_page(request, id):
     # redirect according to roles
     user = request.user
@@ -162,6 +168,7 @@ def edit_emergency_contact_page(request, id):
 
 
 @ems_login_required
+@log_activity
 def edit_beneficiary_page(request, id):
     # redirect according to roles
     user = request.user
@@ -185,6 +192,7 @@ def edit_beneficiary_page(request, id):
 
 
 @login_required
+@log_activity
 def edit_spouse_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
@@ -214,6 +222,7 @@ def edit_spouse_page(request, id):
 
 @ems_login_required
 @hr_required
+@log_activity
 def edit_dependant_page(request, id):
     # redirect according to roles
     user = request.user
@@ -241,6 +250,7 @@ def edit_dependant_page(request, id):
 ###################################################################
 @login_required
 @hr_required
+@log_activity
 def add_new_employee(request):
     if request.method == 'POST':
         employee = create_employee_instance(request)
@@ -263,6 +273,7 @@ def add_new_employee(request):
 
 @login_required
 @hr_required
+@log_activity
 def delete_employee(request, id):
     try:
         # Grab the employee
@@ -291,6 +302,7 @@ def delete_employee(request, id):
 
 @login_required
 @hr_required
+@log_activity
 def edit_employee(request, id):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -339,6 +351,7 @@ def edit_employee(request, id):
 
 @login_required
 @hr_required
+@log_activity
 def add_new_home_address(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -378,6 +391,7 @@ def add_new_home_address(request):
 
 @login_required
 @hr_required
+@log_activity
 def add_bank_details(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -411,6 +425,7 @@ def add_bank_details(request):
 
 @login_required
 @hr_required
+@log_activity
 def add_organisation_details(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -450,6 +465,7 @@ def add_organisation_details(request):
 
 @login_required
 @hr_required
+@log_activity
 def edit_organisation_details(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -489,6 +505,7 @@ def edit_organisation_details(request):
 
 @login_required
 @hr_required
+@log_activity
 def edit_home_address(request):
     if request.method == 'POST':
         # Fetch the employee
@@ -527,6 +544,7 @@ def edit_home_address(request):
 
 @ems_login_required
 @hr_required
+@log_activity
 def edit_bank_details(request):
     if request.method == 'POST':
         # Fetching data from the edit home address form
@@ -561,6 +579,7 @@ def edit_bank_details(request):
 
 
 @hr_required
+@log_activity
 def add_certification(request):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -594,6 +613,7 @@ def add_certification(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def edit_certification(request):
     if request.method == 'POST':
 
@@ -628,6 +648,7 @@ def edit_certification(request):
 
 @ems_login_required
 @hr_required
+@log_activity
 def delete_certification(request, id):
     try:
         # Grab the certification
@@ -657,6 +678,7 @@ def delete_certification(request, id):
 
 
 @hr_required
+@log_activity
 def add_emergency_contact(request):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -691,6 +713,7 @@ def add_emergency_contact(request):
 
 
 @hr_required
+@log_activity
 def delete_emergency_contact(request, id):
     try:
         # Grab the emergency contact
@@ -717,6 +740,7 @@ def delete_emergency_contact(request, id):
     return render(request, 'employees/deleted.html', context)
 
 
+@log_activity
 def edit_emergency_contact(request):
     if request.method == 'POST':
 
@@ -751,6 +775,7 @@ def edit_emergency_contact(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def add_beneficiary(request):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -785,6 +810,7 @@ def add_beneficiary(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def edit_beneficiary(request):
     if request.method == 'POST':
 
@@ -845,6 +871,7 @@ def delete_beneficiary(request, id):
     return render(request, 'employees/deleted.html', context)
 
 
+@log_activity
 def add_spouse(request):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -885,6 +912,7 @@ def add_spouse(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def delete_spouse(request, id):
     try:
         # Grab the Spouse
@@ -911,6 +939,7 @@ def delete_spouse(request, id):
     return render(request, 'employees/deleted.html', context)
 
 
+@log_activity
 def edit_spouse(request):
     if request.method == 'POST':
         # Fetch the spouse id
@@ -947,6 +976,7 @@ def edit_spouse(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def add_dependant(request):
     if request.method == 'POST':
         # Fetching data from the add dependants' form
@@ -980,6 +1010,7 @@ def add_dependant(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def edit_dependant(request):
     if request.method == 'POST':
         # Fetch the dependant id
@@ -1011,6 +1042,7 @@ def edit_dependant(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def delete_dependant(request, id):
     try:
         # Grab the Dependant
@@ -1037,9 +1069,7 @@ def delete_dependant(request, id):
     return render(request, 'employees/deleted.html', context)
 
 
-
-
-# Deductions
+@log_activity
 def add_deduction(request):
     if request.method == 'POST':
         # Fetching data from the add deductions' form
@@ -1071,6 +1101,7 @@ def add_deduction(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def add_allowance(request):
     if request.method == 'POST':
         # Fetching data from the add allowances form
@@ -1102,6 +1133,7 @@ def add_allowance(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def delete_deduction(request, id):
     try:
         # Grab the Deduction
@@ -1128,6 +1160,7 @@ def delete_deduction(request, id):
     return render(request, 'employees/deleted.html', context)
 
 
+@log_activity
 def edit_leave_details(request):
     if request.method == 'POST':
         # Fetching data from the edit leave' form
@@ -1153,6 +1186,7 @@ def edit_leave_details(request):
         return HttpResponseRedirect(reverse('employee_page', args=[employee_id]))
 
 
+@log_activity
 def delete_allowance(request, id):
     try:
         # Grab the Allowance
@@ -1179,6 +1213,7 @@ def delete_allowance(request, id):
     return render(request, 'employees/deleted.html', context)
 
 
+@log_activity
 def add_supervisee(request):
     if request.method == 'POST':
         # Fetching data from the add deductions' form
@@ -1212,6 +1247,7 @@ def add_supervisee(request):
         return render(request, "employees/failed.html", context)
 
 
+@log_activity
 def delete_supervisee(request, id):
     try:
         # Grab the supervision
@@ -1266,12 +1302,14 @@ def employees_download(request):
     return response
 
 
+@log_activity
 def suspend_employee(request, employee_id):
     employee = get_employee(employee_id)
     suspend(employee)
     return HttpResponseRedirect(reverse('employees_page'))
 
 
+@log_activity
 def employee_profile_page(request, employee_id):
     employee = get_employee(employee_id)
 
@@ -1284,6 +1322,7 @@ def employee_profile_page(request, employee_id):
     return render(request, 'employees/employee_profile.html', context)
 
 
+@log_activity
 def add_more_details_page(request, employee_id):
     employee = get_employee(employee_id)
 
@@ -1308,6 +1347,7 @@ def add_more_details_page(request, employee_id):
     return render(request, 'employees/add_more_details.html', context)
 
 
+@log_activity
 def activate_employees_page(request):
     passive_employees = Employee.objects.exclude(status="Active")
     context = {
@@ -1318,6 +1358,7 @@ def activate_employees_page(request):
     return render(request, 'employees/activate_employees.html', context)
 
 
+@log_activity
 def activate_employee(request, employee_id):
     employee = get_employee(employee_id)
     employee.status = "Active"

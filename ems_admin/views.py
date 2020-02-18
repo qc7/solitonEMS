@@ -6,9 +6,10 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
+from ems_admin.decorators import log_activity
 from ems_admin.forms import UserForm, SolitonUserForm, EMSPermissionForm, SolitonUserEditForm
 from ems_admin.selectors import get_bound_user_form, get_user, get_solitonuser, get_bound_soliton_user_form, \
-    fetch_all_permissions_or_create, get_permission, get_audit_trails, get_all_audit_trails
+    fetch_all_permissions_or_create, get_permission, get_recent_audit_trails, get_all_recent_audit_trails
 from ems_auth.decorators import super_admin_required, ems_login_required
 from ems_auth.models import SolitonUser
 
@@ -17,6 +18,7 @@ User = get_user_model()
 
 @ems_login_required
 @super_admin_required
+@log_activity
 def manage_users_page(request):
     user = request.user
     if request.method == 'POST':
@@ -55,6 +57,7 @@ def manage_users_page(request):
 
 
 @super_admin_required
+@log_activity
 def edit_user_page(request, id):
     user = get_user(id)
     user_form = get_bound_user_form(user)
@@ -90,6 +93,7 @@ def edit_user_page(request, id):
 
 
 @super_admin_required
+@log_activity
 def manage_user_permissions_page(request, id):
     user = get_user(id)
     permissions = fetch_all_permissions_or_create(user)
@@ -103,6 +107,7 @@ def manage_user_permissions_page(request, id):
 
 
 @super_admin_required
+@log_activity
 def edit_user_permission_page(request, id):
     permission = get_permission(id)
     permission_user = permission.user
@@ -126,6 +131,7 @@ def edit_user_permission_page(request, id):
 
 
 @super_admin_required
+@log_activity
 def view_users_page(request):
     user = request.user
     context = {
@@ -137,8 +143,9 @@ def view_users_page(request):
     return render(request, 'ems_admin/view_users.html', context)
 
 
+@log_activity
 def user_audit_trail(request, user_id):
-    audit_trails = get_audit_trails(user_id)
+    audit_trails = get_recent_audit_trails(user_id)
     context = {
         "admin": "active",
         "audit_trails": audit_trails,
@@ -147,8 +154,9 @@ def user_audit_trail(request, user_id):
     return render(request, "ems_admin/user_audit_trail.html", context)
 
 
+@log_activity
 def audit_trails(request):
-    audit_trails = get_all_audit_trails()
+    audit_trails = get_all_recent_audit_trails()
     context = {
         "admin": "active",
         "audit_trails": audit_trails,

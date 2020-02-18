@@ -6,6 +6,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
+from ems_admin.decorators import log_activity
 from ems_auth.decorators import ems_login_required, hr_required
 from holidays.models import Holiday
 from holidays.selectors import get_all_holidays, get_holiday
@@ -14,6 +15,7 @@ from holidays.services import create_holiday
 
 @ems_login_required
 @hr_required
+@log_activity
 def holidays_page(request):
     if request.POST:
         date = request.POST.get('date')
@@ -31,6 +33,7 @@ def holidays_page(request):
     return render(request, 'holidays/holidays_page.html', context)
 
 
+@log_activity
 def delete_holiday(request, holiday_id):
     holiday = get_holiday(holiday_id)
     holiday.delete()
@@ -38,6 +41,7 @@ def delete_holiday(request, holiday_id):
     return HttpResponseRedirect(reverse('holidays_page'))
 
 
+@log_activity
 def edit_holiday_page(request, holiday_id):
     holiday = get_holiday(holiday_id)
     if request.POST:

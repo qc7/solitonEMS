@@ -5,6 +5,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
+from ems_admin.decorators import log_activity
 from organisation_details.decorators import organisationdetail_required
 from settings.selectors import get_all_currencies, get_currency
 from training.models import Training, TrainingSchedule
@@ -13,6 +14,7 @@ from training.selectors import get_all_training_schedules, get_applicant_trainin
 from training.services import approve_training_application_service, reject_training_application_service
 
 
+@log_activity
 def user_training_page(request):
     applicant = request.user.solitonuser.employee
     if request.POST:
@@ -59,6 +61,7 @@ def user_training_page(request):
     return render(request, 'training/user_training.html', context)
 
 
+@log_activity
 def schedule_training_page(request):
     if request.POST:
         programme = request.POST.get('programme')
@@ -86,6 +89,7 @@ def schedule_training_page(request):
     return render(request, 'training/schedule_training.html', context)
 
 
+@log_activity
 def edit_training_schedule(request, training_schedule_id):
     if request.POST:
         programme = request.POST.get('programme')
@@ -113,12 +117,14 @@ def edit_training_schedule(request, training_schedule_id):
     return render(request, "training/edit_training_schedule.html", context)
 
 
+@log_activity
 def delete_training_schedule(request, training_schedule_id):
     training_schedule = get_training_schedule(training_schedule_id)
     training_schedule.delete()
     return HttpResponseRedirect(reverse(schedule_training_page))
 
 
+@log_activity
 def training_schedules_page(request):
     training_schedules = get_all_training_schedules()
     context = {
@@ -129,6 +135,7 @@ def training_schedules_page(request):
 
 
 @organisationdetail_required
+@log_activity
 def approve_training_page(request):
     approver = request.user
     pending_applications = get_pending_training_applications(approver)
@@ -139,6 +146,7 @@ def approve_training_page(request):
     return render(request, 'training/approve_training_applications.html', context)
 
 
+@log_activity
 def approve_training_application(request, training_application_id):
     approver = request.user
     training_application = get_training_application(training_application_id)
@@ -151,6 +159,7 @@ def approve_training_application(request, training_application_id):
     return HttpResponseRedirect(reverse('approve_training_page'))
 
 
+@log_activity
 def reject_training_application(request, training_application_id):
     rejecter = request.user
     training_application = get_training_application(training_application_id)

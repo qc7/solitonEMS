@@ -14,6 +14,7 @@ def log_activity(function):
             activity_name = function.__name__
             save_audit_trail(user, activity_name)
             return function(request, **kw)
+
         except User.DoesNotExist:
             return function(request, **kw)
 

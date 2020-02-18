@@ -54,12 +54,12 @@ def get_permission(id):
     return permission
 
 
-def get_audit_trails(user_id):
+def get_recent_audit_trails(user_id):
     user = get_user(user_id)
-    audit_trails = AuditTrail.objects.filter(user=user)
+    audit_trails = AuditTrail.objects.filter(user=user).order_by('-id')
     return audit_trails
 
 
-def get_all_audit_trails():
-    audit_trails = AuditTrail.objects.all()
+def get_all_recent_audit_trails():
+    audit_trails = AuditTrail.objects.all().order_by('-id')
     return audit_trails

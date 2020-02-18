@@ -4,11 +4,13 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
+from ems_admin.decorators import log_activity
 from learning_and_development.models import Resource
 from learning_and_development.selectors import get_all_resources, get_resource
 from organisation_details.selectors import get_all_departments, get_department
 
 
+@log_activity
 def manage_resources_page(request):
     if request.POST and request.FILES:
         name = request.POST.get('name')
@@ -43,6 +45,7 @@ def manage_resources_page(request):
     return render(request, 'learning_and_development/manage_resources.html', context)
 
 
+@log_activity
 def edit_resource_page(request, resource_id):
     resource = get_resource(resource_id)
     if request.POST:
@@ -79,12 +82,13 @@ def edit_resource_page(request, resource_id):
     return render(request, 'learning_and_development/edit_resource.html', context)
 
 
+@log_activity
 def delete_resource(request, resource_id):
     resource = get_resource(resource_id)
     resource.delete()
     return HttpResponseRedirect(reverse(manage_resources_page))
 
-
+@log_activity
 def resources_page(request):
     if request.POST:
         department_id = request.POST.get('department_id')
@@ -116,7 +120,7 @@ def resources_page(request):
     }
     return render(request, 'learning_and_development/resources.html', context)
 
-
+@log_activity
 def books_page(request):
     if request.POST:
         department_id = request.POST.get('department_id')
@@ -149,7 +153,7 @@ def books_page(request):
     }
     return render(request, 'learning_and_development/books.html', context)
 
-
+@log_activity
 def videos_page(request):
     if request.POST:
         department_id = request.POST.get('department_id')
@@ -182,7 +186,7 @@ def videos_page(request):
     }
     return render(request, 'learning_and_development/videos.html', context)
 
-
+@log_activity
 def audios_page(request):
     if request.POST:
         department_id = request.POST.get('department_id')
