@@ -1,6 +1,6 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Users</h1>
+<h1>Audit Trail</h1>
 {% endblock %}
 
 {% block content %}
@@ -13,21 +13,17 @@
             <table class="table table-hover">
               <thead class="">
                 <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
+                <th>Activity</th>
+                <th>Time</th>
                 <th>Last Login</th>
-                <th>Actions</th>
               </thead>
               <tbody>
-                {% for user in users  %}
+                {% for audit_trail in audit_trails  %}
                 <tr>
-                 <td>{{user.id}}</td>
-                  <td>{{user.solitonuser.employee}}</td>
-                  <td>{{user.email}}</td>
-                  <td>{{user.last_login}}</td>
-                  <td><a href="{%url 'user_audit_trail' user.id%}">
-                    <button>View Audit Trail</button>
-                  </a></td>
+                 <td>{{audit_trail.id}}</td>
+                  <td>{{audit_trail.activity_name}}</td>
+                  <td>{{audit_trail.created_at}}</td>
+                  <td>{{audit_trail.user.last_login}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -36,8 +32,6 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </div>
 {%endblock content%}

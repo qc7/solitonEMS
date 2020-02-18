@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 
 from ems_admin.forms import UserForm, SolitonUserForm, SolitonUserEditForm
-from ems_admin.models import EMSPermission
+from ems_admin.models import EMSPermission, AuditTrail
 from ems_admin.services import create_default_permissions
 from ems_auth.models import SolitonUser
 
@@ -52,3 +52,14 @@ def fetch_all_permissions_or_create(user):
 def get_permission(id):
     permission = EMSPermission.objects.get(pk=id)
     return permission
+
+
+def get_audit_trails(user_id):
+    user = get_user(user_id)
+    audit_trails = AuditTrail.objects.filter(user=user)
+    return audit_trails
+
+
+def get_all_audit_trails():
+    audit_trails = AuditTrail.objects.all()
+    return audit_trails
