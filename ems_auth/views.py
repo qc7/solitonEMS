@@ -15,6 +15,7 @@ def login_view(request):
         return render(request, "ems_auth/login.html")
 
 
+@log_activity
 def login_page(request):
     return render(request, "ems_auth/login.html")
 
@@ -34,5 +35,6 @@ def super_admin_required_page(request):
     return render(request, "ems_auth/super_admin_required.html", context)
 
 
+@log_activity
 def hr_required_page(request):
     return render(request, "ems_auth/hr_required.html", )

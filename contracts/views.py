@@ -11,9 +11,11 @@ from contracts.selectors import get_contract, get_active_contracts, get_terminat
 from contracts.services import terminate, activate
 from employees.selectors import get_active_employees, get_employee
 from employees.services import suspend
+from ems_admin.decorators import log_activity
 from organisation_details.selectors import get_all_positions, get_position
 
 
+@log_activity
 def manage_job_contracts(request):
     if request.POST and request.FILES:
         reference_number = request.POST.get('reference_number')
@@ -53,12 +55,14 @@ def manage_job_contracts(request):
     return render(request, 'contracts/manage_job_contracts.html', context)
 
 
+@log_activity
 def terminate_contract(request, contract_id):
     contract = get_contract(contract_id)
     terminate(contract)
     return HttpResponseRedirect(reverse(manage_job_contracts))
 
 
+@log_activity
 def edit_contract_page(request, contract_id):
     if request.POST and request.FILES:
         reference_number = request.POST.get('reference_number')
@@ -97,6 +101,7 @@ def edit_contract_page(request, contract_id):
     return render(request, 'contracts/edit_contract.html', context)
 
 
+@log_activity
 def terminated_contracts_page(request):
     terminated_contracts = get_terminated_contracts()
     context = {
@@ -107,6 +112,7 @@ def terminated_contracts_page(request):
     return render(request, 'contracts/terminated_contracts.html', context)
 
 
+@log_activity
 def activate_contract(request, contract_id):
     contract = get_contract(contract_id)
     activate(contract)
@@ -114,6 +120,7 @@ def activate_contract(request, contract_id):
     return HttpResponseRedirect(reverse(manage_job_contracts))
 
 
+@log_activity
 def user_contracts_page(request):
     user = request.user
     employee = user.solitonuser.employee

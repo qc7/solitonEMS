@@ -3,9 +3,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from ems_admin.decorators import log_activity
 from ems_auth.decorators import ems_login_required
-from ems_auth.models import SolitonUser
-from holidays.selectors import is_on_holiday
+
 from overtime.models import OvertimeApplication
 from overtime.procedures import is_duration_valid
 from overtime.selectors import get_all_overtime_applications, get_pending_overtime_applications, \
@@ -16,6 +16,7 @@ from overtime.services import reject_overtime_application_service, approve_overt
 
 # Create your views here.
 @ems_login_required
+@log_activity
 def approve_overtime_page(request):
     approver = request.user
     pending_applications = get_pending_overtime_applications(approver)
@@ -27,12 +28,13 @@ def approve_overtime_page(request):
 
 
 @ems_login_required
+@log_activity
 def apply_for_overtime_page(request):
     if request.POST:
         start_time = request.POST.get('start_time')
         end_time = request.POST.get('end_time')
         description = request.POST.get('description')
-        applicant = None
+
         try:
             applicant = request.user.solitonuser.employee
         except:
@@ -63,6 +65,7 @@ def apply_for_overtime_page(request):
 
 
 @ems_login_required
+@log_activity
 def overtime_applications_page(request):
     context = {
         "overtime_page": "active",
@@ -73,6 +76,7 @@ def overtime_applications_page(request):
 
 
 @ems_login_required
+@log_activity
 def approved_overtime_applications_page(request):
     # Get the approved overtime applications
     approved_applications = OvertimeApplication.objects.filter(status="Approved")
@@ -83,6 +87,7 @@ def approved_overtime_applications_page(request):
     return render(request, 'overtime/approved_applications_page.html', context)
 
 
+@log_activity
 def amend_overtime_application_page(request, overtime_application_id):
     overtime_application = get_overtime_application(overtime_application_id)
     if request.POST:
@@ -102,6 +107,7 @@ def amend_overtime_application_page(request, overtime_application_id):
     return render(request, 'overtime/amend_overtime_application.html', context)
 
 
+@log_activity
 def reject_overtime_application(request, overtime_application_id):
     rejecter = request.user
     overtime_application = get_overtime_application(overtime_application_id)
@@ -113,6 +119,7 @@ def reject_overtime_application(request, overtime_application_id):
     return HttpResponseRedirect(reverse('approve_overtime_page'))
 
 
+@log_activity
 def approve_overtime_application(request, overtime_application_id):
     approver = request.user
     overtime_application = get_overtime_application(overtime_application_id)

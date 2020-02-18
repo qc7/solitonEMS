@@ -4,16 +4,19 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from employees.models import Employee
 from employees.selectors import get_active_employees
+from ems_admin.decorators import log_activity
 from ems_auth.decorators import hr_required, ems_login_required
 from organisation_details.models import Position, Department, Team
 from organisation_details.selectors import get_all_departments, get_department, get_position, get_all_positions
 from settings.selectors import get_all_currencies, get_currency
 
 
+@log_activity
 def about_us(request):
     return render(request, "organisation_description.html")
 
 
+@log_activity
 def no_organisation_detail_page(request):
     context = {
         "organisation_detail_page": "active"
@@ -22,6 +25,7 @@ def no_organisation_detail_page(request):
 
 
 @hr_required
+@log_activity
 def departments_page(request):
     context = {
         "user": request.user,
@@ -34,8 +38,8 @@ def departments_page(request):
 
 
 @hr_required
+@log_activity
 def teams_page(request, id):
-
     ts = Team.objects.filter(department=id)
     context = {
         "user": request.user,
@@ -51,8 +55,8 @@ def teams_page(request, id):
 
 @ems_login_required
 @hr_required
+@log_activity
 def job_titles_page(request):
-
     context = {
         "user": request.user,
         "organisation_page": "active",
@@ -64,6 +68,7 @@ def job_titles_page(request):
 
 
 # Department Section
+@log_activity
 def add_new_department(request):
     if request.method == "POST":
         dep_name = request.POST["dep_name"]
@@ -103,8 +108,8 @@ def edit_department(request, id):
     return redirect('departments_page')
 
 
+@log_activity
 def edit_department_page(request, id):
-
     context = {
         "user": request.user,
         "employee": get_active_employees(),
@@ -113,6 +118,7 @@ def edit_department_page(request, id):
     return render(request, 'employees/departments.html', context)
 
 
+@log_activity
 def delete_department(request, id):
     try:
         department = get_department(id)
@@ -125,6 +131,7 @@ def delete_department(request, id):
     return redirect('departments_page')
 
 
+@log_activity
 def add_new_team(request):
     if request.method == "POST":
         team_name = request.POST["team_name"]
@@ -143,7 +150,8 @@ def add_new_team(request):
         return redirect('teams_page', id=dpt)
 
 
-# Job Titles
+# Job Titles'
+@log_activity
 def add_new_title(request):
     if request.method == "POST":
         job_title = request.POST["job_title"]
@@ -169,7 +177,6 @@ def add_new_title(request):
 
 
 def edit_job_title_page(request, id):
-
     context = {
         "user": request.user,
         "employee": get_active_employees(),
@@ -178,6 +185,7 @@ def edit_job_title_page(request, id):
     return render(request, 'employees/job_titles.html', context)
 
 
+@log_activity
 def edit_job_title(request, id):
     try:
         if request.method == "POST":
@@ -196,6 +204,7 @@ def edit_job_title(request, id):
     return redirect('job_titles_page')
 
 
+@log_activity
 def delete_job_title(request, id):
     try:
         job = get_position(id)

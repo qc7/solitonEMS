@@ -6,6 +6,7 @@ from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseRedirect
 
+from ems_admin.decorators import log_activity
 from ems_auth.models import SolitonUser
 from payroll.selectors import get_payroll_record_by_id
 from payroll.services import create_payslip_list_service
@@ -18,6 +19,7 @@ from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_
     get_total_net_pay, render_to_pdf
 
 
+@log_activity
 def payroll_page(request):
     context = {
         "payroll_page": "active"
@@ -25,6 +27,7 @@ def payroll_page(request):
     return render(request, 'payroll/payroll_page.html', context)
 
 
+@log_activity
 def manage_payroll_records_page(request):
     date_now = datetime.datetime.now()
 
@@ -40,6 +43,7 @@ def manage_payroll_records_page(request):
     return render(request, 'payroll/manage_payroll_records.html', context)
 
 
+@log_activity
 def view_payroll_records_page(request):
     context = {
         "user": request.user,
@@ -49,6 +53,7 @@ def view_payroll_records_page(request):
     return render(request, 'payroll/payroll_records.html', context)
 
 
+@log_activity
 def payroll_record_page(request, id):
     # Get the payroll record
     payroll_record = PayrollRecord.objects.get(pk=id)
@@ -79,6 +84,7 @@ def payroll_record_page(request, id):
     return render(request, 'payroll/payroll_record.html', context)
 
 
+@log_activity
 def edit_period_page(request, id):
     # fetch PayrollRecordRequest 
     payroll_record = PayrollRecord.objects.get(pk=id)
@@ -93,6 +99,7 @@ def edit_period_page(request, id):
     return render(request, 'payroll/edit_payroll.html', context)
 
 
+@log_activity
 def payslip_page(request, id):
     # Get the payroll
     payslip = Payslip.objects.get(pk=id)
@@ -110,6 +117,7 @@ def payslip_page(request, id):
     return render(request, 'payroll/payslip.html', context)
 
 
+@log_activity
 def view_payslip_page(request):
     # Get the payroll
     # Get the notifications
@@ -122,6 +130,7 @@ def view_payslip_page(request):
     return render(request, 'payroll/view_payslip.html', context)
 
 
+@log_activity
 def your_payslip_page(request):
     # Get the payroll record from from
     year = request.POST.get('year')
@@ -152,6 +161,7 @@ def your_payslip_page(request):
     return render(request, 'payroll/payslip.html', context)
 
 
+@log_activity
 def payslips_page(request, payroll_record_id):
     payroll_record = get_payroll_record_by_id(payroll_record_id)
     payslips = Payslip.objects.filter(payroll_record=payroll_record)
@@ -167,6 +177,7 @@ def payslips_page(request, payroll_record_id):
     return render(request, 'payroll/payslips.html', context)
 
 
+@log_activity
 def generate_payslip_pdf(request, id):
     # Get the payslip
     payslip = Payslip.objects.get(pk=id)
@@ -379,6 +390,7 @@ def add_overtime(request):
     return HttpResponseRedirect(reverse('payslip_page', args=[payroll.id]))
 
 
+@log_activity
 def payroll_download(request, id):
     # Get the payroll record
     payroll_record = PayrollRecord.objects.get(pk=id)

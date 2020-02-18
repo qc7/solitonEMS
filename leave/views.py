@@ -12,6 +12,7 @@ from collections import namedtuple
 from employees.models import Employee
 from django.db import connection
 
+from ems_admin.decorators import log_activity
 from organisation_details.decorators import organisationdetail_required
 from organisation_details.models import Department, Team
 from .models import (
@@ -49,6 +50,7 @@ def get_current_user(request, need):
 
 @login_required
 @organisationdetail_required
+@log_activity
 def leave_dashboard_page(request):
     applications = ""
     user = request.user
@@ -107,6 +109,7 @@ def leave_dashboard_page(request):
     return render(request, 'leave/dashboard.html', context)
 
 
+@log_activity
 def leave_types_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
@@ -120,6 +123,7 @@ def leave_types_page(request):
     return render(request, 'leave/leave_types.html', context)
 
 
+@log_activity
 def add_new_type(request):
     if request.method == 'POST':
         # Fetching data from the add new leave type form
@@ -152,6 +156,7 @@ def add_new_type(request):
 
 
 @login_required
+@log_activity
 def edit_leave_type_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
@@ -167,6 +172,7 @@ def edit_leave_type_page(request, id):
     return render(request, 'leave/leave_type.html', context)
 
 
+@log_activity
 def holidays_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
@@ -180,6 +186,7 @@ def holidays_page(request):
     return render(request, 'leave/holidays.html', context)
 
 
+@log_activity
 def add_new_holiday(request):
     if request.method == 'POST':
         # Fetching data from the add new holiday form
@@ -202,6 +209,7 @@ def add_new_holiday(request):
 
 
 @organisationdetail_required
+@log_activity
 def apply_leave_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
@@ -224,6 +232,7 @@ def apply_leave_page(request):
 
 
 @login_required
+@log_activity
 def apply_leave(request):
     if request.method == "POST":
 
@@ -352,6 +361,7 @@ def leave_records(request):
     return render(request, "leave/leave_records.html", context)
 
 
+@log_activity
 def add_leave_records(request):
     yr = 0
 
@@ -543,7 +553,7 @@ def get_leave_overlap(start_date, end_date):
 
     return overlap_count
 
-
+@log_activity
 def Leave_planner_summary(request):
     # The line requires the user to be authenticated before accessing the view responses.
     if not request.user.is_authenticated:
