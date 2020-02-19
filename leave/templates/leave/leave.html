@@ -1,7 +1,7 @@
 {% extends './base.html'%} {% load static %}
 
 {% block page_title %}
-<h2>Leave Application</h2>
+<h1>Leave Application</h1>
 {% endblock %}
 
 {%block content%}
@@ -12,30 +12,30 @@
                 <div class="card card-profile">
 
                     <div class="card-body">
-                    <!-- Status Flash Messages -->
+                        <!-- Status Flash Messages -->
                         {% if messages %}
-                            {% for msg in messages%}
-                                <div class="alert alert-{{ msg.tags }} alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                        {% for msg in messages%}
+                        <div class="alert alert-{{ msg.tags }} alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
                                 &times;</button>
-                                    {{ msg }}
-                                </div>
-                             {% endfor %}
-                        {% endif %} 
-                        
+                            {{ msg }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+
                         <h2>Annual Balance: <b>{{ l_balance }} day(s)</b></h2>
                         <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_apply_leave">Apply Now</button>
-                       {% comment %} <a class="nav-link" href="{% url 'leave_planner' %}"> {% endcomment %}
+                        {% comment %} <a class="nav-link" href="{% url 'leave_planner' %}"> {% endcomment %}
                         {% comment %} <button class="btn btn-outline-primary" >Leave Planner</button></a> {% endcomment %}
-                       <h3>Your Applications</h3>
+                        <h3>Your Applications</h3>
                         <table class="table">
-                            <thead>
-                                <th>Date</th>
-                                <th>Leave Type</th>
-                                <th>Duration</th>
-                                <th>Supervisor</th>
-                                <th>HOD</th>
-                                <th>HR</th>            
+                            <thead class="thead-dark">
+                            <th>Date</th>
+                            <th>Leave Type</th>
+                            <th>Duration</th>
+                            <th>Supervisor</th>
+                            <th>HOD</th>
+                            <th>HR</th>
                             </thead>
                             {% for leave_application in apps %}
                             <tr>
@@ -43,7 +43,7 @@
                                 <td>{{leave_application.leave_type}}</td>
                                 <td>{{leave_application.no_of_days}}</td>
                                 <td>
-                                {{ leave_application.supervisor_status }}                                 
+                                    {{ leave_application.supervisor_status }}
                                 </td>
                                 <td>{{leave_application.hod_status}}</td>
                                 <td>{{leave_application.hr_status}}</td>
@@ -59,7 +59,7 @@
 </div>
 <!-- Modal: modalApplyLeave -->
 <div class="modal fade" id="modal_apply_leave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style="overflow-y: auto !important">
+     aria-hidden="true" style="overflow-y: auto !important">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!-- Header -->
@@ -103,7 +103,7 @@
                     <div class="modal-footer">
                         <button class="btn btn-danger" type="submit">Apply</button>
                         <button class="btn btn-outline-danger" class="close" data-dismiss="modal" aria-label="Close">
-                        Close</button>
+                            Close</button>
                     </div>
                 </form>
 
@@ -111,4 +111,4 @@
         </div>
     </div>
 </div>
-    {%endblock%}
+{%endblock%}

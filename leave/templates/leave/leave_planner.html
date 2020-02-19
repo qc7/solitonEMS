@@ -22,18 +22,21 @@
         {% endif %}
 
     <div class="col-md-12">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover" id="planner_table">
-            <thead class="">
+
+
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover" id="planner_table">
+              <thead class="thead-dark">
               <th>Employee</th>
               <th>Type</th>
               <th>Duration</th>
               <th>Duration</th>
               <th>Status</th>
-            </thead>
-            <tbody>
-              {% for plan in planner  %}
+              </thead>
+              <tbody>
+              {% for plan in planner %}
               <tr>
                 <td><a href="#" style="color: inherit">{{ plan.employee }}</a></td>
                 <td>{{ plan.leave }}</td>
@@ -41,14 +44,18 @@
                 <td>{{ plan.status }}</td>
                 <td><a href="#" style="color:inherit"><i class="fa fa-edit"></i></a></td>
                 <td>
-                <a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
-                </a></td>
+                  <a href="#" style="color: inherit" ...
+                     onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
+                  </a></td>
               </tr>
               {% endfor %}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+
+
     </div>
 
     <!-- Modal: modalAddNewHoliday -->

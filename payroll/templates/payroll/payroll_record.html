@@ -3,7 +3,7 @@
 
 {%block page_title %}
 <span>
-    <h3>Generate Payroll Records</h3>
+    <h1>Payroll Records</h1>
 </span>
 {%endblock%}
 
@@ -31,28 +31,19 @@
                 {%if not payrolls %}
                 <a href="{%url 'generate_payroll' payroll_record.id %}"><button class="btn btn-danger">Generate Initial
                     Payroll</button></a>
-                <a href="#"><button
-                        class="btn btn-success">Generate Payroll With Bonus</button></a>
-                <div class="instructions">
-                    <h4>Initial Payroll</h4>
-                    <ul>
-                        <li>It considers a meal allowance of UGX 150,000 for each employee on the gross pay</li>
-                        <li>It does not consider overtime and bonuses</li>
-                        <li>It considers statutory deductions from the gross pay to generate a net pay</li>
-                    </ul>
-                </div>
+
                 {%else%}
 
                 <table class="table">
-                    <tr>
-                        <th>Emp. ID</th>
-                        <th>Name</th>
-                        <th>NSSF Contribution</th>
-                        <th>PAYE</th>
-                        <th>Gross Pay</th>
-                        <th>Basic Pay</th>
-                        <th>Net Pay</th>
-                    </tr>
+                    <thead class="thead-dark">
+                    <th>Emp. ID</th>
+                    <th>Name</th>
+                    <th>NSSF Contribution</th>
+                    <th>PAYE</th>
+                    <th>Gross Pay</th>
+                    <th>Basic Pay</th>
+                    <th>Net Pay</th>
+                    </thead>
                     {%for payroll in payrolls%}
                     <tr>
                         <td>{{payroll.employee.id}}</td>

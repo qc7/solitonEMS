@@ -2,7 +2,7 @@
 {% load humanize %}
 {% load static %}
 {% block page_title %}
-<h3>Job Advertisements</h3>
+<h1>Job Advertisements</h1>
 {% endblock %}
 
 {%block content%}
@@ -12,20 +12,20 @@
             <div class="card-body">
 
                 {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-warning">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}</div>
-                    {% endfor %}
+                {% for message in messages %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}</div>
+                {% endfor %}
                 {% endif %}
-
+                {%if job_ads%}
                 <table class="table">
-                    <tr>
-                        <th>Position</th>
-                        <th>Vacancy</th>
-                        <th>Deadline</th>
-                        <th>Actions</th>
-                    </tr>
+                    <thead class="thead-dark">
+                    <th>Position</th>
+                    <th>Vacancy</th>
+                    <th>Deadline</th>
+                    <th>Actions</th>
+                    </thead>
                     {%for job_ad in job_ads%}
                     <tr>
                         <td>{{job_ad.position}}</td>
@@ -35,6 +35,11 @@
                     </tr>
                     {%endfor%}
                 </table>
+                {%else%}
+                <h2>No Job Advertisements</h2>
+                {%endif%}
+
+
             </div>
         </div>
     </div>

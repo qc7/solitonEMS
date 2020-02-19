@@ -11,18 +11,19 @@
             <div class="card">
                 <div class="card-body">
                     <table class="table">
-                        <tr>
+                        <thead class="thead-dark">
                             <th>Payroll Record ID</th>
                             <th>Month</th>
                             <th>Year</th>
                             <th>Actions</th>
-                        </tr>
+                        </thead>
                         {%for payroll_record in payroll_records%}
                         <tr>
                             <td>{{payroll_record.id}}</td>
                             <td>{{payroll_record.month}}</td>
                             <td>{{payroll_record.year}}</td>
-                            <td><a href="{%url 'payslips_page' payroll_record.id %}">View Payroll</a></td>
+                            <td><a href="{%url 'payslips_page' payroll_record.id %}">
+                                <button>View Payroll</button></a></td>
                         </tr>
                         {%endfor%}
                     </table>
