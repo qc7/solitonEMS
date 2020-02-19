@@ -2,41 +2,43 @@
 {% load humanize %}
 {% load static %}
 {% block page_title %}
-<h3>Manage Holidays</h3>
+<h1>Manage Holidays</h1>
 {% endblock %}
 
 {%block content%}
 <div class="content">
     <div class="container-fluid">
+        <button class="btn btn-danger" data-toggle="modal"
+                data-target="#modal_create_holiday">Create a public holiday</button>
         <div class="card animated fadeInUp">
             <div class="card-body">
 
-                <button class="btn btn-danger" data-toggle="modal"
-                        data-target="#modal_create_holiday">Create a public holiday</button>
                 {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-warning">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}</div>
-                    {% endfor %}
+                {% for message in messages %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}</div>
+                {% endfor %}
                 {% endif %}
                 <h3>Holidays</h3>
                 <div>
                     <table class="table">
-                    <tr>
+                        <thead class="thead-dark">
                         <th>Date</th>
                         <th>Name</th>
                         <th>Actions</th>
-                    </tr>
-                      {%for holiday in holidays%}
-                    <tr>
-                        <td>{{holiday.date}}</td>
-                        <td>{{holiday.name}}</td>
-                        <td><a href="{%url 'edit_holiday_page' holiday.id%}">Edit</a> | <a href="{%url 'delete_holiday' holiday.id%}">Delete</a></td>
+                        </thead>
+                        {%for holiday in holidays%}
+                        <tr>
+                            <td>{{holiday.date}}</td>
+                            <td>{{holiday.name}}</td>
+                            <td><a href="{%url 'edit_holiday_page' holiday.id%}">
+                                <button>Edit</button></a> | <a href="{%url 'delete_holiday' holiday.id%}">
+                                <button>Delete</button></a></td>
 
-                    </tr>
-                    {%endfor%}
-                </table>
+                        </tr>
+                        {%endfor%}
+                    </table>
                 </div>
             </div>
         </div>

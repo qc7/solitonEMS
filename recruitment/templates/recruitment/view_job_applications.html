@@ -2,7 +2,7 @@
 {% load humanize %}
 {% load static %}
 {% block page_title %}
-<h3>Job Advertisements</h3>
+<h1>Job Advertisements</h1>
 {% endblock %}
 
 {%block content%}
@@ -18,23 +18,27 @@
                         {{ message }}</div>
                     {% endfor %}
                 {% endif %}
-
+                {%if job_ads%}
                 <table class="table">
-                    <tr>
+                    <thead class="thead-dark">
                         <th>Position</th>
                         <th>Vacancy</th>
                         <th>Deadline</th>
                         <th>Actions</th>
-                    </tr>
+                    </thead>
                     {%for job_ad in job_ads%}
                     <tr>
                         <td>{{job_ad.position}}</td>
                         <td>{{job_ad.vacancy}}</td>
                         <td>{{job_ad.deadline}}</td>
-                        <td><a  href="{%url 'job_applications' job_ad.id%}">View Applications</a></td>
+                        <td><a  href="{%url 'job_applications' job_ad.id%}">
+                            <button>View Applications</button></a></td>
                     </tr>
                     {%endfor%}
                 </table>
+                {%else%}
+                <h2>No job advertisements</h2>
+                {%endif%}
             </div>
         </div>
     </div>

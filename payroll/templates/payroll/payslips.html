@@ -3,7 +3,7 @@
 
 {%block page_title %}
 <span>
-    <h3>Payroll</h3>
+    <h1>Payroll</h1>
 </span>
 {%endblock%}
 
@@ -30,7 +30,7 @@
             <div class="card-body">
                 {%if payslips %}
                 <table class="table">
-                    <tr>
+                    <thead class="thead-dark">
                         <th>Emp. ID</th>
                         <th>Name</th>
                         <th>NSSF Contribution</th>
@@ -38,7 +38,7 @@
                         <th>Gross Pay</th>
                         <th>Basic Pay</th>
                         <th>Net Pay</th>
-                    </tr>
+                    </thead>
                     {%for payslip in payslips%}
                     <tr>
                         <td>{{payslip.employee.id}}</td>

@@ -4,7 +4,7 @@
 
 {%block page_title %}
 <span>
-    <h2 class="animated fadeInDown">{{job_advertisement.position}} Applications</h2>
+    <h1 class="animated fadeInDown">{{job_advertisement.position}} Applications</h1>
 </span>
 {%endblock%}
 
@@ -14,13 +14,14 @@
         <div class="card animated fadeInUp">
             <div class="card-body">
                 <h3>Applicants</h3>
+                {%if job_applications%}
                 <table class="table">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Actions</th>
-                    </tr>
+                    <thead class="thead-dark">
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Actions</th>
+                    </thead>
                     {%for job_application in job_applications%}
                     <tr>
                         <td>{{job_application.applicant}}</td>
@@ -35,7 +36,9 @@
                     </tr>
                     {%endfor%}
                 </table>
-
+                {%else%}
+                <h2>No job applications</h2>
+                {%endif%}
             </div>
         </div>
     </div>
