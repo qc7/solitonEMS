@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import ems_login_required
+from ems_auth.decorators import ems_login_required, overtime_full_auth_required
 
 from overtime.models import OvertimeApplication
 from overtime.procedures import is_duration_valid
@@ -65,6 +65,7 @@ def apply_for_overtime_page(request):
 
 
 @ems_login_required
+@overtime_full_auth_required
 @log_activity
 def overtime_applications_page(request):
     context = {

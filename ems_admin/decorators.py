@@ -19,3 +19,5 @@ def log_activity(function):
             return function(request, **kw)
 
     return wrapper
+
+

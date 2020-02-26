@@ -1,7 +1,12 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+
+from ems_admin.models import EMSPermission
+from ems_admin.selectors import get_user
+
+User = get_user_model()
 
 
 def ems_login_required(function):
@@ -47,5 +52,175 @@ def first_login(function):
             return render(request, "ems_auth/first_time_login.html")
         else:
             return function(request, *args, **kwargs)
+
+    return wrapper
+
+
+def employees_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Employees")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except User.DoesNotExist:
+            return function(request, **kw)
+
+    return wrapper
+
+
+def organisation_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Organisation")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except User.DoesNotExist:
+            return function(request, **kw)
+
+    return wrapper
+
+
+def leave_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Leave")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except:
+            return function(request, **kw)
+
+    return wrapper
+
+
+def payroll_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Payroll")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except:
+            return function(request, **kw)
+
+    return wrapper
+
+
+def overtime_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Overtime")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except:
+            return function(request, **kw)
+
+    return wrapper
+
+
+def holidays_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Holidays")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except:
+            return function(request, **kw)
+
+    return wrapper
+
+
+def recruitment_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Recruitment")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except:
+            return function(request, **kw)
+
+    return wrapper
+
+
+def contracts_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Contracts")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except:
+            return function(request, **kw)
+
+    return wrapper
+
+
+def training_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Training")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except:
+            return function(request, **kw)
+
+    return wrapper
+
+
+def learning_and_development_full_auth_required(function):
+    def wrapper(request, **kw):
+        try:
+            user_id = request.user.id
+            user = get_user(user_id)
+            ems_permission = EMSPermission.objects.filter(user=user, name="Learning and Development")[0]
+            if ems_permission.full_auth:
+                return function(request, **kw)
+            else:
+                return render(request, "ems_auth/full_auth_required.html")
+
+        except:
+            return function(request, **kw)
 
     return wrapper

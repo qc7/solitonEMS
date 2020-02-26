@@ -6,12 +6,14 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from ems_admin.decorators import log_activity
+from ems_auth.decorators import recruitment_full_auth_required
 from organisation_details.selectors import get_all_positions, get_position
 from recruitment.forms import JobApplicationForm
 from recruitment.models import JobAdvertisement
 from recruitment.selectors import get_all_job_ads, get_job_advertisement, get_job_applications
 
 
+@recruitment_full_auth_required
 @log_activity
 def manage_job_advertisement_page(request):
     if request.POST:
@@ -107,6 +109,7 @@ def job_advertisements_page(request):
     return render(request, 'recruitment/advertised_jobs.html', context)
 
 
+@recruitment_full_auth_required
 @log_activity
 def view_job_applications_page(request):
     all_positions = get_all_positions()
