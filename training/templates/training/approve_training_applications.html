@@ -19,14 +19,14 @@
                 {%if pending_applications %}
                 <h3>Pending applications</h3>
                 <table class="table">
-                    <tr>
+                    <thead class="thead-dark">
                         <th>Applicant</th>
                         <th>Programme</th>
                         <th>Institution</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Actions</th>
-                    </tr>
+                    </thead>
                     {%for pending_application in pending_applications %}
                     <tr>
                         <td>{{pending_application.applicant}}</td>

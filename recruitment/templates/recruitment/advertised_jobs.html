@@ -31,7 +31,8 @@
                         <td>{{job_ad.position}}</td>
                         <td>{{job_ad.vacancy}}</td>
                         <td>{{job_ad.deadline}}</td>
-                        <td><a  href="{% url 'job_advertisement' job_ad.id %}">View Details</a></td>
+                        <td><a  href="{% url 'job_advertisement' job_ad.id %}">
+                            <button>View Details</button></a></td>
                     </tr>
                     {%endfor%}
                 </table>

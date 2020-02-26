@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import ems_login_required, hr_required
+from ems_auth.decorators import ems_login_required, hr_required, holidays_full_auth_required
 from holidays.models import Holiday
 from holidays.selectors import get_all_holidays, get_holiday
 from holidays.services import create_holiday
@@ -15,6 +15,7 @@ from holidays.services import create_holiday
 
 @ems_login_required
 @hr_required
+@holidays_full_auth_required
 @log_activity
 def holidays_page(request):
     if request.POST:

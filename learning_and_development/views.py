@@ -5,11 +5,13 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from ems_admin.decorators import log_activity
+from ems_auth.decorators import learning_and_development_full_auth_required
 from learning_and_development.models import Resource
 from learning_and_development.selectors import get_all_resources, get_resource
 from organisation_details.selectors import get_all_departments, get_department
 
 
+@learning_and_development_full_auth_required
 @log_activity
 def manage_resources_page(request):
     if request.POST and request.FILES:
@@ -88,6 +90,7 @@ def delete_resource(request, resource_id):
     resource.delete()
     return HttpResponseRedirect(reverse(manage_resources_page))
 
+
 @log_activity
 def resources_page(request):
     if request.POST:
@@ -119,6 +122,7 @@ def resources_page(request):
         "resources": resources
     }
     return render(request, 'learning_and_development/resources.html', context)
+
 
 @log_activity
 def books_page(request):
@@ -153,6 +157,7 @@ def books_page(request):
     }
     return render(request, 'learning_and_development/books.html', context)
 
+
 @log_activity
 def videos_page(request):
     if request.POST:
@@ -185,6 +190,7 @@ def videos_page(request):
 
     }
     return render(request, 'learning_and_development/videos.html', context)
+
 
 @log_activity
 def audios_page(request):

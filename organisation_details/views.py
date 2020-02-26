@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from employees.models import Employee
 from employees.selectors import get_active_employees
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import hr_required, ems_login_required
+from ems_auth.decorators import hr_required, ems_login_required, organisation_full_auth_required
 from organisation_details.models import Position, Department, Team
 from organisation_details.selectors import get_all_departments, get_department, get_position, get_all_positions
 from settings.selectors import get_all_currencies, get_currency
@@ -25,6 +25,7 @@ def no_organisation_detail_page(request):
 
 
 @hr_required
+@organisation_full_auth_required
 @log_activity
 def departments_page(request):
     context = {
@@ -55,6 +56,7 @@ def teams_page(request, id):
 
 @ems_login_required
 @hr_required
+@organisation_full_auth_required
 @log_activity
 def job_titles_page(request):
     context = {

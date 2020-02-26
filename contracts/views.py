@@ -2,19 +2,18 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
-# Create your views here.
 from django.urls import reverse
 
 from contracts.models import Contract
-from contracts.selectors import get_contract, get_active_contracts, get_terminated_contracts, get_employee_contracts
-from contracts.services import terminate, activate
-from employees.selectors import get_active_employees, get_employee
-from employees.services import suspend
+from contracts.selectors import get_contract, get_terminated_contracts, get_active_contracts, get_employee_contracts
+from contracts.services import activate
+from employees.selectors import get_employee, get_active_employees
 from ems_admin.decorators import log_activity
-from organisation_details.selectors import get_all_positions, get_position
+from ems_auth.decorators import contracts_full_auth_required
+from organisation_details.selectors import get_position, get_all_positions
 
 
+@contracts_full_auth_required
 @log_activity
 def manage_job_contracts(request):
     if request.POST and request.FILES:
@@ -112,6 +111,7 @@ def terminated_contracts_page(request):
     return render(request, 'contracts/terminated_contracts.html', context)
 
 
+@contracts_full_auth_required
 @log_activity
 def activate_contract(request, contract_id):
     contract = get_contract(contract_id)
@@ -120,6 +120,7 @@ def activate_contract(request, contract_id):
     return HttpResponseRedirect(reverse(manage_job_contracts))
 
 
+@contracts_full_auth_required
 @log_activity
 def user_contracts_page(request):
     user = request.user

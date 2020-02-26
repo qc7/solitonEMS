@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from employees.services import create_employee_instance, suspend
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import ems_login_required, hr_required
+from ems_auth.decorators import ems_login_required, hr_required, first_login, employees_full_auth_required
 from ems_auth.models import User
 from organisation_details.models import Department, Position, Team, OrganisationDetail
 from settings.selectors import get_all_currencies, get_currency
@@ -33,6 +33,7 @@ from .selectors import get_employee, get_active_employees
 
 
 @ems_login_required
+@first_login
 @log_activity
 def dashboard_page(request):
     # Get the user
@@ -53,6 +54,7 @@ def dashboard_page(request):
 
 @ems_login_required
 @hr_required
+@employees_full_auth_required
 @log_activity
 def employees_page(request):
     all_currencies = get_all_currencies()

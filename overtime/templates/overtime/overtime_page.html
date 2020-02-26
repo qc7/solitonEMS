@@ -38,14 +38,14 @@
                         <td>
                             <a href="{%url 'reject_overtime_application' pending_application.id%}"
                                onclick="return confirm('Are you sure you want to reject {{pending_application.applicant.first_name}}\'s overtime application?')">
-                                Reject |
+                                <button>Reject</button> |
                             </a>
                             <a href="{%url 'approve_overtime_application' pending_application.id%}"
                                onclick="return confirm('Are you sure you want to approve {{pending_application.applicant.first_name}}\'s overtime application?')">
-                                Approve |
+                                <button>Approve</button> |
                             </a>
                             <a href="{%url 'amend_overtime_application_page' pending_application.id%}">
-                                Amend
+                                <button> Amend</button>
                             </a>
 
                         </td>

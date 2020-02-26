@@ -13,6 +13,7 @@ from employees.models import Employee
 from django.db import connection
 
 from ems_admin.decorators import log_activity
+from ems_auth.decorators import leave_full_auth_required
 from organisation_details.decorators import organisationdetail_required
 from organisation_details.models import Department, Team
 from .models import (
@@ -49,6 +50,7 @@ def get_current_user(request, need):
 
 
 @login_required
+@leave_full_auth_required
 @organisationdetail_required
 @log_activity
 def leave_dashboard_page(request):
@@ -109,6 +111,7 @@ def leave_dashboard_page(request):
     return render(request, 'leave/dashboard.html', context)
 
 
+@leave_full_auth_required
 @log_activity
 def leave_types_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
@@ -294,6 +297,7 @@ def apply_leave(request):
             return render(request, "leave/leave.html")
 
 
+@leave_full_auth_required
 def approve_leave(request):
     if request.method == "POST":
         user = request.user  # getting the current logged in User
@@ -361,6 +365,7 @@ def leave_records(request):
     return render(request, "leave/leave_records.html", context)
 
 
+@leave_full_auth_required
 @log_activity
 def add_leave_records(request):
     yr = 0
@@ -553,6 +558,8 @@ def get_leave_overlap(start_date, end_date):
 
     return overlap_count
 
+
+@leave_full_auth_required
 @log_activity
 def Leave_planner_summary(request):
     # The line requires the user to be authenticated before accessing the view responses.
@@ -598,6 +605,7 @@ def Leave_planner_summary(request):
     return render(request, 'leave/annual_calendar.html', context)
 
 
+@leave_full_auth_required
 def leave_calendar(request, month=date.today().month, year=date.today().year):
     year = int(year)
     month = int(month)

@@ -1,0 +1,20 @@
+{%extends './base.html'%}
+{% load static %}
+{% block title %}
+Password reset Sent
+{% endblock title %}
+{% block content %}
+<div class="limiter">
+	<div class="container-login100" style="background-image: url('{% static 'registration/images/machinery.png'%}');">
+		<div class="wrap-login100 p-t-30 p-b-50" style="background-color:white; padding:30px;">
+			<h2>First Time Login</h2>
+			<br>
+			<p>You are logging in for the first time. It is recommended that you change your password.</p>
+			<br>
+			<a href="{%url 'password_reset' %}">
+				<button class="btn btn-primary">OK</button>
+			</a>
+		</div>
+	</div>
+</div>
+{% endblock content %}
