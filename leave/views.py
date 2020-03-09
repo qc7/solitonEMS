@@ -13,7 +13,7 @@ from employees.models import Employee
 from django.db import connection
 
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import leave_full_auth_required
+from ems_auth.decorators import leave_full_auth_required, employee_required, hr_required, ems_login_required
 from organisation_details.decorators import organisationdetail_required
 from organisation_details.models import Department, Team
 from .models import (
@@ -52,6 +52,7 @@ def get_current_user(request, need):
 @login_required
 @leave_full_auth_required
 @organisationdetail_required
+@employee_required
 @log_activity
 def leave_dashboard_page(request):
     applications = ""
@@ -112,6 +113,7 @@ def leave_dashboard_page(request):
 
 
 @leave_full_auth_required
+@employee_required
 @log_activity
 def leave_types_page(request):
     # The line requires the user to be authenticated before accessing the view responses.
@@ -158,7 +160,8 @@ def add_new_type(request):
         return render(request, "employees/failed.html", context)
 
 
-@login_required
+@ems_login_required
+@employee_required
 @log_activity
 def edit_leave_type_page(request, id):
     # The line requires the user to be authenticated before accessing the view responses.
@@ -186,6 +189,7 @@ def holidays_page(request):
         "leave_page": "active",
         "holidays": Holidays.objects.all()
     }
+
     return render(request, 'leave/holidays.html', context)
 
 
