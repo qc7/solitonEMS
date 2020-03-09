@@ -17,7 +17,7 @@ def get_organisationdetail(user):
     try:
         organisationdetail = user.solitonuser.employee.organisationdetail
         return organisationdetail
-    except OrganisationDetail.DoesNotExist:
+    except:
         return None
 
 
