@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from ems_admin.models import EMSPermission
 from ems_admin.selectors import get_user
+from ems_auth.models import SolitonUser
 
 User = get_user_model()
 
@@ -27,6 +28,18 @@ def super_admin_required(function):
             return function(request, *args, **kw)
         else:
             return HttpResponseRedirect(reverse('super_admin_required_page'))
+
+    return wrapper
+
+
+def employee_required(function):
+    def wrapper(request, *args, **kw):
+        user = request.user
+        try:
+            solitonuser = user.solitonuser
+            return function(request, *args, **kw)
+        except SolitonUser.DoesNotExist:
+            return render(request, "employee_required.html")
 
     return wrapper
 
