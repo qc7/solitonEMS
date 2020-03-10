@@ -68,6 +68,13 @@ def employees_page(request):
 @ems_login_required
 def employee_page(request, id):
     employee = Employee.objects.get(pk=id)
+    yr = date.today().year
+    leave_record = ""
+    try:
+       leave_record = Leave_Records.objects.get(employee=employee.id, leave_year=yr)
+    except:
+        pass
+
     context = {
         "user": request.user,
         "employees_page": "active",
@@ -83,7 +90,8 @@ def employee_page(request, id):
         "teams": Team.objects.all(),
         "allowances": Allowance.objects.all(),
         "supervisee_options": Employee.objects.exclude(pk=employee.id),
-        "supervisions": Supervision.objects.filter(supervisor=employee)
+        "supervisions": Supervision.objects.filter(supervisor=employee),
+        "leave_record": leave_record
     }
     return render(request, 'employees/employee.html', context)
 

@@ -3,13 +3,7 @@ from settings.models import Currency
 
 
 # Create your models here.
-class Department(models.Model):
-    name = models.CharField(max_length=45)
-    hod = models.CharField(max_length=45)
-    status = models.CharField(max_length=15, default="Active")
 
-    def __str__(self):
-        return self.name
 
 
 class Position(models.Model):
@@ -74,6 +68,13 @@ class Employee(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+class Department(models.Model):
+    name = models.CharField(max_length=45)
+    hod = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)#.CharField(max_length=45)
+    status = models.CharField(max_length=15, default="Active")
+
+    def __str__(self):
+        return self.name
 
 class Team(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
