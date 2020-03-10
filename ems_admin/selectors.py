@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-from ems_admin.forms import UserForm, SolitonUserForm
+from ems_admin.forms import UserForm, SolitonUserForm, SolitonUserEditForm
 from ems_admin.models import EMSPermission
 from ems_admin.services import create_default_permissions
 from ems_auth.models import SolitonUser
@@ -19,7 +19,7 @@ def get_bound_user_form(user):
 
 def get_bound_soliton_user_form(user):
     solitonuser = get_solitonuser(user)
-    soliton_user_form = SolitonUserForm(instance=solitonuser)
+    soliton_user_form = SolitonUserEditForm(instance=solitonuser)
     return soliton_user_form
 
 

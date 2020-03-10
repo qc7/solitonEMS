@@ -1,0 +1,97 @@
+{% extends './base.html'%} {% load static %}
+{% block page_title %}
+<span>
+    <h3>{{employee.first_name}} {{employee.last_name}}</h3>
+</span> {% endblock %}
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-profile">
+                    <div class="card-avatar">
+                        <a href="#pablo">
+                            {% if employee.gender == "Male" %}
+                            <img class="img" src="{% static '/assets/img/faces/male_avatar.png' %}" />
+                            {% else%}
+                            <img class="img" src="{% static '/assets/img/faces/female_avatar.jpg' %}" />
+                            {% endif%}
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-category text-gray">{{employee.organisationdetail.position}}</h6>
+                        <h4 class="card-title">Bio Data</h4>
+
+                        <table class="table">
+                            <tr>
+                                <td>Title</td>
+                                <td>{{employee.title}}</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{employee.first_name}} {{employee.last_name}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Grade</th>
+                                <td>{{employee.grade}}</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">Basic Salary</th>
+                                <td>{{employee.currency}} {{employee.basic_salary}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Workstation</th>
+                                <td>{{employee.work_station}}</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">Gender</th>
+                                <td>{{employee.gender}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Start Date</th>
+                                <td>{{employee.start_date}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Marital Status</th>
+                                <td>{{employee.marital_status}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Date Of Birth</th>
+                                <td>{{employee.dob}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Nationality</th>
+                                <td>{{employee.nationality}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">NSSF Number</th>
+                                <td>{{employee.nssf_no}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Telephone</th>
+                                <td>{{employee.telephone_no}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Residence Address</th>
+                                <td>{{employee.residence_address}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">National ID</th>
+                                <td>{{employee.national_id}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">URA TIN</th>
+                                <td>{{employee.ura_tin}}</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

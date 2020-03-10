@@ -59,35 +59,17 @@ def leave_dashboard_page(request):
         # if the user is not authenticated it renders a login page
         return render(request, 'ems_auth/login.html', {"message": None})
 
-    user_role = get_current_user(request, "role")
-
-    is_team_supervisor = Team.objects.filter(id=get_current_user(request, "team"), \
-                                             supervisors=get_current_user(request, "id")).count()
-
-    is_hod = Department.objects.filter(id=get_current_user(request, "dept"), \
-                                       hod=get_current_user(request, "id")).count()
-
-    is_hod = Department.objects.filter(id=get_current_user(request, "dept"), \
-                                       hod=get_current_user(request, "id")).count()
-
-    print("is Supervisor: ", is_team_supervisor)
-
-    if is_team_supervisor == 1:
-        print("As Supervisor")
-        print("Team: ", get_current_user(request, "team"))
-        print("ID: ", get_current_user(request, "id"))
-        applications = LeaveApplication.objects.filter(supervisor_status="Pending", \
-                                                       team=get_current_user(request, "team")).order_by('apply_date')
-
-    elif is_hod == 1:
-        print("As HOD")
+    if user.is_supervisor:
+        applications = LeaveApplication.objects.filter(supervisor_status="Pending",\
+            team=get_current_user(request,"team"))
+        
+    elif user.is_hod:     
         applications = LeaveApplication.objects.filter(hod_status="Pending", \
                                                        supervisor_status="Approved",
-                                                       department=get_current_user(request, "team")) \
+                                                       department=get_current_user(request, "dept")) \
             .order_by('apply_date')
 
-    if user.is_hr:
-        print("As Hr")
+    elif user.is_hr:
         applications = LeaveApplication.objects \
             .filter(hr_status="Pending", supervisor_status="Approved", \
                     hod_status="Approved").order_by('apply_date')
@@ -95,11 +77,6 @@ def leave_dashboard_page(request):
         applications = ""
 
     leave_types = Leave_Types.objects.all()
-
-    leave_types_dict = {}
-    for typ in leave_types:
-        leave_count = LeaveApplication.objects.filter(leave_type=typ).count()
-        leave_types_dict.update({typ: leave_count})
 
     context = {
         "leave_dashboard_page": "active",
@@ -215,13 +192,18 @@ def apply_leave_page(request):
 
     employee = Employee.objects.filter(pk=get_current_user(request, "id"))
     leave_record = Leave_Records.objects.all()
-    employee_record = leave_record.get(employee=get_current_user(request, "id"), leave_year=date.today().year)
-
+    leave_balance = -1
+    try:
+        employee_record = leave_record.get(employee=get_current_user(request, "id"), leave_year=date.today().year)
+        leave_balance = employee_record.balance
+    except:
+        pass
+        
     context = {
         "leave_page": "active",
         "apps": LeaveApplication.objects.filter(employee=get_current_user(request, "id")),
         "l_types": Leave_Types.objects.all(),
-        "l_balance": employee_record.balance,
+        "l_balance": leave_balance,
         "gender": get_current_user(request, "gender")
     }
 
@@ -294,21 +276,15 @@ def apply_leave(request):
 def approve_leave(request):
     if request.method == "POST":
         user = request.user  # getting the current logged in User
-        employee = user.solitonuser.employee
-        role = get_current_user(request, "role")
+        employee = request.POST.get("employee_id")
 
         l_type = Leave_Types.objects.get(pk=request.POST.get("ltype"))
         n_days = request.POST.get("ndays")
         leave = LeaveApplication.objects.get(pk=request.POST["app_id"])
         leave_record = Leave_Records.objects. \
-            filter(employee=employee, leave_year=date.today().year)
+            get(employee=employee, leave_year=date.today().year)
 
-        is_supervisor = Team.objects.filter(id=get_current_user(request, "team"), \
-                                            supervisors=get_current_user(request, "id")).count()
-
-        if is_supervisor == 1:
-            print("User Id: ", get_current_user(request, "id"))
-            print("User Team: ", get_current_user(request, "team"))
+        if user.is_supervisor:
             LeaveApplication.objects.filter(pk=leave.id).update(supervisor=get_current_user(request, "id"),
                                                                 supervisor_status="Approved", )
 
@@ -334,7 +310,8 @@ def approve_leave(request):
                                                                 hr_status="Approved", overall_status="Approved",
                                                                 balance=new_balance)
 
-            leave_record.update(leave_applied=total_applied, total_taken=total_taken, \
+            Leave_Records.objects.filter(employee=employee, leave_year=date.today().year). \
+                update(leave_applied=total_applied, total_taken=total_taken, \
                                 balance=new_balance)
         else:
             messages.warning(request, 'Leave Approval Failed')
@@ -343,6 +320,33 @@ def approve_leave(request):
         messages.success(request, 'Leave Approved Successfully')
         return redirect('leave_dashboard_page')
 
+def reject_leave(request):
+    if request.method == "POST":
+        user = request.user  # getting the current logged in User
+        employee = user.solitonuser.employee
+
+        leave = LeaveApplication.objects.get(pk=request.POST["appid"])
+        reason = request.POST["reject_reason"]
+
+        if user.is_supervisor:
+            LeaveApplication.objects.filter(pk=leave.id).update(supervisor=get_current_user(request, "id"),
+                                                                supervisor_status="Rejected", )
+
+        elif user.is_hod:
+            LeaveApplication.objects.filter(pk=leave.id).update(hod=get_current_user(request, "id"),
+                                                                hod_status="Rejected")
+
+        elif user.is_hr: 
+            LeaveApplication.objects.filter(pk=leave.id).\
+                update(hr=get_current_user(request, "id"),remarks = reason,
+                        hr_status="Rejected")
+
+        else:
+            messages.warning(request, 'Activity Failed')
+            return redirect('leave_dashboard_page')
+
+        messages.success(request, 'Leave request rejected')
+        return redirect('leave_dashboard_page')
 
 def leave_records(request):
     if not request.user.is_authenticated:
@@ -352,7 +356,7 @@ def leave_records(request):
     context = {
         "leave_page": "active",
         "leave_records": Leave_Records.objects.filter(leave_year=current_year),
-        "current_year": current_year,
+        "leave_year": current_year,
         "years": generate_years(),
     }
     return render(request, "leave/leave_records.html", context)

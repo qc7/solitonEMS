@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
 from employees.services import create_employee_instance
-from ems_auth.decorators import ems_login_required
+from ems_auth.decorators import ems_login_required, hr_required
 from ems_auth.models import User
 from settings.selectors import get_all_currencies, get_currency
 from .models import (
@@ -23,14 +23,14 @@ from .models import (
     Position,
     BankDetail, OrganisationDetail, Allowance,
     Supervision,
-)
+    Deduction)
 from leave.models import Leave_Records
 
 from settings.models import Currency
 import csv
 
-
 # dashboard
+from .selectors import get_employee, get_active_employees
 
 
 @ems_login_required
@@ -52,13 +52,15 @@ def dashboard_page(request):
 
 
 @ems_login_required
+@hr_required
 def employees_page(request):
     all_currencies = get_all_currencies()
+    active_employees = get_active_employees()
     context = {
         "user": request.user,
         "currencies": all_currencies,
         "employees_page": "active",
-        "employees": Employee.objects.all(),
+        "employees": active_employees,
     }
     return render(request, 'employees/employees.html', context)
 
@@ -66,6 +68,13 @@ def employees_page(request):
 @ems_login_required
 def employee_page(request, id):
     employee = Employee.objects.get(pk=id)
+    yr = date.today().year
+    leave_record = ""
+    try:
+       leave_record = Leave_Records.objects.get(employee=employee.id, leave_year=yr)
+    except:
+        pass
+
     context = {
         "user": request.user,
         "employees_page": "active",
@@ -81,7 +90,8 @@ def employee_page(request, id):
         "teams": Team.objects.all(),
         "allowances": Allowance.objects.all(),
         "supervisee_options": Employee.objects.exclude(pk=employee.id),
-        "supervisions": Supervision.objects.filter(supervisor=employee)
+        "supervisions": Supervision.objects.filter(supervisor=employee),
+        "leave_record": leave_record
     }
     return render(request, 'employees/employee.html', context)
 
@@ -126,27 +136,19 @@ def edit_certification_page(request, id):
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request, "role/ceo.html")
 
-    notifications = Notification.objects.filter(user=user, status='unread')
-    number_of_notifications = notifications.count()
 
     certification = Certification.objects.get(pk=id)
     context = {
         "user": user,
         "employees_page": "active",
         "certification": certification,
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
     }
 
     return render(request, 'employees/edit_cert.html', context)
 
 
-@login_required
+@ems_login_required
 def edit_emergency_contact_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     user = request.user
@@ -157,16 +159,11 @@ def edit_emergency_contact_page(request, id):
     if str(user.solitonuser.soliton_role) == 'HOD':
         return render(request, "role/ceo.html")
 
-    notifications = Notification.objects.filter(user=user.solitonuser, status='unread')
-    number_of_notifications = notifications.count()
-
     emergency_contact = EmergencyContact.objects.get(pk=id)
     context = {
         "user": user,
         "employees_page": "active",
         "emergency_contact": emergency_contact,
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
     }
 
     return render(request, 'employees/edit_emergency.html', context)
@@ -176,13 +173,8 @@ def edit_emergency_contact_page(request, id):
 # The view also renders the login page
 
 
-@login_required
+@ems_login_required
 def edit_beneficiary_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
     # redirect according to roles
     user = request.user
     # If user is an employee
@@ -226,25 +218,18 @@ def edit_spouse_page(request, id):
     spouse = Spouse.objects.get(pk=id)
     spouse.save()
 
-    notifications = Notification.objects.filter(user=user)
-    number_of_notifications = notifications.count()
     context = {
         "user": user,
         "employees_page": "active",
-        "spouse": spouse,
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
+        "spouse": spouse
     }
 
     return render(request, 'employees/edit_spouse.html', context)
 
 
-@login_required
+@ems_login_required
+@hr_required
 def edit_dependant_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
 
     # redirect according to roles
     user = request.user
@@ -262,18 +247,14 @@ def edit_dependant_page(request, id):
         "user": user,
         "employees_page": "active",
         "dependant": dependant,
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
+
     }
 
     return render(request, 'employees/edit_dependant.html', context)
 
 
+@hr_required
 def departments_page(request):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
     user = request.user
     context = {
         "user": request.user,
@@ -286,12 +267,8 @@ def departments_page(request):
     return render(request, "employees/departments.html", context)
 
 
+@hr_required
 def teams_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
     user = request.user
 
     ts = Team.objects.filter(department=id)
@@ -307,6 +284,7 @@ def teams_page(request, id):
 
 
 @ems_login_required
+@hr_required
 def job_titles_page(request):
     currencies = get_all_currencies()
     context = {
@@ -319,49 +297,13 @@ def job_titles_page(request):
     return render(request, "employees/job_titles.html", context)
 
 
-@login_required
-def employee_team_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
-    employee = Employee.objects.get(pk=id)
-    user = request.user
-    context = {
-        "user": user,
-        "employees_page": "active",
-        "employee": employee,
-        "certifications": employee.certification_set.all(),
-        "emergency_contacts": employee.emergencycontact_set.all(),
-        "beneficiaries": employee.beneficiary_set.all(),
-        "spouses": employee.spouse_set.all(),
-        "dependants": employee.dependant_set.all(),
-    }
-
-
-def notifications_page(request):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
-    user = request.user
-    notifications = Notification.objects.filter(user=user.solitonuser)
-    number_of_notifications = notifications.count()
-    context = {
-        "user": user,
-        "employees_page": "active",
-        "notifications": notifications,
-        "number_of_notifications": number_of_notifications
-    }
-    return render(request, 'solitonems/notifications.html', context)
 
 
 ###################################################################
 # Processes
 ###################################################################
 @login_required
+@hr_required
 def add_new_employee(request):
     if request.method == 'POST':
         employee = create_employee_instance(request)
@@ -383,6 +325,7 @@ def add_new_employee(request):
 
 
 @login_required
+@hr_required
 def delete_employee(request, id):
     try:
         # Grab the employee
@@ -410,6 +353,7 @@ def delete_employee(request, id):
 
 
 @login_required
+@hr_required
 def edit_employee(request, id):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -419,6 +363,7 @@ def edit_employee(request, id):
         employee.last_name = request.POST['last_name']
         employee.grade = request.POST['grade']
         employee.basic_salary = request.POST['basic_salary']
+        employee.lunch_allowance = request.POST['lunch_allowance']
         employee.gender = request.POST['gender']
         employee.marital_status = request.POST['marital_status']
         employee.start_date = request.POST['start_date']
@@ -456,6 +401,7 @@ def edit_employee(request, id):
 
 
 @login_required
+@hr_required
 def add_new_home_address(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -494,6 +440,7 @@ def add_new_home_address(request):
 
 
 @login_required
+@hr_required
 def add_bank_details(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -526,6 +473,7 @@ def add_bank_details(request):
 
 
 @login_required
+@hr_required
 def add_organisation_details(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -564,6 +512,7 @@ def add_organisation_details(request):
 
 
 @login_required
+@hr_required
 def edit_organisation_details(request):
     if request.method == 'POST':
         # Fetching data from the add new home address form
@@ -602,6 +551,7 @@ def edit_organisation_details(request):
 
 
 @login_required
+@hr_required
 def edit_home_address(request):
     if request.method == 'POST':
         # Fetch the employee
@@ -638,7 +588,8 @@ def edit_home_address(request):
         return render(request, "employees/failed.html", context)
 
 
-@login_required
+@ems_login_required
+@hr_required
 def edit_bank_details(request):
     if request.method == 'POST':
         # Fetching data from the edit home address form
@@ -672,7 +623,7 @@ def edit_bank_details(request):
         return render(request, "employees/failed.html", context)
 
 
-@login_required
+@hr_required
 def add_certification(request):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -738,7 +689,8 @@ def edit_certification(request):
         return render(request, "employees/failed.html", context)
 
 
-@login_required
+@ems_login_required
+@hr_required
 def delete_certification(request, id):
     try:
         # Grab the certification
@@ -767,6 +719,7 @@ def delete_certification(request, id):
     return render(request, 'employees/deleted.html', context)
 
 
+@hr_required
 def add_emergency_contact(request):
     if request.method == 'POST':
         # Fetching data from the add new employee form
@@ -800,7 +753,7 @@ def add_emergency_contact(request):
         return render(request, "employees/failed.html", context)
 
 
-@login_required
+@hr_required
 def delete_emergency_contact(request, id):
     try:
         # Grab the emergency contact
@@ -1578,3 +1531,65 @@ def employees_download(request):
 
     # Return the response
     return response
+
+
+def suspend_employee(request, employee_id):
+    employee = get_employee(employee_id)
+    employee.status = "Suspended"
+    employee.save()
+
+    return HttpResponseRedirect(reverse('employees_page'))
+
+
+def employee_profile_page(request, employee_id):
+    employee = get_employee(employee_id)
+
+    context = {
+        "user": request.user,
+        "employees_page": "active",
+        "employee": employee,
+    }
+
+    return render(request, 'employees/employee_profile.html', context)
+
+
+def add_more_details_page(request, employee_id):
+    employee = get_employee(employee_id)
+
+    context = {
+        "user": request.user,
+        "employees_page": "active",
+        "employee": employee,
+        "certifications": employee.certification_set.all(),
+        "emergency_contacts": employee.emergencycontact_set.all(),
+        "beneficiaries": employee.beneficiary_set.all(),
+        "spouses": employee.spouse_set.all(),
+        "dependants": employee.dependant_set.all(),
+        "deductions": employee.deduction_set.all(),
+        "deps": Department.objects.all(),
+        "titles": Position.objects.all(),
+        "teams": Team.objects.all(),
+        "allowances": Allowance.objects.all(),
+        "supervisee_options": Employee.objects.exclude(pk=employee.id),
+        "supervisions": Supervision.objects.filter(supervisor=employee)
+    }
+
+    return render(request, 'employees/add_more_details.html', context)
+
+
+def activate_employees_page(request):
+    passive_employees = Employee.objects.exclude(status="Active")
+    context = {
+        "user": request.user,
+        "employees_page": "active",
+        "employees": passive_employees
+    }
+    return render(request, 'employees/activate_employees.html', context)
+
+
+def activate_employee(request, employee_id):
+    employee = get_employee(employee_id)
+    employee.status = "Active"
+    employee.save()
+    messages.success(request, "Employee activated")
+    return HttpResponseRedirect(reverse('activate_employees_page'))
