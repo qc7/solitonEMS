@@ -37,3 +37,10 @@ def create_employee_instance(request):
     # Saving the employee instance
     employee.save()
     return employee
+
+
+def suspend(employee):
+    employee.status = "Suspended"
+    employee.save()
+    return employee
+

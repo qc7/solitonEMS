@@ -7,177 +7,184 @@
 <div class="content">
   <div class="container-fluid">
 
-  <div class="row">    
+    <div class="row">
 
-          <!-- Status Flash Messages -->
+      <!-- Status Flash Messages -->
       {% if messages %}
-          {% for msg in messages%}
-            <div class="alert alert-{{ msg.tags }} alert-dismissable">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              {{ msg }}
-            </div>
-          {% endfor %}
+      {% for msg in messages%}
+      <div class="alert alert-{{ msg.tags }} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ msg }}
+      </div>
+      {% endfor %}
       {% endif %}
 
-    <!-- Button trigger modal-->
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_apply_leave">
-      Apply Now
-    </button>
-    <div class="col-md-12">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead class="">
+      <!-- Button trigger modal-->
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_apply_leave">
+        Apply Now
+      </button>
+      <div class="col-md-12">
+
+
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="thead-dark">
                 <th>Date</th>
                 <th>Leave Type</th>
                 <th>Duration</th>
                 <th>Supervisor Status</th>
                 <th>HOD Status</th>
-                <th>HR Status</th>                
+                <th>HR Status</th>
                 <th colspan=2>#</th>
-            </thead>
-            <tbody>
-              {% for app in apps  %}
-              <tr>
-                <td>{{ app.apply_date }}</td>
-                <td><a href="#" style="color: inherit">{{app.leave_type}}</a></td>
-                <td>{{ app.start_date }}-{{ app.end_date }} ({{app.no_of_days}})</td>
-                <td>
-                {% if app.sup_Status == "Approved" %}
-                  <a href="#" style="color:inherit"><i class="fa fa-check-circle"></i></a>
-                {% elif app.sup_Status == "Rejected" %}
-                  <a href="#" style="color:inherit"><i class="fa fa-times-circle"></i></a>
-                {% else %}
-                  <button type="button" class="btn btn-warning btn-rounded">{{ app.sup_Status }}</button>
-                {% endif %}
-                </td>
-                <td>
-                  {% if app.hod_status == "Approved" %}
+                </thead>
+                <tbody>
+                {% for app in apps %}
+                <tr>
+                  <td>{{ app.apply_date }}</td>
+                  <td><a href="#" style="color: inherit">{{app.leave_type}}</a></td>
+                  <td>{{ app.start_date }}-{{ app.end_date }} ({{app.no_of_days}})</td>
+                  <td>
+                    {% if app.sup_Status == "Approved" %}
                     <a href="#" style="color:inherit"><i class="fa fa-check-circle"></i></a>
-                  {% elif app.hod_status == "Rejected" %}
+                    {% elif app.sup_Status == "Rejected" %}
                     <a href="#" style="color:inherit"><i class="fa fa-times-circle"></i></a>
-                  {% else %}
+                    {% else %}
+                    <button type="button" class="btn btn-warning btn-rounded">{{ app.sup_Status }}</button>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if app.hod_status == "Approved" %}
+                    <a href="#" style="color:inherit"><i class="fa fa-check-circle"></i></a>
+                    {% elif app.hod_status == "Rejected" %}
+                    <a href="#" style="color:inherit"><i class="fa fa-times-circle"></i></a>
+                    {% else %}
                     <button type="button" class="btn btn-warning btn-rounded">{{ app.hod_status }}</button>
-                  {% endif %}
-                </td>
-                <td>
-                  {% if app.hr_status == "Approved" %}
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if app.hr_status == "Approved" %}
                     <a href="#" style="color:inherit"><i class="fa fa-check-circle"></i></a>
-                  {% elif app.hr_status == "Rejected" %}
+                    {% elif app.hr_status == "Rejected" %}
                     <a href="#" style="color:inherit"><i class="fa fa-times-circle"></i></a>
-                  {% else %}
+                    {% else %}
                     <button type="button" class="btn btn-warning btn-rounded">{{ app.hr_status }}</button>
-                  {% endif %}
-                </td>
-                <td>                
-                <a href="#" data-toggle="modal" data-target="#modal_edit_employee" style="color:inherit" >
-                <i class="fa fa-edit"></i>
-                </a></td>
-                <td>
-                <a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
-                </a></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal: modalApplyLeave -->
-    <div class="modal fade" id="modal_apply_leave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="overflow-y: auto !important">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <!-- Header -->
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Leave Application</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a href="#" data-toggle="modal" data-target="#modal_edit_employee" style="color:inherit">
+                      <i class="fa fa-edit"></i>
+                    </a></td>
+                  <td>
+                    <a href="#" style="color: inherit" ...
+                       onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
+                    </a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
-         
-          <!-- Body -->
-          <div class="modal-body">
-            <form method="POST" action="{% url 'apply_leave' %}"> {% csrf_token %}
-              <div class="form-group">
-                <label for="">Leave Type:</label>
-                <select class="form-control" id="ltype" name="ltype" required>                                
-                                {% for ty in l_types %}                                    
-                                    {% if ty.leave_type == ty %}
-                                        <option selected>{{ty.leave_type }}</option>
-                                    {% else %}
-                                        <option value="{{ty.id }}">{{ty.leave_type }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
+        </div>
+
+
+      </div>
+
+      <!-- Modal: modalApplyLeave -->
+      <div class="modal fade" id="modal_apply_leave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true" style="overflow-y: auto !important">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Leave Application</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+              <form method="POST" action="{% url 'apply_leave' %}"> {% csrf_token %}
+                <div class="form-group">
+                  <label for="">Leave Type:</label>
+                  <select class="form-control" id="ltype" name="ltype" required>
+                    {% for ty in l_types %}
+                    {% if ty.leave_type == ty %}
+                    <option selected>{{ty.leave_type }}</option>
+                    {% else %}
+                    <option value="{{ty.id }}">{{ty.leave_type }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <input type="date" class="form-control"  placeholder="From"
+                         name="s_date" required>
+                </div>
+
+                <div class="form-group">
+                  <input type="date" class="form-control"  placeholder="To"
+                         name="e_date" required>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control"  placeholder="Remark"
+                         name="remark">
+                </div>
+
+                <!--Footer-->
+                <div class="modal-footer">
+                  <button class="btn btn-danger" type="submit">Apply</button>
+                  <button class="btn btn-outline-danger" type="reset">Close</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+        <!-- Modal: modalEditNewEmployee -->
+
+        <div class="modal fade" id="modal_edit_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true" style="overflow-y: auto !important">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <!-- Header -->
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Edit Leave Types</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
               </div>
 
-              <div class="form-group">
-                <input type="date" class="form-control"  placeholder="From"
-                  name="s_date" required>
-              </div>  
+              <!-- Body -->
+              <div class="modal-body">
+                <form method="POST" action="{% url 'edit_leave_type_page' 1 %}"> {% csrf_token %}
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Type"
+                           name="e_leave_type" value={{leave.type}} required>
+                  </div>
+                  <div class="form-group">
+                    <input type="number" class="form-control"  placeholder="No. Of Days"
+                           name="e_leave_days" value={{ leave.leave_days }} required>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control"  placeholder="Description"
+                           name="e_desc" value={{ leave.desc }} required>
+                  </div>
 
-              <div class="form-group">
-                <input type="date" class="form-control"  placeholder="To"
-                  name="e_date" required>
-              </div> 
-              <div class="form-group">
-                <input type="text" class="form-control"  placeholder="Remark"
-                  name="remark">
-              </div> 
+                  <!--Footer-->
+                  <div class="modal-footer">
+                    <button class="btn btn-danger" type="submit">Save</button>
+                    <button class="btn btn-outline-danger" type="reset">Close</button>
+                  </div>
+                </form>
 
-          <!--Footer-->
-          <div class="modal-footer">
-            <button class="btn btn-danger" type="submit">Apply</button>
-            <button class="btn btn-outline-danger" type="reset">Close</button>
-          </div>
-          </form>
-
-        </div>
-      </div>
-    </div>
-    <!-- Modal: modalEditNewEmployee -->
-
-    <div class="modal fade" id="modal_edit_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="overflow-y: auto !important">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <!-- Header -->
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Edit Leave Types</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-         
-          <!-- Body -->
-          <div class="modal-body">
-            <form method="POST" action="{% url 'edit_leave_type_page' 1 %}"> {% csrf_token %}
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Type"
-                  name="e_leave_type" value={{leave.type}} required>
               </div>
-              <div class="form-group">
-                <input type="number" class="form-control"  placeholder="No. Of Days"
-                  name="e_leave_days" value={{ leave.leave_days }} required>
-              </div>  
-              <div class="form-group">
-                <input type="text" class="form-control"  placeholder="Description"
-                  name="e_desc" value={{ leave.desc }} required>
-              </div> 
-              
-          <!--Footer-->
-          <div class="modal-footer">
-            <button class="btn btn-danger" type="submit">Save</button>
-            <button class="btn btn-outline-danger" type="reset">Close</button>
+            </div>
           </div>
-          </form>
-
+          <!-- Modal: modalEditNewEmployee -->
         </div>
       </div>
-    </div>
-    <!-- Modal: modalEditNewEmployee -->
-  </div>
-</div>
-{% endblock content %} 
+      {% endblock content %}

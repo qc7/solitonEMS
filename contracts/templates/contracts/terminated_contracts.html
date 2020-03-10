@@ -1,0 +1,61 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<span>
+    <h1>Passive Contracts</h1>
+</span> {% endblock %}
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        {%if terminated_contracts%}
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                <th>Reference Number</th>
+                                <th>Position</th>
+                                <th>Employee</th>
+                                <th>Effective Date</th>
+                                <th>Expiry Date</th>
+                                <th>Risk</th>
+                                <th>Document</th>
+                                <th>Actions</th>
+                                </thead>
+                                <tbody>
+                                {% for contract in terminated_contracts  %}
+                                <tr>
+                                    <td><a href="#" style="color: inherit">{{contract.reference_number}}</a></td>
+                                    <td>{{contract.position}}</td>
+                                    <td>{{contract.employee}}</td>
+                                    <td>{{contract.effective_date}}</td>
+                                    <td>{{contract.expiry_date}}</td>
+                                    <td>{{contract.risk | title}}</td>
+                                    <td><a href="/media/{{contract.document}}"><button>View</button></a></td>
+                                    <td>
+                                        <a href="{%url 'activate_contract' contract.id%}" style="color:inherit">
+                                            <button>Activate Contract</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {%else%}
+
+                        <h3>No passive contracts available</h3>
+
+                        {%endif%}
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

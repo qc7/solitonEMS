@@ -2,44 +2,44 @@
 {% load humanize %}
 {% load static %}
 {% block page_title %}
-<h3>Overtime Application</h3>
+<h1>Overtime Application</h1>
 {% endblock %}
 
 {%block content%}
 <div class="content">
     <div class="container-fluid">
+        <button class="btn btn-danger" data-toggle="modal"
+                data-target="#modal_apply_overtime">Apply for overtime</button>
         <div class="card animated fadeInUp">
             <div class="card-body">
-
-                <button class="btn btn-danger" data-toggle="modal"
-                        data-target="#modal_apply_overtime">Apply for overtime</button>
                 {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-warning">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}</div>
-                    {% endfor %}
+                {% for message in messages %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
                 {% endif %}
                 <h3>Recent Applications</h3>
                 <div>
                     <table class="table">
-                    <tr>
+                        <thead class="thead-dark">
                         <th>Date</th>
                         <th>Start time</th>
                         <th>End time</th>
                         <th>Description</th>
                         <th>Approval Status</th>
-                    </tr>
-                      {%for recent_application in recent_applications%}
-                    <tr>
-                        <td>{{recent_application.date}}</td>
-                        <td>{{recent_application.start_time}}</td>
-                        <td>{{recent_application.end_time}}</td>
-                        <td>{{recent_application.description}}</td>
-                        <td>{{recent_application.status}}</td>
-                    </tr>
-                    {%endfor%}
-                </table>
+                        </thead>
+                        {%for recent_application in recent_applications%}
+                        <tr>
+                            <td>{{recent_application.date}}</td>
+                            <td>{{recent_application.start_time}}</td>
+                            <td>{{recent_application.end_time}}</td>
+                            <td>{{recent_application.description}}</td>
+                            <td>{{recent_application.status}}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
                 </div>
             </div>
         </div>

@@ -49,7 +49,7 @@
                     <ul id="popover-admin" class="nav list-group" style="display: none">
                         <a href="{%url 'manage_users_page'%}" class="list-group-item">Manage Users</a>
                         <a href="{%url 'view_users_page'%}" class="list-group-item">View Users</a>
-                        <a href="#" class="list-group-item">Reports</a>
+                        <a href="{%url 'audit_trails'%}" class="list-group-item">Audit Trail</a>
                     </ul>
                 </li>
 
@@ -134,23 +134,37 @@
                         <a href="{% url 'view_job_applications_page'%}" class="list-group-item">View Job Applications</a>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{contracts_page}}" data-toggle="popover-contracts" title="Contracts">
                     <a class="nav-link" href="#">
                         <i class="material-icons">assignment</i>
                         <p>Contracts</p>
                     </a>
+                    <ul id="popover-contracts" class="nav list-group" style="display:none">
+                        <a href="{%url 'manage_job_contracts'%}" class="list-group-item">Manage Job Contracts</a>
+                        <a href="{%url 'user_contracts_page'%}" class="list-group-item">View User Contracts</a>
+                    </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{training_page}}" data-toggle="popover-training" title="Training">
                     <a class="nav-link" href="#">
                         <i class="material-icons">bookmarks</i>
                         <p>Training</p>
                     </a>
+                    <ul id="popover-training" class="nav list-group" style="display:none">
+                        <a href="{%url 'approve_training_page'%}" class="list-group-item">Approve Training</a>
+                        <a href="{%url 'user_training_page'%}" class="list-group-item">User Training</a>
+                        <a href="{%url 'schedule_training_page'%}" class="list-group-item">Schedule Training</a>
+                        <a href="{%url 'training_schedules_page'%}" class="list-group-item">Training Schedules</a>
+                    </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{learning_and_development_page}}" data-toggle="popover-learning-and-development" title="Learning and Development">
                     <a class="nav-link" href="#">
                         <i class="material-icons">book</i>
                         <p>Learning and Development</p>
                     </a>
+                    <ul id="popover-learning-and-development" class="nav list-group" style="display:none">
+                        <a href="{%url 'manage_resources_page'%}" class="list-group-item">Manage Resources</a>
+                        <a href="{%url 'resources_page' %}" class="list-group-item">View Your Resources</a>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">
@@ -164,8 +178,6 @@
                         <p></p>
                     </a>
                 </li>
-
-
             </ul>
         </div>
     </div>
@@ -552,6 +564,30 @@
             trigger: 'click',
             content: function() {
             return $('#popover-recruitment').html();
+          }
+       });
+
+       $('[data-toggle="popover-contracts"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function() {
+            return $('#popover-contracts').html();
+          }
+       });
+
+       $('[data-toggle="popover-training"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function() {
+            return $('#popover-training').html();
+          }
+       });
+
+       $('[data-toggle="popover-learning-and-development"]').popover({
+            html: true,
+            trigger: 'click',
+            content: function() {
+            return $('#popover-learning-and-development').html();
           }
        });
 

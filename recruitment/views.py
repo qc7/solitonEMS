@@ -5,12 +5,16 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
+from ems_admin.decorators import log_activity
+from ems_auth.decorators import recruitment_full_auth_required
 from organisation_details.selectors import get_all_positions, get_position
 from recruitment.forms import JobApplicationForm
-from recruitment.models import JobAdvertisement, JobApplication
+from recruitment.models import JobAdvertisement
 from recruitment.selectors import get_all_job_ads, get_job_advertisement, get_job_applications
 
 
+@recruitment_full_auth_required
+@log_activity
 def manage_job_advertisement_page(request):
     if request.POST:
         position_id = request.POST.get('position_id')
@@ -46,6 +50,7 @@ def manage_job_advertisement_page(request):
     return render(request, 'recruitment/manage_job_advertisement.html', context)
 
 
+@log_activity
 def edit_job_advertisement_page(request, job_advertisement_id):
     if request.POST:
         position_id = request.POST.get('position_id')
@@ -81,6 +86,7 @@ def edit_job_advertisement_page(request, job_advertisement_id):
     return render(request, 'recruitment/edit_job_advertisement.html', context)
 
 
+@log_activity
 def delete_job_advertisement(request, job_advertisement_id):
     job_advertisement = get_job_advertisement(job_advertisement_id)
     job_advertisement.delete()
@@ -88,6 +94,7 @@ def delete_job_advertisement(request, job_advertisement_id):
     return HttpResponseRedirect(reverse('manage_job_advertisement_page'))
 
 
+@log_activity
 def job_advertisements_page(request):
     all_positions = get_all_positions()
     all_job_ads = get_all_job_ads()
@@ -102,6 +109,8 @@ def job_advertisements_page(request):
     return render(request, 'recruitment/advertised_jobs.html', context)
 
 
+@recruitment_full_auth_required
+@log_activity
 def view_job_applications_page(request):
     all_positions = get_all_positions()
     all_job_ads = get_all_job_ads()
@@ -116,6 +125,7 @@ def view_job_applications_page(request):
     return render(request, 'recruitment/view_job_applications.html', context)
 
 
+@log_activity
 def job_advertisement(request, job_advertisement_id):
     if request.POST:
         job_application_form = JobApplicationForm(request.POST, request.FILES)
@@ -140,6 +150,7 @@ def job_advertisement(request, job_advertisement_id):
     return render(request, 'recruitment/job_description.html', context)
 
 
+@log_activity
 def job_applications_page(request, job_advertisement_id):
     job_advertisement = get_job_advertisement(job_advertisement_id)
     job_applications = get_job_applications(job_advertisement)

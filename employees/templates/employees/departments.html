@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 {% block page_title %}
-  <h2>Departments</h2>
+<h1>Departments</h1>
 {% endblock %}
 
 {% block content %}
@@ -11,45 +11,53 @@
       Add Department +
     </button>
     <div class="col-md-12">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead class="thead-dark">
+
+
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="thead-dark">
               <th>ID</th>
               <th>Department</th>
               <th>Head</th>
               <th>Teams</th>
               <th>Active</th>
               <th colspan=2>#</th>
-            </thead>
-            <tbody>
-              {% for depart in departs  %}
+              </thead>
+              <tbody>
+              {% for depart in departs %}
               <tr>
                 <td>{{ depart.id }}</td>
                 <td><a href="#" style="color: inherit">{{ depart.name }}</a></td>
                 <td>{{ depart.hod }}</td>
-                <td><a href="{% url 'teams_page' depart.id %}" style="color: inherit">{{ depart.team_set.all.count }}</a></td>
+                <td>
+                  <button><a href="{% url 'teams_page' depart.id %}" style="color: inherit">
+                    {{ depart.team_set.all.count }}
+                  </a></button></td>
                 <td>{{ depart.status }}</td>
                 <td>
-                  <a href="{% url 'edit_department_page' depart.id %}" data-toggle="modal" data-target="#modal_edit_department" style="color:inherit">
+                  <a href="{% url 'edit_department_page' depart.id %}" data-toggle="modal"
+                     data-target="#modal_edit_department" style="color:inherit">
                     <i class="fa fa-edit"></i>
+                  </a> |
+                  <a href="{% url 'delete_department' depart.id %}" style="color: inherit" ...
+                     onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
                   </a></td>
-                </td>
-                <td>
-                <a  href = "{% url 'delete_department' depart.id %}" style="color: inherit" ... 
-                  onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
-                </a></td>
               </tr>
               {% endfor %}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+
+
     </div>
 
     <!-- Modal: modal_add_new_department -->
     <div class="modal fade" id="modal_add_new_depart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="overflow-y: auto !important">
+         aria-hidden="true" style="overflow-y: auto !important">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <!-- Header -->
@@ -59,39 +67,39 @@
               <span aria-hidden="true">×</span>
             </button>
           </div>
-         
+
           <!-- Body -->
           <div class="modal-body">
             <form method="POST" action="{% url 'add_new_department' %}"> {% csrf_token %}
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Department Name"
-                  name="dep_name" required>
-              </div> 
+                       name="dep_name" required>
+              </div>
               <div class="form-group">
-               <label for="">Head of Department</label>
-                  <select class="form-control" id="hod" name="hod" required>       
-                  <option selected>{{depart.hod }}</option>                         
-                                {% for emp in emps %}                                    
-                                   <option>{{emp.first_name }} {{emp.last_name }}</option>                                    
-                                {% endfor %}
-                            </select>
-              </div>          
+                <label for="">Head of Department</label>
+                <select class="form-control" id="hod" name="hod" required>
+                  <option selected>{{depart.hod }}</option>
+                  {% for emp in emps %}
+                  <option>{{emp.first_name }} {{emp.last_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
 
-          <!--Footer-->
-          <div class="modal-footer">
-            <button class="btn btn-danger" type="submit">Save</button>
-            <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close" type="reset">Close</button>
+              <!--Footer-->
+              <div class="modal-footer">
+                <button class="btn btn-danger" type="submit">Save</button>
+                <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close" type="reset">Close</button>
+              </div>
+            </form>
           </div>
-          </form>
         </div>
       </div>
+      <!-- modal_add_new_depart -->
     </div>
-    <!-- modal_add_new_depart -->   
-  </div>
-  
-  <!-- Modal: modal_edit_department -->
+
+    <!-- Modal: modal_edit_department -->
     <div class="modal fade" id="modal_edit_department" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="overflow-y: auto !important">
+         aria-hidden="true" style="overflow-y: auto !important">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <!-- Header -->
@@ -101,35 +109,37 @@
               <span aria-hidden="true">×</span>
             </button>
           </div>
-         
+
           <!-- Body -->
           <div class="modal-body">
             <form method="POST" action="{% url 'edit_department' 1 %}"> {% csrf_token %}
               <div class="form-group">
                 <input type="hidden" class="form-control" name="dep_id" value="{{ department.id }}">
                 <input type="text" class="form-control" placeholder="Department Name"
-                  name="dep_name" value="{{ department.name}}" required>
-              </div> 
+                       name="dep_name" value="{{ department.name}}" required>
+              </div>
               <div class="form-group">
-               <label for="">Head of Department {{ deps.id }}</label>
-                  <select class="form-control" id="hod" name="hod" required>       
-                  <option selected>{{department.hod }}</option>                         
-                                {% for emp in emps %}                                    
-                                   <option>{{emp.first_name }} {{emp.last_name }}</option>                                    
-                                {% endfor %}
-                            </select>
-              </div>          
+                <label for="">Head of Department {{ deps.id }}</label>
+                <select class="form-control" id="hod" name="hod" required>
+                  <option selected>{{department.hod }}</option>
+                  {% for emp in emps %}
+                  <option>{{emp.first_name }} {{emp.last_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
 
-          <!--Footer-->
-          <div class="modal-footer">
-            <button class="btn btn-danger" type="submit">Save</button>
-            <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close" type="reset">Close</button>
+              <!--Footer-->
+              <div class="modal-footer">
+                <button class="btn btn-danger" type="submit">Save</button>
+                <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close" type="reset">Close</button>
+              </div>
+            </form>
           </div>
-          </form>
         </div>
       </div>
+      <!-- #modal_edit_department -->
     </div>
-    <!-- #modal_edit_department -->
+  </div>
 </div>
- 
-{% endblock content %} 
+
+{% endblock content %}

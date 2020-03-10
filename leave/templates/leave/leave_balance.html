@@ -5,33 +5,43 @@
     keyboard_backspace
   </i></a>
 </span>
-<h2>Leave Balance</h2>
+<h1>Leave Balance</h1>
 {% endblock %}
 
 {% block content %}
 <div class="content">
   <div class="container-fluid">        
     <div class="col-md-12">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead class="">
-                <th>Employee</th>
-                {% comment %} <th>Days Taken</th> {% endcomment %}
-                <th>Balance</th>
-            </thead>
-            <tbody>
-              {% for employee in employees  %}
+
+
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="thead-dark">
+              <th>Employee</th>
+              {% comment %}
+              <th>Days Taken</th>
+              {% endcomment %}
+              <th>Balance</th>
+              </thead>
+              <tbody>
+              {% for employee in employees %}
               <tr>
                 <td>{{ employee.first_name }} {{ employee.last_name }}</td>
-                {% comment %} <td>{{ 0 }}</td> {% endcomment %}
-                <td>{{employee.leave_balance}}</td>            
+                {% comment %}
+                <td>{{ 0 }}</td>
+                {% endcomment %}
+                <td>{{employee.leave_balance}}</td>
               </tr>
-              {% endfor %} 
-            </tbody>
-          </table>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+
+
     </div>
   </div>
 </div>

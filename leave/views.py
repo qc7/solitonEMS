@@ -57,31 +57,17 @@ def leave_dashboard_page(request):
         # if the user is not authenticated it renders a login page
         return render(request, 'ems_auth/login.html', {"message": None})
 
-<<<<<<< HEAD
-    user_role = get_current_user(request, "role")
-
-    if user.is_supervisor:
-        applications = LeaveApplication.objects.filter(supervisor_status="Pending", \
-                                                       team=get_current_user(request, "team")).order_by('apply_date')
-
-    elif user.is_hod:
-=======
     if user.is_supervisor:
         applications = LeaveApplication.objects.filter(supervisor_status="Pending",\
             team=get_current_user(request,"team"))
         
     elif user.is_hod:     
->>>>>>> 5043fdde85f6d1d8734cdacb5fa868309cd1d1a2
         applications = LeaveApplication.objects.filter(hod_status="Pending", \
                                                        supervisor_status="Approved",
                                                        department=get_current_user(request, "dept")) \
             .order_by('apply_date')
 
-<<<<<<< HEAD
-    if user.is_hr:
-=======
     elif user.is_hr:
->>>>>>> 5043fdde85f6d1d8734cdacb5fa868309cd1d1a2
         applications = LeaveApplication.objects \
             .filter(hr_status="Pending", supervisor_status="Approved", \
                     hod_status="Approved").order_by('apply_date')

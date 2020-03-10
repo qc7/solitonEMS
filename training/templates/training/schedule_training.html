@@ -1,0 +1,110 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<h1>Schedule Training</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Button trigger modal-->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_schedule">
+            Add Training Schedule
+        </button>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    {%if training_schedules%}
+                    <h3 style="text-align:center;">Training Schedules</h3>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <th>Programme</th>
+                            <th>Duration</th>
+                            <th>Venue</th>
+                            <th>Date</th>
+                            <th>Purpose</th>
+                            <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            {% for training_schedule in training_schedules  %}
+                            <tr>
+                                <td><a href="#" style="color: inherit">{{training_schedule.programme}}</a></td>
+                                <td>{{training_schedule.duration}}</td>
+                                <td>{{training_schedule.venue}}</td>
+                                <td>{{training_schedule.date}}</td>
+                                <td>{{training_schedule.purpose}}</td>
+                                <td>
+                                    <a href="{%url 'edit_training_schedule' training_schedule.id%}">
+                                        <i class="fa fa-edit"></i><a/>|
+                                        <a href="{%url 'delete_training_schedule' training_schedule.id%}"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {%else%}
+
+                    <h3>No training schedules available</h3>
+
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal: modalAddNewTrainingSchedule -->
+        <div class="modal fade" id="modal_add_new_schedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add Training Schedules</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+                        <form method="POST"> {%csrf_token%}
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter Programme"
+                                       name="programme" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Enter Duration In Months"
+                                       name="duration" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter venue"
+                                       name="venue" required>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input id="date" type="date" class="form-control" placeholder="Enter date"
+                                       name="date" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="purpose">Purpose</label>
+                                <textarea id="purpose" name="purpose" class="form-control"></textarea>
+                            </div>
+
+                            <button class="btn btn-danger" type="submit">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal: modalAddNewEmployee -->
+        </div>
+    </div>
+</div>
+    {%endblock content%}

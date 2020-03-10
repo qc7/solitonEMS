@@ -1,29 +1,19 @@
 {%extends './base.html'%}
 
 {%block page_title %}
-
 <h1>Edit Payroll Period</h1>
-
 {%endblock%}
 
-
 {%block content%}
-
 <div class="content">
-
     <div class="container-fluid">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-
                     <form action="{%url 'edit_period' %}" method="post">
-
                         {%csrf_token%}
-
                         <div class="form-group">
-
                             <label for="month">Month</label>
-
                             <input type="text" name="month" id="month" class="form-control"
                                    value={{payroll_record.month}}>
                         </div>

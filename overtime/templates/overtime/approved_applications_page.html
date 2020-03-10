@@ -2,7 +2,7 @@
 
 {%block page_title %}
 <span>
-    <h2 class="animated fadeInDown">Approved Overtime Applications</h2>
+    <h1 class="animated fadeInDown">Approved Overtime Applications</h1>
 </span>
 {%endblock%}
 {%block content%}
@@ -13,13 +13,13 @@
                 <!-- table-->
                 {%if approved_applications%}
                 <table class="table">
-                    <tr>
+                    <thead class="thead-dark">
                         <th>Name</th>
                         <th>Date</th>
                         <th>Start Time</th>
                         <th>End Time</th>
                         <th>Description</th>
-                    </tr>
+                    </thead>
                     {%for approved_application in approved_applications%}
                     <tr>
                         <td>{{approved_application.applicant.first_name}} {{approved_application.applicant.last_name}}

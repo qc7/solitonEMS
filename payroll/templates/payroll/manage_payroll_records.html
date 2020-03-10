@@ -8,30 +8,33 @@
 <div class="content">
     <div class="container-fluid">
         <div class="col-md-12">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_period">
+                Create Period
+            </button>
             <div class="card">
                 <div class="card-body">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_period">
-                        Create
-                        Period
-                    </button>
                     <table class="table">
-                        <tr>
-                            <th>Payroll Record ID</th>
-                            <th>Month</th>
-                            <th>Year</th>
-                            <th>Actions</th>
-                        </tr>
+                        <thead class="thead-dark">
+                        <th>Payroll Record ID</th>
+                        <th>Month</th>
+                        <th>Year</th>
+                        <th>Actions</th>
+                        </thead>
                         {%for payroll_record in payroll_records%}
                         <tr>
                             <td>{{payroll_record.id}}</td>
                             <td>{{payroll_record.month}}</td>
                             <td>{{payroll_record.year}}</td>
                             <td>
-                                <a href="{%url 'edit_period_page' payroll_record.id %}" style="color:inherit">Edit</a> |
+                                <a href="{%url 'edit_period_page' payroll_record.id %}" style="color:inherit">
+                                    <button>Edit</button></a> |
                                 <a href="{%url 'payroll_record_page' payroll_record.id%}"
-                                   style="color: inherit">Generate Payroll</a> |
+                                   style="color: inherit">
+                                    <button>Generate Payroll</button></a> |
                                 <a href="{%url 'delete_period' payroll_record.id %}" style="color: inherit" ...
-                                   onclick="return confirm('Are you sure you want to delete payroll record {{payroll_record.id}}?')">Delete</a>
+                                   onclick="return confirm('Are you sure you want to delete payroll record
+                                   {{payroll_record.id}}?')">
+                                    <button>Delete</button></a>
                             </td>
 
                         </tr>

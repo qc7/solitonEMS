@@ -11,7 +11,7 @@
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-hover">
-              <thead class="">
+              <thead class="thead-dark">
                 <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
@@ -25,7 +25,9 @@
                   <td>{{user.solitonuser.employee}}</td>
                   <td>{{user.email}}</td>
                   <td>{{user.last_login}}</td>
-                  <td>View Audit Trail</td>
+                  <td><a href="{%url 'user_audit_trail' user.id%}">
+                    <button>View Audit Trail</button>
+                  </a></td>
                 </tr>
                 {% endfor %}
               </tbody>

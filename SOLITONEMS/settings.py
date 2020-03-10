@@ -40,6 +40,10 @@ SOLITONEMS_APPS = [
     'holidays',
     'ems_auth',
     'ems_admin',
+    'contracts',
+    'learning_and_development',
+    'training',
+
 
 ]
 

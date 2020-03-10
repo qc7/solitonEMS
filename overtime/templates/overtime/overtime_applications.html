@@ -2,29 +2,29 @@
 {% load humanize %}
 {% load static %}
 {% block page_title %}
-<h3>Overtime Applications</h3>
+<h1>Overtime Applications</h1>
 {% endblock %}
 
 {%block content%}
 <div class="content">
     <div class="container-fluid">
+        <a href="{%url 'approved_overtime_page'%}">
+            <button class="btn btn-dangerhttps://www.youtube.com/watch?v=wc5krC28ynQ">View Approved Applications</button>
+        </a>
         <div class="card animated fadeInUp">
             <div class="card-body">
-                <a href="{%url 'approved_overtime_page'%}">
-                    <button class="btn btn-outline">View Approved Applications</button>
-                </a>
                 {%if overtime_applications%}
                 <table class="table">
-                    <tr>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Overtime Pay</th>
-                        <th>Number of hours</th>
-                    </tr>
+                    <thead class="thead-dark">
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Overtime Pay</th>
+                    <th>Number of hours</th>
+                    </thead>
                     {%for overtime_application in overtime_applications%}
                     <tr>
                         <td>{{overtime_application.applicant.first_name}} {{overtime_application.applicant.last_name}}

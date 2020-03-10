@@ -1,0 +1,52 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<h1>User Contracts</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    {%if contracts%}
+                    <h3 style="text-align:center;">Active Contracts</h3>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <th>Reference Number</th>
+                            <th>Position</th>
+                            <th>Effective Date</th>
+                            <th>Expiry Date</th>
+                            <th>Risk</th>
+                            <th>Status</th>
+                            <th>Document</th>
+                            </thead>
+                            <tbody>
+                            {% for contract in contracts  %}
+                            <tr>
+                                <td><a href="#" style="color: inherit">{{contract.reference_number}}</a></td>
+                                <td>{{contract.position|title}}</td>
+                                <td>{{contract.effective_date}}</td>
+                                <td>{{contract.expiry_date}}</td>
+                                <td>{{contract.risk|title}}</td>
+                                <td>{{contract.status|title}}</td>
+                                <td><a href="/media/{{contract.document}}"><button>View</button></a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {%else%}
+
+                    <h3>No active contracts available</h3>
+
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock content%}

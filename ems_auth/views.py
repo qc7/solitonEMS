@@ -1,30 +1,28 @@
-from django.contrib.auth import login, logout, authenticate
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse
+from django.contrib.auth import logout
 
+from django.shortcuts import render
 
 # Create your views here.
+from ems_admin.activities import login_activity_response
+from ems_admin.decorators import log_activity
+
+
 def login_view(request):
     if request.POST:
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(username=email, password=password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('dashboard_page'))
-        else:
-            return render(request, "ems_auth/login.html", {"message": "Invalid Credentials"})
+        login_data = request.POST
+        return login_activity_response(request, **login_data)
     else:
         return render(request, "ems_auth/login.html")
 
 
+@log_activity
 def login_page(request):
     return render(request, "ems_auth/login.html")
 
 
 # The logout view logs out the user
-def logout_view(request):
+@log_activity
+def logout_view(request, activity_name="Logout user"):
     logout(request)
     return render(request, "ems_auth/login.html", {"message": "Logged Out", "info": "info"})
 
@@ -37,6 +35,6 @@ def super_admin_required_page(request):
     return render(request, "ems_auth/super_admin_required.html", context)
 
 
+@log_activity
 def hr_required_page(request):
-
-    return render(request, "ems_auth/hr_required.html",)
+    return render(request, "ems_auth/hr_required.html", )

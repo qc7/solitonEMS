@@ -13,7 +13,7 @@ urlpatterns = [
     path('edit_beneficiary_page/<int:id>/', views.edit_beneficiary_page, name="edit_beneficiary_page"),
     path('edit_spouse_page/<int:id>/', views.edit_spouse_page, name="edit_spouse_page"),
     path('edit_dependant_page/<int:id>/', views.edit_dependant_page, name="edit_dependant_page"),
-    path('edit_department_page/<int:id>/', views.edit_department_page, name="edit_department_page"),
+
 
     # Process
     path('add_new_employee/', views.add_new_employee, name="add_new_employee"),
@@ -37,22 +37,7 @@ urlpatterns = [
     path('edit_dependant/', views.edit_dependant, name="edit_dependant"),
     path('delete_dependant/<int:id>', views.delete_dependant, name="delete_dependant"),
 
-    # departments
-    path('departments/', views.departments_page, name="departments_page"),
-    path('add_new_deparment/', views.add_new_department, name="add_new_department"),
-    path('edit_department/<int:id>', views.edit_department, name="edit_department"),
-    path('delete_department/<int:id>', views.delete_department, name="delete_department"),
 
-    # Teams
-    path('add_new_team/', views.add_new_team, name="add_new_team"),
-    path('teams/<int:id>/', views.teams_page, name="teams_page"),
-
-    # Job Titles
-    path('jobs/', views.job_titles_page, name="job_titles_page"),
-    path('add_new_title/', views.add_new_title, name="add_new_title"),
-    path('edit_job_title_page/<int:id>', views.edit_job_title_page, name="edit_job_title_page"),
-    path('edit_job_title/<int:id>', views.edit_job_title, name="edit_job_title"),
-    path('delete_job_title/<int:id>', views.delete_job_title, name="delete_job_title"),
 
     path('add_deduction/', views.add_deduction, name="add_deduction"),
     path('add_allowance/', views.add_allowance, name="add_allowance"),

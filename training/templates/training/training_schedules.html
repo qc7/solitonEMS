@@ -1,0 +1,27 @@
+{% extends 'solitonems/base.html' %}
+{% block page_title %}
+<h1>Training Schedules</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            {%if training_schedules%}
+            {%for training_schedule in training_schedules%}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>{{training_schedule.programme}}</h2>
+                        <p>Venue: {{training_schedule.venue}}</p>
+                        <p>Duration: {{training_schedule.duration}} Months</p>
+                        <p>Start Date: {{training_schedule.date}}</p>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+</div>
+{%endblock content%}

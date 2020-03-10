@@ -1,14 +1,19 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from ems_auth.models import SolitonUser
 from organisation_details.selectors import get_organisationdetail
-from organisation_details.views import no_organisation_detail_page
 
 
 def organisationdetail_required(function):
     def wrapper(request, *args, **kw):
         user = request.user
-        organisationdetail = get_organisationdetail(user)
+        try:
+            organisationdetail = get_organisationdetail(user)
+
+        except SolitonUser.DoesNotExist:
+            organisationdetail = None
+
         if organisationdetail:
             return function(request, *args, **kw)
         else:
