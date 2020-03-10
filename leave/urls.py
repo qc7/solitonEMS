@@ -16,6 +16,7 @@ urlpatterns = [
     path('add_new_holiday/', views.add_new_holiday, name="add_new_holiday"),
     path('apply_leave/', views.apply_leave, name="apply_leave"),
     path('approve_leave/', views.approve_leave, name="approve_leave"),
+    path('reject_leave/', views.reject_leave, name="reject_leave"),
     
     path('annual_calendar/', views.Leave_planner_summary, name="annual_calendar"),
     path('leave_planner/', views.leave_planer, name="leave_planner"),
