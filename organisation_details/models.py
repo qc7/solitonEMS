@@ -2,8 +2,8 @@ from django.db import models
 
 
 # Create your models here.
-from employees.models import Employee
 from settings.models import Currency
+from employees.models import Employee
 
 
 class Department(models.Model):
