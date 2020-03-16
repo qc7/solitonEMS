@@ -1,6 +1,6 @@
 from django.db import models
 from settings.models import Currency
-from organisation_details.models import Team
+
 
 # Create your models here.
 
@@ -57,11 +57,12 @@ class Employee(models.Model):
 
 class Department(models.Model):
     name = models.CharField(max_length=45)
-    hod = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)#.CharField(max_length=45)
+    hod = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)  # .CharField(max_length=45)
     status = models.CharField(max_length=15, default="Active")
 
     def __str__(self):
         return self.name
+
 
 class HomeAddress(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, primary_key=True)

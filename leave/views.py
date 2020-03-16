@@ -10,7 +10,7 @@ from datetime import date
 import calendar
 from calendar import HTMLCalendar
 from collections import namedtuple
-from employees.models import Employee, Department, Team
+from employees.models import Employee, Department
 from django.db import connection
 
 from organisation_details.decorators import organisationdetail_required
