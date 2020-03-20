@@ -18,7 +18,6 @@
                         <div class="alert alert-{{ msg.tags }} alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
                                 &times;</button>
-<<<<<<< HEAD
                                     {{ msg }}
                                 </div>
                              {% endfor %}
@@ -41,26 +40,6 @@
                                 <th>HOD</th>
                                 <th>HR</th> 
                                 <th colspan="2">#</th>            
-=======
-                            {{ msg }}
-                        </div>
-                        {% endfor %}
-                        {% endif %}
-
-                        <h2>Annual Balance: <b>{{ l_balance }} day(s)</b></h2>
-                        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_apply_leave">Apply Now</button>
-                        {% comment %} <a class="nav-link" href="{% url 'leave_planner' %}"> {% endcomment %}
-                        {% comment %} <button class="btn btn-outline-primary" >Leave Planner</button></a> {% endcomment %}
-                        <h3>Your Applications</h3>
-                        <table class="table">
-                            <thead class="thead-dark">
-                            <th>Date</th>
-                            <th>Leave Type</th>
-                            <th>Duration</th>
-                            <th>Supervisor</th>
-                            <th>HOD</th>
-                            <th>HR</th>
->>>>>>> d33772f4951d38ae544fa7fb06b21154113a03c0
                             </thead>
                             {% for leave_application in apps %}
                             <tr>
@@ -68,7 +47,6 @@
                                 <td>{{leave_application.leave_type}}</td>
                                 <td>{{leave_application.no_of_days}}</td>
                                 <td>
-<<<<<<< HEAD
                                 {% if leave_application.supervisor_status == "Approved"%}
                                     <i class="large material-icons">check</i> 
                                 {% elif leave_application.supervisor_status == "Rejected"%}
@@ -103,9 +81,6 @@
                                     {% else%}
                                         <i class="large material-icons">remove</i>
                                     {% endif%}
-=======
-                                    {{ leave_application.supervisor_status }}
->>>>>>> d33772f4951d38ae544fa7fb06b21154113a03c0
                                 </td>
                                 <td>
                                     <a href="#" data-toggle="modal" data-target="#modal_edit_leave" style="color:inherit" >

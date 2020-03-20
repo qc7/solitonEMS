@@ -7,7 +7,7 @@ from settings.models import Currency
 
 class Department(models.Model):
     name = models.CharField(max_length=45)
-    hod = models.CharField(max_length=45)
+    hod = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)
     status = models.CharField(max_length=15, default="Active")
 
     def __str__(self):

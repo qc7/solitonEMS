@@ -55,13 +55,6 @@ class Employee(models.Model):
         return self.first_name + " " + self.last_name
 
 
-class Department(models.Model):
-    name = models.CharField(max_length=45)
-    hod = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)  # .CharField(max_length=45)
-    status = models.CharField(max_length=15, default="Active")
-
-    def __str__(self):
-        return self.name
 
 
 class HomeAddress(models.Model):

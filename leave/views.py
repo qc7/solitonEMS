@@ -10,10 +10,12 @@ from datetime import date
 import calendar
 from calendar import HTMLCalendar
 from collections import namedtuple
-from employees.models import Employee, Department
+from employees.models import Employee
 from django.db import connection
-
 from organisation_details.decorators import organisationdetail_required
+from organisation_details.models import (
+    Department, 
+    Team)
 from .models import (
     Leave_Types,
     Holidays,
@@ -215,6 +217,7 @@ def apply_leave(request):
 
         user = request.user  # getting the current logged in user
         employee = user.solitonuser.employee
+        print(employee.organisationdetail.department.id)
         department = Department.objects.get(pk=employee.organisationdetail.department.id)
         team = Team.objects.get(pk=employee.organisationdetail.team.id)
 
@@ -592,8 +595,8 @@ def Leave_planner_summary(request):
 
     context = {
         "plans": all_plans,
-        "departments": Departments.objects.all(),
-        "teams": Teams.objects.all()
+        "departments": Department.objects.all(),
+        "teams": Team.objects.all()
     }
     return render(request, 'leave/annual_calendar.html', context)
 
