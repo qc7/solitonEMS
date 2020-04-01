@@ -116,7 +116,7 @@ def add_new_type(request):
 
             # Saving the leave type instance
             type_leave.save()
-            messages.success(request, f'Info Successfully Saved')
+            messages.success(request, f'Successfully Added {leave_type} leave type')
 
             return redirect('leave_types_page')
 
@@ -217,7 +217,7 @@ def apply_leave(request):
 
         user = request.user  # getting the current logged in user
         employee = user.solitonuser.employee
-        print(employee.organisationdetail.department.id)
+        #print(employee.organisationdetail.department.id)
         department = Department.objects.get(pk=employee.organisationdetail.department.id)
         team = Team.objects.get(pk=employee.organisationdetail.team.id)
 
