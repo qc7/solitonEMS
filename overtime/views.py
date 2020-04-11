@@ -109,6 +109,18 @@ def amend_overtime_application_page(request, overtime_application_id):
 
 
 @log_activity
+def pending_overtime_application_page(request, overtime_application_id):
+    overtime_application = get_overtime_application(overtime_application_id)
+
+    context = {
+        "overtime_page": "active",
+        "overtime_application": overtime_application
+    }
+
+    return render(request, 'overtime/pending_overtime_application.html', context)
+
+
+@log_activity
 def reject_overtime_application(request, overtime_application_id):
     rejecter = request.user
     overtime_application = get_overtime_application(overtime_application_id)
@@ -130,3 +142,11 @@ def approve_overtime_application(request, overtime_application_id):
     else:
         messages.error(request, "You are not associated to any role on the system")
     return HttpResponseRedirect(reverse('approve_overtime_page'))
+
+
+def create_overtime_plan_page(request):
+    return render(request, 'overtime/create_overtime_plan.html')
+
+
+def approve_overtime_plans_page(request):
+    return render(request, 'overtime/approve_overtime_plans.html')
