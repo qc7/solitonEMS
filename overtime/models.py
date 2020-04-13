@@ -45,3 +45,17 @@ class OvertimeApplication(models.Model):
             return int(overtime_amount)
 
 
+class OvertimePlan(models.Model):
+    applicant = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True)
+    date = models.DateField(auto_now=True)
+    HR_approval = models.CharField(max_length=10, default="Pending")
+    cfo_approval = models.CharField(max_length=10, default="Pending")
+    status = models.CharField(max_length=10, default="Pending")
+
+
+class OvertimeSchedule(models.Model):
+    overtime_plan = models.ForeignKey(OvertimePlan, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    date = models.DateField()
+    number_of_hours = models.IntegerField(blank=True)
+    description = models.TextField()
