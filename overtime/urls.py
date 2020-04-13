@@ -13,11 +13,21 @@ urlpatterns = [
          name="pending_overtime_application_page"),
     path('create_overtime_plan_page/', views.create_overtime_plan_page, name="create_overtime_plan_page"),
     path('approve_overtime_plans_page/', views.approve_overtime_plans_page, name="approve_overtime_plans_page"),
-    
+    path('add_overtime_schedule_page/<int:overtime_plan_id>/', views.add_overtime_schedule_page,
+         name="add_overtime_schedule_page"),
+    path('pending_overtime_plan/<int:overtime_plan_id>', views.pending_overtime_plan_page,
+         name="pending_overtime_plan_page"),
+
+
     # Process
+    path('create_overtime_plan/', views.create_overtime_plan, name="create_overtime_plan"),
     path('reject_overtime/<int:overtime_application_id>', views.reject_overtime_application,
          name="reject_overtime_application"),
-    path('approve_overtime/<int:overtime_application_id>', views.approve_overtime_application,
+    path('approve_overtime/<int:overtime_plan_id>', views.approve_overtime_application,
          name="approve_overtime_application"),
+    path('reject_overtime_plan/<int:overtime_plan_id>', views.reject_overtime_plan,
+         name="reject_overtime_plan"),
+    path('approve_overtime_plan/<int:overtime_plan_id>', views.approve_overtime_plan,
+         name="approve_overtime_plan"),
 
 ]

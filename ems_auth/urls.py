@@ -20,5 +20,6 @@ urlpatterns = [
          name="password_reset_complete"),
     path('super_admin_required/', views.super_admin_required_page, name="super_admin_required_page"),
     path('hr_required/', views.hr_required_page, name="hr_required_page"),
+    path('hod_required/', views.hod_required_page, name="hod_required_page"),
 
 ]

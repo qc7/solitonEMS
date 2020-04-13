@@ -38,24 +38,28 @@ def hr_approve(overtime_application):
 
 def hr_reject(overtime_application):
     overtime_application.HR_approval = "Rejected"
+    reject_finally(overtime_application)
     overtime_application.save()
     return overtime_application
 
 
 def hod_reject(overtime_application):
     overtime_application.HOD_approval = 'Rejected'
+    reject_finally(overtime_application)
     overtime_application.save()
     return overtime_application
 
 
 def cfo_reject(overtime_application):
     overtime_application.cfo_approval = 'Rejected'
+    reject_finally(overtime_application)
     overtime_application.save()
     return overtime_application
 
 
 def ceo_reject(overtime_application):
     overtime_application.ceo_approval = 'Rejected'
+    reject_finally(overtime_application)
     overtime_application.save()
     return overtime_application
 
@@ -141,3 +145,54 @@ def update_overtime_application(overtime_application_id, start_time, end_time, d
         description=description
     )
 
+
+def cfo_approve_plan(overtime_plan):
+    overtime_plan.cfo_approval = 'Approved'
+    overtime_plan.status = "Approved"
+    overtime_plan.save()
+    return overtime_plan
+
+
+def cfo_reject_plan(overtime_plan):
+    overtime_plan.cfo_approval = 'Rejected'
+    overtime_plan.status = "Rejected"
+    overtime_plan.save()
+    return overtime_plan
+
+
+def hr_approve_plan(overtime_plan):
+    overtime_plan.HR_approval = "Approved"
+    overtime_plan.save()
+    return overtime_plan
+
+
+def hr_reject_plan(overtime_plan):
+    overtime_plan.HR_approval = "Rejected"
+    overtime_plan.status = "Rejected"
+    overtime_plan.save()
+    return overtime_plan
+
+
+def approve_overtime_plan_service(approver, overtime_plan):
+    approved_overtime_plan = None
+
+    if approver.is_hr:
+        approved_overtime_plan = hr_approve_plan(overtime_plan)
+
+    if approver.is_cfo:
+        approved_overtime_plan = cfo_approve_plan(overtime_plan)
+
+    return approved_overtime_plan
+
+
+def reject_overtime_plan_service(rejecter, overtime_plan):
+    if rejecter.is_hr:
+        rejected_overtime_application = hr_reject_plan(overtime_plan)
+
+    elif rejecter.is_cfo:
+        rejected_overtime_application = cfo_reject_plan(overtime_plan)
+
+    else:
+        rejected_overtime_application = None
+
+    return rejected_overtime_application

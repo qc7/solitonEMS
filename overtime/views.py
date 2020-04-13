@@ -3,15 +3,17 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from employees.selectors import get_active_employees, get_employee
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import ems_login_required, overtime_full_auth_required
+from ems_auth.decorators import ems_login_required, overtime_full_auth_required, hod_required
 
-from overtime.models import OvertimeApplication
+from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
 from overtime.procedures import is_duration_valid
 from overtime.selectors import get_all_overtime_applications, get_pending_overtime_applications, \
-    get_overtime_application, get_recent_overtime_applications
+    get_overtime_application, get_recent_overtime_applications, get_all_overtime_plans, get_most_recent_overtime_plans, \
+    get_overtime_plan, get_overtime_schedules, get_pending_overtime_plans
 from overtime.services import reject_overtime_application_service, approve_overtime_application_service, \
-    update_overtime_application
+    update_overtime_application, reject_overtime_plan_service, approve_overtime_plan_service
 
 
 # Create your views here.
@@ -144,9 +146,88 @@ def approve_overtime_application(request, overtime_application_id):
     return HttpResponseRedirect(reverse('approve_overtime_page'))
 
 
+@hod_required
 def create_overtime_plan_page(request):
-    return render(request, 'overtime/create_overtime_plan.html')
+    context = {
+        "overtime_plans": get_most_recent_overtime_plans()
+    }
+    return render(request, 'overtime/create_overtime_plan.html', context)
+
+
+def create_overtime_plan(request):
+    hod = request.user.solitonuser.employee
+    overtime_plan = OvertimePlan.objects.create(
+        applicant=hod
+    )
+    return HttpResponseRedirect(reverse(create_overtime_plan_page))
+
+
+def add_overtime_schedule_page(request, overtime_plan_id):
+    overtime_plan = get_overtime_plan(overtime_plan_id)
+    if request.POST:
+        employee_id = request.POST["employee"]
+        employee = get_employee(employee_id)
+        date = request.POST["date"]
+        number_of_hours = request.POST["number_of_hours"]
+        description = request.POST["description"]
+
+        OvertimeSchedule.objects.create(
+            employee=employee,
+            overtime_plan=overtime_plan,
+            date=date,
+            number_of_hours=number_of_hours,
+            description=description,
+        )
+        return HttpResponseRedirect(reverse(add_overtime_schedule_page, args=[overtime_plan.id]))
+
+    context = {
+        "employees": get_active_employees(),
+        "overtime_schedules": get_overtime_schedules(overtime_plan)
+    }
+    return render(request, 'overtime/add_employee_schedules.html', context)
 
 
 def approve_overtime_plans_page(request):
-    return render(request, 'overtime/approve_overtime_plans.html')
+    approver = request.user
+    pending_overtime_plans = get_pending_overtime_plans(approver)
+    context = {
+        "overtime_page": "active",
+        "pending_overtime_plans": pending_overtime_plans
+    }
+    return render(request, 'overtime/approve_overtime_plans.html', context)
+
+
+def pending_overtime_plan_page(request, overtime_plan_id):
+    overtime_plan = get_overtime_plan(overtime_plan_id)
+    overtime_schedules = get_overtime_schedules(overtime_plan)
+    context = {
+        "overtime_page": "active",
+        "overtime_plan": overtime_plan,
+        "overtime_schedules": overtime_schedules
+    }
+
+    return render(request, 'overtime/pending_overtime_plan.html', context)
+
+
+@log_activity
+def reject_overtime_plan(request, overtime_plan_id):
+    rejecter = request.user
+    overtime_plan = get_overtime_plan(overtime_plan_id)
+    rejected_overtime_plan = reject_overtime_plan_service(rejecter, overtime_plan)
+    if rejected_overtime_plan:
+        messages.success(request, "You rejected %s's overtime plan" % rejected_overtime_plan.applicant)
+    else:
+        messages.error(request, "You are not associated to any role on the system")
+    return HttpResponseRedirect(reverse(approve_overtime_plans_page))
+
+
+@log_activity
+def approve_overtime_plan(request, overtime_plan_id):
+    approver = request.user
+    overtime_plan = get_overtime_plan(overtime_plan_id)
+    approved_overtime_plan = approve_overtime_plan_service(approver, overtime_plan)
+    if approved_overtime_plan:
+        messages.success(request, "You approved %s's overtime plan" % approved_overtime_plan.applicant)
+    else:
+        messages.error(request, "You are not associated to any role on the system")
+    return HttpResponseRedirect(reverse(approve_overtime_plans_page))

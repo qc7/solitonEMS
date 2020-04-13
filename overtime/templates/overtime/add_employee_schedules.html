@@ -1,0 +1,96 @@
+{%extends 'solitonems/base.html'%}
+
+{%block page_title %}
+<h1>Add Employee Schedules</h1>
+{%endblock%}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_employee_schedule">
+                Create Employee Schedule
+            </button>
+            <div class="card">
+                <div class="card-body">
+                    {%if overtime_schedules%}
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Number of hours</th>
+                        <th>Description</th>
+                        </thead>
+                        {%for overtime_schedule in overtime_schedules%}
+                        <tr>
+                            <td>{{overtime_schedule.employee}}</td>
+                            <td>{{overtime_schedule.date}}</td>
+                            <td>{{overtime_schedule.number_of_hours}}</td>
+                            <td>{{overtime_schedule.description}}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                    {%else%}
+                    <p>No overtime schedules</p>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<!-- Modal: modal-->
+<div class="modal fade" id="modal_add_employee_schedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Overtime Schedule</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <form method="POST" action="#"> {%csrf_token%}
+                    <div class="form-group">
+                        <label for="employee">Employee</label>
+                        <select class="form-control" id="employee" name="employee" required>
+                            {%for employee in employees%}
+                            <option value="{{employee.id}}">{{employee}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date of work</label>
+                        <input type="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="number_of_hours">Number of Hours</label>
+                        <input type="number" name="number_of_hours" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" name="description" id="description" required></textarea>
+                    </div>
+                    <input type="hidden" name=overtime_plan value={{overtime_plan.id}}>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
+                        type="reset">Close
+                </button>
+                <button class="btn btn-danger" type="submit">Save</button>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+{%endblock content%}

@@ -16,32 +16,29 @@
                 {% endfor %}
                 {% endif %}
 
-                {%if pending_applications %}
-                <h3>Pending applications</h3>
+                {%if pending_overtime_plans %}
+                <h3>Pending Overtime Plans</h3>
                 <table class="table">
                     <thead class="thead-dark">
-                    <th>Name</th>
+                    <th>ID</th>
+                    <th>Applicant</th>
+                    <th>Department</th>
                     <th>Date</th>
-                    <th>Start time</th>
-                    <th>End time</th>
-                    <th>Description</th>
+                    <th>Status</th>
                     <th>Actions</th>
                     </thead>
-                    {%for pending_application in pending_applications %}
+                    {%for pending_overtime_plan in pending_overtime_plans %}
                     <tr>
-                        <td>{{pending_application.applicant.first_name}} {{pending_application.applicant.last_name}}
+                        <td>{{pending_overtime_plan.id}}
                         </td>
-                        <td>{{pending_application.date}}</td>
-                        <td>{{pending_application.start_time}}</td>
-                        <td>{{pending_application.end_time}}</td>
-                        <td>{{pending_application.description}}</td>
+                        <td>{{pending_overtime_plan.applicant}}</td>
+                        <td>{{pending_overtime_plan.applicant.organisationdetail.department}}</td>
+                        <td>{{pending_overtime_plan.date}}</td>
+                        <td>{{pending_overtime_plan.status}}</td>
                         <td>
-
-                            <a href="{%url 'pending_overtime_application_page' pending_application.id%}">
-                                <button>View Application</button>
+                            <a href="{%url 'pending_overtime_plan_page' pending_overtime_plan.id%}">
+                                <button>Review Application</button>
                             </a>
-
-
                         </td>
 
                     </tr>
