@@ -2,6 +2,9 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.forms import model_to_dict
+import json
 
 from django.contrib.auth.decorators import login_required
 
@@ -190,7 +193,7 @@ def apply_leave_page(request):
     if not request.user.is_authenticated:
         # if the user is not authenticated it renders a login page
         return render(request, 'ems_auth/login.html', {"message": None})
-
+    
     employee = Employee.objects.filter(pk=get_current_user(request, "id"))
     leave_record = Leave_Records.objects.all()
     leave_balance = -1
@@ -207,7 +210,7 @@ def apply_leave_page(request):
         "l_balance": leave_balance,
         "gender": get_current_user(request, "gender")
     }
-
+    print("apply")
     return render(request, "leave/leave.html", context)
 
 
@@ -248,12 +251,12 @@ def apply_leave(request):
 
                 leave_app.save()
 
-                subject = 'New Leave Request'
-                from_mail = settings.EMAIL_HOST_USER
-                msg = 'You have a new leave request that requires your attention'
-                to_mails = [user.email]
+                # subject = 'New Leave Request'
+                # from_mail = settings.EMAIL_HOST_USER
+                # msg = 'You have a new leave request that requires your attention'
+                # to_mails = [user.email]
 
-                send_mail(subject, msg, from_mail, to_mails,fail_silently=False)
+                # send_mail(subject, msg, from_mail, to_mails,fail_silently=False)
 
                 messages.success(request, 'Leave Request Sent Successfully')
 
@@ -461,6 +464,36 @@ def calculate_leave_days(start_date, end_date):
         k = k + 1
 
     return all_working_days
+
+def get_end_date(request):
+    if request.method=="GET":
+        date_format = "%Y-%m-%d"
+
+        #Capturing values from the request
+        start_date = request.GET["startDate"]
+        no_days = int(request.GET["no_of_days"])
+
+        from_date = datetime.datetime.strptime(start_date, date_format)
+        
+        #Getting all holiday objects
+        holidays = Holidays.objects.all()
+
+        k = 0
+        public_days = 0
+        while k <= no_days:
+            check_date = from_date + datetime.timedelta(days=k)
+
+            if check_date.weekday() == 6 or holidays.filter(holiday_date=check_date).exists():
+                public_days+=1
+
+            k += 1
+        
+        end_date = from_date + datetime.timedelta(days=(no_days+public_days))
+
+        if end_date is None:
+            return JsonResponse({'success': False})
+
+        return JsonResponse({'success': True, 'end_date': end_date.date()})
 
 
 def annual_calendar(request):
