@@ -21,11 +21,11 @@ from organisation_details.models import (
     Team)
 from .models import (
     Leave_Types,
-    Holidays,
     LeaveApplication,
     annual_planner,
     Leave_Records
 )
+from holidays.models import Holiday
 
 
 def get_current_user(request, need):
@@ -210,7 +210,6 @@ def apply_leave_page(request):
         "l_balance": leave_balance,
         "gender": get_current_user(request, "gender")
     }
-    print("apply")
     return render(request, "leave/leave.html", context)
 
 
@@ -233,7 +232,7 @@ def apply_leave(request):
         e_date = request.POST["e_date"]
 
         # getting the leave type entitlement
-        n_days = calculate_leave_days(s_date, e_date)
+        n_days = int(request.POST["no_days"]) #calculate_leave_days(s_date, e_date)
         l_days = l_type.leave_days
 
         if n_days <= l_days:
@@ -469,31 +468,60 @@ def get_end_date(request):
     if request.method=="GET":
         date_format = "%Y-%m-%d"
 
-        #Capturing values from the request
+        #Capturing values from the request       
         start_date = request.GET["startDate"]
-        no_days = int(request.GET["no_of_days"])
+        days = request.GET["no_of_days"]
 
-        from_date = datetime.datetime.strptime(start_date, date_format)
+        if start_date and days:
+            no_days = int(days)
+
+            from_date = datetime.datetime.strptime(start_date, date_format)
+            
+            #Getting all holiday objects
+            holidays = Holiday.objects.all()
+
+            k = 0
+            public_days = 0
+            while k < no_days:
+                check_date = from_date + datetime.timedelta(days=k)
+
+                is_holiday = holidays.filter(date=check_date.date()).exists()
+
+                if check_date.weekday() == 6 or is_holiday:
+                    public_days+=1
+                    #continue
+
+                k += 1
+            
+            end_date = from_date + datetime.timedelta(days=(no_days+public_days))
+
+            if end_date is None:
+                return JsonResponse({'success': False, 'message': 'No Date returned'})
+
+            return JsonResponse({'success': True, 'end_date': end_date.date()})
+        else:
+            return JsonResponse({'success': False, 'message': "Start Date and/or Number of days Not Specified"})
+
+def get_no_of_days(request):
+    if request.method=="GET":
+        leave_type = request.GET['leave_type']        
+        no_of_days = 0
+
+        if leave_type:
+            leave = Leave_Types.objects.get(id=leave_type)
+
+            if leave.leave_type != "Annual":                
+                no_of_days=leave.leave_days
+                
+            else:
+                leave_records = Leave_Records.objects.get(employee=request.user.id,\
+                    leave_year=date.today().year)
+
+                no_of_days = leave_records.balance
         
-        #Getting all holiday objects
-        holidays = Holidays.objects.all()
-
-        k = 0
-        public_days = 0
-        while k <= no_days:
-            check_date = from_date + datetime.timedelta(days=k)
-
-            if check_date.weekday() == 6 or holidays.filter(holiday_date=check_date).exists():
-                public_days+=1
-
-            k += 1
-        
-        end_date = from_date + datetime.timedelta(days=(no_days+public_days))
-
-        if end_date is None:
-            return JsonResponse({'success': False})
-
-        return JsonResponse({'success': True, 'end_date': end_date.date()})
+            return JsonResponse({'success': True, 'no_of_days': no_of_days, 'leave':leave.leave_type})
+        else:
+            return JsonResponse({'success': False, 'message': 'No such Leave Type'})
 
 
 def annual_calendar(request):

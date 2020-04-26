@@ -19,7 +19,8 @@ urlpatterns = [
     path('apply_leave/', views.apply_leave, name="apply_leave"),
     path('approve_leave/', views.approve_leave, name="approve_leave"),
     path('reject_leave/', views.reject_leave, name="reject_leave"),
-    path('get_end_date/', views.get_end_date, name="get_end_date"),    
+    path('get_end_date/', views.get_end_date, name="get_end_date"),  
+    path('get_no_of_days/', views.get_no_of_days, name="get_no_of_days"),   
     
     path('annual_calendar/', views.Leave_planner_summary, name="annual_calendar"),
     path('leave_planner/', views.leave_planer, name="leave_planner"),
@@ -32,6 +33,7 @@ urlpatterns = [
 def javascript_settings():
     js_conf = {
         'get_end_date': reverse('get_end_date'),
+        'get_no_of_days': reverse('get_no_of_days'),
     }
 
     return js_conf

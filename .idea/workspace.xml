@@ -2,17 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5da574a0-2ffc-416f-8cfe-6358b3aeb4f9" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/SOLITONEMS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SOLITONEMS/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leave/templates/leave/apply_leave.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/apply_leave.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leave/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/leave/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leave/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/leave/views.py" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hod_required.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/overtime/templates/overtime/add_employee_schedules.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_plan.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/decorators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/selectors.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/selectors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/approve_overtime_plans.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/approve_overtime_plans.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/create_overtime_plan.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/create_overtime_plan.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/views.py" afterDir="false" />
+>>>>>>> b2b60c690344b7a1ba2c7eb97cf6a00924d797af
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -50,8 +75,20 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+<<<<<<< HEAD
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+=======
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ems_auth/templates/ems_auth" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ems_auth/templates/ems_auth" />
+      <recent name="$PROJECT_DIR$/overtime/templates/overtime" />
+    </key>
+>>>>>>> b2b60c690344b7a1ba2c7eb97cf6a00924d797af
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -101,9 +138,13 @@
     </layout>
   </component>
   <component name="WindowStateProjectService">
-    <state x="372" y="224" key="com.intellij.ide.util.TipDialog" timestamp="1584348398239">
+    <state x="407" y="201" width="629" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1586578770793">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state x="372" y="224" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1584348398239" />
+    <state x="407" y="201" width="629" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1299.741@67.27.1299.741" timestamp="1586578770793" />
+    <state x="372" y="224" key="com.intellij.ide.util.TipDialog" timestamp="1586657458949">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="372" y="224" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1586657458949" />
   </component>
 </project>

@@ -1,6 +1,9 @@
 {% extends './base.html' %}
+{% load  static %}
+  
 {% block page_title %}
-<h1>Departments</h1>
+  {% comment %} <link rel="stylesheet" href="{% static 'css/style.css'%}" {% endcomment %}
+  <h1>Departments</h1>
 {% endblock %}
 
 {% block content %}
@@ -17,7 +20,7 @@
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-hover">
-              <thead class="thead-dark">
+              <thead >
               <th>ID</th>
               <th>Department</th>
               <th>Head</th>
@@ -39,10 +42,11 @@
                 <td>
                   <a href="{% url 'edit_department_page' depart.id %}" data-toggle="modal"
                      data-target="#modal_edit_department" style="color:inherit">
-                    <i class="fa fa-edit"></i>
+                    <i class="fa fa-edit">Edit</i>
                   </a> |
                   <a href="{% url 'delete_department' depart.id %}" style="color: inherit" ...
-                     onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
+                     onclick="return confirm('Are you sure you want to delete @Type?')">
+                     <i class="fa fa-trash">Delete</i>
                   </a></td>
               </tr>
               {% endfor %}
