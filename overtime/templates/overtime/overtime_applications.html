@@ -16,6 +16,7 @@
                 {%if overtime_applications%}
                 <table class="table">
                     <thead class="thead-dark">
+                    <th>ID</th>
                     <th>Name</th>
                     <th>Date</th>
                     <th>Start Time</th>
@@ -27,6 +28,7 @@
                     </thead>
                     {%for overtime_application in overtime_applications%}
                     <tr>
+                        <td>{{overtime_application.id}}</td>
                         <td>{{overtime_application.applicant.first_name}} {{overtime_application.applicant.last_name}}
                         </td>
                         <td>{{ overtime_application.date }}</td>

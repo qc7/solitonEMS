@@ -24,6 +24,7 @@
                 <div>
                     <table class="table">
                         <thead class="thead-dark">
+                        <th>ID</th>
                         <th>Date</th>
                         <th>Start time</th>
                         <th>End time</th>
@@ -32,6 +33,7 @@
                         </thead>
                         {%for recent_application in recent_applications%}
                         <tr>
+                            <td>{{recent_application.id}}</td>
                             <td>{{recent_application.date}}</td>
                             <td>{{recent_application.start_time}}</td>
                             <td>{{recent_application.end_time}}</td>

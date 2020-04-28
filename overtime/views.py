@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -11,9 +11,10 @@ from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
 from overtime.procedures import is_duration_valid
 from overtime.selectors import get_all_overtime_applications, get_pending_overtime_applications, \
     get_overtime_application, get_recent_overtime_applications, get_all_overtime_plans, get_most_recent_overtime_plans, \
-    get_overtime_plan, get_overtime_schedules, get_pending_overtime_plans
+    get_overtime_plan, get_overtime_schedules, get_pending_overtime_plans, get_supervisor_users
 from overtime.services import reject_overtime_application_service, approve_overtime_application_service, \
-    update_overtime_application, reject_overtime_plan_service, approve_overtime_plan_service
+    update_overtime_application, reject_overtime_plan_service, approve_overtime_plan_service, \
+    send_overtime_application_mail, send_overtime_application_approval_mail
 
 
 # Create your views here.
@@ -53,6 +54,10 @@ def apply_for_overtime_page(request):
             description=description,
             applicant=applicant
         )
+
+        approvers = get_supervisor_users(applicant)
+
+        send_overtime_application_mail(approvers, overtime_application)
 
         messages.success(request, "You have successfully submitted your overtime application")
 
@@ -122,7 +127,6 @@ def pending_overtime_application_page(request, overtime_application_id):
     return render(request, 'overtime/pending_overtime_application.html', context)
 
 
-@log_activity
 def reject_overtime_application(request, overtime_application_id):
     rejecter = request.user
     overtime_application = get_overtime_application(overtime_application_id)
@@ -134,7 +138,6 @@ def reject_overtime_application(request, overtime_application_id):
     return HttpResponseRedirect(reverse('approve_overtime_page'))
 
 
-@log_activity
 def approve_overtime_application(request, overtime_application_id):
     approver = request.user
     overtime_application = get_overtime_application(overtime_application_id)
