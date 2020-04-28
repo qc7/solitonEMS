@@ -1,5 +1,7 @@
 from employees.models import Employee
 from settings.models import Currency
+from leave.models import Leave_Records
+import datetime
 
 
 def create_employee_instance(request):
@@ -36,6 +38,9 @@ def create_employee_instance(request):
                         )
     # Saving the employee instance
     employee.save()
+
+    add_leave_record(employee,start_date)
+    
     return employee
 
 
@@ -43,4 +48,24 @@ def suspend(employee):
     employee.status = "Suspended"
     employee.save()
     return employee
+
+def add_leave_record(employee, start_date):
+    date_format = "%Y-%m-%d"
+    begin_date = datetime.datetime.strptime(start_date, date_format)
+    start_day = begin_date.day
+    start_month = begin_date.month
+
+    leave_days = 0
+
+    if start_day>=15:
+        leave_days = (12-start_month)*1.75
+    else:
+        leave_days = (12-(start_month-1))*1.75
+    
+    leave_record = Leave_Records(employee=employee, leave_year=begin_date.year,\
+                    entitlement=leave_days, residue=0, leave_applied=0, total_taken=0,\
+                    balance=leave_days)
+
+    leave_record.save()
+
 

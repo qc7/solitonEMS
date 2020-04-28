@@ -1,7 +1,44 @@
-{% extends './base.html'%} {% load static %}
+{% extends './base.html'%} 
+{% load static %}
+{% load javascript_settings_tags %}
 
 {% block page_title %}
 <h1>Leave Application</h1>
+
+<script>
+
+    function computeEndDate(){
+        //Initialize variables
+        const request = new XMLHttpRequest();
+        const start_date = document.querySelector('#st_date').value;
+        const no_of_days = document.querySelector('#no_days').value;
+        
+        request.open('GET', configuration['leave']['get_end_date']);
+       
+        //Callback function for when request is complete
+        request.onload=()=>{
+            //Extract JSON data from the request
+            console.log(request.responseText);
+            const data =JSON.parse(request.responseText);
+            console.log(data);
+            if (data.success){
+                document.querySelector('#end_date').value=data.end_date;
+            }
+            else{
+                alert('Something went wrong');
+            }
+        }
+        
+        //forwarding required data along with the request
+        const data = new FormData();
+        data.append('startDate', start_date);
+        data.append('no_of_days', no_of_days);
+        request.send(data);
+
+        return false;           
+    }
+</script> 
+
 {% endblock %}
 
 {%block content%}
@@ -30,6 +67,7 @@
                         <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_apply_leave">
                             Apply Now
                         </button>
+                        
                        <h3>Your Applications</h3>
                         <table class="table">
                             <thead>
@@ -167,16 +205,24 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="start_date">Start Date</label>
-                        <input type="date" class="form-control" placeholder="From" name="s_date" required>
+                        <input type="text" class="form-control" placeholder="No. of Days" 
+                        id = "no_days" name="no_days">
                     </div>
 
                     <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <input type="date" class="form-control" placeholder="From" name="s_date" 
+                        id="st_date" required onblur="computeEndDate()">
+                    </div>
+{% comment %}  {% endcomment %}
+                    <div class="form-group">
                         <label for="end_date">End Date</label>
-                        <input type="date" class="form-control" placeholder="To" name="e_date" required>
+                        <input type="date" class="form-control" placeholder="To" id="end_date" 
+                        name="e_date" required >
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Additional Note" name="remark">
+                        <input type="text" class="form-control" placeholder="Additional Note" 
+                        name="remark">
                     </div>
 
                     <!--Footer-->
@@ -191,59 +237,7 @@
         </div>
     </div>
 </div>
-
-<!-- Modal: modal edit Leave Application -->
-<div class="modal fade" id="modal_edit_leave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style="overflow-y: auto !important">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!-- Header -->
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Edit Leave Application</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-
-            <!-- Body -->
-            <div class="modal-body">
-                <form method="POST" action="{% url 'apply_leave' %}"> {% csrf_token %}
-                    <div class="form-group">
-                        <label for="">Leave Type:</label>
-                        <select class="form-control" id="ltype" name="ltype" required>
-                            {% for ty in l_types %}
-                            {% if ty.leave_type == ty %}
-                            <option selected>{{ty.leave_type }}</option>
-                            {% else %}
-                            <option value="{{ty.id }}">{{ty.leave_type }}</option>
-                            {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="start_date">Start Date</label>
-                        <input type="date" class="form-control" placeholder="From" name="s_date" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="end_date">End Date</label>
-                        <input type="date" class="form-control" placeholder="To" name="e_date" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Additional Note" name="remark" required>
-                    </div>
-
-                    <!--Footer-->
-                    <div class="modal-footer">
-                        <button class="btn btn-danger" type="submit">Apply</button>
-                        <button class="btn btn-outline-danger" class="close" data-dismiss="modal" aria-label="Close">
-                            Close</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/js.js' %}"></script>
+<script type="text/javascript">{% javascript_settings %}</script> 
 {%endblock%}

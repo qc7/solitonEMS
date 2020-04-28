@@ -1,6 +1,8 @@
-from django.urls import path
+from django.urls import path, reverse
 from . import views
 from django.contrib.auth import views as auth_views
+from django.conf.urls import url
+
 urlpatterns = [
     # Pages 
     path('', views.leave_dashboard_page, name="leave_dashboard_page"),
@@ -17,11 +19,19 @@ urlpatterns = [
     path('apply_leave/', views.apply_leave, name="apply_leave"),
     path('approve_leave/', views.approve_leave, name="approve_leave"),
     path('reject_leave/', views.reject_leave, name="reject_leave"),
+    path('get_end_date/', views.get_end_date, name="get_end_date"),    
     
     path('annual_calendar/', views.Leave_planner_summary, name="annual_calendar"),
     path('leave_planner/', views.leave_planer, name="leave_planner"),
     path('add_new_absence/', views.add_new_absence, name="add_new_absence"),
     path('Leave_planner_summary/', views.Leave_planner_summary, name="Leave_planner_summary"),
     path('leave_calendar/', views.leave_calendar, name="Leave_calendar"),
-
+    
 ]
+
+def javascript_settings():
+    js_conf = {
+        'get_end_date': reverse('get_end_date'),
+    }
+
+    return js_conf

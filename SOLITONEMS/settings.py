@@ -55,6 +55,9 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'dajaxice',
+    'dajax',
+    'javascript_settings',
 ]
 
 INSTALLED_APPS = SOLITONEMS_APPS + DJANGO_APPS
@@ -140,8 +143,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/solitonug/solitonEMS/static'
 
-#  Email smtp setup for productionSG.TsTnsvXASyKAEVdxvJqpdg.h-uUaG1BdU1M_36AbAtAHZ9hLen3JKgbu12Pf0Uuajs
-SENDGRID_API_KEY = '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'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'mail3.soliton.co.ug'
