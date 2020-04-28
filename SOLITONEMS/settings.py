@@ -140,15 +140,18 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/solitonug/solitonEMS/static'
 
-#  Email smtp setup for production
+#  Email smtp setup for productionSG.TsTnsvXASyKAEVdxvJqpdg.h-uUaG1BdU1M_36AbAtAHZ9hLen3JKgbu12Pf0Uuajs
+SENDGRID_API_KEY = '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'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "mail3.soliton.co.ug"
-EMAIL_HOST_USER = 'hr-sys@soliton.co.ug'  # Put the email account for the soliton system
-EMAIL_HOST_PASSWORD = 'solitonug'  # Put the password for the email account
+
+EMAIL_HOST = 'mail3.soliton.co.ug'
+EMAIL_HOST_USER = 'hr-sys@soliton.co.ug'
+EMAIL_HOST_PASSWORD = "solitonug"
+EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
 EMAIL_USE_TLS = True
 
- # Email smtp setup for development
+# Email smtp setup for development
 # EMAIL_HOST = "localhost"
 # EMAIL_PORT = 1025
 # DEFAULT_FROM_EMAIL = 'no-reply@solitonems'

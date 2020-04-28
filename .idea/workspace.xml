@@ -2,19 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5da574a0-2ffc-416f-8cfe-6358b3aeb4f9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hod_required.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/overtime/templates/overtime/add_employee_schedules.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_plan.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/overtime/templates/email/overtime_approval_notification.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/overtime/templates/email/overtime_approved_notification.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/decorators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SOLITONEMS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SOLITONEMS/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/overtime/selectors.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/selectors.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/overtime/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/approve_overtime_plans.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/approve_overtime_plans.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/create_overtime_plan.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/create_overtime_plan.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/apply_for_overtime.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/apply_for_overtime.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/overtime_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/overtime_applications.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/overtime/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/overtime/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/views.py" afterDir="false" />
     </list>
@@ -53,12 +48,16 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ems_auth/templates/ems_auth" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/overtime/templates/email" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/overtime/templates/email" />
       <recent name="$PROJECT_DIR$/ems_auth/templates/ems_auth" />
       <recent name="$PROJECT_DIR$/overtime/templates/overtime" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/employees/static/assets/css" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -79,9 +78,13 @@
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="407" y="201" width="629" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1299.741@67.27.1299.741" timestamp="1586578770793" />
-    <state x="372" y="224" key="com.intellij.ide.util.TipDialog" timestamp="1586657458949">
+    <state x="421" y="234" key="com.intellij.ide.util.TipDialog" timestamp="1588060797258">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state x="372" y="224" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1586657458949" />
+    <state x="421" y="234" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1588060797258" />
+    <state x="379" y="89" key="search.everywhere.popup" timestamp="1588064256444">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="379" y="89" key="search.everywhere.popup/67.27.1299.741@67.27.1299.741" timestamp="1588064256444" />
   </component>
 </project>
