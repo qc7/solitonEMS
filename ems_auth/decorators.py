@@ -6,6 +6,7 @@ from django.urls import reverse
 from ems_admin.models import EMSPermission
 from ems_admin.selectors import get_user
 from ems_auth.models import SolitonUser
+from ems_auth.views import hod_required_page
 
 User = get_user_model()
 
@@ -51,6 +52,17 @@ def hr_required(function):
             return function(request, *args, **kw)
         else:
             return HttpResponseRedirect(reverse('hr_required_page'))
+
+    return wrapper
+
+
+def hod_required(function):
+    def wrapper(request, *args, **kw):
+        user = request.user
+        if user.is_hod:
+            return function(request, *args, **kw)
+        else:
+            return HttpResponseRedirect(reverse('hod_required_page'))
 
     return wrapper
 
