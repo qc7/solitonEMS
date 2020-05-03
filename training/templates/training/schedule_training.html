@@ -1,6 +1,6 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Schedule Training</h1>
+Schedule Training
 {% endblock %}
 
 {% block content %}
@@ -19,6 +19,7 @@
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class="thead-dark">
+                            <th>ID</th>
                             <th>Programme</th>
                             <th>Duration</th>
                             <th>Venue</th>
@@ -27,8 +28,9 @@
                             <th>Actions</th>
                             </thead>
                             <tbody>
-                            {% for training_schedule in training_schedules  %}
+                            {% for training_schedule in training_schedules %}
                             <tr>
+                                <td>{{training_schedule.id}}</td>
                                 <td><a href="#" style="color: inherit">{{training_schedule.programme}}</a></td>
                                 <td>{{training_schedule.duration}}</td>
                                 <td>{{training_schedule.venue}}</td>
@@ -37,7 +39,8 @@
                                 <td>
                                     <a href="{%url 'edit_training_schedule' training_schedule.id%}">
                                         <i class="fa fa-edit"></i><a/>|
-                                        <a href="{%url 'delete_training_schedule' training_schedule.id%}"><i class="fa fa-trash"></i></a>
+                                        <a href="{%url 'delete_training_schedule' training_schedule.id%}"><i
+                                                class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -56,7 +59,8 @@
 
 
         <!-- Modal: modalAddNewTrainingSchedule -->
-        <div class="modal fade" id="modal_add_new_schedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="modal_add_new_schedule" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
              aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -107,4 +111,4 @@
         </div>
     </div>
 </div>
-    {%endblock content%}
+{%endblock content%}

@@ -2,97 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5da574a0-2ffc-416f-8cfe-6358b3aeb4f9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/edit_contract.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/edit_contract.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/manage_job_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/manage_job_contracts.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/terminated_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/terminated_contracts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/user_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/user_contracts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/activate_employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/activate_employees.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/add_more_details.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/add_more_details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/deleted.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/deleted.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/deleted_employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/deleted_employee.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/departments.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/departments.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_beneficiary.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_beneficiary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_cert.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_cert.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_dependant.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_dependant.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_emergency.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_emergency.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_employee.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_spouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_spouse.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/employee.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/employee_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/employee_profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/employees.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/failed.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/failed.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/job_titles.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/job_titles.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/success.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/success.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employees/templates/employees/teams.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/teams.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/audit_trails.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/audit_trails.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/edit_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/edit_user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/edit_user_permission.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/edit_user_permission.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/manage_user_permissions.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/manage_user_permissions.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/manage_users.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/manage_users.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/user_audit_trail.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/user_audit_trail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/view_users.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/view_users.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/employee_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/employee_required.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/full_auth_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/full_auth_required.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hod_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hod_required.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hr_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hr_required.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_change.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_change.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_change_done.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_change_done.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_complete.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_complete.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_confirm.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_done.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_done.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/super_admin_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/super_admin_required.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/holidays/templates/holidays/edit_holiday.html" beforeDir="false" afterPath="$PROJECT_DIR$/holidays/templates/holidays/edit_holiday.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/holidays/templates/holidays/holidays_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/holidays/templates/holidays/holidays_page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/audios.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/audios.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/books.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/books.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/edit_resource.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/edit_resource.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/manage_resources.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/manage_resources.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/resources.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/resources.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/videos.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/videos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/annual_calendar.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/annual_calendar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/apply_leave.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/apply_leave.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/approval_path.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/approval_path.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/datatables.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/datatables.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/edit_absence.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/edit_absence.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/failed.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/failed.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/holidays.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/holidays.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_balance.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_balance.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_calendar.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_calendar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_planner.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_planner.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_records.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_records.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_types.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_types.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leave/templates/leave/success.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/success.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/add_employee_schedules.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/add_employee_schedules.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/amend_overtime_application.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/amend_overtime_application.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/apply_for_overtime.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/apply_for_overtime.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/approve_overtime_plans.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/approve_overtime_plans.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/approved_applications_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/approved_applications_page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/create_overtime_plan.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/create_overtime_plan.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/overtime_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/overtime_applications.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/overtime_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/overtime_page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_application.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_application.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_plan.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_plan.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/edit_payroll.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/edit_payroll.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/failed.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/failed.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/manage_payroll_records.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/manage_payroll_records.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/payroll_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/payroll_record.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/payroll_records.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/payroll_records.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/payslip.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/payslip.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/payslips.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/payslips.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/view_payslip.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/view_payslip.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/advertised_jobs.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/advertised_jobs.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/edit_job_advertisement.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/edit_job_advertisement.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/job_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/job_applications.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/job_description.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/job_description.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/manage_job_advertisement.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/manage_job_advertisement.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/view_job_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/view_job_applications.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/templates/training/approve_training_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/approve_training_applications.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/templates/training/edit_training_schedule.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/edit_training_schedule.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/templates/training/schedule_training.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/schedule_training.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/templates/training/training_schedules.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/training_schedules.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/templates/training/user_training.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/user_training.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

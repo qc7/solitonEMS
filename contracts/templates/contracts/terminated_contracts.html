@@ -24,7 +24,7 @@ Passive Contracts
                                 <th>Actions</th>
                                 </thead>
                                 <tbody>
-                                {% for contract in terminated_contracts  %}
+                                {% for contract in terminated_contracts %}
                                 <tr>
                                     <td><a href="#" style="color: inherit">{{contract.reference_number}}</a></td>
                                     <td>{{contract.position}}</td>
@@ -32,7 +32,9 @@ Passive Contracts
                                     <td>{{contract.effective_date}}</td>
                                     <td>{{contract.expiry_date}}</td>
                                     <td>{{contract.risk | title}}</td>
-                                    <td><a href="/media/{{contract.document}}"><button>View</button></a></td>
+                                    <td><a href="/media/{{contract.document}}">
+                                        <button>View</button>
+                                    </a></td>
                                     <td>
                                         <a href="{%url 'activate_contract' contract.id%}" style="color:inherit">
                                             <button>Activate Contract</button>
