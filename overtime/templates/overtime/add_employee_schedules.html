@@ -1,7 +1,7 @@
 {%extends 'solitonems/base.html'%}
 
 {%block page_title %}
-<h1>Add Employee Schedules</h1>
+Add Employee Schedules
 {%endblock%}
 
 {%block content%}
@@ -14,22 +14,24 @@
             <div class="card">
                 <div class="card-body">
                     {%if overtime_schedules%}
-                    <table class="table">
-                        <thead class="thead-dark">
-                        <th>Employee</th>
-                        <th>Date</th>
-                        <th>Number of hours</th>
-                        <th>Description</th>
-                        </thead>
-                        {%for overtime_schedule in overtime_schedules%}
-                        <tr>
-                            <td>{{overtime_schedule.employee}}</td>
-                            <td>{{overtime_schedule.date}}</td>
-                            <td>{{overtime_schedule.number_of_hours}}</td>
-                            <td>{{overtime_schedule.description}}</td>
-                        </tr>
-                        {%endfor%}
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <th>Employee</th>
+                            <th>Date</th>
+                            <th>Number of hours</th>
+                            <th>Description</th>
+                            </thead>
+                            {%for overtime_schedule in overtime_schedules%}
+                            <tr>
+                                <td>{{overtime_schedule.employee}}</td>
+                                <td>{{overtime_schedule.date}}</td>
+                                <td>{{overtime_schedule.number_of_hours}}</td>
+                                <td>{{overtime_schedule.description}}</td>
+                            </tr>
+                            {%endfor%}
+                        </table>
+                    </div>
                     {%else%}
                     <p>No overtime schedules</p>
                     {%endif%}
@@ -89,8 +91,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 {%endblock content%}

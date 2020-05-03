@@ -2,7 +2,7 @@
 {% load humanize %}
 {% load static %}
 {% block page_title %}
-<h1>Edit Job Advertisement</h1>
+Edit Job Advertisement
 {% endblock %}
 
 {%block content%}
@@ -12,11 +12,12 @@
             <div class="card-body">
 
                 {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-warning">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}</div>
-                    {% endfor %}
+                {% for message in messages %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
                 {% endif %}
 
                 <form method="post">
@@ -33,7 +34,7 @@
 
                     <div class="form-group">
                         <label>Vacancy</label>
-                        <input type="number" class="form-control" name="vacancy" value={{job_ad.vacancy}} />
+                        <input type="number" class="form-control" name="vacancy" value={{job_ad.vacancy}}/>
                     </div>
 
                     <div class="form-group">
@@ -49,12 +50,13 @@
 
                     <div class="form-group">
                         <label>Experience(Years)</label>
-                        <input type="number" class="form-control" name="experience" value={{job_ad.experience}} />
+                        <input type="number" class="form-control" name="experience" value={{job_ad.experience}}/>
                     </div>
 
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea class="form-control" rows="16" cols="200" name="description">{{job_ad.description}}</textarea>
+                        <textarea class="form-control" rows="16" cols="200"
+                                  name="description">{{job_ad.description}}</textarea>
                     </div>
 
                     <div class="form-group">

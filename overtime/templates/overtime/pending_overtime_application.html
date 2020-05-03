@@ -1,9 +1,7 @@
 {%extends 'solitonems/base.html'%}
 
 {%block page_title %}
-<span>
-    <h1 class="animated fadeInDown">Pending Overtime Application</h1>
-</span>
+Pending Overtime Application
 {%endblock%}
 {%block content%}
 <div class="content">
@@ -72,11 +70,13 @@
                 </div>
                 <a href="{%url 'reject_overtime_application' overtime_application.id%}"
                    onclick="return confirm('Are you sure you want to reject {{pending_application.applicant.first_name}}\'s overtime application?')">
-                    <button>Reject</button> |
+                    <button>Reject</button>
+                    |
                 </a>
                 <a href="{%url 'approve_overtime_application' overtime_application.id%}"
                    onclick="return confirm('Are you sure you want to approve {{pending_application.applicant.first_name}}\'s overtime application?')">
-                    <button>Approve</button> |
+                    <button>Approve</button>
+                    |
                 </a>
                 <a href="{%url 'amend_overtime_application_page' overtime_application.id%}">
                     <button> Amend</button>

@@ -1,9 +1,9 @@
-{% extends './base.html'%} 
+{% extends './base.html'%}
 {% load static %}
 {% load javascript_settings_tags %}
 
 {% block page_title %}
-<h1>Leave Application</h1>
+Leave Application
 
 <script>
 
@@ -37,7 +37,10 @@
 
         return false;           
     }
-</script> 
+
+
+
+</script>
 
 {% endblock %}
 
@@ -54,30 +57,31 @@
                         {% for msg in messages%}
                         <div class="alert alert-{{ msg.tags }} alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                                &times;</button>
-                                    {{ msg }}
-                                </div>
-                             {% endfor %}
-                        {% endif %} 
+                                &times;
+                            </button>
+                            {{ msg }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
 
                         {% if l_balance == -1%}
-                            <h2> Your Don't have Leave Records for this Year</h2>
+                        <h2> Your Don't have Leave Records for this Year</h2>
                         {% else %}
                         <h2>Annual Balance: <b>{{ l_balance }} day(s)</b></h2>
                         <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_apply_leave">
                             Apply Now
                         </button>
-                        
-                       <h3>Your Applications</h3>
+
+                        <h3>Your Applications</h3>
                         <table class="table">
                             <thead>
-                                <th>Date</th>
-                                <th>Leave Type</th>
-                                <th>Duration</th>
-                                <th>Supervisor</th>
-                                <th>HOD</th>
-                                <th>HR</th> 
-                                <th colspan="2">#</th>            
+                            <th>Date</th>
+                            <th>Leave Type</th>
+                            <th>Duration</th>
+                            <th>Supervisor</th>
+                            <th>HOD</th>
+                            <th>HR</th>
+                            <th colspan="2">#</th>
                             </thead>
                             {% for leave_application in apps %}
                             <tr>
@@ -85,55 +89,59 @@
                                 <td>{{leave_application.leave_type}}</td>
                                 <td>{{leave_application.no_of_days}}</td>
                                 <td>
-                                {% if leave_application.supervisor_status == "Approved"%}
-                                    <i class="large material-icons">check</i> 
-                                {% elif leave_application.supervisor_status == "Rejected"%}
+                                    {% if leave_application.supervisor_status == "Approved"%}
+                                    <i class="large material-icons">check</i>
+                                    {% elif leave_application.supervisor_status == "Rejected"%}
                                     <a href="#" style="color: red" data-toggle="modal"
-                                    data-target="#modal_Leave_rejected"> 
-                                        <i class="large material-icons">clear</i>
-                                    </a>
-                                {% else%}
-                                    <i class="large material-icons">remove</i>
-                                {% endif%}
-                                </td>
-                                <td>
-                                    {% if leave_application.hod_status == "Approved"%}
-                                        <i class="large material-icons">check</i> 
-                                    {% elif leave_application.hod_status == "Rejected"%}
-                                        <a href="#" style="color: red" data-toggle="modal"
-                                        data-target="#modal_Leave_rejected"> 
+                                       data-target="#modal_Leave_rejected">
                                         <i class="large material-icons">clear</i>
                                     </a>
                                     {% else%}
-                                        <i class="large material-icons">remove</i>
+                                    <i class="large material-icons">remove</i>
+                                    {% endif%}
+                                </td>
+                                <td>
+                                    {% if leave_application.hod_status == "Approved"%}
+                                    <i class="large material-icons">check</i>
+                                    {% elif leave_application.hod_status == "Rejected"%}
+                                    <a href="#" style="color: red" data-toggle="modal"
+                                       data-target="#modal_Leave_rejected">
+                                        <i class="large material-icons">clear</i>
+                                    </a>
+                                    {% else%}
+                                    <i class="large material-icons">remove</i>
                                     {% endif%}
                                 </td>
                                 <td>
                                     {% if leave_application.hr_status == "Approved"%}
-                                        <i class="large material-icons">check</i> 
+                                    <i class="large material-icons">check</i>
                                     {% elif leave_application.hr_status == "Rejected"%}
-                                        <a href="#" style="color: red" data-toggle="modal"
-                                        data-target="#modal_Leave_rejected"> 
-                                            <i class="large material-icons">clear</i>
-                                        </a>
+                                    <a href="#" style="color: red" data-toggle="modal"
+                                       data-target="#modal_Leave_rejected">
+                                        <i class="large material-icons">clear</i>
+                                    </a>
                                     {% else%}
-                                        <i class="large material-icons">remove</i>
+                                    <i class="large material-icons">remove</i>
                                     {% endif%}
                                 </td>
                                 <td>
-                                    <a href="#" data-toggle="modal" data-target="#modal_edit_leave" style="color:inherit" >
-                                    <i class="fa fa-edit"></i>
+                                    <a href="#" data-toggle="modal" data-target="#modal_edit_leave"
+                                       style="color:inherit">
+                                        <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                                 <td>
-                                    <a  href = "#" style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
+                                    <a href="#" style="color: inherit" ...
+                                       onclick="return confirm('Are you sure you want to delete @Type?')"><i
+                                            class="fa fa-trash"></i>
                                     </a>
-                                </td> 
+                                </td>
                             </tr>
 
                             <!-- Modal: modal_Leave_rejected -->
-                            <div class="modal fade" id="modal_Leave_rejected" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true" style="overflow-y: auto !important">
+                            <div class="modal fade" id="modal_Leave_rejected" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true" style="overflow-y: auto !important">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <!-- Header -->
@@ -149,13 +157,15 @@
                                             <form method="POST" action="{% url 'apply_leave' %}"> {% csrf_token %}
                                                 <div class="form-group">
                                                     <p>{{leave_application.remarks}}</p>
-                                                    
+
                                                 </div>
 
                                                 <!--Footer-->
                                                 <div class="modal-footer">
-                                                    <button class="btn btn-outline-danger" class="close" data-dismiss="modal" aria-label="Close">
-                                                    Close</button>
+                                                    <button class="btn btn-outline-danger" class="close"
+                                                            data-dismiss="modal" aria-label="Close">
+                                                        Close
+                                                    </button>
                                                 </div>
                                             </form>
 
@@ -205,31 +215,32 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="No. of Days" 
-                        id = "no_days" name="no_days">
+                        <input type="text" class="form-control" placeholder="No. of Days"
+                               id="no_days" name="no_days">
                     </div>
 
                     <div class="form-group">
                         <label for="start_date">Start Date</label>
-                        <input type="date" class="form-control" placeholder="From" name="s_date" 
-                        id="st_date" required onblur="computeEndDate()">
+                        <input type="date" class="form-control" placeholder="From" name="s_date"
+                               id="st_date" required onblur="computeEndDate()">
                     </div>
-{% comment %}  {% endcomment %}
+                    {% comment %} {% endcomment %}
                     <div class="form-group">
                         <label for="end_date">End Date</label>
-                        <input type="date" class="form-control" placeholder="To" id="end_date" 
-                        name="e_date" required >
+                        <input type="date" class="form-control" placeholder="To" id="end_date"
+                               name="e_date" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Additional Note" 
-                        name="remark">
+                        <input type="text" class="form-control" placeholder="Additional Note"
+                               name="remark">
                     </div>
 
                     <!--Footer-->
                     <div class="modal-footer">
                         <button class="btn btn-danger" type="submit">Apply</button>
                         <button class="btn btn-outline-danger" class="close" data-dismiss="modal" aria-label="Close">
-                        Close</button>
+                            Close
+                        </button>
                     </div>
                 </form>
 
@@ -239,5 +250,5 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{% static 'js/js.js' %}"></script>
-<script type="text/javascript">{% javascript_settings %}</script> 
+<script type="text/javascript">{% javascript_settings %}</script>
 {%endblock%}

@@ -1,6 +1,6 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Manage Resources</h1>
+Manage Resources
 {% endblock %}
 
 {% block content %}
@@ -27,14 +27,16 @@
                             <th>File</th>
                             </thead>
                             <tbody>
-                            {% for resource in resources  %}
+                            {% for resource in resources %}
                             <tr>
                                 <td>{{resource.name}}</td>
                                 <td>{{resource.producer}}</td>
                                 <td>{{resource.file_format | title}}</td>
                                 <td>{{resource.year_published}}</td>
                                 <td>{{resource.description}}</td>
-                                <td><a href="/media/{{resource.file}}"><button>Open</button></a></td>
+                                <td><a href="/media/{{resource.file}}">
+                                    <button>Open</button>
+                                </a></td>
                                 <td>
                                     <a href="{%url 'edit_resource_page' resource.id%}" style="color:inherit">
                                         <i class="fa fa-edit"></i>
@@ -62,7 +64,8 @@
 
 
         <!-- Modal: modalAddNewEmployee -->
-        <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
              aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
