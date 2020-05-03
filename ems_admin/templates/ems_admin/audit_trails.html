@@ -1,41 +1,41 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Audit Trail</h1>
+Audit Trail
 {% endblock %}
 
 {% block content %}
 <div class="content">
-  <div class="container-fluid">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead class="thead-dark">
-                <th>ID</th>
-                <th>User</th>
-                <th>Employee</th>
-                <th>Activity</th>
-                <th>Time</th>
-                <th>Last Login</th>
-              </thead>
-              <tbody>
-                {% for audit_trail in audit_trails  %}
-                <tr>
-                 <td>{{audit_trail.id}}</td>
-                    <td>{{audit_trail.user}}</td>
-                    <td>{{audit_trail.user.solitonuser.employee}}</td>
-                  <td>{{audit_trail.activity_name}}</td>
-                  <td>{{audit_trail.created_at}}</td>
-                  <td>{{audit_trail.user.last_login}}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Employee</th>
+                            <th>Activity</th>
+                            <th>Time</th>
+                            <th>Last Login</th>
+                            </thead>
+                            <tbody>
+                            {% for audit_trail in audit_trails %}
+                            <tr>
+                                <td>{{audit_trail.id}}</td>
+                                <td>{{audit_trail.user}}</td>
+                                <td>{{audit_trail.user.solitonuser.employee}}</td>
+                                <td>{{audit_trail.activity_name}}</td>
+                                <td>{{audit_trail.created_at}}</td>
+                                <td>{{audit_trail.user.last_login}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 {%endblock content%}

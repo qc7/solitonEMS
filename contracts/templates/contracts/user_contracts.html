@@ -1,6 +1,6 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>User Contracts</h1>
+User Contracts
 {% endblock %}
 
 {% block content %}
@@ -24,7 +24,7 @@
                             <th>Document</th>
                             </thead>
                             <tbody>
-                            {% for contract in contracts  %}
+                            {% for contract in contracts %}
                             <tr>
                                 <td><a href="#" style="color: inherit">{{contract.reference_number}}</a></td>
                                 <td>{{contract.position|title}}</td>
@@ -32,7 +32,9 @@
                                 <td>{{contract.expiry_date}}</td>
                                 <td>{{contract.risk|title}}</td>
                                 <td>{{contract.status|title}}</td>
-                                <td><a href="/media/{{contract.document}}"><button>View</button></a></td>
+                                <td><a href="/media/{{contract.document}}">
+                                    <button>View</button>
+                                </a></td>
                             </tr>
                             {% endfor %}
                             </tbody>

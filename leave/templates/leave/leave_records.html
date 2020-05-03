@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 {% block page_title %}
-<h1>Leave Records</h1>
+Leave Records - {{leave_year}}
 {% endblock %}
 
 {% block content %}
@@ -63,44 +63,34 @@
         </div>
       </div>
     </div>
-
-
-  </div>
-
-  <!-- Modal: modalAddNewEmployee -->
-  <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-       aria-hidden="true" style="overflow-y: auto !important">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <!-- Header -->
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Add Leave Types</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-
-        <!-- Body -->
-        <div class="modal-body">
-          <form method="POST" action="{% url 'add_new_type' %}"> {% csrf_token %}
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Type"
-                     name="leave_type" required>
-            </div>
-            <div class="form-group">
-              <input type="number" class="form-control"  placeholder="No. Of Days"
-                     name="leave_days" required>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control"  placeholder="Description"
-                     name="desc" required>
-            </div>
-
-            <!--Footer-->
-            <div class="modal-footer">
-              <button class="btn btn-danger" type="submit">Save</button>
-              <button class="btn btn-outline-danger" type="reset">Close</button>
-            </div>
+    
+    <!-- Modal: modal_leave_year -->
+    <div class="modal fade" id="modal_leave_year" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Select Leave Year</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+         
+          <!-- Body -->
+          <div class="modal-body">
+            <form method="POST" action="{% url 'add_leave_records' %}"> {% csrf_token %}
+              <div class="form-group">
+                <label for="">Leave Year:</label>
+                <select class="form-control" id="leave_yr" name="leave_yr" required>
+                  {% for yr in years %}
+                    <option >{{yr}}</option>       
+                  {% endfor %}
+                </select>
+                
+                <button type="submit" class="btn btn-danger" > Show Records </button></a>
+              </div>
+            </form>
           </form>
 
         </div>
@@ -108,45 +98,18 @@
     </div>
     <!-- Modal: modalEditNewEmployee -->
 
-    <div class="modal fade" id="modal_edit_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true" style="overflow-y: auto !important">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <!-- Header -->
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Edit Leave Types</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-
-          <!-- Body -->
-          <div class="modal-body">
-            <form method="POST" action="{% url 'edit_leave_type_page' 1 %}"> {% csrf_token %}
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Type"
-                       name="e_leave_type" value={{leave.type}} required>
-              </div>
-              <div class="form-group">
-                <input type="number" class="form-control"  placeholder="No. Of Days"
-                       name="e_leave_days" value={{ leave.leave_days }} required>
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-control"  placeholder="Description"
-                       name="e_desc" value={{ leave.desc }} required>
-              </div>
-
-              <!--Footer-->
-              <div class="modal-footer">
-                <button class="btn btn-danger" type="submit">Save</button>
-                <button class="btn btn-outline-danger" type="reset">Close</button>
-              </div>
-            </form>
-
-          </div>
-        </div>
+    {% comment %} <form method="POST" action="{% url 'add_leave_records' %}"> {% csrf_token %}
+      <div class="form-group">
+        <label for="">Leave Year:</label>
+        <select class="form-control" id="leave_yr" name="leave_yr" required>
+          {% for yr in years %}
+             <option >{{yr}}</option>       
+          {% endfor %}
+        </select>
+        
+        <button type="submit" class="btn btn-danger" > Show Records </button></a>
       </div>
-      <!-- Modal: modalEditNewEmployee -->
-    </div>
+    </form> {% endcomment %}
+
   </div>
   {% endblock content %}

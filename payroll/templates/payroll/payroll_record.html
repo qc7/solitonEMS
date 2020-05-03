@@ -2,9 +2,7 @@
 {% load humanize %}
 
 {%block page_title %}
-<span>
-    <h1>Payroll Records</h1>
-</span>
+Payroll Records
 {%endblock%}
 
 {%block content%}
@@ -19,6 +17,10 @@
         text-align: right;
         vertical-align: middle;
     }
+
+
+
+
 </style>
 
 <div class="content">
@@ -29,36 +31,42 @@
             </div>
             <div class="card-body">
                 {%if not payrolls %}
-                <a href="{%url 'generate_payroll' payroll_record.id %}"><button class="btn btn-danger">Generate Initial
-                    Payroll</button></a>
+                <a href="{%url 'generate_payroll' payroll_record.id %}">
+                    <button class="btn btn-danger">Generate Initial
+                        Payroll
+                    </button>
+                </a>
 
                 {%else%}
-
-                <table class="table">
-                    <thead class="thead-dark">
-                    <th>Emp. ID</th>
-                    <th>Name</th>
-                    <th>NSSF Contribution</th>
-                    <th>PAYE</th>
-                    <th>Gross Pay</th>
-                    <th>Basic Pay</th>
-                    <th>Net Pay</th>
-                    </thead>
-                    {%for payroll in payrolls%}
-                    <tr>
-                        <td>{{payroll.employee.id}}</td>
-                        <td><a href="{%url 'payslip_page' payroll.id%}"
-                               style="color: inherit">{{payroll.employee.first_name}}
-                            {{payroll.employee.last_name}}</a></td>
-                        <td>{{payroll.employee.currency}} {{payroll.total_nssf_contrib | intcomma}}</td>
-                        <td>{{payroll.employee.currency}} {{ payroll.paye| intcomma}}</td>
-                        <td>{{payroll.employee.currency}} {{payroll.gross_salary | intcomma}}</td>
-                        <td>{{payroll.employee.currency}} {{payroll.employee.basic_salary | intcomma}}</td>
-                        <td>{{payroll.employee.currency}} {{payroll.net_salary | intcomma }}</td>
-                    </tr>
-                    {%endfor%}
-                </table>
-                <a href="{%url 'payroll_download' payroll_record.id %}"><button class="btn btn-outline">Export Excel CSV</button></a>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>Emp. ID</th>
+                        <th>Name</th>
+                        <th>NSSF Contribution</th>
+                        <th>PAYE</th>
+                        <th>Gross Pay</th>
+                        <th>Basic Pay</th>
+                        <th>Net Pay</th>
+                        </thead>
+                        {%for payroll in payrolls%}
+                        <tr>
+                            <td>{{payroll.employee.id}}</td>
+                            <td><a href="{%url 'payslip_page' payroll.id%}"
+                                   style="color: inherit">{{payroll.employee.first_name}}
+                                {{payroll.employee.last_name}}</a></td>
+                            <td>{{payroll.employee.currency}} {{payroll.total_nssf_contrib | intcomma}}</td>
+                            <td>{{payroll.employee.currency}} {{ payroll.paye| intcomma}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.gross_salary | intcomma}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.employee.basic_salary | intcomma}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.net_salary | intcomma }}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                <a href="{%url 'payroll_download' payroll_record.id %}">
+                    <button class="btn btn-outline">Export Excel CSV</button>
+                </a>
             </div>
         </div>
         {%endif%}

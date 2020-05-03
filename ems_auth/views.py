@@ -38,3 +38,8 @@ def super_admin_required_page(request):
 @log_activity
 def hr_required_page(request):
     return render(request, "ems_auth/hr_required.html", )
+
+
+@log_activity
+def hod_required_page(request):
+    return render(request, "ems_auth/hod_required.html", )

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import django_heroku
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -56,6 +56,9 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'dajaxice',
+    'dajax',
+    'javascript_settings',
 ]
 
 INSTALLED_APPS = SOLITONEMS_APPS + DJANGO_APPS
@@ -141,15 +144,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/solitonug/solitonEMS/static'
 
-#  Email smtp setup for production
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "mail3.soliton.co.ug"
-EMAIL_HOST_USER = 'hr-sys@soliton.co.ug'  # Put the email account for the soliton system
-EMAIL_HOST_PASSWORD = 'solitonug'  # Put the password for the email account
+
+EMAIL_HOST = 'mail3.soliton.co.ug'
+EMAIL_HOST_USER = 'hr-sys@soliton.co.ug'
+EMAIL_HOST_PASSWORD = "solitonug"
+EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
 EMAIL_USE_TLS = True
 
- # Email smtp setup for development
+# Email smtp setup for development
 # EMAIL_HOST = "localhost"
 # EMAIL_PORT = 1025
 # DEFAULT_FROM_EMAIL = 'no-reply@solitonems'

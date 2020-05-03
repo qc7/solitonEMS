@@ -1,8 +1,7 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<span>
-    <h1>Passive Contracts</h1>
-</span> {% endblock %}
+Passive Contracts
+{% endblock %}
 {% block content %}
 <div class="content">
     <div class="container-fluid">
@@ -25,7 +24,7 @@
                                 <th>Actions</th>
                                 </thead>
                                 <tbody>
-                                {% for contract in terminated_contracts  %}
+                                {% for contract in terminated_contracts %}
                                 <tr>
                                     <td><a href="#" style="color: inherit">{{contract.reference_number}}</a></td>
                                     <td>{{contract.position}}</td>
@@ -33,7 +32,9 @@
                                     <td>{{contract.effective_date}}</td>
                                     <td>{{contract.expiry_date}}</td>
                                     <td>{{contract.risk | title}}</td>
-                                    <td><a href="/media/{{contract.document}}"><button>View</button></a></td>
+                                    <td><a href="/media/{{contract.document}}">
+                                        <button>View</button>
+                                    </a></td>
                                     <td>
                                         <a href="{%url 'activate_contract' contract.id%}" style="color:inherit">
                                             <button>Activate Contract</button>
