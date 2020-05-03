@@ -1,7 +1,7 @@
 {%extends 'solitonems/base.html'%}
 
 {%block page_title %}
-<h1>View Payroll Records</h1>
+View Payroll Records
 {%endblock%}
 
 {%block content%}
@@ -10,23 +10,26 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="table">
-                        <thead class="thead-dark">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-dark">
                             <th>Payroll Record ID</th>
                             <th>Month</th>
                             <th>Year</th>
                             <th>Actions</th>
-                        </thead>
-                        {%for payroll_record in payroll_records%}
-                        <tr>
-                            <td>{{payroll_record.id}}</td>
-                            <td>{{payroll_record.month}}</td>
-                            <td>{{payroll_record.year}}</td>
-                            <td><a href="{%url 'payslips_page' payroll_record.id %}">
-                                <button>View Payroll</button></a></td>
-                        </tr>
-                        {%endfor%}
-                    </table>
+                            </thead>
+                            {%for payroll_record in payroll_records%}
+                            <tr>
+                                <td>{{payroll_record.id}}</td>
+                                <td>{{payroll_record.month}}</td>
+                                <td>{{payroll_record.year}}</td>
+                                <td><a href="{%url 'payslips_page' payroll_record.id %}">
+                                    <button>View Payroll</button>
+                                </a></td>
+                            </tr>
+                            {%endfor%}
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

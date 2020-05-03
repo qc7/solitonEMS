@@ -2,18 +2,98 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5da574a0-2ffc-416f-8cfe-6358b3aeb4f9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/overtime/templates/email/overtime_approval_notification.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/overtime/templates/email/overtime_approved_notification.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SOLITONEMS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SOLITONEMS/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/selectors.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/selectors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/edit_contract.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/edit_contract.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/manage_job_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/manage_job_contracts.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/terminated_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/terminated_contracts.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/user_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/user_contracts.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/activate_employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/activate_employees.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/add_more_details.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/add_more_details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/deleted.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/deleted.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/deleted_employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/deleted_employee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/departments.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/departments.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_beneficiary.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_beneficiary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_cert.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_cert.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_dependant.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_dependant.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_emergency.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_emergency.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_employee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/edit_spouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/edit_spouse.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/employee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/employee_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/employee_profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/employees.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/failed.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/failed.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/job_titles.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/job_titles.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/success.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/success.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/teams.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/teams.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/audit_trails.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/audit_trails.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/edit_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/edit_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/edit_user_permission.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/edit_user_permission.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/manage_user_permissions.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/manage_user_permissions.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/manage_users.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/manage_users.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/user_audit_trail.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/user_audit_trail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_admin/templates/ems_admin/view_users.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_admin/templates/ems_admin/view_users.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/employee_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/employee_required.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/full_auth_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/full_auth_required.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hod_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hod_required.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hr_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/hr_required.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_change.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_change.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_change_done.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_change_done.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_complete.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_complete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_confirm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_done.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/password_reset_done.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/templates/ems_auth/super_admin_required.html" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/templates/ems_auth/super_admin_required.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/holidays/templates/holidays/edit_holiday.html" beforeDir="false" afterPath="$PROJECT_DIR$/holidays/templates/holidays/edit_holiday.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/holidays/templates/holidays/holidays_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/holidays/templates/holidays/holidays_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/audios.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/audios.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/books.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/books.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/edit_resource.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/edit_resource.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/manage_resources.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/manage_resources.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/resources.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/resources.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/videos.html" beforeDir="false" afterPath="$PROJECT_DIR$/learning_and_development/templates/learning_and_development/videos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/annual_calendar.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/annual_calendar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/apply_leave.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/apply_leave.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/approval_path.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/approval_path.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/datatables.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/datatables.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/edit_absence.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/edit_absence.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/failed.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/failed.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/holidays.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/holidays.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_balance.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_balance.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_calendar.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_calendar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_planner.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_planner.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_records.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_records.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/leave_types.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/leave_types.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leave/templates/leave/success.html" beforeDir="false" afterPath="$PROJECT_DIR$/leave/templates/leave/success.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/add_employee_schedules.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/add_employee_schedules.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/amend_overtime_application.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/amend_overtime_application.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/apply_for_overtime.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/apply_for_overtime.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/approve_overtime_plans.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/approve_overtime_plans.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/approved_applications_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/approved_applications_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/create_overtime_plan.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/create_overtime_plan.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/overtime_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/overtime_applications.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/overtime/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/overtime_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/overtime_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_application.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_application.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_plan.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/pending_overtime_plan.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/edit_payroll.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/edit_payroll.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/failed.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/failed.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/manage_payroll_records.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/manage_payroll_records.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/payroll_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/payroll_record.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/payroll_records.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/payroll_records.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/payslip.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/payslip.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/payslips.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/payslips.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payroll/templates/payroll/view_payslip.html" beforeDir="false" afterPath="$PROJECT_DIR$/payroll/templates/payroll/view_payslip.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/advertised_jobs.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/advertised_jobs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/edit_job_advertisement.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/edit_job_advertisement.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/job_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/job_applications.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/job_description.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/job_description.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/manage_job_advertisement.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/manage_job_advertisement.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/view_job_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/view_job_applications.html" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,15 +127,6 @@
     <option name="height" value="688" />
   </component>
   <component name="ProjectId" id="1Yz7NJP7SH2Wa1CHZAcnuyWLlas" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane" />
-      <pane id="Scope" />
-    </panes>
-  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -76,18 +147,6 @@
       <recent name="$PROJECT_DIR$/employees/static/assets/css" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -101,37 +160,15 @@
     </task>
     <servers />
   </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.25" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Python Console" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-  </component>
   <component name="WindowStateProjectService">
     <state x="407" y="201" width="629" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1586578770793">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="407" y="201" width="629" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1299.741@67.27.1299.741" timestamp="1586578770793" />
-    <state x="421" y="234" key="com.intellij.ide.util.TipDialog" timestamp="1588060797258">
+    <state x="421" y="234" key="com.intellij.ide.util.TipDialog" timestamp="1588497001515">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state x="421" y="234" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1588060797258" />
+    <state x="421" y="234" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1588497001515" />
     <state x="379" y="89" key="search.everywhere.popup" timestamp="1588064256444">
       <screen x="67" y="27" width="1299" height="741" />
     </state>

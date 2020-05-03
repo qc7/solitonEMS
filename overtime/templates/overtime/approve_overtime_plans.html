@@ -1,9 +1,7 @@
 {%extends 'solitonems/base.html'%}
 
 {%block page_title %}
-<span>
-    <h1 class="animated fadeInDown">Approve Overtime Plans</h1>
-</span>
+Approve Overtime Plans
 {%endblock%}
 {%block content%}
 <div class="content">
@@ -18,32 +16,34 @@
 
                 {%if pending_overtime_plans %}
                 <h3>Pending Overtime Plans</h3>
-                <table class="table">
-                    <thead class="thead-dark">
-                    <th>ID</th>
-                    <th>Applicant</th>
-                    <th>Department</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                    </thead>
-                    {%for pending_overtime_plan in pending_overtime_plans %}
-                    <tr>
-                        <td>{{pending_overtime_plan.id}}
-                        </td>
-                        <td>{{pending_overtime_plan.applicant}}</td>
-                        <td>{{pending_overtime_plan.applicant.organisationdetail.department}}</td>
-                        <td>{{pending_overtime_plan.date}}</td>
-                        <td>{{pending_overtime_plan.status}}</td>
-                        <td>
-                            <a href="{%url 'pending_overtime_plan_page' pending_overtime_plan.id%}">
-                                <button>Review Application</button>
-                            </a>
-                        </td>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>ID</th>
+                        <th>Applicant</th>
+                        <th>Department</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                        </thead>
+                        {%for pending_overtime_plan in pending_overtime_plans %}
+                        <tr>
+                            <td>{{pending_overtime_plan.id}}
+                            </td>
+                            <td>{{pending_overtime_plan.applicant}}</td>
+                            <td>{{pending_overtime_plan.applicant.organisationdetail.department}}</td>
+                            <td>{{pending_overtime_plan.date}}</td>
+                            <td>{{pending_overtime_plan.status}}</td>
+                            <td>
+                                <a href="{%url 'pending_overtime_plan_page' pending_overtime_plan.id%}">
+                                    <button>Review Application</button>
+                                </a>
+                            </td>
 
-                    </tr>
-                    {%endfor%}
-                </table>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
                 {%else%}
                 <h3>No pending applications</h3>
                 {%endif%}

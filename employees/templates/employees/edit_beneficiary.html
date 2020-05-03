@@ -1,11 +1,8 @@
 {%extends './base.html'%}
 {%block page_title %}
-<span>
-    <a href="{%url 'employee_page' beneficiary.employee.id%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
-    <h1><i class="fa fa-edit"></i> Edit Beneficiary</h1>
-</span>
+Edit Beneficiary
 {%endblock page_title%}
-{%block content%} 
+{%block content%}
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -16,29 +13,31 @@
                         <div class="form-group">
                             <label>Name</label>
                             <input type="text" class="form-control" aria-describedby="emailHelp"
-                                placeholder="Enter the name" name="name" value="{{beneficiary.name}}">
+                                   placeholder="Enter the name" name="name" value="{{beneficiary.name}}">
                         </div>
                         <div class="form-group">
                             <label>Relationship</label>
                             <input type="text" class="form-control" aria-describedby="emailHelp"
-                                placeholder="Enter relationship" name="relationship"
-                                value={{beneficiary.relationship}}>
+                                   placeholder="Enter relationship" name="relationship"
+                                   value={{beneficiary.relationship}}>
                         </div>
                         <div class="form-group">
                             <label>Mobile Number</label>
                             <input type="text" class="form-control" placeholder="Enter certification name"
-                                name="mobile_number" value="{{beneficiary.mobile_number}}" required>
+                                   name="mobile_number" value="{{beneficiary.mobile_number}}" required>
                         </div>
                         <div class="form-group">
                             <label>Percentage</label>
                             <input type="text" class="form-control" placeholder="Enter certification grade"
-                                name="percentage" value="{{beneficiary.percentage}}" required>
+                                   name="percentage" value="{{beneficiary.percentage}}" required>
                         </div>
                 </div>
-                <input type="hidden" name="beneficiary_id" value={{beneficiary.id}} >
+                <input type="hidden" name="beneficiary_id" value={{beneficiary.id}}>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    <a href="{%url 'employee_page' beneficiary.employee.id%}"><button type="button" class="btn btn-outline-danger">Back</button></a> 
+                    <a href="{%url 'employee_page' beneficiary.employee.id%}">
+                        <button type="button" class="btn btn-outline-danger">Back</button>
+                    </a>
                     <button class="btn btn-danger" type="submit">Save</button>
                 </div>
                 </form>

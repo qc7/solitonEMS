@@ -1,9 +1,7 @@
 {%extends 'solitonems/base.html'%}
 
 {%block page_title %}
-<span>
-    <h1 class="animated fadeInDown">Edit Overtime Application</h1>
-</span>
+Edit Overtime Application
 {%endblock%}
 
 {%block content%}
@@ -15,15 +13,18 @@
                     {%csrf_token%}
                     <div class="form-group">
                         <label>Start Time</label>
-                        <input class="form-control" type="datetime-local" value="{{overtime_application.start_time.isoformat}}" name="start_time" required/>
+                        <input class="form-control" type="datetime-local"
+                               value="{{overtime_application.start_time.isoformat}}" name="start_time" required/>
                     </div>
                     <div class="form-group">
                         <label>End Time</label>
-                        <input class="form-control" type="datetime-local" value="{{overtime_application.start_time.isoformat}}" name="end_time" required/>
+                        <input class="form-control" type="datetime-local"
+                               value="{{overtime_application.start_time.isoformat}}" name="end_time" required/>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea class="form-control" name="description">{{overtime_application.description}}</textarea>
+                        <textarea class="form-control"
+                                  name="description">{{overtime_application.description}}</textarea>
                     </div>
                     <input type="hidden" value={{overtime_application.id}} name="overtime_application_id">
                     <input type="submit" value="submit" class="btn btn-danger"/>
