@@ -2,15 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5da574a0-2ffc-416f-8cfe-6358b3aeb4f9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/overtime/templates/email/training_approval_notification.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/overtime/templates/email/training_approved_notification.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/training/templates/training/pending_training_application.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/manage_job_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/manage_job_contracts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/terminated_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/terminated_contracts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/view_job_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/view_job_applications.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/email/overtime_approval_notification.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/email/overtime_approval_notification.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/email/overtime_approved_notification.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/email/overtime_approved_notification.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overtime/templates/overtime/overtime_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/overtime/templates/overtime/overtime_applications.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/training/services.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/training/templates/training/approve_training_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/approve_training_applications.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training/templates/training/edit_training_schedule.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/edit_training_schedule.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training/templates/training/schedule_training.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/schedule_training.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training/templates/training/training_schedules.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/training_schedules.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/training/templates/training/user_training.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/user_training.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/training/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/training/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,13 +60,14 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/overtime/templates/email" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/overtime/templates/email" />
-      <recent name="$PROJECT_DIR$/ems_auth/templates/ems_auth" />
-      <recent name="$PROJECT_DIR$/overtime/templates/overtime" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/employees/static/assets/css" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/overtime/templates/email" />
+      <recent name="$PROJECT_DIR$/training/templates/training" />
+      <recent name="$PROJECT_DIR$/ems_auth/templates/ems_auth" />
+      <recent name="$PROJECT_DIR$/overtime/templates/overtime" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -79,6 +84,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="174" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588508492082">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="174" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1299.741@67.27.1299.741" timestamp="1588508492082" />
     <state x="407" y="201" width="629" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1586578770793">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
