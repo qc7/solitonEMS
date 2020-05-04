@@ -1,0 +1,66 @@
+{%extends 'solitonems/base.html'%}
+
+{%block page_title %}
+Pending Overtime Plan
+{%endblock%}
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <h3>Plan Details</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <th>ID</th>
+                        <th>{{overtime_plan.id}}</th>
+                        </thead>
+                        <tr>
+                            <td>Applicant</td>
+                            <td>{{overtime_plan.applicant}}</td>
+                        </tr>
+                        <tr>
+                            <td>Department</td>
+                            <td>{{overtime_plan.applicant.organisationdetail.department}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{{overtime_plan.date}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <h3>Overtime Schedules</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>ID</th>
+                        <th>Employee</th>
+                        <th>Date of Work</th>
+                        <th>Hours</th>
+                        <th>Description</th>
+                        </thead>
+                        {%for overtime_schedule in overtime_schedules%}
+                        <tr>
+                            <td>{{overtime_schedule.id}}</td>
+                            <td>{{overtime_schedule.employee}}</td>
+                            <td>{{overtime_schedule.date}}</td>
+                            <td>{{overtime_schedule.number_of_hours}}</td>
+                            <td>{{overtime_schedule.description}}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                <a href="{%url 'reject_overtime_plan' overtime_plan.id%}"
+                   onclick="return confirm('Are you sure you want to reject {{pending_application.applicant.first_name}}\'s overtime application?')">
+                    <button>Reject</button>
+                    |
+                </a>
+                <a href="{%url 'approve_overtime_plan' overtime_plan.id%}"
+                   onclick="return confirm('Are you sure you want to approve {{pending_application.applicant.first_name}}\'s overtime application?')">
+                    <button>Approve</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

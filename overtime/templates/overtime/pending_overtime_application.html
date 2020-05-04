@@ -1,0 +1,88 @@
+{%extends 'solitonems/base.html'%}
+
+{%block page_title %}
+Pending Overtime Application
+{%endblock%}
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <th>Applicants Name</th>
+                        <th>{{overtime_application.applicant}}</th>
+                        </thead>
+                        <tr>
+                            <td>Start Time</td>
+                            <td>{{overtime_application.start_time}}</td>
+                        </tr>
+                        <tr>
+                            <td>End Time</td>
+                            <td>{{overtime_application.end_time}}</td>
+                        </tr>
+                        <tr>
+                            <td>Number of Hours</td>
+                            <td>{{overtime_application.number_of_hours}}</td>
+                        </tr>
+                        <tr>
+                            <td>Overtime Pay</td>
+                            <td>{{overtime_application.applicant.currency}} {{overtime_application.overtime_pay}}</td>
+                        </tr>
+                        <tr>
+                            <td>Is On Holiday</td>
+                            <td>{{overtime_application.is_on_holiday}}</td>
+                        </tr>
+                        <tr>
+                            <td>Is On Sunday</td>
+                            <td>{{overtime_application.is_on_sunday}}</td>
+                        </tr>
+                        <tr>
+                            <td>Supervisor Approval</td>
+                            <td>{{overtime_application.supervisor_approval}}</td>
+                        </tr>
+                        <tr>
+                            <td>HR Approval</td>
+                            <td>{{overtime_application.HR_approval}}</td>
+                        </tr>
+                        <tr>
+                            <td>HOD Approval</td>
+                            <td>{{overtime_application.HOD_approval}}</td>
+                        </tr>
+                        <tr>
+                            <td>CFO Approval</td>
+                            <td>{{overtime_application.cfo_approval}}</td>
+                        </tr>
+                        <tr>
+                            <td>CEO Approval</td>
+                            <td>{{overtime_application.ceo_approval}}</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>{{overtime_application.description}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{{overtime_application.date}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <a href="{%url 'reject_overtime_application' overtime_application.id%}"
+                   onclick="return confirm('Are you sure you want to reject {{pending_application.applicant.first_name}}\'s overtime application?')">
+                    <button>Reject</button>
+                    |
+                </a>
+                <a href="{%url 'approve_overtime_application' overtime_application.id%}"
+                   onclick="return confirm('Are you sure you want to approve {{pending_application.applicant.first_name}}\'s overtime application?')">
+                    <button>Approve</button>
+                    |
+                </a>
+                <a href="{%url 'amend_overtime_application_page' overtime_application.id%}">
+                    <button> Amend</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import django_heroku
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0d1*j&^q381!@3^^4htw!n-1p!yxxy93s3^2exrw7%4bf_!hcf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['solitonems.herokuapp.com', 'localhost', '127.0.0.1',
 'solitonug.pythonanywhere.com']
@@ -56,6 +56,9 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'dajaxice',
+    'dajax',
+    'javascript_settings',
 ]
 
 INSTALLED_APPS = SOLITONEMS_APPS + DJANGO_APPS
@@ -141,7 +144,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/solitonug/solitonEMS/static'
 
-#  Email smtp setup for production
+
 
 
 EMAIL_HOST = "smtp.gmail.com"
@@ -150,6 +153,10 @@ EMAIL_HOST_PASSWORD = 'Thursday50k'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 
 
 MEDIA_URL = '/media/'

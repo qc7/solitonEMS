@@ -1,9 +1,7 @@
 {%extends './base.html'%}
 {% load humanize %}
 {%block page_title %}
-<span>
-    <h1 class="animated fadeInDown">{{name_of_employee}}</h2>
-</span>
+{{name_of_employee}}
 {%endblock%}
 {%block content%}
 <div class="content">
@@ -15,88 +13,101 @@
                 </div>
                 <h6 class="card-category text-gray">{{name_of_employee}}</h6>
                 <h4 class="card-title">Payslip</h4>
-                <table class="table">
-                    <tr>
-                        <th>Name</td>
-                        <th>{{name_of_employee}}</td>
-                    </tr>
-                    <tr>
-                        <th>Employee NSSF Contribution</td>
-                        <td> {{payslip.employee.currency}} {{payslip.employee_nssf| intcomma }}</td>
-                    </tr>
-                    <tr>
-                        <th>Employer NSSF Contribution</td>
-                        <td> {{payslip.employee.currency}} {{payslip.employer_nssf | intcomma}}</td>
-                    </tr>
-                    <tr>
-                        <th>Total NSSF Contribution</td>
-                        <th> {{payslip.employee.currency}} {{payslip.total_nssf_contrib | intcomma}}</th>
-                    </tr>
-                    <tr>
-                        <th>PAYE</td>
-                        <td> {{payslip.employee.currency}} {{payslip.paye | intcomma}}</td>
-                    </tr>
-                    <tr>
-                        <th>Total Statutory Deductions</td>
-                        <th> {{payslip.employee.currency}} {{payslip.total_statutory | intcomma}}</th>
-                    </tr>
-                    <tr>
-                        <th>Meal Allowance</td>
-                        <td> {{payslip.employee.currency}} {{payslip.employee.lunch_allowance}}</td>
-                    </tr>
-                    <tr>
-                        <th>Overtime</td>
-                        <td> {{payslip.employee.currency}} {{payslip.overtime | intcomma}}</td>
-                    </tr>
-                    <tr>
-                        <th>Bonus</td>
-                        <td> {{payslip.employee.currency}} {{payslip.bonus | intcomma}}</td>
-                    </tr>
-                    <tr>
-                        <th>Sacco Deduction</td>
-                        <td> UGX {{payslip.sacco_deduction | intcomma}}</td>
-                    </tr>
-                    <tr>
-                        <th>Damage Deduction</td>
-                        <td> {{payslip.employee.currency}} {{payslip.damage_deduction | intcomma}}</td>
-                    </tr>
-                    <tr>
-                        <th>Prorate</td>
-                        <th> {{payslip.employee.currency}} {{payslip.prorate}}</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th>BASIC SALARY</td>
-                        <th> {{payslip.employee.currency}} {{payslip.employee.basic_salary | intcomma}}</th>
-                    </tr>
-                    <tr>
-                        <th>GROSS SALARY</td>
-                        <th> {{payslip.employee.currency}} {{payslip.gross_salary | intcomma}}</th>
-                    </tr>
-                    <tr>
-                        <th>NET SALARY</td>
-                        <th> {{payslip.employee.currency}} {{payslip.net_salary | intcomma}}</th>
-                    </tr>
-
-                </table>
-
-                <a href="{%url 'generate_payslip_pdf' payslip.id%}"><button class="btn btn-outline">Generate PDF</button></a>
-
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th>Name
+                            </td>
+                            <th>{{name_of_employee}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Employee NSSF Contribution
+                            </td>
+                            <td> {{payslip.employee.currency}} {{payslip.employee_nssf| intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <th>Employer NSSF Contribution
+                            </td>
+                            <td> {{payslip.employee.currency}} {{payslip.employer_nssf | intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <th>Total NSSF Contribution
+                            </td>
+                            <th> {{payslip.employee.currency}} {{payslip.total_nssf_contrib | intcomma}}</th>
+                        </tr>
+                        <tr>
+                            <th>PAYE
+                            </td>
+                            <td> {{payslip.employee.currency}} {{payslip.paye | intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <th>Total Statutory Deductions
+                            </td>
+                            <th> {{payslip.employee.currency}} {{payslip.total_statutory | intcomma}}</th>
+                        </tr>
+                        <tr>
+                            <th>Meal Allowance
+                            </td>
+                            <td> {{payslip.employee.currency}} {{payslip.employee.lunch_allowance}}</td>
+                        </tr>
+                        <tr>
+                            <th>Overtime
+                            </td>
+                            <td> {{payslip.employee.currency}} {{payslip.overtime | intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <th>Bonus
+                            </td>
+                            <td> {{payslip.employee.currency}} {{payslip.bonus | intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <th>Sacco Deduction
+                            </td>
+                            <td> UGX {{payslip.sacco_deduction | intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <th>Damage Deduction
+                            </td>
+                            <td> {{payslip.employee.currency}} {{payslip.damage_deduction | intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <th>Prorate
+                            </td>
+                            <th> {{payslip.employee.currency}} {{payslip.prorate}}</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th>BASIC SALARY
+                            </td>
+                            <th> {{payslip.employee.currency}} {{payslip.employee.basic_salary | intcomma}}</th>
+                        </tr>
+                        <tr>
+                            <th>GROSS SALARY
+                            </td>
+                            <th> {{payslip.employee.currency}} {{payslip.gross_salary | intcomma}}</th>
+                        </tr>
+                        <tr>
+                            <th>NET SALARY
+                            </td>
+                            <th> {{payslip.employee.currency}} {{payslip.net_salary | intcomma}}</th>
+                        </tr>
+                    </table>
+                </div>
+                <a href="{%url 'generate_payslip_pdf' payslip.id%}">
+                    <button class="btn btn-outline">Generate PDF</button>
+                </a>
             </div>
-
-            
         </div>
-
-
     </div>
 </div>
 
 <!-- Modals -->
 <!-- Modal: modalAddProrate-->
 <div class="modal fade" id="modal_add_prorate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style="overflow-y: auto !important">
+     aria-hidden="true" style="overflow-y: auto !important">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!--Header-->
@@ -112,14 +123,15 @@
                     <div class="form-group">
                         <label>Number of days worked</label>
                         <input type="number" class="form-control" placeholder="Enter the number of days worked"
-                            name="no_of_days_worked" value="26" required>
+                               name="no_of_days_worked" value="26" required>
                     </div>
                     <input type="hidden" name="payroll_id" value={{payslip.id}}>
             </div>
             <!--Footer-->
             <div class="modal-footer">
                 <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
-                    type="reset">Close</button>
+                        type="reset">Close
+                </button>
                 <button class="btn btn-danger" type="submit">Save</button>
             </div>
             </form>
@@ -130,7 +142,7 @@
 
 <!-- Modal: modalAddBonus-->
 <div class="modal fade" id="modal_add_bonus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style="overflow-y: auto !important">
+     aria-hidden="true" style="overflow-y: auto !important">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!--Header-->
@@ -146,14 +158,15 @@
                     <div class="form-group">
                         <label>Amount</label>
                         <input type="number" class="form-control" placeholder="Enter the amount in Uganda shillings"
-                            name="bonus" value={{payslip.employee.basic_salary}} required>
+                               name="bonus" value={{payslip.employee.basic_salary}} required>
                     </div>
                     <input type="hidden" name="payroll_id" value={{payslip.id}}>
             </div>
             <!--Footer-->
             <div class="modal-footer">
                 <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
-                    type="reset">Close</button>
+                        type="reset">Close
+                </button>
                 <button class="btn btn-danger" type="submit">Save</button>
             </div>
             </form>
@@ -164,7 +177,7 @@
 
 <!-- Modal: modalAddOvertime-->
 <div class="modal fade" id="modal_add_overtime" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style="overflow-y: auto !important">
+     aria-hidden="true" style="overflow-y: auto !important">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!--Header-->
@@ -180,20 +193,22 @@
                     <div class="form-group">
 
                         <input type="number" class="form-control"
-                            placeholder="Enter the number of hours on normal working days" name="number_of_hours_normal"
-                            required>
+                               placeholder="Enter the number of hours on normal working days"
+                               name="number_of_hours_normal"
+                               required>
                     </div>
                     <div class="form-group">
 
                         <input type="number" class="form-control" placeholder="Enter the number of hours on holidays"
-                            name="number_of_hours_holidays" required>
+                               name="number_of_hours_holidays" required>
                     </div>
                     <input type="hidden" name="payroll_id" value={{payslip.id}}>
             </div>
             <!--Footer-->
             <div class="modal-footer">
                 <button data-dismiss="modal" aria-label="Close" class="btn btn-outline-danger"
-                    type="reset">Close</button>
+                        type="reset">Close
+                </button>
                 <button class="btn btn-danger" type="submit">Save</button>
             </div>
             </form>

@@ -1,9 +1,7 @@
 {% extends './base.html'%} {% load static %}
 {% block page_title %}
-<span>
-    <a href="{% url 'employees_page'%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
-    <h1>{{employee.first_name}} {{employee.last_name}}</h1>
-</span> {% endblock %}
+{{employee.first_name}} {{employee.last_name}}
+{% endblock %}
 {% block content %}
 <div class="content">
     <div class="container-fluid">
@@ -215,26 +213,33 @@
                     </div>
                     <div class="card-body">
                         <div class="card-description">                            
-                            <table class="table">
-                                <tr>
-                                    <td>Entitlement</td>
-                                    <td>{{employee.annual_allowance}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Balance - {{2019}}</th>
-                                    <td>{{employee.leave_balance}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Balance - {{2018}}</th>
-                                    <td>{{employee.balance_last_year}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Leave Status</th>
-                                    <td>{{employee.leave_status}}</td>
-                            </tr>
-                            </table>
-                            <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
-                                data-target="#modal_add_leave_details"> <i class="fa fa-edit"></i></a>                           
+                            {% if leave_record %}
+                                <table class="table">
+                                    <tr>
+                                        <td>Entitlement</td>
+                                        <td>{{leave_record.entitlement}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Residue </th>
+                                        <td>{{leave_record.residue}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Taken </th>
+                                        <td>{{leave_record.total_taken}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Balance </th>
+                                        <td>{{leave_record.balance}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Leave Status</th>
+                                        <td>{{employee.leave_status}}</td>
+                                    </tr>
+                                </table>
+                            {% else %}
+                                <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
+                                    data-target="#modal_add_leave_details"> <i class="fa fa-plus"></i></a>                           
+                            {% endif%}
                         </div>
                     </div>
                 </div>

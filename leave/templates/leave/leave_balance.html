@@ -1,48 +1,39 @@
 {% extends './base.html' %}
 {% block page_title %}
-<span>
-  <a href="{% url 'leave_dashboard_page'%}" style="color: inherit;"><i class="material-icons">
-    keyboard_backspace
-  </i></a>
-</span>
-<h1>Leave Balance</h1>
+Leave Balance
 {% endblock %}
 
 {% block content %}
 <div class="content">
-  <div class="container-fluid">        
-    <div class="col-md-12">
-
-
-      <div class="card">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead class="thead-dark">
-              <th>Employee</th>
-              {% comment %}
-              <th>Days Taken</th>
-              {% endcomment %}
-              <th>Balance</th>
-              </thead>
-              <tbody>
-              {% for employee in employees %}
-              <tr>
-                <td>{{ employee.first_name }} {{ employee.last_name }}</td>
-                {% comment %}
-                <td>{{ 0 }}</td>
-                {% endcomment %}
-                <td>{{employee.leave_balance}}</td>
-              </tr>
-              {% endfor %}
-              </tbody>
-            </table>
-          </div>
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <th>Employee</th>
+                            {% comment %}
+                            <th>Days Taken</th>
+                            {% endcomment %}
+                            <th>Balance</th>
+                            </thead>
+                            <tbody>
+                            {% for employee in employees %}
+                            <tr>
+                                <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                                {% comment %}
+                                <td>{{ 0 }}</td>
+                                {% endcomment %}
+                                <td>{{employee.leave_balance}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-
     </div>
-  </div>
 </div>
 {% endblock content %} 

@@ -1,6 +1,6 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Training</h1>
+Training
 {% endblock %}
 
 {% block content %}
@@ -19,6 +19,7 @@
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class="thead-dark">
+                            <th>ID</th>
                             <th>Programme</th>
                             <th>Institution</th>
                             <th>Start Date</th>
@@ -26,8 +27,9 @@
                             <th>Status</th>
                             </thead>
                             <tbody>
-                            {% for training in trainings  %}
+                            {% for training in trainings %}
                             <tr>
+                                <td>{{training.id}}</td>
                                 <td><a href="#" style="color: inherit">{{training.programme}}</a></td>
                                 <td>{{training.institution}}</td>
                                 <td>{{training.start_date}}</td>
@@ -50,7 +52,8 @@
 
 
         <!-- Modal: modalAddNewTraining -->
-        <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
              aria-hidden="true" style="overflow-y: auto !important">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

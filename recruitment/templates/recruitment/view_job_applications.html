@@ -2,7 +2,7 @@
 {% load humanize %}
 {% load static %}
 {% block page_title %}
-<h1>Job Advertisements</h1>
+Job Advertisements
 {% endblock %}
 
 {%block content%}
@@ -12,30 +12,34 @@
             <div class="card-body">
 
                 {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-warning">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}</div>
-                    {% endfor %}
+                {% for message in messages %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
                 {% endif %}
                 {%if job_ads%}
-                <table class="table">
-                    <thead class="thead-dark">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
                         <th>Position</th>
                         <th>Vacancy</th>
                         <th>Deadline</th>
                         <th>Actions</th>
-                    </thead>
-                    {%for job_ad in job_ads%}
-                    <tr>
-                        <td>{{job_ad.position}}</td>
-                        <td>{{job_ad.vacancy}}</td>
-                        <td>{{job_ad.deadline}}</td>
-                        <td><a  href="{%url 'job_applications' job_ad.id%}">
-                            <button>View Applications</button></a></td>
-                    </tr>
-                    {%endfor%}
-                </table>
+                        </thead>
+                        {%for job_ad in job_ads%}
+                        <tr>
+                            <td>{{job_ad.position}}</td>
+                            <td>{{job_ad.vacancy}}</td>
+                            <td>{{job_ad.deadline}}</td>
+                            <td><a href="{%url 'job_applications' job_ad.id%}">
+                                <button>View Applications</button>
+                            </a></td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
                 {%else%}
                 <h2>No job advertisements</h2>
                 {%endif%}

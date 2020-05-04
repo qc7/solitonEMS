@@ -1,11 +1,8 @@
 {%extends './base.html'%}
 {%block page_title %}
-<span>
-    <a href="{%url 'employee_page' dependant.employee.id%}" style="color: inherit;"><i class="material-icons">keyboard_backspace</i></a>
-    <h1><i class="fa fa-edit"></i> Edit Dependant details</h1>
-</span>
+Edit Dependant details
 {%endblock page_title%}
-{%block content%} 
+{%block content%}
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -16,23 +13,25 @@
                         <div class="form-group">
                             <label>Name</label>
                             <input type="text" class="form-control" aria-describedby="emailHelp"
-                                placeholder="Enter name" name="name" value="{{dependant.name}}">
+                                   placeholder="Enter name" name="name" value="{{dependant.name}}">
                         </div>
-                 
+
                         <div class="form-group">
                             <label>Date of Birth</label>
                             <input class="form-control" type="date" value="{{dependant.dob.isoformat}}" name="dob">
-                          </div>
+                        </div>
                         <div class="form-group">
                             <label>Gender</label>
                             <input type="text" class="form-control" placeholder="Enter the occupation"
-                                name="gender" value="{{dependant.gender}}" required>
+                                   name="gender" value="{{dependant.gender}}" required>
                         </div>
                 </div>
                 <input type="hidden" name="dependant_id" value={{dependant.id}}>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    <a href="{%url 'employee_page' dependant.employee.id%}"><button type="button" class="btn btn-outline-danger">Back</button></a> 
+                    <a href="{%url 'employee_page' dependant.employee.id%}">
+                        <button type="button" class="btn btn-outline-danger">Back</button>
+                    </a>
                     <button class="btn btn-danger" type="submit">Save</button>
                 </div>
                 </form>
