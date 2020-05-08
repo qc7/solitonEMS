@@ -86,8 +86,12 @@ def employees_full_auth_required(function):
         try:
             user_id = request.user.id
             user = get_user(user_id)
-            ems_permission = EMSPermission.objects.filter(user=user, name="Employees")[0]
-            if ems_permission.full_auth:
+            try:
+                ems_permission = EMSPermission.objects.filter(user=user, name="Employees")[0]
+            except IndexError:
+                ems_permission = None
+
+            if ems_permission and ems_permission.full_auth:
                 return function(request, **kw)
             else:
                 return render(request, "ems_auth/full_auth_required.html")
@@ -103,8 +107,12 @@ def organisation_full_auth_required(function):
         try:
             user_id = request.user.id
             user = get_user(user_id)
-            ems_permission = EMSPermission.objects.filter(user=user, name="Organisation")[0]
-            if ems_permission.full_auth:
+            try:
+                ems_permission = EMSPermission.objects.filter(user=user, name="Organisation")[0]
+            except IndexError:
+                ems_permission = None
+
+            if ems_permission and ems_permission.full_auth:
                 return function(request, **kw)
             else:
                 return render(request, "ems_auth/full_auth_required.html")
@@ -137,13 +145,17 @@ def payroll_full_auth_required(function):
         try:
             user_id = request.user.id
             user = get_user(user_id)
-            ems_permission = EMSPermission.objects.filter(user=user, name="Payroll")[0]
-            if ems_permission.full_auth:
+            try:
+                ems_permission = EMSPermission.objects.filter(user=user, name="Payroll")[0]
+            except IndexError:
+                ems_permission = None
+
+            if ems_permission and ems_permission.full_auth:
                 return function(request, **kw)
             else:
                 return render(request, "ems_auth/full_auth_required.html")
 
-        except:
+        except User.DoesNotExist:
             return function(request, **kw)
 
     return wrapper
@@ -154,13 +166,17 @@ def overtime_full_auth_required(function):
         try:
             user_id = request.user.id
             user = get_user(user_id)
-            ems_permission = EMSPermission.objects.filter(user=user, name="Overtime")[0]
-            if ems_permission.full_auth:
+            try:
+                ems_permission = EMSPermission.objects.filter(user=user, name="Overtime")[0]
+            except IndexError:
+                ems_permission = None
+
+            if ems_permission and ems_permission.full_auth:
                 return function(request, **kw)
             else:
                 return render(request, "ems_auth/full_auth_required.html")
 
-        except:
+        except User.DoesNotExist:
             return function(request, **kw)
 
     return wrapper
@@ -171,13 +187,17 @@ def holidays_full_auth_required(function):
         try:
             user_id = request.user.id
             user = get_user(user_id)
-            ems_permission = EMSPermission.objects.filter(user=user, name="Holidays")[0]
-            if ems_permission.full_auth:
+            try:
+                ems_permission = EMSPermission.objects.filter(user=user, name="Holidays")[0]
+            except IndexError:
+                ems_permission = None
+
+            if ems_permission and ems_permission.full_auth:
                 return function(request, **kw)
             else:
                 return render(request, "ems_auth/full_auth_required.html")
 
-        except:
+        except User.DoesNotExist:
             return function(request, **kw)
 
     return wrapper
@@ -188,13 +208,17 @@ def recruitment_full_auth_required(function):
         try:
             user_id = request.user.id
             user = get_user(user_id)
-            ems_permission = EMSPermission.objects.filter(user=user, name="Recruitment")[0]
-            if ems_permission.full_auth:
+            try:
+                ems_permission = EMSPermission.objects.filter(user=user, name="Recruitment")[0]
+            except IndexError:
+                ems_permission = None
+
+            if ems_permission and ems_permission.full_auth:
                 return function(request, **kw)
             else:
                 return render(request, "ems_auth/full_auth_required.html")
 
-        except:
+        except User.DoesNotExist:
             return function(request, **kw)
 
     return wrapper
@@ -205,8 +229,12 @@ def contracts_full_auth_required(function):
         try:
             user_id = request.user.id
             user = get_user(user_id)
-            ems_permission = EMSPermission.objects.filter(user=user, name="Contracts")[0]
-            if ems_permission.full_auth:
+            try:
+                ems_permission = EMSPermission.objects.filter(user=user, name="Contracts")[0]
+            except IndexError:
+                ems_permission = None
+
+            if ems_permission and ems_permission.full_auth:
                 return function(request, **kw)
             else:
                 return render(request, "ems_auth/full_auth_required.html")
@@ -222,13 +250,17 @@ def training_full_auth_required(function):
         try:
             user_id = request.user.id
             user = get_user(user_id)
-            ems_permission = EMSPermission.objects.filter(user=user, name="Training")[0]
-            if ems_permission.full_auth:
+            try:
+                ems_permission = EMSPermission.objects.filter(user=user, name="Training")[0]
+            except IndexError:
+                ems_permission = None
+
+            if ems_permission and ems_permission.full_auth:
                 return function(request, **kw)
             else:
                 return render(request, "ems_auth/full_auth_required.html")
 
-        except:
+        except User.DoesNotExist:
             return function(request, **kw)
 
     return wrapper
@@ -239,13 +271,17 @@ def learning_and_development_full_auth_required(function):
         try:
             user_id = request.user.id
             user = get_user(user_id)
-            ems_permission = EMSPermission.objects.filter(user=user, name="Learning and Development")[0]
-            if ems_permission.full_auth:
+            try:
+                ems_permission = EMSPermission.objects.filter(user=user, name="Learning and Development")[0]
+            except IndexError:
+                ems_permission = None
+
+            if ems_permission and ems_permission.full_auth:
                 return function(request, **kw)
             else:
                 return render(request, "ems_auth/full_auth_required.html")
 
-        except:
+        except User.DoesNotExist:
             return function(request, **kw)
 
     return wrapper
