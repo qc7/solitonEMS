@@ -4,7 +4,6 @@ from django.core.mail import EmailMultiAlternatives
 
 from overtime.models import OvertimeApplication
 from overtime.selectors import get_hr_users, get_hod_users, get_cfo_users, get_ceo_users
-from SOLITONEMS.settings import BASE_DIR
 
 
 def approve_overtime_application_finally(id):
@@ -111,7 +110,6 @@ def amend_overtime_service(request):
 
 
 def reject_overtime_application_service(rejecter, overtime_application):
-
     if rejecter.is_supervisor:
         rejected_overtime_application = supervisor_reject(overtime_application)
 
