@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0d1*j&^q381!@3^^4htw!n-1p!yxxy93s3^2exrw7%4bf_!hcf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['solitonems.herokuapp.com', 'localhost', '127.0.0.1',
 'solitonug.pythonanywhere.com']
@@ -145,17 +145,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/home/solitonug/solitonEMS/static'
 
 
-
-
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "solitonprocurement@gmail.com"
-EMAIL_HOST_PASSWORD = 'Thursday50k'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.mailgun.org"
+EMAIL_HOST_USER = "postmaster@sandboxd807531b400a43588e3b4ca0b6d4da05.mailgun.org"
+EMAIL_HOST_PASSWORD = '386bda3e4ff82cf5e314d27370c10839-0afbfc6c-09336626'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
 
 
 
