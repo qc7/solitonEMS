@@ -25,7 +25,8 @@ SECRET_KEY = '0d1*j&^q381!@3^^4htw!n-1p!yxxy93s3^2exrw7%4bf_!hcf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['solitonems.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['solitonems.herokuapp.com', 'localhost', '127.0.0.1',
+'solitonug.pythonanywhere.com']
 
 # Application definition
 
