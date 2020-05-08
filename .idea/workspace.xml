@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5da574a0-2ffc-416f-8cfe-6358b3aeb4f9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/manage_job_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/manage_job_contracts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/templates/contracts/terminated_contracts.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/templates/contracts/terminated_contracts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recruitment/templates/recruitment/view_job_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/recruitment/templates/recruitment/view_job_applications.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training/templates/training/approve_training_applications.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/approve_training_applications.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training/templates/training/edit_training_schedule.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/edit_training_schedule.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training/templates/training/schedule_training.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/schedule_training.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training/templates/training/training_schedules.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/training_schedules.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/training/templates/training/user_training.html" beforeDir="false" afterPath="$PROJECT_DIR$/training/templates/training/user_training.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employees/templates/employees/activate_employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/employees/templates/employees/activate_employees.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ems_auth/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/ems_auth/decorators.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
