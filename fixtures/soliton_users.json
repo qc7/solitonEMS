@@ -1,0 +1,10 @@
+[
+  {
+    "model": "api.solitonuser",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "employee": 1
+    }
+  }
+]

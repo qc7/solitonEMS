@@ -1,0 +1,20 @@
+[
+  {
+    "model": "api.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$180000$GSdBmZzXiG5M$4iykqlSKg8xt53tyJwWdPMO+rbIP0yrTaKf5TgYQGDc=",
+      "last_login": null,
+      "email": "hr-sys@soliton.co.ug",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "is_hod": false,
+      "is_hr": false,
+      "is_cfo": false,
+      "is_ceo": false,
+      "is_supervisor": false,
+      "password_changed": false
+    }
+  }
+]

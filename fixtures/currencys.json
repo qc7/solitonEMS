@@ -1,0 +1,11 @@
+[
+  {
+    "model": "api.currency",
+    "pk": 1,
+    "fields": {
+      "code": "UGX",
+      "desc": "Uganda Shillings",
+      "cost": 1
+    }
+  }
+]
