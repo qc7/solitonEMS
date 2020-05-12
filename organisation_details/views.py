@@ -58,7 +58,7 @@ def teams_page(request, id):
 @hr_required
 @organisation_full_auth_required
 @log_activity
-def job_titles_page(request):
+def manage_job_positions_page(request):
     context = {
         "user": request.user,
         "organisation_page": "active",
@@ -66,7 +66,7 @@ def job_titles_page(request):
         "currencies": get_all_currencies()
     }
 
-    return render(request, "employees/job_titles.html", context)
+    return render(request, "organisation_details/job_titles.html", context)
 
 
 # Department Section
@@ -178,13 +178,13 @@ def add_new_title(request):
     return redirect('job_titles_page')
 
 
-def edit_job_title_page(request, id):
+def edit_job_position_page(request, position_id):
+    position = get_position(position_id)
     context = {
         "user": request.user,
-        "employee": get_active_employees(),
-        "title": get_position(id),
+        "position": position,
     }
-    return render(request, 'employees/job_titles.html', context)
+    return render(request, 'organisation_details/edit_position.html', context)
 
 
 @log_activity

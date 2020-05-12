@@ -19,9 +19,9 @@ urlpatterns = [
     path('teams/<int:id>/', views.teams_page, name="teams_page"),
 
     # Job Titles
-    path('jobs/', views.job_titles_page, name="job_titles_page"),
+    path('manage_job_positions/', views.manage_job_positions_page, name="manage_job_positions_page"),
     path('add_new_title/', views.add_new_title, name="add_new_title"),
-    path('edit_job_title_page/<int:id>', views.edit_job_title_page, name="edit_job_title_page"),
+    path('edit_job_position/<int:position_id>', views.edit_job_position_page, name="edit_job_position_page"),
     path('edit_job_title/<int:id>', views.edit_job_title, name="edit_job_title"),
     path('delete_job_title/<int:id>', views.delete_job_title, name="delete_job_title"),
 ]
