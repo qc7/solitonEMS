@@ -7,12 +7,15 @@ Manage User Permissions
 <div class="content">
     <div class="container-fluid">
         <div class="col-md-12">
-            <a href="#">
-                <button class="btn btn-danger">Reload</button>
+            {%if not permissions%}
+            <a href="{%url 'manage_user_permissions_page' user_id%}">
+                <button class="btn btn-danger">Generate Initial Permissions</button>
             </a>
+            {%endif%}
             <div class="card">
                 <div class="card-body">
                     {{ user_form.non_field_errors }}
+                    {%if permissions%}
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class="thead-dark">
@@ -51,6 +54,9 @@ Manage User Permissions
                             </tbody>
                         </table>
                     </div>
+                    {%else%}
+                    <h3>No permissions available for the user</h3>
+                    {%endif%}
                 </div>
             </div>
         </div>
