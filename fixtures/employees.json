@@ -1,6 +1,6 @@
 [
   {
-    "model": "api.Employee",
+    "model": "employees.Employee",
     "pk": 1,
     "fields": {
       "id": 1,

@@ -1,6 +1,6 @@
 [
   {
-    "model": "api.currency",
+    "model": "settings.currency",
     "pk": 1,
     "fields": {
       "code": "UGX",
