@@ -1,0 +1,33 @@
+[
+  {
+    "model": "api.Employee",
+    "pk": 1,
+    "fields": {
+      "id": 1,
+      "first_name": "Bright",
+      "last_name": "Kanyange",
+      "basic_salary": 1000000,
+      "grade": "A",
+      "gender": "Male",
+      "start_date": "2020-05-09",
+      "marital_status": "Single",
+      "dob": "2020-05-09",
+      "nationality": "Ugandan",
+      "nssf_no": "5678",
+      "telephone_no": "678",
+      "residence_address": "5678",
+      "national_id": "456789",
+      "ura_tin": "56789",
+      "annual_allowance": 21,
+      "leave_balance": 21,
+      "balance_last_year": 0,
+      "leave_status": "At Work",
+      "image_url": "4456789",
+      "status": "Active",
+      "title": "Mr",
+      "work_station": "21",
+      "lunch_allowance": 150000,
+      "currency": 1
+    }
+  }
+]
