@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from employees.models import Employee
-from employees.selectors import get_active_employees
+from employees.selectors import get_active_employees, get_employee
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import hr_required, ems_login_required, organisation_full_auth_required
 from organisation_details.models import Position, Department, Team
@@ -22,20 +22,6 @@ def no_organisation_detail_page(request):
         "organisation_detail_page": "active"
     }
     return render(request, 'no_organisation_detail.html', context)
-
-
-@hr_required
-@organisation_full_auth_required
-@log_activity
-def departments_page(request):
-    context = {
-        "user": request.user,
-        "organisation_page": "active",
-        "departs": get_all_departments(),
-        "emps": get_active_employees(),
-    }
-
-    return render(request, "employees/departments.html", context)
 
 
 @hr_required
@@ -66,71 +52,77 @@ def manage_job_positions_page(request):
         "currencies": get_all_currencies()
     }
 
-    return render(request, "organisation_details/job_titles.html", context)
+    return render(request, "organisation_details/manage_job_positions.html", context)
 
 
 # Department Section
+@hr_required
+@organisation_full_auth_required
+@log_activity
+def departments_page(request):
+    context = {
+        "user": request.user,
+        "organisation_page": "active",
+        "departments": get_all_departments(),
+        "employees": get_active_employees(),
+    }
+
+    return render(request, "organisation_details/manage_departments.html", context)
+
+
 @log_activity
 def add_new_department(request):
     if request.method == "POST":
-        dep_name = request.POST["dep_name"]
-        hod = request.POST["hod"]
-
-    try:
-        depat = Department(name=dep_name, hod=hod)
-        depat.save()
+        department_name = request.POST["department_name"]
+        employee_id = request.POST["employee_id"]
+        employee = get_employee(employee_id)
+        department = Department(name=department_name, hod=employee)
+        department.save()
         messages.success(request, f'Info Successfully Saved')
-        return redirect('departments_page')
+        return redirect('manage_departments_page')
 
-    except:
-        messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
-
-    return redirect('departments_page')
+    return redirect('manage_departments_page')
 
 
-def edit_department(request, id):
-    try:
-        if request.method == "POST":
-            department = get_department(id)
-            department.save()
-            messages.success(request, f'Department Infor Updated Successfully')
-            return redirect('departments_page')
+def edit_department(request):
 
-        else:
-            messages.error(request, f'Update NOT Successfull')
-            context = {
-                "employees_page": "active",
-            }
+    if request.method == "POST":
+        department_id = request.POST.get('department_id')
+        employee_id = request.POST.get('employee_id')
+        employee = get_employee(employee_id)
+        department = get_department(department_id)
+        department.name = request.POST.get('department_name')
+        department.hod = employee
+        department.save()
+        return redirect('manage_departments_page')
 
-            return render(request, "employees/departments.html", context)
-
-    except:
-        messages.error(request, f'Info Not Saved, Check you inputs and try again!')
-
-    return redirect('departments_page')
+    messages.error(request, f'Info Not Saved, Check you inputs and try again!')
+    return redirect('manage_departments_page')
 
 
 @log_activity
-def edit_department_page(request, id):
+def edit_department_page(request, department_id):
+    department = get_department(department_id)
     context = {
         "user": request.user,
-        "employee": get_active_employees(),
-        "deps": get_department(id),
+        "employees": get_active_employees(),
+        "department": department,
+        "organisation_page": "active"
     }
-    return render(request, 'employees/departments.html', context)
+    return render(request, 'organisation_details/edit_department.html', context)
 
 
 @log_activity
-def delete_department(request, id):
+def delete_department(request, department_id):
     try:
-        department = get_department(id)
+        department = get_department(department_id)
         department.delete()
         messages.success(request, f'Department Deleted Successfully')
-        return redirect('departments_page')
+        return redirect('manage_departments_page')
     except Department.DoesNotExist:
         messages.error(request, f'The department no longer exists on the system')
 
-    return redirect('departments_page')
+    return redirect('manage_departments_page')
 
 
 @log_activity
@@ -154,7 +146,7 @@ def add_new_team(request):
 
 # Job Titles'
 @log_activity
-def add_new_title(request):
+def add_new_job_position(request):
     if request.method == "POST":
         job_title = request.POST["job_title"]
         pos = request.POST["positions"]
@@ -170,7 +162,7 @@ def add_new_title(request):
                        currency=currency, description=description)
         job.save()
         messages.success(request, f'Info Successfully Saved')
-        return redirect('job_titles_page')
+        return redirect('manage_job_positions_page')
 
     except:
         messages.error(request, f'Information Not Saved, Check you inputs and try again!')
@@ -210,13 +202,13 @@ def edit_job_position(request):
 
 
 @log_activity
-def delete_job_title(request, id):
+def delete_job_position(request, position_id):
     try:
-        job = get_position(id)
-        job.delete()
-        messages.success(request, f'Job Title Deleted Successfully')
-        return redirect('job_titles_page')
+        position = get_position(position_id)
+        position.delete()
+        messages.success(request, f'Job Position Deleted Successfully')
+        return redirect('manage_job_positions_page')
     except Department.DoesNotExist:
-        messages.error(request, f'The Job Title no longer exists on the system')
+        messages.error(request, f'The Job Position no longer exists on the system')
 
-    return redirect('job_titles_page')
+    return redirect('manage_job_positions_page')

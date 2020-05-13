@@ -36,7 +36,7 @@ Positions
                                        style="color:inherit">
                                         <i class="fa fa-edit"></i></a>
                                     |
-                                    <a href="{% url 'delete_job_title' position.id %}"
+                                    <a href="{% url 'delete_job_position' position.id %}"
                                        style="color: inherit" ...
                                        onclick="return confirm('Are you sure you want to delete the {{position}} position?')"><i
                                             class="fa fa-trash"></i>
@@ -68,7 +68,7 @@ Positions
 
                     <!-- Body -->
                     <div class="modal-body">
-                        <form method="POST" action="{% url 'add_new_title' %}"> {% csrf_token %}
+                        <form method="POST" action="{% url 'add_new_job_position' %}"> {% csrf_token %}
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Job Title"
                                        name="job_title" required>
