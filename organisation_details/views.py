@@ -183,27 +183,30 @@ def edit_job_position_page(request, position_id):
     context = {
         "user": request.user,
         "position": position,
+        "organisation_page": "active"
+
     }
     return render(request, 'organisation_details/edit_position.html', context)
 
 
 @log_activity
-def edit_job_title(request, id):
-    try:
-        if request.method == "POST":
-            job = get_position(id)
-            job.save()
-            messages.success(request, f'Job Info Updated Successfully')
-            return redirect('job_titles_page')
-        else:
-            messages.error(request, f'Update NOT Successfull')
-            context = {
-                "employees_page": "active",
-            }
-            return render(request, "employees/job_titles.html", context)
-    except:
-        messages.error(request, f'Info Not Saved, Check you inputs and try again!')
-    return redirect('job_titles_page')
+def edit_job_position(request):
+    if not request.POST:
+        return redirect('manage_job_positions_page')
+
+    position_id = request.POST.get('position_id')
+    currency_id = request.POST.get('currency')
+    currency = get_currency(currency_id)
+    position = get_position(position_id)
+    position.name = request.POST.get('name')
+    position.number_of_slots = request.POST.get('number_of_slots')
+    position.type = request.POST.get('type')
+    position.salary = request.POST.get('salary')
+    position.currency = currency
+    position.description = request.POST.get('description')
+    position.save()
+    messages.success(request, "Job Position successfully edited")
+    return redirect('manage_job_positions_page')
 
 
 @log_activity

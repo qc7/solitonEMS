@@ -9,16 +9,16 @@ Edit Position
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="{% url 'add_new_title' %}"> {% csrf_token %}
+                    <form method="POST" action="{% url 'edit_job_position' %}"> {% csrf_token %}
                         <div class="form-group">
                             <label>Position Title</label>
                             <input type="text" class="form-control" placeholder="Job Title"
-                                   name="job_title" value={{position}} required>
+                                   name="name" value={{position}} required>
                         </div>
                         <div class="form-group">
                             <label>Number of Slots</label>
                             <input type="text" class="form-control" placeholder="Capacity"
-                                   name="positions" value={{position.number_of_slots}} required />
+                                   name="number_of_slots" value={{position.number_of_slots}} required />
                         </div>
 
                         <div class="form-group">
@@ -52,8 +52,9 @@ Edit Position
                             <textarea class="form-control" name="description">{{position.description}}</textarea>
 
                         </div>
+                        <input type="hidden" value={{position.id}} name="position_id">
                         <button class="btn btn-danger" type="submit">Save</button>
-                        <button class="btn btn-outline-danger" type="reset">Back</button>
+                        <a href="{%url 'manage_job_positions_page'%}"><button class="btn btn-outline-danger">Back</button></a>
                     </form>
                 </div>
             </div>
