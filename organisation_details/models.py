@@ -29,7 +29,7 @@ class Position(models.Model):
 class Team(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     name = models.CharField(max_length=45)
-    supervisors = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
+    supervisor = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(max_length=15, default="Active")
 
     def __str__(self):
