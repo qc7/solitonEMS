@@ -1,0 +1,64 @@
+{% extends './base.html' %}
+{% block page_title %}
+Edit Position
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{% url 'edit_job_position' %}"> {% csrf_token %}
+                        <div class="form-group">
+                            <label>Position Title</label>
+                            <input type="text" class="form-control" placeholder="Job Title"
+                                   name="name" value={{position}} required>
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Slots</label>
+                            <input type="text" class="form-control" placeholder="Capacity"
+                                   name="number_of_slots" value={{position.number_of_slots}} required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select class="form-control" name="type">
+                                <option>{{position.type}}</option>
+                                <option>Full Time</option>
+                                <option>Internship</option>
+                                <option>Private Contractor</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Job Salary</label>
+                            <input type="number" class="form-control" placeholder="Job Salary"
+                                  value={{position.salary}} name="salary" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Currency</label>
+                            <select class="form-control" name="currency">
+                                <option value={{position.currency.id}}>{{position.currency}}</option>
+                                {%for currency in currencies%}
+                                <option value={{currency.id}}>{{currency.code}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea class="form-control" name="description">{{position.description}}</textarea>
+
+                        </div>
+                        <input type="hidden" value={{position.id}} name="position_id">
+                        <button class="btn btn-danger" type="submit">Save</button>
+                        <a href="{%url 'manage_job_positions_page'%}"><button class="btn btn-outline-danger">Back</button></a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
