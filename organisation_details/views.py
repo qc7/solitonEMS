@@ -7,7 +7,8 @@ from employees.selectors import get_active_employees, get_employee
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import hr_required, ems_login_required, organisation_full_auth_required
 from organisation_details.models import Position, Department, Team
-from organisation_details.selectors import get_all_departments, get_department, get_position, get_all_positions
+from organisation_details.selectors import get_all_departments, get_department, get_position, get_all_positions, \
+    get_all_teams, get_team
 from settings.selectors import get_all_currencies, get_currency
 
 
@@ -26,40 +27,80 @@ def no_organisation_detail_page(request):
 
 @hr_required
 @log_activity
-def teams_page(request, id):
-    ts = Team.objects.filter(department=id)
-    context = {
-        "user": request.user,
-        "employees_page": "active",
-        "teams": ts,
-        "dep": get_department(id),
-        "emps": get_active_employees(),
-
-    }
-
-    return render(request, "employees/teams.html", context)
-
-
-@ems_login_required
-@hr_required
-@organisation_full_auth_required
-@log_activity
-def manage_job_positions_page(request):
+def manage_teams_page(request):
+    teams = get_all_teams()
     context = {
         "user": request.user,
         "organisation_page": "active",
-        "positions": get_all_positions(),
-        "currencies": get_all_currencies()
+        "teams": teams,
+        "employees": get_active_employees(),
+        "departments": get_all_departments()
+
     }
 
-    return render(request, "organisation_details/manage_job_positions.html", context)
+    return render(request, "organisation_details/manage_teams.html", context)
+
+
+@log_activity
+def add_new_team(request):
+    if request.method == "POST":
+        team_name = request.POST["team_name"]
+        supervisor_id = request.POST["supervisor_id"]
+        department_id = request.POST["department_id"]
+
+        supervisor = get_employee(supervisor_id)
+        department = get_department(department_id)
+        team = Team(department=department, name=team_name, supervisor=supervisor)
+        team.save()
+        messages.success(request, f'Info Successfully Saved')
+
+        messages.error(request, f'Info Not Saved, Check you inputs and try again!')
+
+        return redirect('manage_teams_page')
+    return redirect('manage_teams_page')
+
+
+def edit_team_page(request, team_id):
+    if request.POST:
+        team = get_team(team_id)
+        team_name = request.POST["team_name"]
+        supervisor_id = request.POST["supervisor_id"]
+        department_id = request.POST["department_id"]
+        supervisor = get_employee(supervisor_id)
+        department = get_department(department_id)
+        team.department = department
+        team.supervisor = supervisor
+        team.name = team_name
+        team.save()
+        return redirect('manage_teams_page')
+
+    context = {
+        "user": request.user,
+        "team":  get_team(team_id),
+        "employees": get_active_employees(),
+        "departments": get_all_departments(),
+        "organisation_page": "active"
+    }
+    return render(request, 'organisation_details/edit_team.html', context)
+
+
+def delete_team(request, team_id):
+    try:
+        team = get_team(team_id)
+        team.delete()
+        messages.success(request, f'Department Deleted Successfully')
+        return redirect('manage_departments_page')
+    except Team.DoesNotExist:
+        messages.error(request, f'The team no longer exists on the system')
+
+    return redirect('manage_teams_page')
 
 
 # Department Section
 @hr_required
 @organisation_full_auth_required
 @log_activity
-def departments_page(request):
+def manage_departments_page(request):
     context = {
         "user": request.user,
         "organisation_page": "active",
@@ -85,7 +126,6 @@ def add_new_department(request):
 
 
 def edit_department(request):
-
     if request.method == "POST":
         department_id = request.POST.get('department_id')
         employee_id = request.POST.get('employee_id')
@@ -125,23 +165,19 @@ def delete_department(request, department_id):
     return redirect('manage_departments_page')
 
 
+@ems_login_required
+@hr_required
+@organisation_full_auth_required
 @log_activity
-def add_new_team(request):
-    if request.method == "POST":
-        team_name = request.POST["team_name"]
-        sup = request.POST["sups"]
-        dpt = request.POST["dept"]
+def manage_job_positions_page(request):
+    context = {
+        "user": request.user,
+        "organisation_page": "active",
+        "positions": get_all_positions(),
+        "currencies": get_all_currencies()
+    }
 
-        try:
-            supervisor = Employee.objects.get(pk=sup)
-            team = Team(department_id=dpt, name=team_name, supervisors=supervisor)
-            team.save()
-            messages.success(request, f'Info Successfully Saved')
-
-        except:
-            messages.error(request, f'Info Not Saved, Check you inputs and try again!')
-
-        return redirect('teams_page', id=dpt)
+    return render(request, "organisation_details/manage_job_positions.html", context)
 
 
 # Job Titles'
