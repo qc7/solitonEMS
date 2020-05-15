@@ -126,21 +126,7 @@ def edit_employee_page(request, id):
 @login_required
 @log_activity
 def edit_certification_page(request, id):
-    # The ems_authline requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-    # redirect according to roles
-
-    # redirect according to roles
     user = request.user
-    # If user is an employee
-    if str(user.solitonuser.soliton_role) == 'Employee':
-        return render(request, "role/employee.html")
-    # If user is HOD
-    if str(user.solitonuser.soliton_role) == 'HOD':
-        return render(request, "role/ceo.html")
-
     certification = Certification.objects.get(pk=id)
     context = {
         "user": user,
@@ -154,15 +140,7 @@ def edit_certification_page(request, id):
 @ems_login_required
 @log_activity
 def edit_emergency_contact_page(request, id):
-    # redirect according to roles
     user = request.user
-    # If user is an employee
-    if str(user.solitonuser.soliton_role) == 'Employee':
-        return render(request, "role/employee.html")
-    # If user is HOD
-    if str(user.solitonuser.soliton_role) == 'HOD':
-        return render(request, "role/ceo.html")
-
     emergency_contact = EmergencyContact.objects.get(pk=id)
     context = {
         "user": user,
@@ -182,15 +160,7 @@ def edit_emergency_contact_page(request, id):
 def edit_beneficiary_page(request, id):
     # redirect according to roles
     user = request.user
-    # If user is an employee
-    if str(user.solitonuser.soliton_role) == 'Employee':
-        return render(request, "role/employee.html")
-    # If user is HOD
-    if str(user.solitonuser.soliton_role) == 'HOD':
-        return render(request, "role/ceo.html")
-
     beneficiary = Beneficiary.objects.get(pk=id)
-
     context = {
         "user": user,
         "employees_page": "active",
@@ -204,20 +174,8 @@ def edit_beneficiary_page(request, id):
 @login_required
 @log_activity
 def edit_spouse_page(request, id):
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
-
     # redirect according to roles
     user = request.user
-    # If user is an employee
-    if str(user.solitonuser.soliton_role) == 'Employee':
-        return render(request, "role/employee.html")
-    # If user is HOD
-    if str(user.solitonuser.soliton_role) == 'HOD':
-        return render(request, "role/ceo.html")
-
     spouse = Spouse.objects.get(pk=id)
     spouse.save()
 
@@ -236,15 +194,7 @@ def edit_spouse_page(request, id):
 def edit_dependant_page(request, id):
     # redirect according to roles
     user = request.user
-    # If user is an employee
-    if str(user.solitonuser.soliton_role) == 'Employee':
-        return render(request, "role/employee.html")
-    # If user is HOD
-    if str(user.solitonuser.soliton_role) == 'HOD':
-        return render(request, "role/ceo.html")
-
     dependant = Dependant.objects.get(pk=id)
-
     context = {
         "user": user,
         "employees_page": "active",

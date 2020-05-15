@@ -1,0 +1,104 @@
+{% extends './base.html' %}
+{% block page_title %}
+Manage Departments
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Button trigger modal-->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_depart">
+            Add Department +
+        </button>
+        <div class="col-md-12">
+
+
+            <div class="card">
+                <div class="card-body">
+                    {%if departments%}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <th>ID</th>
+                            <th>Department</th>
+                            <th>Head</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            {% for department in departments %}
+                            <tr>
+                                <td>{{ department.id }}</td>
+                                <td><a href="#" style="color: inherit">{{ department.name }}</a></td>
+                                <td>{{ department.hod }}</td>
+                                <td>{{ department.status }}</td>
+                                <td>
+                                    <a href="{% url 'edit_department_page' department.id %}" style="color:inherit">
+                                        <i class="fa fa-edit"></i>
+                                    </a> |
+                                    <a href="{% url 'delete_department' department.id %}" style="color: inherit" ...
+                                       onclick="return confirm('Are you sure you want to delete {{department}} department?')"><i
+                                            class="fa fa-trash"></i>
+                                    </a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {%else%}
+                    <h3>No Departments available</h3>
+                    {%endif%}
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Modal: modal_add_new_department -->
+        <div class="modal fade" id="modal_add_new_depart" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!-- Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add Department</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'add_new_department' %}"> {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Department Name"
+                                       name="department_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="hod">Head of Department</label>
+                                <select class="form-control" id="hod" name="employee_id" required>
+                                    {% for employee in employees %}
+                                    <option value={{employee.id}}>{{employee}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!--Footer-->
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="submit">Save</button>
+                                <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                                        type="reset">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- modal_add_new_depart -->
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
