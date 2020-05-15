@@ -10,7 +10,7 @@ urlpatterns = [
     # departments
     path('edit_department_page/<int:department_id>/', views.edit_department_page, name="edit_department_page"),
     path('manage_departments/', views.manage_departments_page, name="manage_departments_page"),
-    path('add_new_deparment/', views.add_new_department, name="add_new_department"),
+    path('add_new_department/', views.add_new_department, name="add_new_department"),
     path('edit_department', views.edit_department, name="edit_department"),
     path('delete_department/<int:department_id>', views.delete_department, name="delete_department"),
 
