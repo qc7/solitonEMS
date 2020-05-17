@@ -10,6 +10,7 @@ View Payroll Records
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
+                    {%if payroll_records%}
                     <div class="table-responsive">
                         <table class="table">
                             <thead class="thead-dark">
@@ -30,6 +31,9 @@ View Payroll Records
                             {%endfor%}
                         </table>
                     </div>
+                    {%else%}
+                    <h3>No Payroll Records Available</h3>
+                    {%endif%}
                 </div>
             </div>
         </div>

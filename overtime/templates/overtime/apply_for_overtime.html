@@ -20,7 +20,9 @@ Overtime Application
                 </div>
                 {% endfor %}
                 {% endif %}
+
                 <h3>Recent Applications</h3>
+                {%if recent_applications%}
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="thead-dark">
@@ -43,6 +45,7 @@ Overtime Application
                         {%endfor%}
                     </table>
                 </div>
+                {%endif%}
             </div>
         </div>
     </div>

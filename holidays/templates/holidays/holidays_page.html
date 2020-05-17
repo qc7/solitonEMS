@@ -22,6 +22,7 @@ Manage Holidays
                 </div>
                 {% endfor %}
                 {% endif %}
+                {%if holidays%}
                 <h3>Holidays</h3>
                 <div>
                     <table class="table">
@@ -44,6 +45,9 @@ Manage Holidays
                         {%endfor%}
                     </table>
                 </div>
+                {%else%}
+                <h3>No Holidays Available</h3>
+                {%endif%}
             </div>
         </div>
     </div>
