@@ -6,6 +6,7 @@ from django.urls import reverse
 from employees.selectors import get_active_employees, get_employee
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import ems_login_required, overtime_full_auth_required, hod_required
+from organisation_details.decorators import organisationdetail_required
 
 from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
 from overtime.procedures import is_duration_valid
@@ -19,6 +20,7 @@ from overtime.services import reject_overtime_application_service, approve_overt
 
 # Create your views here.
 @ems_login_required
+@organisationdetail_required
 @log_activity
 def approve_overtime_page(request):
     approver = request.user
