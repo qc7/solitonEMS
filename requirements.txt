@@ -2,3 +2,4 @@ django
 gunicorn
 django-heroku
 xhtml2pdf
+django-sendgrid-v5
