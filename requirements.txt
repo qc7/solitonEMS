@@ -1,4 +1,6 @@
+decouple
 django
 gunicorn
 django-heroku
 xhtml2pdf
+python-decouple
