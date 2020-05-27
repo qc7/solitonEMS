@@ -144,14 +144,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/solitonug/solitonEMS/static'
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "smtp.mailgun.org"
-EMAIL_HOST_USER = "postmaster@sandboxd807531b400a43588e3b4ca0b6d4da05.mailgun.org"
-EMAIL_HOST_PASSWORD = '386bda3e4ff82cf5e314d27370c10839-0afbfc6c-09336626'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'no-reply@solitonems.ug'
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_API_KEY = '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'
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 
 
 
