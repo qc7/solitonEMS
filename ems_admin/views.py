@@ -155,6 +155,7 @@ def user_audit_trail(request, user_id):
     return render(request, "ems_admin/user_audit_trail.html", context)
 
 
+@super_admin_required
 @log_activity
 def audit_trails(request):
     audit_trails = get_all_recent_audit_trails()
