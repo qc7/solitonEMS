@@ -33,6 +33,7 @@ def approve_overtime_page(request):
 
 
 @ems_login_required
+@organisationdetail_required
 @log_activity
 def apply_for_overtime_page(request):
     if request.POST:
