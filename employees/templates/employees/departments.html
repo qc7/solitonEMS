@@ -13,6 +13,15 @@
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_depart">
       Add Department +
     </button>
+    <!-- Status Flash Messages -->
+    {% if messages %}
+    {% for msg in messages%}
+        <div class="alert alert-{{ msg.tags }} alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {{ msg }}
+        </div>
+    {% endfor %}
+    {% endif %}
     <div class="col-md-12">
 
 
@@ -40,9 +49,9 @@
                   </a></button></td>
                 <td>{{ depart.status }}</td>
                 <td>
-                  <a href="{% url 'edit_department_page' depart.id %}" data-toggle="modal"
-                     data-target="#modal_edit_department" style="color:inherit">
+                  <a href="{% url 'edit_department_page' depart.id %}"  style="color:inherit">
                     <i class="fa fa-edit">Edit</i>
+                    {% comment %} data-toggle="modal" data-target="#modal_edit_department" {% endcomment %}
                   </a> |
                   <a href="{% url 'delete_department' depart.id %}" style="color: inherit" ...
                      onclick="return confirm('Are you sure you want to delete @Type?')">
@@ -81,10 +90,9 @@
               </div>
               <div class="form-group">
                 <label for="">Head of Department</label>
-                <select class="form-control" id="hod" name="hod" required>
-                  <option selected>{{depart.hod }}</option>
+                <select class="form-control" id="hod" name="hod" required>                  
                   {% for emp in emps %}
-                  <option>{{emp.first_name }} {{emp.last_name }}</option>
+                  <option value={{emp.id}}>{{emp.first_name }} {{emp.last_name }}</option>
                   {% endfor %}
                 </select>
               </div>

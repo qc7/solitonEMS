@@ -14,7 +14,9 @@ urlpatterns = [
     
     # Process
     path('add_new_type/', views.add_new_type, name="add_new_type"),
-    path('edit_type/<int:id>/', views.edit_leave_type_page, name="edit_leave_type_page"),
+    path('edit_type/<int:id>/', views.edit_leave_type_page, name="edit_leave_type_page"),    
+    path('edit_leave_type/<int:id>/', views.edit_leave_type, name="edit_leave_type"),    
+    path('delete_type/<int:id>/', views.delete_leave_type, name="delete_leave_type"),
     path('add_new_holiday/', views.add_new_holiday, name="add_new_holiday"),
     path('apply_leave/', views.apply_leave, name="apply_leave"),
     path('approve_leave/', views.approve_leave, name="approve_leave"),

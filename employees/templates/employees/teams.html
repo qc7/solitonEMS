@@ -14,6 +14,7 @@
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_team">
       Add Team +
     </button>
+     
     <div class="col-md-12">
 
       <div class="card">
@@ -36,11 +37,15 @@
                   {{ team.employee_set.all.count }}</a></td>
                 <td>{{ team.status }}</td>
 
-                <td><a href="#" style="color:inherit"><i class="fa fa-edit"></i></a></td>
                 <td>
-                  <a href="#" style="color: inherit" ...
-                     onclick="return confirm('Are you sure you want to delete @Type?')"><i class="fa fa-trash"></i>
-                  </a></td>
+                  <a href="{% url 'edit_team_page' team.id%}" style="color:inherit">
+                    <i class="fa fa-edit">Edit</i>
+                  </a>|
+                  <a href="{% url 'delete_team' team.id%}" style="color: inherit" ...
+                     onclick="return confirm('Are you sure you want to delete @Type?')">
+                     <i class="fa fa-trash">Delete</i>
+                  </a>
+                </td>
               </tr>
               {% endfor %}
               </tbody>

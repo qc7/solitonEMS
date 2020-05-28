@@ -1,13 +1,21 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 # Create your views here.
 from employees.models import Employee
-from employees.selectors import get_active_employees
+from employees.selectors import get_active_employees, get_employee
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import hr_required, ems_login_required, organisation_full_auth_required
 from organisation_details.models import Position, Department, Team
-from organisation_details.selectors import get_all_departments, get_department, get_position, get_all_positions
+from organisation_details.selectors import (
+    get_all_departments, 
+    get_department, 
+    get_position, 
+    get_all_positions,
+    get_all_teams,
+    get_team
+    )
 from settings.selectors import get_all_currencies, get_currency
 
 
@@ -41,16 +49,14 @@ def departments_page(request):
 @hr_required
 @log_activity
 def teams_page(request, id):
-    ts = Team.objects.filter(department=id)
+    teams = Team.objects.filter(department=id)
     context = {
         "user": request.user,
         "employees_page": "active",
-        "teams": ts,
+        "teams": teams,
         "dep": get_department(id),
         "emps": get_active_employees(),
-
     }
-
     return render(request, "employees/teams.html", context)
 
 
@@ -73,8 +79,9 @@ def job_titles_page(request):
 @log_activity
 def add_new_department(request):
     if request.method == "POST":
+        print(request.POST["hod"])
         dep_name = request.POST["dep_name"]
-        hod = request.POST["hod"]
+        hod = get_employee(request.POST["hod"])
 
     try:
         depat = Department(name=dep_name, hod=hod)
@@ -85,24 +92,31 @@ def add_new_department(request):
     except:
         messages.error(request, f'Infor Not Saved, Check you inputs and try again!')
 
-    return redirect('departments_page')
+        return redirect('departments_page')
 
 
 def edit_department(request, id):
     try:
         if request.method == "POST":
             department = get_department(id)
-            department.save()
-            messages.success(request, f'Department Infor Updated Successfully')
+
+            name=request.POST.get('name')
+            hod=get_employee(request.POST.get('hod'))
+            status=request.POST.get('status')
+
+            Department.objects.filter(id=department.id).update(
+                name=name,
+                hod=hod,
+                status=status
+            )
+            # department.save()
+            messages.success(request, f'Department Updated Successfully')
             return redirect('departments_page')
 
         else:
             messages.error(request, f'Update NOT Successfull')
-            context = {
-                "employees_page": "active",
-            }
-
-            return render(request, "employees/departments.html", context)
+            
+            return redirect('departments_page')
 
     except:
         messages.error(request, f'Info Not Saved, Check you inputs and try again!')
@@ -117,8 +131,55 @@ def edit_department_page(request, id):
         "employee": get_active_employees(),
         "deps": get_department(id),
     }
-    return render(request, 'employees/departments.html', context)
+    return render(request, 'employees/edit_department.html', context)
 
+@log_activity
+def edit_team_page(request, id):
+    context = {
+        "user": request.user,
+        "employee": get_active_employees(),
+        "teams": get_team(id),
+    }
+    return render(request, 'employees/edit_team.html', context)
+
+@log_activity
+def edit_team(request, id):
+    if request.method == "POST":
+        team=get_team(id)
+
+        name = request.POST.get('name')
+        supervisor = get_employee(request.POST.get('supervisor'))
+        status = request.POST.get('status')
+        department = request.POST.get('depart')
+
+        Team.objects.filter(id=team.id).update(
+            name=name,
+            supervisors=supervisor,
+            status=status
+        )
+        
+        messages.success(request, f'Team Updated Successfully')
+        return redirect(reverse('teams_page', kwargs={"id": department}))
+
+    else:
+        messages.error(request, f'Operation was NOT Successfull')
+    
+    
+        return redirect('teams_page')
+
+
+@log_activity
+def delete_team(request, id):
+    try:
+        team = get_team(id)
+        team.delete()
+        messages.success(request, f'Team Deleted Successfully')
+        
+        return redirect(reverse('teams_page', kwargs={"id": team.department.id}))
+    except Team.DoesNotExist:
+        messages.error(request, f'The department no longer exists on the system')
+
+        return redirect(reverse('teams_page', kwargs={"id": team.department.id}))
 
 @log_activity
 def delete_department(request, id):
@@ -184,7 +245,7 @@ def edit_job_title_page(request, id):
         "employee": get_active_employees(),
         "title": get_position(id),
     }
-    return render(request, 'employees/job_titles.html', context)
+    return render(request, 'employees/edit_job_title.html', context)
 
 
 @log_activity

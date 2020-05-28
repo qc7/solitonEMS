@@ -129,12 +129,9 @@ def add_new_type(request):
             return redirect('leave_types_page')
 
     else:
-        context = {
-            "leave_types_page": "active",
-            "failed_msg": "Failed! You performed a GET request"
-        }
+        messages.error(request, f'Something Went Wrong')
 
-        return render(request, "employees/failed.html", context)
+        return redirect('leave_types_page')
 
 
 @login_required
@@ -150,7 +147,43 @@ def edit_leave_type_page(request, id):
         "leave_page": "active",
         "leave": leave
     }
-    return render(request, 'leave/leave_type.html', context)
+    return render(request, 'leave/edit_leave_type.html', context)
+
+@login_required
+def edit_leave_type(request, id):
+    leave = Leave_Types.objects.get(pk=id)
+
+    if request.POST:
+        leave_type=request.POST.get('leave_type')        
+        no_of_days=request.POST.get('no_of_days')
+        description=request.POST.get('description')
+
+        Leave_Types.objects.filter(id=leave.id).update(
+            leave_type=leave_type,
+            leave_days=no_of_days,
+            description=description
+            )
+        messages.success(request, "Leave Type Info Updated Successfully")
+
+    context = {
+        "leave_page": "active",
+        "leave": leave
+    }
+    return redirect('leave_types_page')
+    # return render(request, 'leave/leave_type.html', context)
+
+@login_required
+def delete_leave_type(request, id):
+    leave = Leave_Types.objects.get(pk=id)
+
+    leave.delete()
+    messages.success(request, "Leave Type Deleted")
+
+    context = {
+        "leave_page": "active",
+        "leave": leave
+    }
+    return redirect('leave_types_page')
 
 
 def holidays_page(request):
