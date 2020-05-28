@@ -15,6 +15,7 @@ from training.selectors import get_all_training_schedules, get_applicant_trainin
 from training.services import approve_training_application_service, reject_training_application_service
 
 
+@organisationdetail_required
 @log_activity
 def user_training_page(request):
     applicant = request.user.solitonuser.employee
