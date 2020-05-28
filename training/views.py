@@ -17,6 +17,7 @@ from training.services import approve_training_application_service, reject_train
     send_training_application_mail
 
 
+@organisationdetail_required
 @log_activity
 def user_training_page(request):
     applicant = request.user.solitonuser.employee
