@@ -1,0 +1,12 @@
+[
+  {
+    "model": "organisation_details.Team",
+    "pk": 1,
+    "fields": {
+      "department": 1,
+      "name": "Cool Team 6",
+      "supervisor": 1,
+      "status": "Active"
+    }
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "model": "organisation_details.Position",
+    "pk": 1,
+    "fields": {
+      "name": "Software Developer",
+      "number_of_slots": 10,
+      "type":"Full Time",
+      "salary": 1000000,
+      "currency": 1,
+      "description": "Good Job"
+    }
+  }
+]
