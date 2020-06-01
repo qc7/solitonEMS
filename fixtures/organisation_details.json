@@ -1,0 +1,62 @@
+[
+  {
+    "model": "organisation_details.OrganisationDetail",
+    "pk": 1,
+    "fields": {
+      "employee": 1,
+      "department": 1,
+      "position": 1,
+      "team": 1
+    }
+  },
+  {
+    "model": "organisation_details.OrganisationDetail",
+    "pk": 2,
+    "fields": {
+      "employee": 2,
+      "department": 1,
+      "position": 1,
+      "team": 1
+    }
+  },
+  {
+    "model": "organisation_details.OrganisationDetail",
+    "pk": 3,
+    "fields": {
+      "employee": 3,
+      "department": 1,
+      "position": 1,
+      "team": 1
+    }
+  },
+  {
+    "model": "organisation_details.OrganisationDetail",
+    "pk": 4,
+    "fields": {
+      "employee": 4,
+      "department": 1,
+      "position": 1,
+      "team": 1
+    }
+  },
+  {
+    "model": "organisation_details.OrganisationDetail",
+    "pk": 5,
+    "fields": {
+      "employee": 5,
+      "department": 1,
+      "position": 1,
+      "team": 1
+    }
+  },
+  {
+    "model": "organisation_details.OrganisationDetail",
+    "pk": 6,
+    "fields": {
+      "employee": 6,
+      "department": 1,
+      "position": 1,
+      "team": 1
+    }
+  }
+]

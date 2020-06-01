@@ -1,0 +1,11 @@
+[
+  {
+    "model": "organisation_details.Department",
+    "pk": 1,
+    "fields": {
+      "id": 1,
+      "name": "Business Intelligence",
+      "hod": 1
+    }
+  }
+]
