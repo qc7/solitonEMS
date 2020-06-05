@@ -19,10 +19,28 @@ def calculate_employer_nssf_contribution(gross_salary):
     return nssf_contribution
 
 
-def calculate_paye(gross_salary, currency_cost):
+def calculate_paye(gross_salary, currency_cost) -> float:
+    """Return paye in user currency"""
     # Assume the base currency is Uganda Shillings
+    gross_salary_ugx = gross_salary * currency_cost
 
-    paye = 0.3 * (gross_salary - (410000 / currency_cost)) + (25000 / currency_cost)
+    if gross_salary_ugx < 235000:
+        paye = 0
+
+    elif 235000 < gross_salary_ugx < 335000:
+        paye = 0.1 * (gross_salary - (235000 / currency_cost)) + 10000
+
+    elif 335000 < gross_salary_ugx < 410000:
+        paye = 0.2 * (gross_salary - (335000 / currency_cost)) + (10000 / currency_cost)
+
+    elif 10000000 > gross_salary_ugx > 410000:
+        paye = 0.3 * (gross_salary - (410000 / currency_cost)) + (25000 / currency_cost)
+
+    else:
+        """If gross salary is greater than 10 million"""
+        paye = 0.3 * (gross_salary - (410000 / currency_cost)) + (25000 / currency_cost) + (
+                gross_salary - (10000000 / currency_cost)) * 0.1
+
     return paye
 
 
@@ -58,7 +76,7 @@ class SimplePayslip:
         self.sacco_deduction_amount = get_sacco_deduction_amount(employee)
         self.damage_deduction_amount = get_damage_deduction_amount(employee)
         self.total_deductions = self.total_statutory_deductions + self.total_non_statutory_deductions
-        self.lunch_allowance = int(self.employee.lunch_allowance/self.currency_cost)
+        self.lunch_allowance = int(self.employee.lunch_allowance / self.currency_cost)
 
     def sum_all_income(self, employee):
         return employee.initial_gross_salary + self.overtime_pay + self.bonus
