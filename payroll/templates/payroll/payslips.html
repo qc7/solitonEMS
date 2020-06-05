@@ -38,6 +38,7 @@ Payroll
                         <th>Gross Pay</th>
                         <th>Basic Pay</th>
                         <th>Net Pay</th>
+                        <th>Actions</th>
                         </thead>
                         {%for payslip in payslips%}
                         <tr>
@@ -48,6 +49,7 @@ Payroll
                             <td>{{payslip.employee.currency}} {{payslip.gross_salary | intcomma}}</td>
                             <td>{{payslip.employee.currency}} {{payslip.employee.basic_salary | intcomma}}</td>
                             <td>{{payslip.employee.currency}} {{payslip.net_salary | intcomma }}</td>
+                            <td><button>View Payslip</button></td>
                         </tr>
                         {%endfor%}
                     </table>
