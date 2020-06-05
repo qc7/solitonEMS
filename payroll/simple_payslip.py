@@ -28,7 +28,7 @@ def calculate_paye(gross_salary, currency_cost) -> float:
         paye = 0
 
     elif 235000 < gross_salary_ugx < 335000:
-        paye = 0.1 * (gross_salary - (235000 / currency_cost)) + 10000
+        paye = 0.1 * (gross_salary - (235000 / currency_cost)) + (10000/currency_cost)
 
     elif 335000 < gross_salary_ugx < 410000:
         paye = 0.2 * (gross_salary - (335000 / currency_cost)) + (10000 / currency_cost)
