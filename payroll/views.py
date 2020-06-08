@@ -6,6 +6,7 @@ from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseRedirect
 
+from employees.selectors import get_active_employees
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import payroll_full_auth_required
 from ems_auth.models import SolitonUser
@@ -69,10 +70,7 @@ def payroll_record_page(request, id):
     # Get all the associated payslip objects
     payslips = Payslip.objects.filter(payroll_record=payroll_record)
     # Get all employees
-    employees = Employee.objects.all()
-
-    # Get the notifications
-    user = request.user
+    employees = get_active_employees()
 
     context = {
         "payroll_page": "active",
