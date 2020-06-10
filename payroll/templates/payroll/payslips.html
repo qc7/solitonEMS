@@ -40,7 +40,7 @@ Payroll
                         <th>Net Pay</th>
                         <th>Actions</th>
                         </thead>
-                        {%for payslip in payslips%}
+                        {%for payslip in ugx_payslips%}
                         <tr>
                             <td>{{payslip.employee.id}}</td>
                             <td>{{payslip.employee.first_name}} {{payslip.employee.last_name}}</td>
