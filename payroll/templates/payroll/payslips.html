@@ -2,9 +2,7 @@
 {% load humanize %}
 
 {%block page_title %}
-<span>
-    <h1>Payroll</h1>
-</span>
+Payroll
 {%endblock%}
 
 {%block content%}
@@ -19,6 +17,7 @@
         text-align: right;
         vertical-align: middle;
     }
+
 </style>
 
 <div class="content">
@@ -29,8 +28,9 @@
             </div>
             <div class="card-body">
                 {%if payslips %}
-                <table class="table">
-                    <thead class="thead-dark">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
                         <th>Emp. ID</th>
                         <th>Name</th>
                         <th>NSSF Contribution</th>
@@ -38,25 +38,28 @@
                         <th>Gross Pay</th>
                         <th>Basic Pay</th>
                         <th>Net Pay</th>
-                    </thead>
-                    {%for payslip in payslips%}
-                    <tr>
-                        <td>{{payslip.employee.id}}</td>
-                        <td>{{payslip.employee.first_name}} {{payslip.employee.last_name}}</td>
-                        <td>{{payslip.employee.currency}} {{payslip.total_nssf_contrib | intcomma}}</td>
-                        <td>{{payslip.employee.currency}} {{ payslip.paye| intcomma}}</td>
-                        <td>{{payslip.employee.currency}} {{payslip.gross_salary | intcomma}}</td>
-                        <td>{{payslip.employee.currency}} {{payslip.employee.basic_salary | intcomma}}</td>
-                        <td>{{payslip.employee.currency}} {{payslip.net_salary | intcomma }}</td>
-                    </tr>
-                    {%endfor%}
-                </table>
-                <a href="{%url 'payroll_download' payroll_record.id %}"><button class="btn btn-outline">Export Excel CSV</button></a>
+                        </thead>
+                        {%for payslip in payslips%}
+                        <tr>
+                            <td>{{payslip.employee.id}}</td>
+                            <td>{{payslip.employee.first_name}} {{payslip.employee.last_name}}</td>
+                            <td>{{payslip.employee.currency}} {{payslip.total_nssf_contrib | intcomma}}</td>
+                            <td>{{payslip.employee.currency}} {{ payslip.paye| intcomma}}</td>
+                            <td>{{payslip.employee.currency}} {{payslip.gross_salary | intcomma}}</td>
+                            <td>{{payslip.employee.currency}} {{payslip.employee.basic_salary | intcomma}}</td>
+                            <td>{{payslip.employee.currency}} {{payslip.net_salary | intcomma }}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                <a href="{%url 'payroll_download' payroll_record.id %}">
+                    <button class="btn btn-outline">Export Excel CSV</button>
+                </a>
                 {%else%}
-                    <p>Payroll has not been generated.</p>
+                <h3>Payroll has not been generated</h3>
             </div>
         </div>
     </div>
-        {%endif%}
+    {%endif%}
 </div>
 {%endblock%}

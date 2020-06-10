@@ -1,9 +1,7 @@
 {%extends 'solitonems/base.html'%}
 
 {%block page_title %}
-<span>
-    <h1 class="animated fadeInDown">Approve Training Applications</h1>
-</span>
+Approve Training Applications
 {%endblock%}
 {%block content%}
 <div class="content">
@@ -18,40 +16,44 @@
 
                 {%if pending_applications %}
                 <h3>Pending applications</h3>
-                <table class="table">
-                    <thead class="thead-dark">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>ID</th>
                         <th>Applicant</th>
                         <th>Programme</th>
                         <th>Institution</th>
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Actions</th>
-                    </thead>
-                    {%for pending_application in pending_applications %}
-                    <tr>
-                        <td>{{pending_application.applicant}}</td>
-                        <td>{{pending_application.programme}}</td>
-                        <td>{{pending_application.institution}}</td>
-                        <td>{{pending_application.start_date}}</td>
-                        <td>{{pending_application.end_date}}</td>
+                        </thead>
+                        {%for pending_application in pending_applications %}
+                        <tr>
+                            <td>{{pending_application.id}}</td>
+                            <td>{{pending_application.applicant}}</td>
+                            <td>{{pending_application.programme}}</td>
+                            <td>{{pending_application.institution}}</td>
+                            <td>{{pending_application.start_date}}</td>
+                            <td>{{pending_application.end_date}}</td>
 
-                        <td>
-                            <a href="{%url 'approve_training_application' pending_application.id%}"
-                               onclick="return confirm('Are you sure you want to approve
+                            <td>
+                                <a href="{%url 'approve_training_application' pending_application.id%}"
+                                   onclick="return confirm('Are you sure you want to approve
                                {{pending_application.applicant.first_name}}\'s training application?')">
-                                <button>Approve</button>
-                            </a> |
-                            <a href="{%url 'reject_training_application' pending_application.id%}"
-                               onclick="return confirm('Are you sure you want to reject
+                                    <button>Approve</button>
+                                </a> |
+                                <a href="{%url 'reject_training_application' pending_application.id%}"
+                                   onclick="return confirm('Are you sure you want to reject
                                {{pending_application.applicant.first_name}}\'s training application?')">
-                                <button>Reject</button>
-                            </a>
+                                    <button>Reject</button>
+                                </a>
 
-                        </td>
+                            </td>
 
-                    </tr>
-                    {%endfor%}
-                </table>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
                 {%else%}
                 <h3>No pending applications</h3>
                 {%endif%}

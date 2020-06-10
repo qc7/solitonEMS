@@ -21,7 +21,9 @@
               <thead class="thead-dark">
               <th>ID</th>
               <th>Title</th>
-              <th>No.of Positions</th>
+              <th>Positions</th>
+              <th>Type</th>
+              <th>Currency</th>
               <th colspan=2>#</th>
               </thead>
               <tbody>
@@ -30,15 +32,16 @@
                 <td>{{ position.id }}</td>
                 <td><a href="#" style="color: inherit">{{ position.name }}</a></td>
                 <td>{{ position.number_of_slots }}</td>
+                <td>{{ position.type }}</td>
+                <td>{{ position.currency }}</td>
                 <td>
-                  <a href="{% url 'edit_job_title_page' position.id %}" data-toggle="modal"
-                     data-target="#modal_edit_job" style="color:inherit">
-                    <i class="fa fa-edit"></i></a>
-                </td>
-                <td>
+                  <a href="v?PageID=job_titles" data-toggle="modal"
+                  data-name="position.name" data-target="#modal_edit_job" style="color:inherit">
+                     {% comment %} {% url 'edit_job_title_page' position.id %} {% endcomment %}
+                    <i class="fa fa-edit">Edit</i></a>|
                   <a href="{% url 'delete_job_title' position.id %}"
-                     style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')"><i
-                          class="fa fa-trash"></i>
+                     style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')">
+                     <i class="fa fa-trash">Delete</i>
                   </a></td>
               </tr>
               {% endfor %}
@@ -137,7 +140,7 @@
             <form method="POST" action="{% url 'edit_job_title' 1 %}"> {% csrf_token %}
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Job Title"
-                       name="job_title" value="{{title.title}}" required>
+                       name="job_title" id="job_title"  required>
               </div>
               <div class="form-group">
                 <input type="number" class="form-control"  placeholder="No. Positions"

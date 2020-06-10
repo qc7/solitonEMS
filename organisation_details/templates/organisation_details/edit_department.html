@@ -1,0 +1,39 @@
+{% extends './base.html' %}
+{% block page_title %}
+Edit Department
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{% url 'edit_department' %}"> {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Department Name"
+                                   name="department_name" value="{{department.name}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Head of Department</label>
+                            <select class="form-control" id="hod" name="employee_id">
+                                <option value={{department.hod.id}}>{{department.hod}}</option>
+                                {% for employee in employees %}
+                                <option value={{employee.id}}>{{employee}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <input type="hidden" value={{department.id}} name="department_id">
+                        <button class="btn btn-danger" type="submit">Save</button>
+                        <a href="{%url 'manage_departments_page'%}">
+                            <button class="btn btn-outline-danger">Back
+                            </button>
+                        </a>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

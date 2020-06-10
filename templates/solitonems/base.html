@@ -66,8 +66,9 @@
                         <p>Organisation</p>
                     </a>
                     <ul id="popover-organisation" class="nav list-group" style="display: none">
-                        <a href="{%url 'job_titles_page'%}" class="list-group-item">Manage Job Titles</a>
-                        <a href="{%url 'departments_page'%}" class="list-group-item">Manage Departments</a>
+                        <a href="{%url 'manage_job_positions_page'%}" class="list-group-item">Manage Job Positions</a>
+                        <a href="{%url 'manage_departments_page'%}" class="list-group-item">Manage Departments</a>
+                        <a href="{%url 'manage_teams_page'%}" class="list-group-item">Manage Teams</a>
                     </ul>
                 </li>
 
@@ -254,11 +255,14 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div>            
         </nav>
         <!-- End Navbar -->
+       
+
         <!-- Content here -->
         {%block content%}
+         
         {%endblock%}
 
         <!-- Content ends here       -->
@@ -328,7 +332,7 @@
 <script src="{% static 'assets/js/plugins/arrive.min.js' %}"></script>
 
 <!-- Chartist JS -->
-<script src="{% static 'assets/js/plugins/chartist.min.js'"></script>
+<script src="{% static 'assets/js/plugins/chartist.min.js'%}"></script>
 <!--  Notifications Plugin    -->
 <script src="{% static 'assets/js/plugins/bootstrap-notify.js' %}"></script>
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
