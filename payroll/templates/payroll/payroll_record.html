@@ -30,7 +30,7 @@ Payroll Records
                 <h3>{{month}} - {{year}}</h3>
             </div>
             <div class="card-body">
-                {%if not payrolls %}
+                {%if not ugx_payslips%}
                 <a href="{%url 'generate_payroll' payroll_record.id %}">
                     <button class="btn btn-danger">Generate Initial
                         Payroll
@@ -50,7 +50,7 @@ Payroll Records
                         <th>Net Pay</th>
                         <th>Actions</th>
                         </thead>
-                        {%for payroll in payrolls%}
+                        {%for payroll in ugx_payslips%}
                         <tr>
                             <td>{{payroll.employee.id}}</td>
                             <td>{{payroll.employee}}</td>
@@ -71,6 +71,22 @@ Payroll Records
                             <td>{{total_basic_pay | intcomma}}</td>
                             <td>{{total_net_pay | intcomma}}</td>
                         </tr>
+                        {%if usd_payslips%}
+                        <tr><td>USD</td></tr>
+                        {%for payroll in usd_payslips%}
+                        <tr>
+                            <td>{{payroll.employee.id}}</td>
+                            <td>{{payroll.employee}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.total_nssf_contrib | intcomma}}</td>
+                            <td>{{payroll.employee.currency}} {{ payroll.paye| intcomma}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.gross_salary | intcomma}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.employee.basic_salary | intcomma}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.net_salary | intcomma }}</td>
+                            <td><a href="{%url 'payslip_page' payroll.id%}"
+                                   style="color: inherit"><button>View Payslip</button></a></td>
+                        </tr>
+                        {%endfor%}
+                        {%endif%}
                     </table>
                 </div>
                 <a href="{%url 'payroll_download' payroll_record.id %}">
