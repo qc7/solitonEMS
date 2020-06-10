@@ -1,0 +1,45 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+<h1>Edit Job Title</h1>
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <form method="post" action="{% url 'edit_job_title' title.id %}">
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <label>Team</label>
+                        <input class="form-control" type="text" name="name" value={{teams.name}} required/>
+                        <input class="form-control" type="hidden" name="depart" value={{teams.department.id}} required/>
+                    </div>
+                    <div class="form-group">
+                        <label>Supervisor</label>
+                        <select class="form-control" id="supervisor" name="supervisor" required> 
+                            <option value={{teams.supervisors.id}}>{{teams.supervisors}}</option>                 
+                            {% for emp in employee %}
+                                <option value={{emp.id}}>{{emp.first_name }} {{emp.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" name="status" required> 
+                            <option>{{teams.status}}</option>
+                            {% if teams.status == 'Active'%}
+                                <option>In Active</option>
+                            {%else%}
+                                <option>Active</option>
+                            {% endif %}
+                    </div>
+                    <input type="submit" value="submit" class="btn btn-danger"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

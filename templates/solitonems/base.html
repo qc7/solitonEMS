@@ -66,8 +66,9 @@
                         <p>Organisation</p>
                     </a>
                     <ul id="popover-organisation" class="nav list-group" style="display: none">
-                        <a href="{%url 'job_titles_page'%}" class="list-group-item">Manage Job Titles</a>
-                        <a href="{%url 'departments_page'%}" class="list-group-item">Manage Departments</a>
+                        <a href="{%url 'manage_job_positions_page'%}" class="list-group-item">Manage Job Positions</a>
+                        <a href="{%url 'manage_departments_page'%}" class="list-group-item">Manage Departments</a>
+                        <a href="{%url 'manage_teams_page'%}" class="list-group-item">Manage Teams</a>
                     </ul>
                 </li>
 
@@ -257,22 +258,7 @@
             </div>            
         </nav>
         <!-- End Navbar -->
-
-        <!-- Status Flash Messages -->
-        {% if messages %}
-            {% for msg in messages%}
-                <div class="alert alert-{{ msg.tags }} alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ msg }}                 
-                </div> 
-                {% comment %} <script> 
-                    M.toast({html: "{{msg}}". classes:'green rounded', displaylength:2000});
-                </script> {% endcomment %}
-            {% endfor %}
-        {% endif %}
-      <!-- Status Flash Messages -->
+       
 
         <!-- Content here -->
         {%block content%}

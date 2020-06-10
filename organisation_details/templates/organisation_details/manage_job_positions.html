@@ -1,0 +1,125 @@
+{% extends './base.html' %}
+{% block page_title %}
+Positions
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <!-- Button trigger modal-->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_job">
+            Add Job Position +
+        </button>
+
+        <div class="col-md-12">
+
+
+            <div class="card">
+                <div class="card-body">
+                    {%if positions%}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Capacity</th>
+                            <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            {% for position in positions %}
+                            <tr>
+                                <td>{{ position.id }}</td>
+                                <td><a href="#" style="color: inherit">{{ position.name }}</a></td>
+                                <td>{{ position.number_of_slots }}</td>
+                                <td>
+                                    <a href="{% url 'edit_job_position_page' position.id %}"
+                                       style="color:inherit">
+                                        <i class="fa fa-edit"></i></a>
+                                    |
+                                    <a href="{% url 'delete_job_position' position.id %}"
+                                       style="color: inherit" ...
+                                       onclick="return confirm('Are you sure you want to delete the {{position}} position?')"><i
+                                            class="fa fa-trash"></i>
+                                    </a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {%else%}
+                    <h3>No positions available</h3>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: modalAddNewHoliday -->
+        <div class="modal fade" id="modal_add_new_job" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!-- Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add Job Position</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'add_new_job_position' %}"> {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Job Title"
+                                       name="job_title" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Capacity"
+                                       name="positions" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Type</label>
+                                <select class="form-control" name="type">
+                                    <option>Full Time</option>
+                                    <option>Internship</option>
+                                    <option>Private Contractor</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Job Salary"
+                                       name="salary" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <select class="form-control" name="currency">
+                                    {%for currency in currencies%}
+                                    <option value={{currency.id}}>{{currency.code}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" name="description"></textarea>
+
+                            </div>
+
+
+                            <!--Footer-->
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="submit">Save</button>
+                                <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

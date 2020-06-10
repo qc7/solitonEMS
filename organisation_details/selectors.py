@@ -1,4 +1,5 @@
 from organisation_details.models import Department, Team, Position, OrganisationDetail
+from organisation_details.models import Department, Position, OrganisationDetail, Team
 
 
 def get_all_departments():
@@ -22,6 +23,10 @@ def get_department(department_id):
 
 def get_all_teams():
     return Team.objects.all()
+
+def get_all_teams():
+    return Team.objects.all()
+
 
 def get_team(team_id):
     return Team.objects.get(pk=team_id)

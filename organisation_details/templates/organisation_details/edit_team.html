@@ -1,0 +1,49 @@
+{% extends './base.html' %}
+{% block page_title %}
+Edit Team
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST"> {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Team Name"
+                                   value="{{team}}"    name="team_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="supervisor">Supervisor</label>
+                            <select class="form-control" id="supervisor" name="supervisor_id" required>
+                                <option value={{ team.supervisor.id }}>{{team.supervisor}}</option>
+                                {% for employee in employees %}
+                                <option value={{ employee.id }}>{{employee}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <select class="form-control" id="department" name="department_id" required>
+                                <option value={{team.department.id}}>{{team.department}}</option>
+                                {% for department in departments %}
+                                <option value={{ department.id }}>{{department}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <button class="btn btn-danger" type="submit">Save</button>
+
+                        <a href="{%url 'manage_teams_page'%}">
+                            <button class="btn btn-outline-danger" type="button">Back</button>
+                        </a>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}

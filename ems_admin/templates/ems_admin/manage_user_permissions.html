@@ -1,109 +1,117 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Manage User Permissions</h1>
+Manage User Permissions
 {% endblock %}
 
 {% block content %}
 <div class="content">
-  <div class="container-fluid">
-    <div class="col-md-12">
-      <a href="#">
-        <button class="btn btn-danger">Reload</button>
-      </a>
-      <div class="card">
-        <div class="card-body">
-          {{ user_form.non_field_errors }}
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead class="thead-dark">
-                <th>Process/Module</th>
-                <th>Full Auth</th>
-                <th>View Only</th>
-                <th>Actions</th>
-              </thead>
-              <tbody>
-                {% for permission in permissions %}
-                <tr>
-                  <td>{{permission.name}}</td>
+    <div class="container-fluid">
+        <div class="col-md-12">
+            {%if not permissions%}
+            <a href="{%url 'manage_user_permissions_page' user_id%}">
+                <button class="btn btn-danger">Generate Initial Permissions</button>
+            </a>
+            {%endif%}
+            <div class="card">
+                <div class="card-body">
+                    {{ user_form.non_field_errors }}
+                    {%if permissions%}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <th>Process/Module</th>
+                            <th>Full Auth</th>
+                            <th>View Only</th>
+                            <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            {% for permission in permissions %}
+                            <tr>
+                                <td>{{permission.name}}</td>
 
-                  <td>
-                    {%if permission.full_auth%}
-                      <i class="large material-icons">check</i>
+                                <td>
+                                    {%if permission.full_auth%}
+                                    <i class="large material-icons">check</i>
+                                    {%else%}
+                                    <i class="large material-icons">clear</i>
+                                    {%endif%}
+                                </td>
+                                <td>
+                                    {%if permission.view_only%}
+                                    <i class="large material-icons">check</i>
+                                    {%else%}
+                                    <i class="large material-icons">clear</i>
+                                    {%endif%}
+                                </td>
+
+                                <td>
+                                    <a href="{%url 'edit_user_permission_page' permission.id%}">
+                                        <button>Edit</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                     {%else%}
-                      <i class="large material-icons">clear</i>
+                    <h3>No permissions available for the user</h3>
                     {%endif%}
-                  </td>
-                  <td>
-                    {%if permission.view_only%}
-                      <i class="large material-icons">check</i>
-                    {%else%}
-                      <i class="large material-icons">clear</i>
-                    {%endif%}
-                  </td>
-
-                  <td>
-                    <a href="{%url 'edit_user_permission_page' permission.id%}">
-                      <button>Edit</button></a>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Modal: modalAddNewEmployee -->
-    <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="overflow-y: auto !important">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <!--Header-->
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">User Form</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <!--Body-->
-          <div class="modal-body">
-            <form method="POST" action="#"> {%csrf_token%}
-              {% for field in user_form %}
-              <div class="form-group">
-                {{ field.errors }}
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.help_text %}
-              <p class="help">{{ field.help_text|safe }}</p>
-              {% endif %}
-              </div>
-              {% endfor %}
-              {% for field in soliton_user_form %}
-              <div class="form-group">
-                {{ field.errors }}
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.help_text %}
-              <p class="help">{{ field.help_text|safe }}</p>
-              {% endif %}
-              </div>
-              {% endfor %}
+        <!-- Modal: modalAddNewEmployee -->
+        <div class="modal fade" id="modal_add_new_employee" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">User Form</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+                        <form method="POST" action="#"> {%csrf_token%}
+                            {% for field in user_form %}
+                            <div class="form-group">
+                                {{ field.errors }}
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.help_text %}
+                                <p class="help">{{ field.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                            {% for field in soliton_user_form %}
+                            <div class="form-group">
+                                {{ field.errors }}
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.help_text %}
+                                <p class="help">{{ field.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
 
 
-          <!--Footer-->
-          <div class="modal-footer">
-            <button class="btn btn-outline-danger" type="reset">Close</button>
-            <button class="btn btn-danger" type="submit">Save</button>
-          </div>
-          </form>
+                            <!--Footer-->
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-danger" type="reset">Close</button>
+                                <button class="btn btn-danger" type="submit">Save</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Modal: modalAddNewEmployee -->
 
         </div>
-      </div>
     </div>
-    <!-- Modal: modalAddNewEmployee -->
-
-  </div>
-</div>
 </div>
 {%endblock content%}

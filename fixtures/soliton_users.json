@@ -1,0 +1,10 @@
+[
+  {
+    "model": "ems_auth.solitonuser",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "employee": 1
+    }
+  }
+]

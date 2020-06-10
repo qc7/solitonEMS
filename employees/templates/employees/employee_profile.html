@@ -1,8 +1,7 @@
 {% extends './base.html'%} {% load static %}
 {% block page_title %}
-<span>
-    <h1>{{employee.first_name}} {{employee.last_name}}</h1>
-</span> {% endblock %}
+{{employee.first_name}} {{employee.last_name}}
+{% endblock %}
 {% block content %}
 <div class="content">
     <div class="container-fluid">
@@ -12,9 +11,9 @@
                     <div class="card-avatar">
                         <a href="#pablo">
                             {% if employee.gender == "Male" %}
-                            <img class="img" src="{% static '/assets/img/faces/male_avatar.png' %}" />
+                            <img class="img" src="{% static '/assets/img/faces/male_avatar.png' %}"/>
                             {% else%}
-                            <img class="img" src="{% static '/assets/img/faces/female_avatar.jpg' %}" />
+                            <img class="img" src="{% static '/assets/img/faces/female_avatar.jpg' %}"/>
                             {% endif%}
                         </a>
                     </div>

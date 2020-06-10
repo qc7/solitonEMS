@@ -1,7 +1,10 @@
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.template.loader import get_template
+
+from django.core.mail import EmailMultiAlternatives
 
 from overtime.models import OvertimeApplication
+from overtime.selectors import get_hr_users, get_hod_users, get_cfo_users, get_ceo_users
+from SOLITONEMS.settings import BASE_DIR
 
 
 def approve_overtime_application_finally(id):
@@ -14,25 +17,30 @@ def approve_overtime_application_finally(id):
 
 def reject_finally(overtime_application):
     overtime_application.status = "Rejected"
-    overtime_application.save()
+    overtime_application = overtime_application.save()
     return overtime_application
 
 
 def supervisor_reject(overtime_application):
     overtime_application.supervisor_approval = "Rejected"
     overtime_application.save()
+    reject_finally(overtime_application)
     return overtime_application
 
 
 def supervisor_approve(overtime_application):
     overtime_application.supervisor_approval = "Approved"
     overtime_application.save()
+    approvers = get_hod_users(overtime_application.applicant)
+    send_overtime_application_mail(approvers, overtime_application)
     return overtime_application
 
 
 def hr_approve(overtime_application):
     overtime_application.HR_approval = "Approved"
     overtime_application.save()
+    approvers = get_cfo_users()
+    send_overtime_application_mail(approvers, overtime_application)
     return overtime_application
 
 
@@ -68,12 +76,16 @@ def hod_approve(overtime_application):
     # Get the overtime application
     overtime_application.HOD_approval = 'Approved'
     overtime_application.save()
+    approvers = get_hr_users()
+    send_overtime_application_mail(approvers, overtime_application)
     return overtime_application
 
 
 def cfo_approve(overtime_application):
     overtime_application.cfo_approval = 'Approved'
     overtime_application.save()
+    approvers = get_ceo_users()
+    send_overtime_application_mail(approvers, overtime_application)
     return overtime_application
 
 
@@ -82,6 +94,7 @@ def ceo_approve(overtime_application):
     overtime_application.ceo_approval = 'Approved'
     overtime_application.status = "Approved"
     overtime_application.save()
+
     return overtime_application
 
 
@@ -97,6 +110,7 @@ def amend_overtime_service(request):
 
 
 def reject_overtime_application_service(rejecter, overtime_application):
+
     if rejecter.is_supervisor:
         rejected_overtime_application = supervisor_reject(overtime_application)
 
@@ -114,6 +128,7 @@ def reject_overtime_application_service(rejecter, overtime_application):
     else:
         rejected_overtime_application = None
 
+    send_overtime_application_approval_mail(rejected_overtime_application)
     return rejected_overtime_application
 
 
@@ -134,6 +149,7 @@ def approve_overtime_application_service(approver, overtime_application):
 
     if approver.is_ceo:
         approved_overtime_application = ceo_approve(overtime_application)
+        send_overtime_application_approval_mail(overtime_application)
 
     return approved_overtime_application
 
@@ -196,3 +212,38 @@ def reject_overtime_plan_service(rejecter, overtime_plan):
         rejected_overtime_application = None
 
     return rejected_overtime_application
+
+
+def send_overtime_application_mail(approvers, overtime_application, domain=None):
+    approver_emails = []
+    for approver in approvers:
+        approver_emails.append(approver.email)
+
+    context = {
+        "applicant_name": overtime_application.applicant,
+        "server_url": domain
+    }
+
+    subject, from_email, to = 'New Overtime Applications', None, approver_emails,
+    html_content = get_template("email/overtime_approval_notification.html").render(context)
+    msg = EmailMultiAlternatives(subject, None, from_email, to)
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+
+def send_overtime_application_approval_mail(overtime_application, domain=None):
+    applicant = overtime_application.applicant
+    user = applicant.solitonuser.user
+
+    context = {
+        "applicant": applicant,
+        "overtime_application": overtime_application,
+        "server_url": domain
+    }
+
+    
+    subject, from_email, to = 'Overtime Application Approval', None, user,
+    html_content = get_template("email/overtime_approved_notification.html").render(context)
+    msg = EmailMultiAlternatives(subject, None, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()

@@ -1,43 +1,43 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Users</h1>
+Users
 {% endblock %}
 
 {% block content %}
 <div class="content">
-  <div class="container-fluid">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead class="thead-dark">
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Last Login</th>
-                <th>Actions</th>
-              </thead>
-              <tbody>
-                {% for user in users  %}
-                <tr>
-                 <td>{{user.id}}</td>
-                  <td>{{user.solitonuser.employee}}</td>
-                  <td>{{user.email}}</td>
-                  <td>{{user.last_login}}</td>
-                  <td><a href="{%url 'user_audit_trail' user.id%}">
-                    <button>View Audit Trail</button>
-                  </a></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{user.id}}</td>
+                                <td>{{user.solitonuser.employee}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.last_login}}</td>
+                                <td><a href="{%url 'user_audit_trail' user.id%}">
+                                    <button>View Audit Trail</button>
+                                </a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
+
     </div>
-
-
-  </div>
 </div>
 {%endblock content%}

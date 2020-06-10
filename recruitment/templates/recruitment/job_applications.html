@@ -3,9 +3,7 @@
 {% load static %}
 
 {%block page_title %}
-<span>
-    <h1 class="animated fadeInDown">{{job_advertisement.position}} Applications</h1>
-</span>
+{{job_advertisement.position}} Applications
 {%endblock%}
 
 {%block content%}
@@ -15,27 +13,29 @@
             <div class="card-body">
                 <h3>Applicants</h3>
                 {%if job_applications%}
-                <table class="table">
-                    <thead class="thead-dark">
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Actions</th>
-                    </thead>
-                    {%for job_application in job_applications%}
-                    <tr>
-                        <td>{{job_application.applicant}}</td>
-                        <td>{{job_application.applicant.solitonuser.user.email}}</td>
-                        <td>{{job_application.applicant.telephone_no}}</td>
-                        <td>
-                            <a href="/media/{{job_application.cv}}">
-                                <button>Download CV</button>
-                            </a>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Actions</th>
+                        </thead>
+                        {%for job_application in job_applications%}
+                        <tr>
+                            <td>{{job_application.applicant}}</td>
+                            <td>{{job_application.applicant.solitonuser.user.email}}</td>
+                            <td>{{job_application.applicant.telephone_no}}</td>
+                            <td>
+                                <a href="/media/{{job_application.cv}}">
+                                    <button>Download CV</button>
+                                </a>
 
-                        </td>
-                    </tr>
-                    {%endfor%}
-                </table>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
                 {%else%}
                 <h2>No job applications</h2>
                 {%endif%}

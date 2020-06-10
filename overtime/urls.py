@@ -23,7 +23,7 @@ urlpatterns = [
     path('create_overtime_plan/', views.create_overtime_plan, name="create_overtime_plan"),
     path('reject_overtime/<int:overtime_application_id>', views.reject_overtime_application,
          name="reject_overtime_application"),
-    path('approve_overtime/<int:overtime_plan_id>', views.approve_overtime_application,
+    path('approve_overtime/<int:overtime_application_id>', views.approve_overtime_application,
          name="approve_overtime_application"),
     path('reject_overtime_plan/<int:overtime_plan_id>', views.reject_overtime_plan,
          name="reject_overtime_plan"),

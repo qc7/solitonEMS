@@ -1,6 +1,6 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
-<h1>Videos</h1>
+Videos
 {% endblock %}
 
 {% block content %}
@@ -37,7 +37,7 @@
                             <th>File</th>
                             </thead>
                             <tbody>
-                            {% for resource in resources  %}
+                            {% for resource in resources %}
                             <tr>
                                 <td>
                                     {{resource.name}}
@@ -46,7 +46,9 @@
                                 <td>{{resource.file_format | title}}</td>
                                 <td>{{resource.year_published}}</td>
                                 <td>{{resource.description}}</td>
-                                <td><a href="/media/{{resource.file}}"><button>Open</button></a></td>
+                                <td><a href="/media/{{resource.file}}">
+                                    <button>Open</button>
+                                </a></td>
                             </tr>
                             {% endfor %}
                             </tbody>

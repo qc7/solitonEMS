@@ -100,7 +100,8 @@ def manage_user_permissions_page(request, id):
 
     context = {
         'admin': 'active',
-        'permissions': permissions
+        'permissions': permissions,
+        'user_id': id
     }
 
     return render(request, 'ems_admin/manage_user_permissions.html', context)

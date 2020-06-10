@@ -1,4 +1,5 @@
 $(document).ready(() => {
+    // Getting number of days for a given leave type
     $("#leave_type").change(() => {
         leave_type = document.querySelector('#leave_type').value;
 
@@ -15,15 +16,13 @@ $(document).ready(() => {
                     } else {
                         document.querySelector('#no_days').readOnly = true;
                     }
-                } else {
-                    alert(data.message);
-                }
-
+                } else {}
             },
 
         });
     });
 
+    // Getting Leave End date
     $("#st_date").change(() => {
         start_date = document.querySelector('#st_date').value;
         no_days = document.querySelector('#no_days').value;
@@ -37,7 +36,7 @@ $(document).ready(() => {
                 if (data.success) {
                     document.querySelector('#end_date').value = data.end_date;
                 } else {
-                    //alert(data.message);
+                    // alert(data.message);
                 }
 
             },
@@ -45,46 +44,68 @@ $(document).ready(() => {
         });
     });
 
-    // $('#types_table tbody').on('click', '.fa', () => {
-    //     var rows = $(this).closest("tr");
+    // Approving/rejecting Leave Application
+    $("#submit_leave_application").click(() => {
+        var selected = $("#select_action :selected").text();
+        application_id = document.querySelector('#application_id').value;
 
-    //     document.querySelector('#edit_type').value = rows.find('td:eq(1)').text();
-    //     document.querySelector('#edit_days').value = rows.find('td:eq(1)').text();
-    //     document.querySelector('#edit_desc').value = rows.find('td:eq(2)').text();
+        switch (selected) {
+            case "Approve":
+                var form_data = $("#leave_form").serialize();
 
-    //     var cc = rows.find('td:eq(1)').text();
-    //     console.log(cc);
-    //     alert(cc);
+                $.ajax({
+                    type: 'POST',
+                    url: configuration['leave']['approve_leave'],
+                    data: form_data,
+                    dataType: 'json',
+                    success: (data) => {
+                        window.location.href = configuration['leave']['leave_dashboard_page'];
+                    }
+                });
+                break;
+            case "Reject":
+                var form_data = $("#leave_form").serialize();
 
+                $.ajax({
+                    type: 'POST',
+                    url: configuration['leave']['reject_leave'],
+                    data: form_data,
+                    dataType: 'json',
+                    success: (data) => {
+                        window.location.href = configuration['leave']['leave_dashboard_page'];
+                    }
+                });
+                break;
+            default:
+        }
+    })
 
-    // });
+    // Editing Leave application
+    $("#edit_leave_btn").click(() => {
+        var form_data = $("#edit_leave_form").serialize();
+        $.ajax({
+            type: 'POST',
+            url: configuration['leave']['edit_leave_application'],
+            data: form_data,
+            dataType: 'json',
+            success: (data) => {
+                window.location.href = configuration['leave']['apply_leave_page'];
+            }
+        });
+    })
 
-    $('#types_table tbody').on('click', '.fa', () => {
+    // Deleting Leave application
+    $("#delete_leave_btn").click(() => {
+        // var form_data = $("#leave_form").serialize();
 
-        var tableData = $(this).children("td").map(() => {
-            return $(this).text();
-        }).get();
-
-        var cc = tableData[0];
-        console.log(cc);
-        alert(cc);
-
-
-    });
-
-    // $('.fa').click(() => {
-    //     var row = $(this).closest('td');
-
-    //     var col = row.parent().children().index(row);
-
-    //     var vv = row.find('.class').val();
-    // }); modal_edit_job
-
-    $("#modal_edit_job").on('show.bs.modal', () => {
-        var job_title = $(this).data('name');
-        alert(job_title);
-        $(".modal-body #title_name").val(job_title);
-    });
-
-
+        $.ajax({
+            type: 'POST',
+            url: configuration['leave']['delete_leave_application'],
+            data: form_data,
+            dataType: 'json',
+            success: (data) => {
+                window.location.href = configuration['leave']['apply_leave_page'];
+            }
+        });
+    })
 });

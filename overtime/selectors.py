@@ -1,7 +1,11 @@
+from django.contrib.auth import get_user_model
+
 from employees.models import Employee
 from employees.selectors import get_active_employees
 from organisation_details.models import Department
 from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
+
+User = get_user_model()
 
 
 def get_overtime_application(id):
@@ -54,7 +58,12 @@ def get_all_overtime_applications():
 
 def get_supervisor_pending_overtime_applications(supervisor):
     pending_applications = OvertimeApplication.objects.filter(supervisor_approval="Pending")
-    return pending_applications
+    supervisor_department = supervisor.department
+    supervisor_pending_applications = []
+    for pending_application in pending_applications:
+        if pending_application.applicant.department == supervisor_department:
+            supervisor_pending_applications.append(pending_application)
+    return supervisor_pending_applications
 
 
 def get_hr_pending_overtime_applications():
@@ -130,3 +139,42 @@ def get_pending_overtime_plans(approver):
         pending_overtime_plans = get_cfo_pending_overtime_plans()
 
     return pending_overtime_plans
+
+
+def get_supervisor_users(applicant):
+    department = applicant.department
+
+    all_supervisor_users = User.objects.filter(is_supervisor=True)
+    users = []
+    for supervisor_user in all_supervisor_users:
+        if supervisor_user.solitonuser.employee.department == department:
+            users.append(supervisor_user)
+
+    return users
+
+
+def get_hod_users(applicant):
+    department = applicant.department
+
+    all_hod_users = User.objects.filter(is_hod=True)
+    users = []
+    for hod_user in all_hod_users:
+        if hod_user.solitonuser.employee.department == department:
+            users.append(hod_user)
+
+    return users
+
+
+def get_hr_users():
+    all_hr_users = User.objects.filter(is_hr=True)
+    return all_hr_users
+
+
+def get_cfo_users():
+    all_cfo_users = User.objects.filter(is_cfo=True)
+    return all_cfo_users
+
+
+def get_ceo_users():
+    all_ceo_users = User.objects.filter(is_ceo=True)
+    return all_ceo_users
