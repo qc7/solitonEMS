@@ -48,20 +48,29 @@ Payroll Records
                         <th>Gross Pay</th>
                         <th>Basic Pay</th>
                         <th>Net Pay</th>
+                        <th>Actions</th>
                         </thead>
                         {%for payroll in payrolls%}
                         <tr>
                             <td>{{payroll.employee.id}}</td>
-                            <td><a href="{%url 'payslip_page' payroll.id%}"
-                                   style="color: inherit">{{payroll.employee.first_name}}
-                                {{payroll.employee.last_name}}</a></td>
+                            <td>{{payroll.employee}}</td>
                             <td>{{payroll.employee.currency}} {{payroll.total_nssf_contrib | intcomma}}</td>
                             <td>{{payroll.employee.currency}} {{ payroll.paye| intcomma}}</td>
                             <td>{{payroll.employee.currency}} {{payroll.gross_salary | intcomma}}</td>
                             <td>{{payroll.employee.currency}} {{payroll.employee.basic_salary | intcomma}}</td>
                             <td>{{payroll.employee.currency}} {{payroll.net_salary | intcomma }}</td>
+                            <td><a href="{%url 'payslip_page' payroll.id%}"
+                                   style="color: inherit"><button>View Payslip</button></a></td>
                         </tr>
                         {%endfor%}
+                        <tr>
+                            <td colspan="2">Total</td>
+                            <td>{{total_nssf_contribution | intcomma}}</td>
+                            <td>{{total_paye | intcomma}}</td>
+                            <td>{{total_gross_pay | intcomma}}</td>
+                            <td>{{total_basic_pay | intcomma}}</td>
+                            <td>{{total_net_pay | intcomma}}</td>
+                        </tr>
                     </table>
                 </div>
                 <a href="{%url 'payroll_download' payroll_record.id %}">

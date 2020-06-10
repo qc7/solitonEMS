@@ -6,5 +6,45 @@
       "user": 1,
       "employee": 1
     }
+  },
+  {
+    "model": "ems_auth.solitonuser",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "employee": 2
+    }
+  },
+  {
+    "model": "ems_auth.solitonuser",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "employee": 4
+    }
+  },
+  {
+    "model": "ems_auth.solitonuser",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "employee": 3
+    }
+  },
+  {
+    "model": "ems_auth.solitonuser",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "employee": 5
+    }
+  },
+  {
+    "model": "ems_auth.solitonuser",
+    "pk": 6,
+    "fields": {
+      "user": 6,
+      "employee": 6
+    }
   }
 ]
