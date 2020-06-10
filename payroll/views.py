@@ -6,15 +6,17 @@ from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseRedirect
 
+from employees.selectors import get_active_employees, get_employees_paid_in_usd, get_employees_paid_in_ugx
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import payroll_full_auth_required
 from ems_auth.models import SolitonUser
-from payroll.selectors import get_payroll_record_by_id
+from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips
 from payroll.services import create_payslip_list_service
+from settings.selectors import get_ugx_currency, get_usd_currency
 from .models import PayrollRecord, Payslip
 from django.urls import reverse
 from .simple_payslip import SimplePayslip
-from employees.models import Employee
+
 from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_total_paye, get_total_gross_pay, \
     get_total_basic_pay, \
     get_total_net_pay, render_to_pdf
@@ -67,24 +69,25 @@ def payroll_record_page(request, id):
     year = payroll_record.year
 
     # Get all the associated payslip objects
-    payslips = Payslip.objects.filter(payroll_record=payroll_record)
+    ugx_payslips = get_ugx_payslips(payroll_record)
+    usd_payslips = get_usd_payslips(payroll_record)
     # Get all employees
-    employees = Employee.objects.all()
-
-    # Get the notifications
-    user = request.user
+    employees = get_active_employees()
+    usd_employees = get_employees_paid_in_ugx()
+    ugx_employees = get_employees_paid_in_usd()
 
     context = {
         "payroll_page": "active",
         "month": month,
         "year": year,
-        "payrolls": payslips,
+        "ugx_payslips": ugx_payslips,
+        "usd_payslips": usd_payslips,
         "payroll_record": payroll_record,
-        "total_nssf_contribution": get_total_nssf(payslips),
-        "total_paye": get_total_paye(payslips),
-        "total_gross_pay": get_total_gross_pay(payslips),
-        "total_basic_pay": get_total_basic_pay(employees),
-        "total_net_pay": get_total_net_pay(payslips),
+        "total_nssf_contribution": get_total_nssf(ugx_payslips),
+        "total_paye": get_total_paye(ugx_payslips),
+        "total_gross_pay": get_total_gross_pay(ugx_payslips),
+        "total_basic_pay": get_total_basic_pay(ugx_employees),
+        "total_net_pay": get_total_net_pay(ugx_payslips),
     }
     return render(request, 'payroll/payroll_record.html', context)
 
