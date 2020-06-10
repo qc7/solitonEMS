@@ -1,0 +1,313 @@
+{% extends './base.html'%}
+{% load static %}
+{% load javascript_settings_tags %}
+
+{% block page_title %}Leave Application Details{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-profile">
+
+                    <div class="card-body">
+                        <!-- Status Flash Messages -->
+                        {% if messages %}
+                            {% for msg in messages%}
+                                <div class="alert alert-{{ msg.tags }} alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    {{ msg }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <!-- End Status Flash Messages -->
+
+                        <h3>LEAVE REQUEST BY: <b>{{leave_application.employee.first_name}} {{leave_application.employee.last_name}}</b></h3>
+
+                        <h4>Record Ref:	HR/FM/006 | Issue/Rev: 1/0</h4>
+                        <table class="table table-small">                        
+                            <form method="POST" id="leave_form" > 
+                                {% csrf_token %}
+                                <tr>
+                                    <td><strong></strong></td>
+                                    <td>
+                                        <input type="hidden" id="application_id" name="application_id" value="{{leave_application.id}}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Designation:</th>
+                                    <td>{{leave_application.employee.organisationdetail.position}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Department:</th>
+                                    <td>{{leave_application.employee.organisationdetail.department}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Date:</th>
+                                    <td>{{leave_application.apply_date}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Leave Type:</th>
+                                    <td>{{leave_application.leave_type}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Duration:</th>
+                                    <td>
+                                        {{leave_application.start_date}}
+                                        to {{leave_application.end_date}} <br>
+                                        ({{leave_application.no_of_days}} Days)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Remarks:</th>
+                                    <td>{{leave_application.remarks}}</td>
+                                </tr>
+                                
+                                {% if role == "is_supervisor"%}
+                                    
+                                {% elif role == "is_hod" %}
+                                    <tr>
+                                        <th scope="row">Supervisor:</th>
+                                        <td>{{leave_application.supervisor}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Supervisor's<br>Approval:</th>
+                                        <td>{{leave_application.supervisor_status}}</td>
+                                    </tr>                                    
+                                    <tr>
+                                        <th scope="row">Supervisor's <br>Comment:</th>
+                                        <td>{{leave_application.supervisor_comment}}</td>
+                                    </tr>
+
+                                {% elif role == "is_hr" %}
+                                    <tr>
+                                        <th scope="row">Supervisor:</th>
+                                        <td>{{leave_application.supervisor}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Supervisor's<br>Approval:</th>
+                                        <td>{{leave_application.supervisor_status}}</td>
+                                    </tr>                                    
+                                    <tr>
+                                        <th scope="row">Supervisor's <br>Comment:</th>
+                                        <td>{{leave_application.supervisor_comment}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">HOD's<br>Approval:</th>
+                                        <td>{{leave_application.hod}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">HOD:</th>
+                                        <td>{{leave_application.hod_status}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">HOD's <br>Comment:</th>
+                                        <td>{{leave_application.hod_comment}}</td>
+                                    </tr>
+                                {% else %}
+                                    {% if leave_application.supervisor%}
+                                        <tr>
+                                            <th scope="row">Supervisor:</th>
+                                            <td>{{leave_application.supervisor}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Supervisor's<br>Approval:</th>
+                                            <td>{{leave_application.supervisor_status}}</td>
+                                        </tr>                                    
+                                        <tr>
+                                            <th scope="row">Supervisor's <br>Comment:</th>
+                                            <td>{{leave_application.supervisor_comment}}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if leave_application.hod%}
+                                        <tr>
+                                            <th scope="row">HOD's<br>Approval:</th>
+                                            <td>{{leave_application.hod}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">HOD:</th>
+                                            <td>{{leave_application.hod_status}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">HOD's <br>Comment:</th>
+                                            <td>{{leave_application.hod_comment}}</td>
+                                        </tr>
+                                    {% endif %}
+
+                                    {% if leave_application.hr%}
+                                        <tr>
+                                            <th scope="row">HR:</th>
+                                            <td>{{leave_application.hr}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">HR's<br>Approval:</th>
+                                            <td>{{leave_application.hr_status}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">HR's <br>Comment:</th>
+                                            <td>{{leave_application.hr_comment}}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endif %} 
+
+                                {% if role == "user"%}   
+                                    {% if leave_application.overall_status != "Approved"%}
+                                        <tr>
+                                            <td colspan=2>
+                                                <button class="btn btn-primary" type="button" id="edit_btn"
+                                                data-toggle="modal" data-target="#modal_edit_leave">
+                                                    Edit
+                                                </button>
+                                                <button class="btn btn-danger" type="button" id="delete_btn"
+                                                data-toggle="modal" data-target="#modal_delete_leave">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% else %}
+                                    <tr>
+                                        <th>Comment:</th>
+                                        <td>
+                                            <div class="form-group green-border-focus">
+                                                <label for="comment"></label>
+                                                <textarea class="md-textarea form-control" name="comment" id="comment">                                                
+                                                </textarea>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Action:</th>
+                                        <td>                                            
+                                            <div class="form-group ">
+                                                <select id="select_action" class="form-control">                             
+                                                    <option>--- Choose Action ---</option>                                                
+                                                    <option value="Approve">Approve</option>
+                                                    <option value="Reject">Reject</option>                                                                                     
+                                                </select>
+                                            </div>
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <td colspan=2>
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" id="submit_leave_application">
+                                                Submit
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </form>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Edit Leave application -->
+<div class="modal fade" id="modal_edit_leave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Edit Leave Application</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <form method="POST" id="edit_leave_form"> 
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="hidden" id="application_id" name="application_id" value="{{leave_application.id}}">
+                        <label for="">Leave Type:</label>
+                        <select class="form-control" name="ltype" id="leave_type" required>                             
+                            <option selected>{{leave_application.leave_type }}</option>
+                            {% for ty in l_types %}
+                            <option value="{{ty.id }}">{{ty.leave_type }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="No. of Days" 
+                        id = "no_days" name="no_days" value="{{leave_application.no_of_days}}" readOnly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <input type="date" class="form-control" placeholder="From" name="s_date" 
+                        id="st_date" value="{{leave_application.start_date}}" required >
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <input type="date" class="form-control" placeholder="To" id="end_date" 
+                        name="e_date" value="{{leave_application.end_date}}" required >
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Additional Note"
+                        name="remark" value="{{leave_application.remarks}}">
+                    </div>
+
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" type="button" id="edit_leave_btn">Update</button>
+                        <button class="btn btn-outline-danger" class="close" data-dismiss="modal" aria-label="Close">
+                            Close
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Delete Leave application -->
+<div class="modal fade" id="modal_delete_leave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" style="overflow-y: auto !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Edit Leave Application</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <form method="POST" id="confirm_delete_form"> 
+                    {% csrf_token %}                    
+                    <div class="form-group">
+                        <p>Are you sure you want to delete this request....!?</p>
+                    </div>
+
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" type="button" id="delete_leave_btn">Comfirm</button>
+                        <button class="btn btn-outline-danger" class="close" data-dismiss="modal" aria-label="Close">
+                            Close
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/js.js' %}"></script>
+<script type="text/javascript">{% javascript_settings %}</script>
+{%endblock%}

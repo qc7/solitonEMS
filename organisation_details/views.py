@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 # Create your views here.
 from employees.models import Employee
@@ -35,7 +36,6 @@ def manage_teams_page(request):
         "teams": teams,
         "employees": get_active_employees(),
         "departments": get_all_departments()
-
     }
 
     return render(request, "organisation_details/manage_teams.html", context)
@@ -151,6 +151,7 @@ def edit_department_page(request, department_id):
     }
     return render(request, 'organisation_details/edit_department.html', context)
 
+        # return redirect(reverse('teams_page', kwargs={"id": team.department.id}))
 
 @log_activity
 def delete_department(request, department_id):

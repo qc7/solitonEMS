@@ -12,13 +12,6 @@ class Leave_Types(models.Model):
     def __str__(self):
         return self.leave_type
 
-
-class Holidays(models.Model):
-    holiday_date = models.DateField()
-    holiday_name = models.CharField(max_length=50)
-    duration = models.CharField(max_length=15)
-
-
 class LeaveApplication(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="Employees")
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
@@ -31,14 +24,17 @@ class LeaveApplication(models.Model):
     supervisor = models.ForeignKey(Employee, on_delete=models.CASCADE, \
                                    related_name="Supervisor", blank=True, null=True)
     supervisor_status = models.CharField(max_length=15, default="Pending")
+    supervisor_comment = models.TextField(blank=True, null=True, default="None")
     hod = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="hod", \
                             blank=True, null=True)
     hod_status = models.CharField(max_length=15, default="Pending")
+    hod_comment = models.TextField(blank=True, null=True, default="None")
     hr = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="hr", \
                            blank=True, null=True)
     hr_status = models.CharField(max_length=15, default="Pending")
+    hr_comment = models.TextField(blank=True, null=True,default="None")
     overall_status = models.CharField(max_length=10, default="Pending")
-    remarks = models.TextField()
+    remarks = models.TextField(default="None")
     balance = models.IntegerField(default=0)
 
     def __str__(self):
