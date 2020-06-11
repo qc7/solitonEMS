@@ -23,8 +23,6 @@ from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_
     get_total_net_pay, render_to_pdf
 
 
-
-
 @payroll_full_auth_required
 @log_activity
 def payroll_page(request):
