@@ -23,7 +23,6 @@ def reject_finally(overtime_application):
 def supervisor_reject(overtime_application):
     overtime_application.supervisor_approval = "Rejected"
     overtime_application.save()
-    print(overtime_application)
     reject_finally(overtime_application)
     return overtime_application
 
@@ -240,6 +239,7 @@ def send_overtime_application_approval_mail(overtime_application, domain=None):
         "server_url": domain
     }
 
+    
     subject, from_email, to = 'Overtime Application Approval', None, user,
     html_content = get_template("email/overtime_approved_notification.html").render(context)
     msg = EmailMultiAlternatives(subject, None, from_email, [to])

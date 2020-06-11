@@ -1,0 +1,164 @@
+{% extends './base.html' %}
+{% block page_title %}
+<h1>Job Titles</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <!-- Button trigger modal-->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_job">
+      Add Job Title +
+    </button>
+
+    <div class="col-md-12">
+
+
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="thead-dark">
+              <th>ID</th>
+              <th>Title</th>
+              <th>Positions</th>
+              <th>Type</th>
+              <th>Currency</th>
+              <th colspan=2>#</th>
+              </thead>
+              <tbody>
+              {% for position in positions %}
+              <tr>
+                <td>{{ position.id }}</td>
+                <td><a href="#" style="color: inherit">{{ position.name }}</a></td>
+                <td>{{ position.number_of_slots }}</td>
+                <td>{{ position.type }}</td>
+                <td>{{ position.currency }}</td>
+                <td>
+                  <a href="v?PageID=job_titles" data-toggle="modal"
+                  data-name="position.name" data-target="#modal_edit_job" style="color:inherit">
+                     {% comment %} {% url 'edit_job_title_page' position.id %} {% endcomment %}
+                    <i class="fa fa-edit">Edit</i></a>|
+                  <a href="{% url 'delete_job_title' position.id %}"
+                     style="color: inherit" ... onclick="return confirm('Are you sure you want to delete @Type?')">
+                     <i class="fa fa-trash">Delete</i>
+                  </a></td>
+              </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- Modal: modalAddNewHoliday -->
+    <div class="modal fade" id="modal_add_new_job" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Add Job Title</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div class="modal-body">
+            <form method="POST" action="{% url 'add_new_title' %}"> {% csrf_token %}
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Job Title"
+                       name="job_title" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control"  placeholder="No.of Positions"
+                       name="positions" required>
+              </div>
+
+              <div class="form-group">
+                <label>Type</label>
+                <select class="form-control" name="type">
+                  <option>Full Time</option>
+                  <option>Internship</option>
+                  <option>Private Contractor</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control"  placeholder="Job Salary"
+                       name="salary" required>
+              </div>
+
+              <div class="form-group">
+                <label>Currency</label>
+                <select class="form-control" name="currency">
+                  {%for currency in currencies%}
+                  <option value={{currency.id}}>{{currency.code}}</option>
+                  {%endfor%}
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-control" name="description"></textarea>
+
+              </div>
+
+
+              <!--Footer-->
+              <div class="modal-footer">
+                <button class="btn btn-danger" type="submit">Save</button>
+                <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: modal_edit_job -->
+
+    <div class="modal fade" id="modal_edit_job" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true" style="overflow-y: auto !important">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Edit Job Title</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div class="modal-body">
+            <form method="POST" action="{% url 'edit_job_title' 1 %}"> {% csrf_token %}
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Job Title"
+                       name="job_title" id="job_title"  required>
+              </div>
+              <div class="form-group">
+                <input type="number" class="form-control"  placeholder="No. Positions"
+                       name="positions" value="{{ job.positions }}" required>
+              </div>
+
+              <!--Footer-->
+              <div class="modal-footer">
+                <button class="btn btn-danger" type="submit">Save</button>
+                <button class="btn btn-outline-danger" data-dismiss="modal" type="reset">Close</button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+      <!-- Modal: modal_edit_job -->
+    </div>
+  </div>
+</div>
+  {% endblock content %}

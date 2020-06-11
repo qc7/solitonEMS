@@ -1,0 +1,44 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+<h1>Edit Department</h1>
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <form method="post" action="{% url 'edit_department' deps.id %}">
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input class="form-control" type="text" name="name" value={{deps.name}} required/>
+                    </div>
+                    <div class="form-group">
+                        <label>Head</label>
+                        <select class="form-control" id="hod" name="hod" required> 
+                            <option value={{deps.hod.id}}>{{deps.hod}}</option>                 
+                            {% for emp in employee %}
+                                <option value={{emp.id}}>{{emp.first_name }} {{emp.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" name="status" required> 
+                            <option>{{deps.status}}</option>
+                            {% if deps.status == 'Active'%}
+                                <option>In Active</option>
+                            {%else%}
+                                <option>Active</option>
+                            {% endif %}
+                    </div>
+                    <input type="submit" value="submit" class="btn btn-danger"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
