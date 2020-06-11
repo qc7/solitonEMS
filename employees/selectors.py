@@ -10,6 +10,10 @@ def get_active_employees():
     return Employee.objects.filter(status='Active')
 
 
+def get_passive_employees():
+    return Employee.objects.filter(status='Suspended')
+
+
 def get_employees_paid_in_ugx():
     ugx_currency = get_ugx_currency()
     return Employee.objects.filter(status="Active", currency=ugx_currency)
