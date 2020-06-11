@@ -71,7 +71,7 @@ class SimplePayslip:
         self.gross_salary = self.sum_all_income(employee)
         self.employee_nssf = calculate_employee_nssf_contribution(self.gross_salary)
         self.employer_nssf = calculate_employer_nssf_contribution(self.gross_salary)
-        self.currency_cost = int(self.employee.currency.cost)
+        self.currency_cost = float(self.employee.currency.cost)
         self.paye = calculate_paye(self.gross_salary, self.currency_cost)
         self.sacco_deduction_amount = get_sacco_deduction_amount(employee)
         self.damage_deduction_amount = get_damage_deduction_amount(employee)
