@@ -41,4 +41,17 @@ class Payslip(models.Model):
     def total_statutory(self):
         return self.total_nssf_contrib + self.paye
 
+    @property
+    def paye_ugx(self):
+        paye = self.paye
+        currency = float(self.currency.cost)
+        return paye * currency
+
+
+    @property
+    def nssf_ugx(self):
+        nssf = self.total_nssf_contrib
+        currency = float(self.currency.cost)
+        return nssf * currency
+
 

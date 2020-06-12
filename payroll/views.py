@@ -12,7 +12,8 @@ from ems_auth.decorators import payroll_full_auth_required
 from ems_auth.models import SolitonUser
 from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips
 from payroll.services import create_payslip_list_service
-from settings.selectors import get_ugx_currency, get_usd_currency
+from settings.selectors import get_usd_currency
+
 from .models import PayrollRecord, Payslip
 from django.urls import reverse
 from .simple_payslip import SimplePayslip
@@ -72,9 +73,7 @@ def payroll_record_page(request, id):
     ugx_payslips = get_ugx_payslips(payroll_record)
     usd_payslips = get_usd_payslips(payroll_record)
     # Get all employees
-    employees = get_active_employees()
-    usd_employees = get_employees_paid_in_ugx()
-    ugx_employees = get_employees_paid_in_usd()
+    ugx_employees = get_employees_paid_in_ugx()
 
     context = {
         "payroll_page": "active",
@@ -90,6 +89,39 @@ def payroll_record_page(request, id):
         "total_net_pay": get_total_net_pay(ugx_payslips),
     }
     return render(request, 'payroll/payroll_record.html', context)
+
+
+@payroll_full_auth_required
+@log_activity
+def payroll_record_page_usd(request, id):
+    # Get the payroll record
+    payroll_record = PayrollRecord.objects.get(pk=id)
+    month = payroll_record.month
+    year = payroll_record.year
+    # Get all the associated payslip objects
+    usd_currency = get_usd_currency()
+    usd_currency_cost = float(usd_currency.cost)
+    usd_payslips = get_usd_payslips(payroll_record)
+    # Get all employees
+    usd_employees = get_employees_paid_in_usd()
+    total_paye = get_total_paye(usd_payslips)
+    total_nssf_contribution = get_total_nssf(usd_payslips)
+    context = {
+        "payroll_page": "active",
+        "month": month,
+        "year": year,
+        "usd_payslips": usd_payslips,
+        "payroll_record": payroll_record,
+        "total_nssf_contribution": total_nssf_contribution,
+        "total_paye": total_paye,
+        "total_gross_pay": get_total_gross_pay(usd_payslips),
+        "total_basic_pay": get_total_basic_pay(usd_employees),
+        "total_net_pay": get_total_net_pay(usd_payslips),
+        "total_paye_ugx": total_paye * usd_currency_cost,
+        "total_nssf_contribution_ugx": total_nssf_contribution * usd_currency_cost,
+
+    }
+    return render(request, 'payroll/payroll_record_usd.html', context)
 
 
 @log_activity
@@ -406,11 +438,11 @@ def add_overtime(request):
 @log_activity
 def payroll_download(request, id):
     # Get the payroll record
-    payroll_record = PayrollRecord.objects.get(pk=id)
+    payroll_record = get_payroll_record_by_id(id)
     month = payroll_record.month
     year = payroll_record.year
     # Get all the associated Payroll objects
-    payrolls = Payslip.objects.filter(payroll_record=payroll_record)
+    payrolls = get_ugx_payslips(payroll_record)
     response = HttpResponse(content_type='text/csv')
     # Name the csv file
     filename = "payroll_" + month + "_" + year + ".csv"
@@ -429,6 +461,39 @@ def payroll_download(request, id):
             [name, payroll.employee_nssf, payroll.employer_nssf, payroll.paye, payroll.bonus, payroll.sacco_deduction,
              payroll.damage_deduction, payroll.employee.basic_salary, 150000, payroll.overtime, payroll.gross_salary,
              payroll.net_salary, ])
+
+    # Return the response
+    return response
+
+
+@payroll_full_auth_required
+@log_activity
+def payroll_download_usd(request, id):
+    # Get the payroll record
+    payroll_record = PayrollRecord.objects.get(pk=id)
+    month = payroll_record.month
+    year = payroll_record.year
+    # Get all the associated Payroll objects
+    payrolls = get_usd_payslips(payroll_record)
+    response = HttpResponse(content_type='text/csv')
+    # Name the csv file
+    filename = "payroll_" + month + "_" + year + ".csv"
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    writer = csv.writer(response, delimiter=',')
+    # Writing the first row of the csv
+    heading_text = "Payroll for " + month + " " + year + "(USD)"
+    writer.writerow([heading_text.upper()])
+    writer.writerow(
+        ['Name', 'Employee NSSF Contribution', 'Employer NSSF contribution', 'PAYE', 'Bonus', 'Sacco Deduction',
+         'Damage Deduction', 'Basic Salary', 'Lunch Allowance', 'Overtime', 'Gross Salary', 'Net Salary', 'PAYE(UGX)',
+         'Total NSSF Contribution(UGX)'])
+    # Writing other rows
+    for payroll in payrolls:
+        name = payroll.employee.first_name + " " + payroll.employee.last_name
+        writer.writerow(
+            [name, payroll.employee_nssf, payroll.employer_nssf, payroll.paye, payroll.bonus, payroll.sacco_deduction,
+             payroll.damage_deduction, payroll.employee.basic_salary, 150000, payroll.overtime, payroll.gross_salary,
+             payroll.net_salary, payroll.paye_ugx, payroll.nssf_ugx])
 
     # Return the response
     return response
