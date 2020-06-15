@@ -187,7 +187,7 @@ def your_payslip_page(request):
     try:
         payroll_record = PayrollRecord.objects.get(year=year, month=month)
         payslip = Payslip.objects.get(payroll_record=payroll_record, employee=employee)
-    except PayrollRecord.DoesNotExist:
+    except (PayrollRecord.DoesNotExist, Payslip.DoesNotExist) as e:
         messages.error(request, 'The payroll record for that period has not been generated.')
         return HttpResponseRedirect(reverse(view_payslip_page))
 
