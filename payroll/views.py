@@ -10,7 +10,7 @@ from employees.selectors import  get_employees_paid_in_usd, get_employees_paid_i
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import payroll_full_auth_required
 from ems_auth.models import SolitonUser
-from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips,\
+from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips, \
     get_payslips
 from payroll.services import create_payslip_list_service
 from settings.selectors import get_usd_currency
@@ -187,9 +187,8 @@ def your_payslip_page(request):
     try:
         payroll_record = PayrollRecord.objects.get(year=year, month=month)
         payslip = Payslip.objects.get(payroll_record=payroll_record, employee=employee)
-
-    except:
-        messages.error(request, 'The payroll for that period has not been generated.')
+    except PayrollRecord.DoesNotExist:
+        messages.error(request, 'The payroll record for that period has not been generated.')
         return HttpResponseRedirect(reverse(view_payslip_page))
 
     context = {
