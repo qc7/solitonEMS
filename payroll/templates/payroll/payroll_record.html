@@ -28,7 +28,11 @@ Payroll Records (UGX)
         <div class="card  animated fadeInUp">
             <div class="period card-header">
                 <h3>{{month}} - {{year}}</h3>
-                <a href="{%url 'payroll_record_page_usd' payroll_record.id%}"><button class="btn btn-danger">Payroll Records(USD)</button></a>
+                {%if payslips%}
+                <a href="{%url 'payroll_record_page_usd' payroll_record.id%}">
+                    <button class="btn btn-danger">Payroll Records(USD)</button>
+                </a>
+                {%endif%}
             </div>
             <div class="card-body">
                 {%if not ugx_payslips%}

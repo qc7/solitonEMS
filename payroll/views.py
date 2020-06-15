@@ -10,7 +10,7 @@ from employees.selectors import get_active_employees, get_employees_paid_in_usd,
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import payroll_full_auth_required
 from ems_auth.models import SolitonUser
-from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips
+from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips, get_all_payslips
 from payroll.services import create_payslip_list_service
 from settings.selectors import get_usd_currency
 
@@ -70,6 +70,7 @@ def payroll_record_page(request, id):
     year = payroll_record.year
 
     # Get all the associated payslip objects
+    payslips = get_all_payslips()
     ugx_payslips = get_ugx_payslips(payroll_record)
     usd_payslips = get_usd_payslips(payroll_record)
     # Get all employees
@@ -79,6 +80,7 @@ def payroll_record_page(request, id):
         "payroll_page": "active",
         "month": month,
         "year": year,
+        "payslips": payslips,
         "ugx_payslips": ugx_payslips,
         "usd_payslips": usd_payslips,
         "payroll_record": payroll_record,
