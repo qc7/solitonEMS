@@ -35,7 +35,7 @@ Payroll Records (UGX)
                 {%endif%}
             </div>
             <div class="card-body">
-                {%if not ugx_payslips%}
+                {%if not payslips%}
                 <a href="{%url 'generate_payroll' payroll_record.id %}">
                     <button class="btn btn-danger">Generate Initial
                         Payroll
