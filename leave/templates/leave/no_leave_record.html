@@ -1,0 +1,23 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+Leave Record Required
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                <center>
+                    <h1>423</h1>
+                    <p>423 Locked</p>
+                    <h2>You Do Not have a Leave Record for this Year, Contact the HR for further assistance </h2>
+                    {% comment %} <a class="btn btn-primary" href="{% url 'apply_leave_page' %}"> Back </a> {% endcomment %}
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

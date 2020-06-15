@@ -30,6 +30,7 @@ import csv
 
 # dashboard
 from .selectors import get_employee, get_active_employees
+from notification.selectors import get_user_notifications
 
 
 @ems_login_required
@@ -40,10 +41,15 @@ def dashboard_page(request):
     user = request.user
     try:
         number_of_employees = Employee.objects.all().count()
+        notifications = get_user_notifications(user)
+        number_of_notifications = notifications.count()
+
         context = {
             "user": user,
             "dashboard_page": "active",
             "number_of_employees": number_of_employees,
+            "notifications": notifications,
+            "number_of_notifications": number_of_notifications,
         }
 
         return render(request, 'employees/dashboard.html', context)

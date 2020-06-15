@@ -3,11 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.http import JsonResponse
-from django.forms import model_to_dict
 import json
-
 from django.contrib.auth.decorators import login_required
-
 import datetime
 from calendar import HTMLCalendar
 from collections import namedtuple
@@ -24,33 +21,21 @@ from .models import (
     Leave_Records
 )
 from leave.services import send_leave_application_email,send_leave_response_email
-from leave.selectors import get_supervisor_users, get_hod_users, get_hr_users
+from leave.selectors import (
+    get_leave_type,
+    get_supervisor_users, 
+    get_hod_users, 
+    get_hr_users,
+    get_employee_leave_applications,
+    get_leave_record
+)
+from leave.decorators import leave_record_required
 
 from holidays.models import Holiday
-
-
-def get_current_user(request, need):
-    user = request.user  # getting the current logged in User
-
-    cur_user = f'{user.solitonuser.employee.first_name} {user.solitonuser.employee.last_name}'
-    # cur_role = user.solitonuser.soliton_role.name
-    user_department = user.solitonuser.employee.organisationdetail.department.id
-    user_team = user.solitonuser.employee.organisationdetail.team.id
-    cur_id = user.solitonuser.employee.id
-    gender = user.solitonuser.employee.gender
-
-    if need == "name":
-        return cur_user
-    elif need == "dept":
-        return user_department
-    elif need == "team":
-        return user_team
-    elif need == "id":
-        return cur_id
-    elif need == "gender":
-        return gender
-    else:
-        return 0
+from ems_admin.decorators import log_activity
+from employees.selectors import get_employee
+from organisation_details.selectors import get_organisationdetail
+from notification.services import create_notification
 
 
 @login_required
@@ -60,15 +45,15 @@ def leave_dashboard_page(request):
     user = request.user
 
     if user.is_supervisor:
-        applications = LeaveApplication.objects.filter(supervisor_status="Pending",\
-            team=get_current_user(request,"team"))
+        applications = LeaveApplication.objects.filter(supervisor_status="Pending",
+            team = user.solitonuser.employee.organisationdetail.team)
         role = "is_supervisor"
         
     elif user.is_hod:     
-        applications = LeaveApplication.objects.filter(hod_status="Pending", \
-                                                       supervisor_status="Approved",
-                                                       department=get_current_user(request, "dept")) \
-            .order_by('apply_date')
+        applications = LeaveApplication.objects.filter(hod_status="Pending", 
+                        supervisor_status="Approved",
+                        department=user.solitonuser.employee.organisationdetail.department) \
+                        .order_by('apply_date')
         role = "is_hod"
 
     elif user.is_hr:
@@ -180,6 +165,7 @@ def delete_leave_type(request, id):
     return redirect('leave_types_page')
 
 @organisationdetail_required
+@leave_record_required
 @login_required
 def apply_leave_page(request):    
     employee = request.user.solitonuser.employee
@@ -193,13 +179,20 @@ def apply_leave_page(request):
         
     context = {
         "leave_page": "active",
-        "apps": LeaveApplication.objects.filter(employee=get_current_user(request, "id")),
+        "apps": get_employee_leave_applications(employee=employee),
         "l_types": Leave_Types.objects.all(),
         "l_balance": leave_balance,
         "gender": request.user.solitonuser.employee.gender,
         "role": "user"
     }
     return render(request, "leave/leave.html", context)
+
+@log_activity
+def no_leave_record_page(request):
+    context = {
+        "no_leave_record_page": "active"
+    }
+    return render(request, 'leave/no_leave_record.html', context)
 
 
 @login_required
@@ -208,34 +201,35 @@ def apply_leave(request):
 
         user = request.user  
         employee = user.solitonuser.employee
-        department = Department.objects.get(pk=employee.organisationdetail.department.id)
-        team = Team.objects.get(pk=employee.organisationdetail.team.id)
+        organisationdetail = get_organisationdetail(user)
+        department = organisationdetail.department
+        team = organisationdetail.team
 
-        leave_record = Leave_Records.objects. \
-            get(employee=employee, leave_year=datetime.date.today().year)
+        leave_record = get_leave_record(employee)
+        leave_type = get_leave_type(request.POST["ltype"])
 
-        l_type = Leave_Types.objects.get(pk=request.POST["ltype"])
+        start_date = request.POST["s_date"]
+        end_date = request.POST["e_date"]
 
-        s_date = request.POST["s_date"]
-        e_date = request.POST["e_date"]
+        days_applied = int(request.POST["no_days"]) 
+        leave_type_days = leave_type.leave_days
 
-        n_days = int(request.POST["no_days"]) 
-        l_days = l_type.leave_days
+        curr_balance = 0
 
-        if n_days <= l_days:
+        if days_applied <= leave_type_days:
             new_balance = 0
-            if l_type.leave_type == "Annual":
+            if leave_type.leave_type == "Annual":
                 curr_balance = leave_record.balance
-                new_balance = curr_balance - n_days
+                new_balance = curr_balance - days_applied
 
-            if n_days <= new_balance:
+            if new_balance >= 0:
                 if user.is_supervisor:                    
                     leave_application = LeaveApplication(
                                 employee=employee, 
-                                leave_type=l_type, 
-                                start_date=s_date, 
-                                end_date=e_date, 
-                                no_of_days=n_days,
+                                leave_type=leave_type, 
+                                start_date=start_date, 
+                                end_date=end_date, 
+                                no_of_days=days_applied,
                                 balance=curr_balance, 
                                 department=department,
                                 team=team,
@@ -247,13 +241,16 @@ def apply_leave(request):
 
                     approvers = get_hod_users(employee)
                     send_leave_application_email(approvers, leave_application)
+
+                    create_notification("Leave", f"New Leave Request from {employee.first_name}", approvers)
+
                 elif user.is_hod:
                     leave_application = LeaveApplication(
                                 employee=employee, 
-                                leave_type=l_type, 
-                                start_date=s_date, 
-                                end_date=e_date, 
-                                no_of_days=n_days,
+                                leave_type=leave_type, 
+                                start_date=start_date, 
+                                end_date=end_date, 
+                                no_of_days=days_applied,
                                 balance=curr_balance, 
                                 department=department,
                                 team=team,
@@ -266,13 +263,15 @@ def apply_leave(request):
 
                     approvers = get_hr_users()
                     send_leave_application_email(approvers, leave_application)
+                    
+                    create_notification("Leave", f"New Leave Request from {employee.first_name}", approvers)
                 else:
                     leave_application = LeaveApplication(
                                 employee=employee, 
-                                leave_type=l_type, 
-                                start_date=s_date, 
-                                end_date=e_date, 
-                                no_of_days=n_days,
+                                leave_type=leave_type, 
+                                start_date=start_date, 
+                                end_date=end_date, 
+                                no_of_days=days_applied,
                                 balance=curr_balance, 
                                 department=department,
                                 team=team
@@ -282,18 +281,20 @@ def apply_leave(request):
 
                     approvers = get_supervisor_users(employee)
                     send_leave_application_email(approvers, leave_application)
+                    
+                    create_notification("Leave", f"New Leave Request from {employee.first_name}", approvers)
                 
                 messages.success(request, 'Leave Request Sent Successfully')
 
                 return redirect('apply_leave_page')
 
             else:
-                messages.warning(request, f'You have insufficient {l_type} leave Balance {n_days}')                
+                messages.warning(request, f'You have insufficient {leave_type} leave Balance {curr_balance}')                
                 return redirect('apply_leave_page')
 
         else:
-            messages.warning(request, f'You cannot Request({n_days}) for more than the\
-                {l_type.leave_type} leave days ({l_type.leave_days})')
+            messages.warning(request, f'You cannot Request({days_applied}) for more than the\
+                {leave_type.leave_type} leave days ({leave_type.leave_days})')
             return render(request, "leave/leave.html")
 
 @login_required

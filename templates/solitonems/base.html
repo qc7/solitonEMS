@@ -216,9 +216,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">notifications</i>
                                 {%if notifications%}
-                                <span class="notification">
-                    {{number_of_notifications}}
-                  </span>
+                                  <span class="notification">{{number_of_notifications}}</span>
                                 {%endif%}
                                 <p class="d-lg-none d-md-block">
                                     Some Actions
@@ -226,13 +224,14 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 
-                                {%for notification in notifications%}
-                                <a class="dropdown-item"
-                                   href="{%url 'notifications_page'%}">{{notification.message}}</a>
+                              {%for notification in notifications%}
+                                <a class="dropdown-item" 
+                                href="{% url 'notifications_page' notification.id %}">
+                                  {{notification.message}}</a>
                                 {%endfor%}
 
                                 {%if not notifications%}
-                                <a class="dropdown-item">No notifications yet</a>
+                                  <a class="dropdown-item">No notifications yet</a>
                                 {%endif%}
                             </div>
                         </li>
