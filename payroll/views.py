@@ -6,11 +6,12 @@ from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseRedirect
 
-from employees.selectors import get_active_employees, get_employees_paid_in_usd, get_employees_paid_in_ugx
+from employees.selectors import  get_employees_paid_in_usd, get_employees_paid_in_ugx
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import payroll_full_auth_required
 from ems_auth.models import SolitonUser
-from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips, get_all_payslips
+from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips,\
+    get_payslips
 from payroll.services import create_payslip_list_service
 from settings.selectors import get_usd_currency
 
@@ -70,7 +71,7 @@ def payroll_record_page(request, id):
     year = payroll_record.year
 
     # Get all the associated payslip objects
-    payslips = get_all_payslips()
+    payslips = get_payslips(payroll_record=payroll_record)
     ugx_payslips = get_ugx_payslips(payroll_record)
     usd_payslips = get_usd_payslips(payroll_record)
     # Get all employees
@@ -146,8 +147,6 @@ def edit_period_page(request, id):
 def payslip_page(request, id):
     # Get the payroll
     payslip = Payslip.objects.get(pk=id)
-    # Get the notifications
-    user = request.user
 
     context = {
         "payroll_page": "active",
@@ -208,7 +207,7 @@ def your_payslip_page(request):
 @log_activity
 def payslips_page(request, payroll_record_id):
     payroll_record = get_payroll_record_by_id(payroll_record_id)
-    payslips = Payslip.objects.filter(payroll_record=payroll_record)
+    payslips = get_payslips(payroll_record)
 
     context = {
         "payroll_page": "active",
