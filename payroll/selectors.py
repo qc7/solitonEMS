@@ -24,3 +24,7 @@ def get_usd_payslips(payroll_record):
 
 def get_payroll_record(id):
     return PayrollRecord.objects.get(pk=id)
+
+
+def get_payslips(payroll_record):
+    return Payslip.objects.filter(payroll_record=payroll_record)
