@@ -226,13 +226,14 @@ def generate_payslip_pdf(request, id):
     # Get the payslip
     payslip = Payslip.objects.get(pk=id)
     user = request.user
+    print("The base directory is", BASE_DIR)
     context = {
         "payslip": payslip,
         "month": payslip.payroll_record.month,
         "year": payslip.payroll_record.year,
         "name_of_employee": "{} {}".format(payslip.employee.first_name, payslip.employee.last_name),
         "user": user,
-        "BASE_DIR": BASE_DIR,
+        "base_dir": BASE_DIR,
     }
 
     pdf = render_to_pdf('solitonems/payslip.html', context)
