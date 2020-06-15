@@ -7,11 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 
 from SOLITONEMS.settings import BASE_DIR
-<<<<<<< HEAD
-from employees.selectors import get_active_employees, get_employees_paid_in_usd, get_employees_paid_in_ugx
-=======
-from employees.selectors import  get_employees_paid_in_usd, get_employees_paid_in_ugx
->>>>>>> develop
+from employees.selectors import get_employees_paid_in_usd, get_employees_paid_in_ugx
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import payroll_full_auth_required
 from ems_auth.models import SolitonUser
@@ -19,7 +15,6 @@ from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_us
     get_payslips
 from payroll.services import create_payslip_list_service
 from settings.selectors import get_usd_currency
-
 
 from .models import PayrollRecord, Payslip
 from django.urls import reverse
