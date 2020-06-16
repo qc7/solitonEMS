@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.leave_dashboard_page, name="leave_dashboard_page"),
     path('leave_records/', views.leave_records, name="leave_records"),
     path('add_leave_records/', views.add_leave_records, name="add_leave_records"),
+    path('no_leave_record/', views.no_leave_record_page, name="no_leave_record_page"),
     path('types/', views.leave_types_page, name="leave_types_page"),
     path('apply/', views.apply_leave_page, name="apply_leave_page"),
     

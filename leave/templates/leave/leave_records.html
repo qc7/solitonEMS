@@ -11,7 +11,11 @@ Leave Records - {{leave_year}}
         <label for="">Leave Year:</label>
         <select class="form-control" id="leave_yr" name="leave_yr" required>
           {% for yr in years %}
-          <option >{{yr}}</option>
+            {% if yr == leave_year%}
+              <option selected>{{yr}}</option>
+            {% else %}
+              <option>{{yr}}</option>
+            {% endif %}
           {% endfor %}
         </select>
 

@@ -29,7 +29,11 @@ from settings.models import Currency
 import csv
 
 # dashboard
+
+from .selectors import get_employee, get_active_employees
+from notification.selectors import get_user_notifications
 from .selectors import get_employee, get_active_employees, get_passive_employees
+
 
 
 @ems_login_required
@@ -39,13 +43,21 @@ def dashboard_page(request):
     # Get the user
     user = request.user
     try:
+        number_of_employees = Employee.objects.all().count()
+        notifications = get_user_notifications(user)
+        number_of_notifications = notifications.count()
+        
         active_employees = get_active_employees()
         suspend_employees = get_passive_employees()
         number_of_employees = active_employees.count()
+        
         context = {
             "user": user,
             "dashboard_page": "active",
             "number_of_employees": number_of_employees,
+
+            "notifications": notifications,
+            "number_of_notifications": number_of_notifications,
             "number_of_suspended": suspend_employees.count(),
         }
 

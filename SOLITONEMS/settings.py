@@ -21,6 +21,7 @@ SOLITONEMS_APPS = [
     'contracts',
     'learning_and_development',
     'training',
+    'notification',
 
 ]
 
