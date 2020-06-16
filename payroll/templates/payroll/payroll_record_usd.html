@@ -2,7 +2,7 @@
 {% load humanize %}
 
 {%block page_title %}
-Payroll Records (UGX)
+Payroll Records (USD)
 {%endblock%}
 
 {%block content%}
@@ -17,10 +17,6 @@ Payroll Records (UGX)
         text-align: right;
         vertical-align: middle;
     }
-
-
-
-
 </style>
 
 <div class="content">
@@ -28,20 +24,10 @@ Payroll Records (UGX)
         <div class="card  animated fadeInUp">
             <div class="period card-header">
                 <h3>{{month}} - {{year}}</h3>
-                {%if payslips%}
-                <a href="{%url 'payroll_record_page_usd' payroll_record.id%}">
-                    <button class="btn btn-danger">Payroll Records(USD)</button>
-                </a>
-                {%endif%}
             </div>
             <div class="card-body">
-                {%if not payslips%}
-                <a href="{%url 'generate_payroll' payroll_record.id %}">
-                    <button class="btn btn-danger">Generate Initial
-                        Payroll
-                    </button>
-                </a>
-
+                {%if not usd_payslips%}
+                <h3>No USD payslips</h3>
                 {%else%}
                 <div class="table-responsive">
                     <table class="table">
@@ -53,9 +39,12 @@ Payroll Records (UGX)
                         <th>Gross Pay</th>
                         <th>Basic Pay</th>
                         <th>Net Pay</th>
+                        <th>PAYE(UGX)</th>
+                        <th>NSSF Contribution(UGX)</th>
                         <th>Actions</th>
                         </thead>
-                        {%for payroll in ugx_payslips%}
+                        {%if usd_payslips%}
+                        {%for payroll in usd_payslips%}
                         <tr>
                             <td>{{payroll.employee.id}}</td>
                             <td>{{payroll.employee}}</td>
@@ -64,21 +53,26 @@ Payroll Records (UGX)
                             <td>{{payroll.employee.currency}} {{payroll.gross_salary | intcomma}}</td>
                             <td>{{payroll.employee.currency}} {{payroll.employee.basic_salary | intcomma}}</td>
                             <td>{{payroll.employee.currency}} {{payroll.net_salary | intcomma }}</td>
+                            <td>UGX {{payroll.paye_ugx | intcomma}}</td>
+                            <td>UGX {{payroll.nssf_ugx | intcomma}}</td>
                             <td><a href="{%url 'payslip_page' payroll.id%}"
                                    style="color: inherit"><button>View Payslip</button></a></td>
                         </tr>
                         {%endfor%}
                         <tr>
                             <td colspan="2">Total</td>
-                            <td>UGX {{total_nssf_contribution | intcomma}}</td>
-                            <td>UGX {{total_paye | intcomma}}</td>
-                            <td>UGX {{total_gross_pay | intcomma}}</td>
-                            <td>UGX {{total_basic_pay | intcomma}}</td>
-                            <td>UGX {{total_net_pay | intcomma}}</td>
+                            <td>USD {{total_nssf_contribution | intcomma}}</td>
+                            <td>USD {{total_paye | intcomma}}</td>
+                            <td>USD {{total_gross_pay | intcomma}}</td>
+                            <td>USD {{total_basic_pay | intcomma}}</td>
+                            <td>USD {{total_net_pay | intcomma}}</td>
+                            <td>UGX {{total_paye_ugx | intcomma}}</td>
+                            <td>UGX {{total_nssf_contribution_ugx | intcomma}}</td>
                         </tr>
+                        {%endif%}
                     </table>
                 </div>
-                <a href="{%url 'payroll_download' payroll_record.id %}">
+                <a href="{%url 'payroll_download_usd' payroll_record.id %}">
                     <button class="btn btn-outline">Export Excel CSV</button>
                 </a>
             </div>

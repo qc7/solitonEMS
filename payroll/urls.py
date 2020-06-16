@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # Pages
@@ -9,6 +8,7 @@ urlpatterns = [
     path('view_payroll_records_page', views.view_payroll_records_page, name="view_payroll_records_page"),
     path('edit_period_page/<int:id>/', views.edit_period_page, name="edit_period_page"),
     path('payroll_record_page/<int:id>/', views.payroll_record_page, name="payroll_record_page"),
+    path('payroll_record_page_usd/<int:id>/', views.payroll_record_page_usd, name="payroll_record_page_usd"),
     path('view_payslip_page', views.view_payslip_page, name='view_payslip_page'),
     path('payslip_page/<int:id>', views.payslip_page, name='payslip_page'),
     path('payslips/<int:payroll_record_id>/', views.payslips_page, name="payslips_page"),
@@ -22,5 +22,6 @@ urlpatterns = [
     path('add_bonus/', views.add_bonus, name="add_bonus"),
     path('add_overtime/', views.add_overtime, name="add_overtime"),
     path('payroll_download/<int:id>/', views.payroll_download, name="payroll_download"),
+    path('payroll_download_usd/<int:id>/', views.payroll_download_usd, name="payroll_download_usd"),
     path('generate_payslip_pdf/<int:id>/', views.generate_payslip_pdf, name="generate_payslip_pdf"),
 ]
