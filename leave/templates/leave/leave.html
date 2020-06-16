@@ -115,11 +115,11 @@
                         <select class="form-control" name="ltype" id="leave_type" required>
                              <option >== Select Leave Type ==</option>
                             {% for ty in l_types %}
-                            {% if ty.leave_type == ty %}
-                            <option selected>{{ty.leave_type }}</option>
-                            {% else %}
-                            <option value="{{ty.id }}">{{ty.leave_type }}</option>
-                            {% endif %}
+                                {% if ty.leave_type == ty %}
+                                    <option selected>{{ty.leave_type }}</option>
+                                {% else %}
+                                    <option value="{{ty.id }}">{{ty.leave_type }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>

@@ -21,7 +21,7 @@ class LeaveApplication(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     no_of_days = models.IntegerField(default=1)
-    supervisor = models.ForeignKey(Employee, on_delete=models.CASCADE, \
+    supervisor = models.ForeignKey(Employee, on_delete=models.CASCADE, 
                                    related_name="Supervisor", blank=True, null=True)
     supervisor_status = models.CharField(max_length=15, default="Pending")
     supervisor_comment = models.TextField(blank=True, null=True, default="None")
