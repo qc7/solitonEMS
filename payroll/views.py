@@ -166,9 +166,6 @@ def payslip_page(request, id):
 @log_activity
 def view_payslip_page(request):
     # Get the payroll
-    # Get the notifications
-    user = request.user
-
     context = {
         "payroll_page": "active",
     }
