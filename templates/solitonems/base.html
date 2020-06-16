@@ -183,6 +183,81 @@
                     </a>
                 </li>
             </ul>
+
+            <!--Accordion wrapper-->
+            <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+
+              <!-- Accordion card -->
+              <div class="card">
+
+                <!-- Card header -->
+                <div class="card-header {{admin}}" role="tab" id="admin">
+                  <a data-toggle="collapse" data-parent="#accordionEx" href="#admin-collapse" aria-expanded="true"
+                    aria-controls="admin-collapse">
+                    <h5 class="mb-0">
+                      <i class="material-icons">verified_user</i>
+                        Admin 
+                    </h5>
+                  </a>
+                </div>
+
+                <!-- Card body -->
+                <div id="admin-collapse" class="collapse show" role="tabpanel" aria-labelledby="admin"
+                  data-parent="#accordionEx">
+                  <div class="card-body">
+                    <a href="{%url 'manage_users_page'%}" class="list-group-item">Manage Users</a>
+                    <a href="{%url 'view_users_page'%}" class="list-group-item">View Users</a>
+                    <a href="{%url 'audit_trails'%}" class="list-group-item">Audit Trail</a>                 
+                  </div>
+                </div>
+
+              </div>
+              <!-- Accordion card -->
+
+              <!-- Accordion card -->
+              <div class="card">
+
+                <!-- Card header -->
+                <div class="card-header" role="tab" id="dashboard">
+                  <a class="collapsed" href="{% url 'dashboard_page' %}">
+                    <h5 class="mb-0"> <i class="material-icons">dashboard</i>
+                      Dashboard
+                    </h5>
+                  </a>
+                </div>
+
+              </div>
+              <!-- Accordion card -->
+
+              <!-- Accordion card -->
+              <div class="card">
+
+                <!-- Card header -->
+                <div class="card-header" role="tab" id="organisation">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#organisation-collapse"
+                    aria-expanded="false" aria-controls="organisation">
+                    <h5 class="mb-0">
+                      <h5 class="mb-0"> <i class="material-icons">account_balance</i>
+                      Organisation
+                    </h5>
+                  </a>
+                </div>
+
+                <!-- Card body -->
+                <div id="organisation-collapse" class="collapse" role="tabpanel" aria-labelledby="organisation"
+                  data-parent="#accordionEx">
+                  <div class="card-body">
+                    <a href="{%url 'manage_job_positions_page'%}" class="list-group-item">Manage Job Positions</a>
+                    <a href="{%url 'manage_departments_page'%}" class="list-group-item">Manage Departments</a>
+                    <a href="{%url 'manage_teams_page'%}" class="list-group-item">Manage Teams</a>
+                  </div>
+                </div>
+
+              </div>
+              <!-- Accordion card -->
+
+            </div>
+            <!-- Accordion wrapper -->
         </div>
     </div>
 
