@@ -28,9 +28,6 @@ Manage Payroll Records
                                 <td>{{payroll_record.month}}</td>
                                 <td>{{payroll_record.year}}</td>
                                 <td>
-                                    <a href="{%url 'edit_period_page' payroll_record.id %}" style="color:inherit">
-                                        <button>Edit</button>
-                                    </a> |
                                     <a href="{%url 'payroll_record_page' payroll_record.id%}"
                                        style="color: inherit">
                                         <button>Generate Payroll</button>

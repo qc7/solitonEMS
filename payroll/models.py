@@ -3,6 +3,8 @@ from employees.models import Employee
 
 
 # Create your models here.
+from settings.models import Currency
+
 
 class PayrollRecord(models.Model):
     year = models.CharField(max_length=20)
@@ -26,6 +28,7 @@ class Payslip(models.Model):
     sacco_deduction = models.FloatField()
     damage_deduction = models.FloatField()
     prorate = models.CharField(max_length=20, default="0.0")
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, default="")
 
     def __str__(self):
         return self.employee.first_name + " " + self.employee.last_name
@@ -37,5 +40,18 @@ class Payslip(models.Model):
     @property
     def total_statutory(self):
         return self.total_nssf_contrib + self.paye
+
+    @property
+    def paye_ugx(self):
+        paye = self.paye
+        currency = float(self.currency.cost)
+        return paye * currency
+
+
+    @property
+    def nssf_ugx(self):
+        nssf = self.total_nssf_contrib
+        currency = float(self.currency.cost)
+        return nssf * currency
 
 
