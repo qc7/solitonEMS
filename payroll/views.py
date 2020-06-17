@@ -7,9 +7,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 
 from SOLITONEMS.settings import BASE_DIR
-from employees.selectors import  get_employees_paid_in_usd, get_employees_paid_in_ugx
+from employees.selectors import get_employees_paid_in_usd, get_employees_paid_in_ugx
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import payroll_full_auth_required
+from ems_auth.decorators import payroll_full_auth_required, hr_required
 from ems_auth.models import SolitonUser
 from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips, \
     get_payslips
@@ -34,7 +34,9 @@ def payroll_page(request):
     return render(request, 'payroll/payroll_page.html', context)
 
 
+@hr_required
 @payroll_full_auth_required
+@hr_required
 @log_activity
 def manage_payroll_records_page(request):
     date_now = datetime.datetime.now()
@@ -51,6 +53,7 @@ def manage_payroll_records_page(request):
     return render(request, 'payroll/manage_payroll_records.html', context)
 
 
+@hr_required
 @payroll_full_auth_required
 @log_activity
 def view_payroll_records_page(request):
@@ -163,9 +166,6 @@ def payslip_page(request, id):
 @log_activity
 def view_payslip_page(request):
     # Get the payroll
-    # Get the notifications
-    user = request.user
-
     context = {
         "payroll_page": "active",
     }
