@@ -215,8 +215,8 @@
                             <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">notifications</i>
-                                {%if notifications%}
-                                  <span class="notification">{{number_of_notifications}}</span>
+                                {%if user.notification_set.all%}
+                                  <span class="notification">{{user.notification_set.count}}</span>
                                 {%endif%}
                                 <p class="d-lg-none d-md-block">
                                     Some Actions
@@ -224,15 +224,17 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 
-                              {%for notification in notifications%}
-                                <a class="dropdown-item" 
-                                href="{% url 'notifications_page' notification.id %}">
-                                  {{notification.message}}</a>
-                                {%endfor%}
+                              {%for notification in user.notification_set.all%}
+                                {% if notification.status == "Unread"%}
+                                  <a class="dropdown-item" 
+                                    href="{% url 'notifications_page' notification.id %}">{{notification.message}}
+                                  </a>
+                                {% endif%}
+                              {%endfor%}
 
-                                {%if not notifications%}
-                                  <a class="dropdown-item">No notifications yet</a>
-                                {%endif%}
+                              {%if not user.notification_set.all%}
+                                <a class="dropdown-item">No notifications yet</a>
+                              {%endif%}
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -527,7 +529,7 @@
 
        $('[data-toggle="popover-admin"]').popover({
             html: true,
-            trigger: 'click',
+            trigger: 'mouseover',
             content: function() {
             return $('#popover-admin').html();
           }
@@ -535,7 +537,7 @@
 
        $('[data-toggle="popover-payroll"]').popover({
             html: true,
-            trigger: 'click',
+            trigger: 'mouseover',
             content: function() {
             return $('#popover-payroll').html();
           }
@@ -543,7 +545,7 @@
 
        $('[data-toggle="popover-overtime"]').popover({
             html: true,
-            trigger: 'click',
+            trigger: 'mouseover',
             content: function() {
             return $('#popover-overtime').html();
           }
@@ -551,7 +553,7 @@
 
        $('[data-toggle="popover-organisation"]').popover({
             html: true,
-            trigger: 'click',
+            trigger: 'mouseover',
             content: function() {
             return $('#popover-organisation').html();
           }
@@ -559,7 +561,7 @@
 
        $('[data-toggle="popover-leave"]').popover({
             html: true,
-            trigger: 'click',
+            trigger: 'mouseover',
             content: function() {
             return $('#popover-leave').html();
           }
@@ -567,7 +569,7 @@
 
        $('[data-toggle="popover-recruitment"]').popover({
             html: true,
-            trigger: 'click',
+            trigger: 'mouseover',
             content: function() {
             return $('#popover-recruitment').html();
           }
@@ -575,7 +577,7 @@
 
        $('[data-toggle="popover-contracts"]').popover({
             html: true,
-            trigger: 'click',
+            trigger: 'mouseover',
             content: function() {
             return $('#popover-contracts').html();
           }
@@ -583,7 +585,7 @@
 
        $('[data-toggle="popover-training"]').popover({
             html: true,
-            trigger: 'click',
+            trigger: 'mouseover',
             content: function() {
             return $('#popover-training').html();
           }
@@ -591,7 +593,7 @@
 
        $('[data-toggle="popover-learning-and-development"]').popover({
             html: true,
-            trigger: 'click',
+            trigger: 'mouseover',
             content: function() {
             return $('#popover-learning-and-development').html();
           }
