@@ -1,0 +1,37 @@
+{%extends 'solitonems/base.html'%}
+{% load humanize %}
+{% load static %}
+{% block page_title %}
+Notifications
+{% endblock %}
+
+{%block content%}
+<div class="content">
+    <div class="container-fluid">
+        <div class="card animated fadeInUp">
+            <div class="card-body">
+                {%if notifications%}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>Title</th>
+                        <th>Message</th>
+                        <th>Time</th>
+                        </thead>
+                        {%for notification in notifications%}
+                        <tbody>
+                        <td>{{notification.title}}</td>
+                        <td>{{notification.message}}</td>
+                        <td>{{notification.date_time | naturaltime}}</td>
+                        </tbody>
+                        {%endfor%}
+                    </table>
+                </div>
+                {%else%}
+                <h3>No notifications yet</h3>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

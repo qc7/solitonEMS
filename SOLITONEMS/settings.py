@@ -22,7 +22,7 @@ SOLITONEMS_APPS = [
     'contracts',
     'learning_and_development',
     'training',
-
+    'notification',
 ]
 
 DJANGO_APPS = [
