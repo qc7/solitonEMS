@@ -55,6 +55,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         else:
             return 'Inactive'
 
+    @property
+    def get_unread_notifications(self):
+        return self.notification_set.filter(status="Unread")
 
     class Meta:
         unique_together = ['email']
