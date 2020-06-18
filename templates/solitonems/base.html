@@ -41,6 +41,7 @@
 
         <div class="sidebar-wrapper">
             <ul class="nav">
+              {% if user.is_superuser%}
                 <li class="nav-item {{admin}}" data-toggle="popover-admin" title="Admin">
                     <a class="nav-link" href="#" >
                         <i class="material-icons">verified_user</i>
@@ -52,6 +53,7 @@
                         <a href="{%url 'audit_trails'%}" class="list-group-item">Audit Trail</a>
                     </ul>
                 </li>
+              {% endif%}
 
                 <li class="nav-item {{dashboard_page}}">
                     <a class="nav-link" href="{% url 'dashboard_page' %}">
@@ -59,6 +61,8 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+
+                
 
                 <li class="nav-item {{organisation_page}}" data-toggle="popover-organisation" title="Organisation">
                     <a class="nav-link" href="#">
