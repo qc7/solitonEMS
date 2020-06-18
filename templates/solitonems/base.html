@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{% load humanize %}
 <head>
     {%load static %}
     <meta charset="utf-8"/>
@@ -215,26 +215,22 @@
                             <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">notifications</i>
-                                {%if user.notification_set.all%}
-                                  <span class="notification">{{user.notification_set.count}}</span>
+                                {%if user.get_unread_notifications%}
+                                <span class="notification">{{user.get_unread_notifications.count}}</span>
                                 {%endif%}
                                 <p class="d-lg-none d-md-block">
                                     Some Actions
                                 </p>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-
-                              {%for notification in user.notification_set.all%}
-                                {% if notification.status == "Unread"%}
-                                  <a class="dropdown-item" 
-                                    href="{% url 'notifications_page' notification.id %}">{{notification.message}}
-                                  </a>
-                                {% endif%}
-                              {%endfor%}
-
-                              {%if not user.notification_set.all%}
-                                <a class="dropdown-item">No notifications yet</a>
-                              {%endif%}
+                                {%for notification in user.get_unread_notifications%}
+                                <a class="dropdown-item"
+                                   href="{% url 'notifications_page' %}">{{notification.message}}
+                                </a>
+                                {%endfor%}
+                                {%if not user.get_unread_notifications%}
+                                <a class="dropdown-item" href="{% url 'notifications_page'%}">View old notifications</a>
+                                {%endif%}
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -256,14 +252,14 @@
                         </li>
                     </ul>
                 </div>
-            </div>            
+            </div>
         </nav>
         <!-- End Navbar -->
-       
+
 
         <!-- Content here -->
         {%block content%}
-         
+
         {%endblock%}
 
         <!-- Content ends here       -->
