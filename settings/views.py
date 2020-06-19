@@ -5,11 +5,12 @@ from django.shortcuts import render
 # Create your views here.
 from django.urls import reverse
 
-from ems_auth.decorators import ems_login_required
+from ems_auth.decorators import ems_login_required, hr_required
 from settings.selectors import get_all_currencies, get_currency
 from settings.services import update_currency, create_currency
 
 
+@hr_required
 @ems_login_required
 def settings_page(request):
     all_currencies = get_all_currencies()
