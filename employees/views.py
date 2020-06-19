@@ -1291,7 +1291,7 @@ def employee_profile_page(request, employee_id):
 @log_activity
 def add_more_details_page(request, employee_id):
     employee = get_employee(employee_id)
-
+    positions = get_all_positions()
     context = {
         "user": request.user,
         "employees_page": "active",
@@ -1308,7 +1308,7 @@ def add_more_details_page(request, employee_id):
         "allowances": Allowance.objects.all(),
         "supervisee_options": Employee.objects.exclude(pk=employee.id),
         "supervisions": Supervision.objects.filter(supervisor=employee),
-        "positions": get_all_positions()
+        "positions": positions,
     }
 
     return render(request, 'employees/add_more_details.html', context)
