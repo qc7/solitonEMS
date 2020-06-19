@@ -11,6 +11,7 @@ from ems_admin.decorators import log_activity
 from ems_auth.decorators import ems_login_required, hr_required, first_login, employees_full_auth_required
 from ems_auth.models import User
 from organisation_details.models import Department, Position, Team, OrganisationDetail
+from organisation_details.selectors import get_all_positions
 from settings.selectors import get_all_currencies, get_currency
 from .models import (
     Employee,
@@ -46,11 +47,11 @@ def dashboard_page(request):
         number_of_employees = Employee.objects.all().count()
         notifications = get_user_notifications(user)
         number_of_notifications = notifications.count()
-        
+
         active_employees = get_active_employees()
         suspend_employees = get_passive_employees()
         number_of_employees = active_employees.count()
-        
+
         context = {
             "user": user,
             "dashboard_page": "active",
@@ -114,21 +115,11 @@ def employee_page(request, id):
     return render(request, 'employees/employee.html', context)
 
 
-@login_required
+@ems_login_required
 @log_activity
 def edit_employee_page(request, id):
-    # redirect according to roles
-    # If user is a manager
-    user = request.user
-
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
-
     context = {
-        "user": user,
         "employees_page": "active",
         "employee": employee,
         "deps": Department.objects.all(),
@@ -1316,7 +1307,8 @@ def add_more_details_page(request, employee_id):
         "teams": Team.objects.all(),
         "allowances": Allowance.objects.all(),
         "supervisee_options": Employee.objects.exclude(pk=employee.id),
-        "supervisions": Supervision.objects.filter(supervisor=employee)
+        "supervisions": Supervision.objects.filter(supervisor=employee),
+        "positions": get_all_positions()
     }
 
     return render(request, 'employees/add_more_details.html', context)

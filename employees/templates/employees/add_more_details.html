@@ -1124,8 +1124,8 @@
                                     <option value="{{employee.organisationdetail.position.id}}">
                                         {{employee.organisationdetail.position}}
                                     </option>
-                                    {% for tt in titles %}
-                                    <option value="{{tt.pk}}">{{tt.title }}</option>
+                                    {% for position in positions %}
+                                    <option value="{{tt.pk}}">{{position.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
