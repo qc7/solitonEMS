@@ -9,10 +9,11 @@ from contracts.selectors import get_contract, get_terminated_contracts, get_acti
 from contracts.services import activate
 from employees.selectors import get_employee, get_active_employees
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import contracts_full_auth_required
+from ems_auth.decorators import contracts_full_auth_required, hr_required
 from organisation_details.selectors import get_position, get_all_positions
 
 
+@hr_required
 @contracts_full_auth_required
 @log_activity
 def manage_job_contracts(request):
@@ -120,6 +121,7 @@ def activate_contract(request, contract_id):
     return HttpResponseRedirect(reverse(manage_job_contracts))
 
 
+@hr_required
 @contracts_full_auth_required
 @log_activity
 def user_contracts_page(request):

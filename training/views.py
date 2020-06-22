@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import training_full_auth_required
+from ems_auth.decorators import training_full_auth_required, hr_required
 from organisation_details.decorators import organisationdetail_required
 from settings.selectors import get_all_currencies, get_currency
 from training.models import Training, TrainingSchedule
@@ -63,6 +63,7 @@ def user_training_page(request):
     return render(request, 'training/user_training.html', context)
 
 
+@hr_required
 @training_full_auth_required
 @log_activity
 def schedule_training_page(request):
