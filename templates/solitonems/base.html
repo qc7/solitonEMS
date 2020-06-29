@@ -191,6 +191,7 @@
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
             <div class="container-fluid">
                 <div class="navbar-wrapper">
+                    <a href="{{ request.META.HTTP_REFERER }}"><i class="material-icons">keyboard_arrow_left</i></a>
                     <a class="navbar-brand" href="#pablo"><b>{%block page_title %}{%endblock%}</b></a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
