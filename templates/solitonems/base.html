@@ -188,6 +188,7 @@
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
             <div class="container-fluid">
                 <div class="navbar-wrapper">
+                    <a href="{{ request.META.HTTP_REFERER }}"><i class="material-icons">keyboard_arrow_left</i></a>
                     <a class="navbar-brand" href="#pablo"><b>{%block page_title %}{%endblock%}</b></a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
@@ -522,7 +523,7 @@
 
        $('[data-toggle="popover-admin"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-admin').html();
           }
@@ -530,7 +531,7 @@
 
        $('[data-toggle="popover-payroll"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-payroll').html();
           }
@@ -538,7 +539,7 @@
 
        $('[data-toggle="popover-overtime"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-overtime').html();
           }
@@ -546,7 +547,7 @@
 
        $('[data-toggle="popover-organisation"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-organisation').html();
           }
@@ -554,7 +555,7 @@
 
        $('[data-toggle="popover-leave"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-leave').html();
           }
@@ -562,7 +563,7 @@
 
        $('[data-toggle="popover-recruitment"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-recruitment').html();
           }
@@ -570,7 +571,7 @@
 
        $('[data-toggle="popover-contracts"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-contracts').html();
           }
@@ -578,7 +579,7 @@
 
        $('[data-toggle="popover-training"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-training').html();
           }
@@ -586,7 +587,7 @@
 
        $('[data-toggle="popover-learning-and-development"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-learning-and-development').html();
           }

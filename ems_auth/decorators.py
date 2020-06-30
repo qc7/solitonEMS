@@ -6,7 +6,7 @@ from django.urls import reverse
 from ems_admin.models import EMSPermission
 from ems_admin.selectors import get_user
 from ems_auth.models import SolitonUser
-from ems_auth.views import hod_required_page
+
 
 User = get_user_model()
 
