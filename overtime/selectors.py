@@ -95,8 +95,8 @@ def get_pending_overtime_applications(approver):
     return pending_applications
 
 
-def get_recent_overtime_applications(limit):
-    return OvertimeApplication.objects.all().order_by('-id')[:limit]
+def get_recent_overtime_applications(limit, applicant):
+    return OvertimeApplication.objects.filter(applicant=applicant).order_by('-id')[:limit]
 
 
 def get_all_overtime_plans():
@@ -143,7 +143,6 @@ def get_pending_overtime_plans(approver):
 
 def get_supervisor_users(applicant):
     department = applicant.department
-
     all_supervisor_users = User.objects.filter(is_supervisor=True)
     users = []
     for supervisor_user in all_supervisor_users:
