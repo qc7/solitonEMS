@@ -55,6 +55,7 @@
                 </li>
               {% endif%}
 
+              {% if user.is_hr %}
                 <li class="nav-item {{dashboard_page}}">
                     <a class="nav-link" href="{% url 'dashboard_page' %}">
                         <i class="material-icons">dashboard</i>
@@ -83,7 +84,9 @@
                     </a>
 
                 </li>
+              {% endif%}
 
+              {% if user.is_supervisor or user.is_hr or user.is_hod%}
                 <li class="nav-item  {{ leave_page }}" data-toggle="popover-leave" title="Leave" >
                     <a class="nav-link" href="#">
                         <i class="material-icons">event</i>
@@ -91,24 +94,14 @@
                     </a>
                     <ul id="popover-leave" class="nav list-group" style="display: none">
                         <a href="{%url 'leave_dashboard_page'%}" class="list-group-item">Leave Applications</a>
-                        <a href="{%url 'leave_types_page'%}" class="list-group-item">Manage leave types</a>
                         <a href="{%url 'apply_leave_page'%}" class="list-group-item">Apply for leave</a>
-                        <a href="{%url 'leave_records'%}" class="list-group-item">Leave Records</a>
+                        {% if user.is_hr%}
+                          <a href="{%url 'leave_types_page'%}" class="list-group-item">Manage leave types</a>
+                          <a href="{%url 'leave_records'%}" class="list-group-item">Leave Records</a>
+                        {% endif%}
                     </ul>
                 </li>
-
-                <li class="nav-item  {{ payroll_page }}" data-toggle="popover-payroll" title="Payroll" >
-                    <a class="nav-link" href="#">
-                        <i class="material-icons">library_books</i>
-                        <p>Payroll</p>
-                    </a>
-                    <ul id="popover-payroll" class="nav list-group" style="display: none">
-                        <a href="{%url 'manage_payroll_records_page'%}" class="list-group-item">Manage Payroll Records</a>
-                        <a href="{%url 'view_payroll_records_page'%}" class="list-group-item">View Payroll Records</a>
-                        <a href="{%url 'view_payslip_page' %}" class="list-group-item">View your payslip</a>
-                    </ul>
-                </li>
-
+              {% endif%}   
                 <li class="nav-item {{overtime_page}}" data-toggle="popover-overtime" title="Overtime">
                     <a class="nav-link" href="#">
                         <i class="material-icons">hourglass_empty</i>

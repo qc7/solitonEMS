@@ -61,11 +61,21 @@ def add_leave_record(employee, start_date):
         leave_days = (12-start_month)*1.75
     else:
         leave_days = (12-(start_month-1))*1.75
-    print(start_month)
+
     leave_record = Leave_Records(employee=employee, leave_year=begin_date.year,\
                     entitlement=leave_days, residue=0, leave_applied=0, total_taken=0,\
                     balance=leave_days)
 
     leave_record.save()
 
+def add_employee_contacts(request):
+    if request.method == "POST":
+        contact_type = request.POST.get('contact_type')
+        contacts = request.POST.get('contact')
+        employee_id = request.POST.get('employee_id')
 
+        employee = get_employee(employee_id)
+
+        contact = Contact(contact_type=contact_type, contact=contacts, employee=employee)
+        
+        employee.save()

@@ -1,5 +1,6 @@
-from employees.models import Employee
+from employees.models import Employee, Contacts
 from settings.selectors import get_ugx_currency, get_usd_currency
+
 
 
 def get_employee(employee_id):
@@ -22,3 +23,9 @@ def get_employees_paid_in_ugx():
 def get_employees_paid_in_usd():
     usd_currency = get_usd_currency()
     return Employee.objects.filter(status="Active", currency=usd_currency)
+
+def get_employee_contacts(employee):
+    return Contacts.objects.filter(employee=employee).order_by('contact_type')
+
+def get_contact(contact_id):
+    return Contacts.object.get(pk=contact_id)

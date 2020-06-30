@@ -1,0 +1,2 @@
+id,status,date,start_time,end_time,description,supervisor_approval,HOD_approval,HR_approval,cfo_approval,ceo_approval,applicant_id
+1,Pending,2020-03-26,2020-03-25 07:00:00,2020-03-26 19:00:00,m,Pending,Pending,Pending,Pending,Pending,1

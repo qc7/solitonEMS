@@ -123,6 +123,46 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Employee Contacts -->
+                <div class="card card-profile">
+                    <div class="card-header card-header-primary">
+                        <i class="material-icons" style="font-size: 3em; float:left; margin-right:20px">people</i>
+                        <h4 class="card-title ">
+                            Contacts</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-description">
+                            <table class="table">
+                                {% for contact in contacts%}
+                                    <tr>
+                                        <td>
+                                            {% if contact.contact_type == "Email"%}
+                                                <i class="fa fa-envelope"></i>
+                                            {% elif contact.contact_type == "Phone"%}
+                                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                            {% endif%}
+                                        </td>
+                                        <td>{{contact.contact}}</td>
+                                        <td>
+                                            {% comment %} <input type="hidden" name="contact_id" value={{contact.id}}> {% endcomment %}
+                                            <a id="id_contact" href="{% url 'delete_employee_contact' %}" data-id={{contact.id}} style="color:inherit">
+                                                <i id="remove_contact_btn" class="fa fa-times"></i>
+                                            </a> 
+                                        </td>
+                                    </tr>
+                                {% endfor%}
+                                <tr>
+                                    <td colspan=2>
+                                        <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
+                                data-target="#modal_add_contact"> <i class="fa fa-plus"></i></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Employee Contacts-->
                 <div class="card card-profile">
                     <div class="card-body">
                         <h4 class="card-title">Bank Details</h4>
@@ -1514,6 +1554,49 @@
             </div>
         </div>
 
+        <!-- modal Employee Contacts -->
+        <div class="modal fade" id="modal_add_contact" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal_title">Add {{employee.first_name}}'s Contacts</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+                        <form method="POST" id="contact_form" action="{% url 'add_employee_contacts' %}"> 
+                            {%csrf_token%}
+                            <div class="form-group">
+                                <label>Type: </label>
+                                <select class="form-control" name="contact_type" required>
+                                    <option>===Choose==</option>
+                                    <option>Phone</option>
+                                    <option>Email</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <i class="fas fa-envelope prefix"></i>
+                                <input type="text" id="contact" name="contact" class="form-control" required>
+                            </div>
+                            
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                                type="reset">Close</button>
+                        <button class="btn btn-danger" type="submit" id="contact_submit">Save</button>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!-- End Contacts Modal-->
     </div>
 </div>
 

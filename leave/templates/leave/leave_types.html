@@ -26,7 +26,7 @@ Leave Types
       <div class="card">
         <div class="card-body">
           <div class="table-responsive table-striped table-condensed">
-            <table class="table table-hover" id="types_table">
+            <table class="table table-hover" id="types_tables">
               <thead class="thead">
               <th>ID</th>
               <th>Type</th>
@@ -37,6 +37,35 @@ Leave Types
               <tbody>
               
               {% for typ in types %}
+              <tr data-id="{{ typ.id }}" >
+                <td >{{ typ.id }}</td>
+                <td>{{typ.leave_type}}</td>
+                <td>{{typ.leave_days}}</td>
+                <td>{{typ.description}}</td>
+                <td>
+                  <a href="{% url 'edit_leave_type_page' typ.id %}" style="color:inherit">
+                    <i class="fa fa-edit">Edit</i>
+                  </a>
+                  <a href="{% url 'delete_leave_type' typ.id %}" style="color: inherit" ...
+                     onclick="return confirm('Are you sure you want to delete @Type?')">
+                     <i class="fa fa-trash">Delete</i>
+                  </a></td>
+              </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            <hr/>
+            <table class="table table-hover" id="types_table">
+              <thead class="thead">
+              <th>ID</th>
+              <th>Type</th>
+              <th>No. of Days</th>
+              <th>Description</th>
+              <th colspan=2>#</th>
+              </thead>
+              <tbody>
+              
+              {% for typ in typess %}
               <tr data-id="{{ typ.id }}" >
                 <td >{{ typ.id }}</td>
                 <td>{{typ.leave_type}}</td>
@@ -142,23 +171,40 @@ Leave Types
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{% static 'js/js.js' %}"></script>
-{% comment %} <script src="{% static 'assets/js/plugins/jquery.dataTables.min.js' %}"></script> {% endcomment %}
+<script src="{% static 'assets/js/plugins/jquery.dataTables.min.js' %}"></script>
 
-{% comment %} <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.21/af-2.3.5/b-1.6.2/b-colvis-1.6.2/b-html5-1.6.2/b-print-1.6.2/cr-1.5.2/fc-3.3.1/kt-2.5.2/r-2.2.4/rg-1.1.2/rr-1.2.7/sp-1.1.0/sl-1.3.1/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.21/af-2.3.5/b-1.6.2/b-colvis-1.6.2/b-html5-1.6.2/b-print-1.6.2/cr-1.5.2/fc-3.3.1/kt-2.5.2/r-2.2.4/rg-1.1.2/rr-1.2.7/sp-1.1.0/sl-1.3.1/datatables.min.css"/>
  
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.21/af-2.3.5/b-1.6.2/b-colvis-1.6.2/b-html5-1.6.2/b-print-1.6.2/cr-1.5.2/fc-3.3.1/kt-2.5.2/r-2.2.4/rg-1.1.2/rr-1.2.7/sp-1.1.0/sl-1.3.1/datatables.min.js"></script> {% endcomment %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.21/af-2.3.5/b-1.6.2/b-colvis-1.6.2/b-html5-1.6.2/b-print-1.6.2/cr-1.5.2/fc-3.3.1/kt-2.5.2/r-2.2.4/rg-1.1.2/rr-1.2.7/sp-1.1.0/sl-1.3.1/datatables.min.js"></script>
 <script>
-  $(document).ready(()=>{
-    $('#types_table').DataTable({
+  // Material Design example
+$(document).ready(function () {
+  $('#types_table').DataTable({
       dom: 'B<"clear">lftrtip',
       buttons:{
         name: "primary",
         buttons: ['copy', 'csv', 'excel', 'pdf']
       }
     });
+    
+  $('#types_table_wrapper').find('label').each(function () {
+    $(this).parent().append($(this).children());
   });
+  $('#types_table_wrapper .dataTables_filter').find('input').each(function () {
+    const $this = $(this);
+    $this.attr("placeholder", "Search");
+    $this.removeClass('form-control-sm');
+  });
+  $('#types_table_wrapper .dataTables_length').addClass('d-flex flex-row');
+  $('#types_table_wrapper .dataTables_filter').addClass('md-form');
+  $('#types_table_wrapper select').removeClass('custom-select custom-select-sm form-control form-control-sm');
+  $('#types_table_wrapper select').addClass('mdb-select');
+  $('#types_table_wrapper .mdb-select').materialSelect();
+  $('#types_table_wrapper .dataTables_filter').find('label').remove();
+  
+});
 </script>
 
 {%endblock%}

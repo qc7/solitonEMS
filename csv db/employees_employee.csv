@@ -1,0 +1,6 @@
+id,first_name,last_name,basic_salary,grade,gender,start_date,marital_status,dob,nationality,nssf_no,telephone_no,residence_address,national_id,ura_tin,annual_allowance,leave_balance,balance_last_year,leave_status,image_url,status,title,work_station,lunch_allowance,currency_id
+1,Bright,Kanyange,1000000,D,Male,2020-01-02,Single,1995-06-17,Ugandan,45255,2568789465,Kampala,87946556,54687,21,21,0,At Work,asdsdas,Active,Mr,Finance,150000,1
+2,Yathrib,Hassan,120000,D,Male,2020-03-30,Married,1992-08-19,Ugandan,45564,258656656,Kawempe,88566,8654,21,21,0,At Work,,Active,Mr.,BI,15000,1
+3,Benard,Baliddawa,1000000,C,Male,2011-08-19,Single,1992-08-19,Ugandan,546,0758946132,Kawempe,56451,546,21,21,0,At Work,,Active,Mr.,Finance,1500000,1
+4,Shafik,Mandolo,2000000,B,Male,2011-08-19,Married,1992-08-19,Ugandan,7955,7513213223,kam,875641,546465,21,21,0,At Work,,Active,Mr.,Finance,150000,1
+5,Muwonge,Muhammad,1500000,D,Male,2020-05-19,Single,1992-08-19,Ugandan,5444,751615666,Kamwookya,9845,9494,21,21,0,At Work,,Active,Mr.,Finance,150000,1

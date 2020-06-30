@@ -1,0 +1,181 @@
+id,content_type_id,codename,name
+1,1,add_jobadvertisement,Can add job advertisement
+2,1,change_jobadvertisement,Can change job advertisement
+3,1,delete_jobadvertisement,Can delete job advertisement
+4,1,view_jobadvertisement,Can view job advertisement
+5,2,add_jobapplication,Can add job application
+6,2,change_jobapplication,Can change job application
+7,2,delete_jobapplication,Can delete job application
+8,2,view_jobapplication,Can view job application
+9,3,add_employee,Can add employee
+10,3,change_employee,Can change employee
+11,3,delete_employee,Can delete employee
+12,3,view_employee,Can view employee
+13,4,add_homeaddress,Can add home address
+14,4,change_homeaddress,Can change home address
+15,4,delete_homeaddress,Can delete home address
+16,4,view_homeaddress,Can view home address
+17,5,add_supervision,Can add supervision
+18,5,change_supervision,Can change supervision
+19,5,delete_supervision,Can delete supervision
+20,5,view_supervision,Can view supervision
+21,6,add_spouse,Can add spouse
+22,6,change_spouse,Can change spouse
+23,6,delete_spouse,Can delete spouse
+24,6,view_spouse,Can view spouse
+25,7,add_leave,Can add leave
+26,7,change_leave,Can change leave
+27,7,delete_leave,Can delete leave
+28,7,view_leave,Can view leave
+29,8,add_emergencycontact,Can add emergency contact
+30,8,change_emergencycontact,Can change emergency contact
+31,8,delete_emergencycontact,Can delete emergency contact
+32,8,view_emergencycontact,Can view emergency contact
+33,9,add_dependant,Can add dependant
+34,9,change_dependant,Can change dependant
+35,9,delete_dependant,Can delete dependant
+36,9,view_dependant,Can view dependant
+37,10,add_department,Can add department
+38,10,change_department,Can change department
+39,10,delete_department,Can delete department
+40,10,view_department,Can view department
+41,11,add_deduction,Can add deduction
+42,11,change_deduction,Can change deduction
+43,11,delete_deduction,Can delete deduction
+44,11,view_deduction,Can view deduction
+45,12,add_certification,Can add certification
+46,12,change_certification,Can change certification
+47,12,delete_certification,Can delete certification
+48,12,view_certification,Can view certification
+49,13,add_beneficiary,Can add beneficiary
+50,13,change_beneficiary,Can change beneficiary
+51,13,delete_beneficiary,Can delete beneficiary
+52,13,view_beneficiary,Can view beneficiary
+53,14,add_bankdetail,Can add bank detail
+54,14,change_bankdetail,Can change bank detail
+55,14,delete_bankdetail,Can delete bank detail
+56,14,view_bankdetail,Can view bank detail
+57,15,add_allowance,Can add allowance
+58,15,change_allowance,Can change allowance
+59,15,delete_allowance,Can delete allowance
+60,15,view_allowance,Can view allowance
+61,16,add_payrollrecord,Can add payroll record
+62,16,change_payrollrecord,Can change payroll record
+63,16,delete_payrollrecord,Can delete payroll record
+64,16,view_payrollrecord,Can view payroll record
+65,17,add_payslip,Can add payslip
+66,17,change_payslip,Can change payslip
+67,17,delete_payslip,Can delete payslip
+68,17,view_payslip,Can view payslip
+69,18,add_holidays,Can add holidays
+70,18,change_holidays,Can change holidays
+71,18,delete_holidays,Can delete holidays
+72,18,view_holidays,Can view holidays
+73,19,add_leave_types,Can add leave_ types
+74,19,change_leave_types,Can change leave_ types
+75,19,delete_leave_types,Can delete leave_ types
+76,19,view_leave_types,Can view leave_ types
+77,20,add_leaveapplication,Can add leave application
+78,20,change_leaveapplication,Can change leave application
+79,20,delete_leaveapplication,Can delete leave application
+80,20,view_leaveapplication,Can view leave application
+81,21,add_leave_records,Can add leave_ records
+82,21,change_leave_records,Can change leave_ records
+83,21,delete_leave_records,Can delete leave_ records
+84,21,view_leave_records,Can view leave_ records
+85,22,add_annual_planner,Can add annual_planner
+86,22,change_annual_planner,Can change annual_planner
+87,22,delete_annual_planner,Can delete annual_planner
+88,22,view_annual_planner,Can view annual_planner
+89,23,add_department,Can add department
+90,23,change_department,Can change department
+91,23,delete_department,Can delete department
+92,23,view_department,Can view department
+93,24,add_team,Can add team
+94,24,change_team,Can change team
+95,24,delete_team,Can delete team
+96,24,view_team,Can view team
+97,25,add_position,Can add position
+98,25,change_position,Can change position
+99,25,delete_position,Can delete position
+100,25,view_position,Can view position
+101,26,add_organisationdetail,Can add organisation detail
+102,26,change_organisationdetail,Can change organisation detail
+103,26,delete_organisationdetail,Can delete organisation detail
+104,26,view_organisationdetail,Can view organisation detail
+105,27,add_currency,Can add currency
+106,27,change_currency,Can change currency
+107,27,delete_currency,Can delete currency
+108,27,view_currency,Can view currency
+109,28,add_overtimeapplication,Can add overtime application
+110,28,change_overtimeapplication,Can change overtime application
+111,28,delete_overtimeapplication,Can delete overtime application
+112,28,view_overtimeapplication,Can view overtime application
+113,29,add_holiday,Can add holiday
+114,29,change_holiday,Can change holiday
+115,29,delete_holiday,Can delete holiday
+116,29,view_holiday,Can view holiday
+117,30,add_user,Can add user
+118,30,change_user,Can change user
+119,30,delete_user,Can delete user
+120,30,view_user,Can view user
+121,31,add_solitonuser,Can add soliton user
+122,31,change_solitonuser,Can change soliton user
+123,31,delete_solitonuser,Can delete soliton user
+124,31,view_solitonuser,Can view soliton user
+125,32,add_audittrail,Can add audit trail
+126,32,change_audittrail,Can change audit trail
+127,32,delete_audittrail,Can delete audit trail
+128,32,view_audittrail,Can view audit trail
+129,33,add_emspermission,Can add ems permission
+130,33,change_emspermission,Can change ems permission
+131,33,delete_emspermission,Can delete ems permission
+132,33,view_emspermission,Can view ems permission
+133,34,add_contract,Can add contract
+134,34,change_contract,Can change contract
+135,34,delete_contract,Can delete contract
+136,34,view_contract,Can view contract
+137,35,add_resource,Can add resource
+138,35,change_resource,Can change resource
+139,35,delete_resource,Can delete resource
+140,35,view_resource,Can view resource
+141,36,add_trainingschedule,Can add training schedule
+142,36,change_trainingschedule,Can change training schedule
+143,36,delete_trainingschedule,Can delete training schedule
+144,36,view_trainingschedule,Can view training schedule
+145,37,add_training,Can add training
+146,37,change_training,Can change training
+147,37,delete_training,Can delete training
+148,37,view_training,Can view training
+149,38,add_logentry,Can add log entry
+150,38,change_logentry,Can change log entry
+151,38,delete_logentry,Can delete log entry
+152,38,view_logentry,Can view log entry
+153,39,add_permission,Can add permission
+154,39,change_permission,Can change permission
+155,39,delete_permission,Can delete permission
+156,39,view_permission,Can view permission
+157,40,add_group,Can add group
+158,40,change_group,Can change group
+159,40,delete_group,Can delete group
+160,40,view_group,Can view group
+161,41,add_contenttype,Can add content type
+162,41,change_contenttype,Can change content type
+163,41,delete_contenttype,Can delete content type
+164,41,view_contenttype,Can view content type
+165,42,add_session,Can add session
+166,42,change_session,Can change session
+167,42,delete_session,Can delete session
+168,42,view_session,Can view session
+169,43,add_overtimeplan,Can add overtime plan
+170,43,change_overtimeplan,Can change overtime plan
+171,43,delete_overtimeplan,Can delete overtime plan
+172,43,view_overtimeplan,Can view overtime plan
+173,44,add_overtimeschedule,Can add overtime schedule
+174,44,change_overtimeschedule,Can change overtime schedule
+175,44,delete_overtimeschedule,Can delete overtime schedule
+176,44,view_overtimeschedule,Can view overtime schedule
+177,45,add_notification,Can add notification
+178,45,change_notification,Can change notification
+179,45,delete_notification,Can delete notification
+180,45,view_notification,Can view notification
