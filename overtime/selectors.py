@@ -95,8 +95,8 @@ def get_pending_overtime_applications(approver):
     return pending_applications
 
 
-def get_recent_overtime_applications(limit):
-    return OvertimeApplication.objects.all().order_by('-id')[:limit]
+def get_recent_overtime_applications(limit, applicant):
+    return OvertimeApplication.objects.filter(applicant=applicant).order_by('-id')[:limit]
 
 
 def get_all_overtime_plans():
