@@ -3,7 +3,6 @@ from .models import Notification
 
 def get_user_notifications(user):
     notifications = Notification.objects.filter(user=user, status="Unread")
-
     return notifications
 
 

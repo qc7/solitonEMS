@@ -143,7 +143,6 @@ def get_pending_overtime_plans(approver):
 
 def get_supervisor_users(applicant):
     department = applicant.department
-
     all_supervisor_users = User.objects.filter(is_supervisor=True)
     users = []
     for supervisor_user in all_supervisor_users:
