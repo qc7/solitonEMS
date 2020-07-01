@@ -56,8 +56,11 @@ class Employee(models.Model):
         return self.first_name + " " + self.last_name
 
 
-
-
+class Contacts(models.Model):
+    contact_type = models.CharField(max_length=10,default="number")
+    contact = models.CharField(max_length=15,null=False)
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    
 class HomeAddress(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, primary_key=True)
     district = models.CharField(max_length=20)

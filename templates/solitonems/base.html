@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{% load humanize %}
 <head>
     {%load static %}
     <meta charset="utf-8"/>
@@ -41,6 +41,7 @@
 
         <div class="sidebar-wrapper">
             <ul class="nav">
+              
                 <li class="nav-item {{admin}}" data-toggle="popover-admin" title="Admin">
                     <a class="nav-link" href="#" >
                         <i class="material-icons">verified_user</i>
@@ -52,13 +53,13 @@
                         <a href="{%url 'audit_trails'%}" class="list-group-item">Audit Trail</a>
                     </ul>
                 </li>
-
+              
                 <li class="nav-item {{dashboard_page}}">
                     <a class="nav-link" href="{% url 'dashboard_page' %}">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
                     </a>
-                </li>
+                </li>              
 
                 <li class="nav-item {{organisation_page}}" data-toggle="popover-organisation" title="Organisation">
                     <a class="nav-link" href="#">
@@ -79,7 +80,7 @@
                     </a>
 
                 </li>
-
+              
                 <li class="nav-item  {{ leave_page }}" data-toggle="popover-leave" title="Leave" >
                     <a class="nav-link" href="#">
                         <i class="material-icons">event</i>
@@ -87,24 +88,13 @@
                     </a>
                     <ul id="popover-leave" class="nav list-group" style="display: none">
                         <a href="{%url 'leave_dashboard_page'%}" class="list-group-item">Leave Applications</a>
-                        <a href="{%url 'leave_types_page'%}" class="list-group-item">Manage leave types</a>
                         <a href="{%url 'apply_leave_page'%}" class="list-group-item">Apply for leave</a>
-                        <a href="{%url 'leave_records'%}" class="list-group-item">Leave Records</a>
+                        
+                          <a href="{%url 'leave_types_page'%}" class="list-group-item">Manage leave types</a>
+                          <a href="{%url 'leave_records'%}" class="list-group-item">Leave Records</a>
+                        
                     </ul>
-                </li>
-
-                <li class="nav-item  {{ payroll_page }}" data-toggle="popover-payroll" title="Payroll" >
-                    <a class="nav-link" href="#">
-                        <i class="material-icons">library_books</i>
-                        <p>Payroll</p>
-                    </a>
-                    <ul id="popover-payroll" class="nav list-group" style="display: none">
-                        <a href="{%url 'manage_payroll_records_page'%}" class="list-group-item">Manage Payroll Records</a>
-                        <a href="{%url 'view_payroll_records_page'%}" class="list-group-item">View Payroll Records</a>
-                        <a href="{%url 'view_payslip_page' %}" class="list-group-item">View your payslip</a>
-                    </ul>
-                </li>
-
+                </li> 
                 <li class="nav-item {{overtime_page}}" data-toggle="popover-overtime" title="Overtime">
                     <a class="nav-link" href="#">
                         <i class="material-icons">hourglass_empty</i>
@@ -191,6 +181,7 @@
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
             <div class="container-fluid">
                 <div class="navbar-wrapper">
+                    <a href="{{ request.META.HTTP_REFERER }}"><i class="material-icons">keyboard_arrow_left</i></a>
                     <a class="navbar-brand" href="#pablo"><b>{%block page_title %}{%endblock%}</b></a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
@@ -215,26 +206,22 @@
                             <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">notifications</i>
-                                {%if user.notification_set.all%}
-                                  <span class="notification">{{user.notification_set.count}}</span>
+                                {%if user.get_unread_notifications%}
+                                <span class="notification">{{user.get_unread_notifications.count}}</span>
                                 {%endif%}
                                 <p class="d-lg-none d-md-block">
                                     Some Actions
                                 </p>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-
-                              {%for notification in user.notification_set.all%}
-                                {% if notification.status == "Unread"%}
-                                  <a class="dropdown-item" 
-                                    href="{% url 'notifications_page' notification.id %}">{{notification.message}}
-                                  </a>
-                                {% endif%}
-                              {%endfor%}
-
-                              {%if not user.notification_set.all%}
-                                <a class="dropdown-item">No notifications yet</a>
-                              {%endif%}
+                                {%for notification in user.get_unread_notifications%}
+                                <a class="dropdown-item"
+                                   href="{% url 'notifications_page' %}">{{notification.message}}
+                                </a>
+                                {%endfor%}
+                                {%if not user.get_unread_notifications%}
+                                <a class="dropdown-item" href="{% url 'notifications_page'%}">View old notifications</a>
+                                {%endif%}
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -256,14 +243,14 @@
                         </li>
                     </ul>
                 </div>
-            </div>            
+            </div>
         </nav>
         <!-- End Navbar -->
-       
+
 
         <!-- Content here -->
         {%block content%}
-         
+
         {%endblock%}
 
         <!-- Content ends here       -->
@@ -529,7 +516,7 @@
 
        $('[data-toggle="popover-admin"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-admin').html();
           }
@@ -537,7 +524,7 @@
 
        $('[data-toggle="popover-payroll"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-payroll').html();
           }
@@ -545,7 +532,7 @@
 
        $('[data-toggle="popover-overtime"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-overtime').html();
           }
@@ -553,7 +540,7 @@
 
        $('[data-toggle="popover-organisation"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-organisation').html();
           }
@@ -561,7 +548,7 @@
 
        $('[data-toggle="popover-leave"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-leave').html();
           }
@@ -569,7 +556,7 @@
 
        $('[data-toggle="popover-recruitment"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-recruitment').html();
           }
@@ -577,7 +564,7 @@
 
        $('[data-toggle="popover-contracts"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-contracts').html();
           }
@@ -585,7 +572,7 @@
 
        $('[data-toggle="popover-training"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-training').html();
           }
@@ -593,7 +580,7 @@
 
        $('[data-toggle="popover-learning-and-development"]').popover({
             html: true,
-            trigger: 'mouseover',
+            trigger: 'click',
             content: function() {
             return $('#popover-learning-and-development').html();
           }

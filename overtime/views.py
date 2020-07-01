@@ -65,8 +65,8 @@ def apply_for_overtime_page(request):
         messages.success(request, "You have successfully submitted your overtime application")
 
         return HttpResponseRedirect(reverse('apply_for_overtime_page'))
-
-    recent_applications = get_recent_overtime_applications(limit=5)
+    applicant = request.user.solitonuser.employee
+    recent_applications = get_recent_overtime_applications(limit=5, applicant=applicant)
     context = {
         "overtime_page": "active",
         "recent_applications": recent_applications

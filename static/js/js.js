@@ -96,8 +96,6 @@ $(document).ready(() => {
 
     // Deleting Leave application
     $("#delete_leave_btn").click(() => {
-        // var form_data = $("#leave_form").serialize();
-
         $.ajax({
             type: 'POST',
             url: configuration['leave']['delete_leave_application'],
@@ -105,6 +103,34 @@ $(document).ready(() => {
             dataType: 'json',
             success: (data) => {
                 window.location.href = configuration['leave']['apply_leave_page'];
+            }
+        });
+    })
+
+    // Save Employee Contact
+    $("#submit_contact").click(() => {
+        var form_data = $("#contact_form").serialize();
+        $.ajax({
+            type: 'POST',
+            url: configuration['employees']['add_employee_contacts'],
+            data: form_data,
+            dataType: 'json',
+            success: (data) => {
+                window.location.href = configuration['employees']['employee_page'];
+            }
+        });
+    })
+
+    // Delete Employee Contact
+    $("#remove_contact_btn").click(() => {
+        var contact_id = $("#id_contact").data('id')
+        $.ajax({
+            type: 'POST',
+            url: configuration['employees']['delete_employee_contact'],
+            data: { "contact_id": contact_id },
+            dataType: 'json',
+            success: (data) => {
+                window.location.href = configuration['employees']['employee_page'];
             }
         });
     })

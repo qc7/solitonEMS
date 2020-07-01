@@ -5,12 +5,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.http import JsonResponse
 
-from employees.services import create_employee_instance, suspend
+from employees.services import create_employee_instance, suspend, add_employee_contacts
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import ems_login_required, hr_required, first_login, employees_full_auth_required
 from ems_auth.models import User
 from organisation_details.models import Department, Position, Team, OrganisationDetail
+from organisation_details.selectors import get_all_positions
 from settings.selectors import get_all_currencies, get_currency
 from .models import (
     Employee,
@@ -22,7 +24,8 @@ from .models import (
     Dependant,
     BankDetail, Allowance,
     Supervision,
-    Deduction)
+    Deduction,
+    Contacts)
 from leave.models import Leave_Records
 
 from settings.models import Currency
@@ -32,7 +35,8 @@ import csv
 
 from .selectors import get_employee, get_active_employees
 from notification.selectors import get_user_notifications
-from .selectors import get_employee, get_active_employees, get_passive_employees
+from .selectors import get_employee, get_active_employees, get_passive_employees, get_employee_contacts, get_contact
+from leave.selectors import get_leave_record
 
 
 
@@ -46,11 +50,11 @@ def dashboard_page(request):
         number_of_employees = Employee.objects.all().count()
         notifications = get_user_notifications(user)
         number_of_notifications = notifications.count()
-        
+
         active_employees = get_active_employees()
         suspend_employees = get_passive_employees()
         number_of_employees = active_employees.count()
-        
+
         context = {
             "user": user,
             "dashboard_page": "active",
@@ -109,26 +113,17 @@ def employee_page(request, id):
         "allowances": Allowance.objects.all(),
         "supervisee_options": Employee.objects.exclude(pk=employee.id),
         "supervisions": Supervision.objects.filter(supervisor=employee),
-        "leave_record": leave_record
+        "leave_record": leave_record,
+        "contacts": get_employee_contacts(employee)
     }
     return render(request, 'employees/employee.html', context)
 
 
-@login_required
+@ems_login_required
 @log_activity
 def edit_employee_page(request, id):
-    # redirect according to roles
-    # If user is a manager
-    user = request.user
-
-    # The line requires the user to be authenticated before accessing the view responses.
-    if not request.user.is_authenticated:
-        # if the user is not authenticated it renders a login page
-        return render(request, 'ems_auth/login.html', {"message": None})
     employee = Employee.objects.get(pk=id)
-
     context = {
-        "user": user,
         "employees_page": "active",
         "employee": employee,
         "deps": Department.objects.all(),
@@ -1139,20 +1134,34 @@ def delete_deduction(request, id):
 def edit_leave_details(request):
     if request.method == 'POST':
         # Fetching data from the edit leave' form
-
-        employee_id = request.POST['employee_id']
-        employee = Employee.objects.get(pk=employee_id)
-
+        employee = Employee.objects.get(pk=request.POST['employee_id'])
         entitlement = request.POST['entitlement']
         balance = request.POST['leave_balance']
-        last_year_balance = request.POST['balance_last_year']
+        residue = request.POST['residue']
         no_of_leaves = request.POST['no_of_leaves']
         total_taken = request.POST['total_taken']
 
-        leave_record = Leave_Records(employee=employee, leave_year=date.today().year, entitlement=entitlement, \
-                                     residue=last_year_balance, balance=balance, \
-                                     leave_applied=no_of_leaves, total_taken=total_taken)
-        leave_record.save()
+        leave_record = get_leave_record(employee)
+
+        if leave_record:
+            leave_record.entitlement=entitlement
+            leave_record.residue = residue
+            leave_record.leave_applied = no_of_leaves
+            leave_record.total_taken = total_taken
+            leave_record.balance = balance
+
+            leave_record.save()
+        else:
+            leave_record = Leave_Records(
+                employee=employee, 
+                leave_year=date.today().year, 
+                entitlement=entitlement,
+                residue=residue, balance=balance,
+                leave_applied=no_of_leaves, 
+                total_taken=total_taken
+                )
+
+            leave_record.save()
 
         context = {
             "employees_page": "active",
@@ -1300,7 +1309,7 @@ def employee_profile_page(request, employee_id):
 @log_activity
 def add_more_details_page(request, employee_id):
     employee = get_employee(employee_id)
-
+    positions = get_all_positions()
     context = {
         "user": request.user,
         "employees_page": "active",
@@ -1316,7 +1325,8 @@ def add_more_details_page(request, employee_id):
         "teams": Team.objects.all(),
         "allowances": Allowance.objects.all(),
         "supervisee_options": Employee.objects.exclude(pk=employee.id),
-        "supervisions": Supervision.objects.filter(supervisor=employee)
+        "supervisions": Supervision.objects.filter(supervisor=employee),
+        "positions": positions,
     }
 
     return render(request, 'employees/add_more_details.html', context)
@@ -1340,3 +1350,33 @@ def activate_employee(request, employee_id):
     employee.save()
     messages.success(request, "Employee activated")
     return HttpResponseRedirect(reverse('activate_employees_page'))
+
+@log_activity
+def add_employee_contacts(request):
+    if request.method == "POST":
+        contact_type = request.POST.get('contact_type')
+        contacts = request.POST.get('contact')
+        employee_id = request.POST.get('employee_id')
+
+        employee = get_employee(employee_id)
+
+        contact = Contacts(contact_type=contact_type, contact=contacts, employee=employee)
+        
+        contact.save()
+
+        messages.success(request, "Employee Contact Info saved Successfully")
+
+        return JsonResponse({'success': True, 'redirect': "employee_page"})
+
+@log_activity
+def delete_employee_contact(request):
+    if request.method == "POST":
+        employee = get_employee(employee_id)
+
+        contact_id = request.POST.get('contact_id') 
+        contact = get_contact(contact_id)
+        contact.delete()
+
+        messages.success(request, 'Contact Deleted')
+
+        return JsonResponse({'success': True, 'redirect': "employee_page"})

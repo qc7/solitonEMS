@@ -22,7 +22,6 @@ SOLITONEMS_APPS = [
     'learning_and_development',
     'training',
     'notification',
-
 ]
 
 DJANGO_APPS = [

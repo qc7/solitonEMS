@@ -54,18 +54,38 @@ def add_leave_record(employee, start_date):
     begin_date = datetime.datetime.strptime(start_date, date_format)
     start_day = begin_date.day
     start_month = begin_date.month
+    start_year = begin_date.year
 
-    leave_days = 0
+    current_year = datetime.date.today().year
 
-    if start_day>=15:
-        leave_days = (12-start_month)*1.75
-    else:
-        leave_days = (12-(start_month-1))*1.75
-    print(start_month)
-    leave_record = Leave_Records(employee=employee, leave_year=begin_date.year,\
-                    entitlement=leave_days, residue=0, leave_applied=0, total_taken=0,\
-                    balance=leave_days)
+    leave_days = 21
+
+    if start_year == current_year:
+        if start_day>=15:
+            leave_days = (12-start_month)*1.75
+        else:
+            leave_days = (12-(start_month-1))*1.75
+
+    leave_record = Leave_Records(
+        employee=employee, 
+        leave_year=current_year,
+        entitlement=leave_days, 
+        residue=0, 
+        leave_applied=0, 
+        total_taken=0,
+        balance=leave_days
+        )
 
     leave_record.save()
 
+def add_employee_contacts(request):
+    if request.method == "POST":
+        contact_type = request.POST.get('contact_type')
+        contacts = request.POST.get('contact')
+        employee_id = request.POST.get('employee_id')
 
+        employee = get_employee(employee_id)
+
+        contact = Contact(contact_type=contact_type, contact=contacts, employee=employee)
+        
+        employee.save()

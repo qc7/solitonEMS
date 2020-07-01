@@ -1,0 +1,6 @@
+id,password,last_login,email,is_superuser,is_staff,is_active,is_hod,is_hr,is_cfo,is_ceo,is_supervisor,password_changed
+1,pbkdf2_sha256$180000$Nt1e4D2Mcrs5$zZyT2ki0fm39ltTo9LFwYyL3EftI2z/BrHBhVowHkpQ=,2020-06-19 08:32:43.836483,hr@soliton.co.ug,1,1,1,0,1,0,0,0,1
+2,pbkdf2_sha256$180000$iAqqqwLNZt6m$Ww5l83Jeo0tJcES/CYHZIlsGeuUaVtwFz8vbtZ20I64=,2020-06-13 08:08:26.402784,yathrib.hassan@soliton.co.ug,0,0,1,0,1,0,0,0,1
+3,pbkdf2_sha256$180000$IBG0JNBqItt0$XasbgpDTO0ENL6DkcwO+jQq+dl5MJIcwEijdK7ETrE0=,2020-06-13 08:35:33.340988,walusimbi96@gmail.com,0,1,1,1,0,0,0,0,1
+4,pbkdf2_sha256$180000$ritw9JzIwlK0$0UAnkJgGxxaHjOR0wAKQV/TZhqGlCq4PRpkXCvle5jc=,2020-06-18 11:44:01.227773,hakimwalusimbi@yahoo.com,0,1,1,0,0,0,0,1,1
+5,pbkdf2_sha256$180000$PcyCfJVmk4gU$SjqKkMW2tf4Nq2e1UBlvfxN6LnKA7dW8rwcD8XBYTqU=,2020-06-18 11:42:56.963652,hakim@outlookconsults.com,0,1,1,0,0,0,0,0,1
