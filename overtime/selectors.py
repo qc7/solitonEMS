@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from employees.models import Employee
 from employees.selectors import get_active_employees
 from organisation_details.models import Department
+from organisation_details.selectors import get_team, get_team_instance, get_is_supervisor_in_team
 from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
 
 User = get_user_model()
@@ -58,10 +59,12 @@ def get_all_overtime_applications():
 
 def get_supervisor_pending_overtime_applications(supervisor):
     pending_applications = OvertimeApplication.objects.filter(supervisor_approval="Pending")
-    supervisor_department = supervisor.department
+    supervisor_team = get_team_instance(supervisor)
     supervisor_pending_applications = []
     for pending_application in pending_applications:
-        if pending_application.applicant.department == supervisor_department:
+        applicant = pending_application.applicant
+        applicant_team = get_team_instance(applicant)
+        if applicant_team.id is supervisor_team.id:
             supervisor_pending_applications.append(pending_application)
     return supervisor_pending_applications
 
@@ -73,12 +76,8 @@ def get_hr_pending_overtime_applications():
 
 
 def get_pending_overtime_applications(approver):
-    pending_applications = None
-
-    if approver.is_supervisor:
-        supervisor = approver.solitonuser.employee
-        pending_applications = get_supervisor_pending_overtime_applications(supervisor)
-
+    pending_applications = OvertimeApplication.objects.none()
+    is_supervisor = get_is_supervisor_in_team(approver)
     if approver.is_hod:
         hod_department = approver.solitonuser.employee.department
         pending_applications = get_hod_pending_overtime_applications(hod_department)
@@ -91,6 +90,10 @@ def get_pending_overtime_applications(approver):
 
     if approver.is_ceo:
         pending_applications = get_ceo_pending_overtime_applications()
+
+    if is_supervisor:
+        supervisor = approver.solitonuser.employee
+        pending_applications = get_supervisor_pending_overtime_applications(supervisor)
 
     return pending_applications
 
@@ -150,6 +153,13 @@ def get_supervisor_users(applicant):
             users.append(supervisor_user)
 
     return users
+
+
+def get_supervisor_user(applicant):
+    team = get_team_instance(applicant)
+    supervisor = team.supervisor
+    supervisor_user = supervisor.solitonuser.user
+    return supervisor_user
 
 
 def get_hod_users(applicant):
