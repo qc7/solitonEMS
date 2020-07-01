@@ -41,6 +41,7 @@
 
         <div class="sidebar-wrapper">
             <ul class="nav">
+              
                 <li class="nav-item {{admin}}" data-toggle="popover-admin" title="Admin">
                     <a class="nav-link" href="#" >
                         <i class="material-icons">verified_user</i>
@@ -52,13 +53,13 @@
                         <a href="{%url 'audit_trails'%}" class="list-group-item">Audit Trail</a>
                     </ul>
                 </li>
-
+              
                 <li class="nav-item {{dashboard_page}}">
                     <a class="nav-link" href="{% url 'dashboard_page' %}">
                         <i class="material-icons">dashboard</i>
                         <p>Dashboard</p>
                     </a>
-                </li>
+                </li>              
 
                 <li class="nav-item {{organisation_page}}" data-toggle="popover-organisation" title="Organisation">
                     <a class="nav-link" href="#">
@@ -79,7 +80,7 @@
                     </a>
 
                 </li>
-
+              
                 <li class="nav-item  {{ leave_page }}" data-toggle="popover-leave" title="Leave" >
                     <a class="nav-link" href="#">
                         <i class="material-icons">event</i>
@@ -87,24 +88,13 @@
                     </a>
                     <ul id="popover-leave" class="nav list-group" style="display: none">
                         <a href="{%url 'leave_dashboard_page'%}" class="list-group-item">Leave Applications</a>
-                        <a href="{%url 'leave_types_page'%}" class="list-group-item">Manage leave types</a>
                         <a href="{%url 'apply_leave_page'%}" class="list-group-item">Apply for leave</a>
-                        <a href="{%url 'leave_records'%}" class="list-group-item">Leave Records</a>
+                        
+                          <a href="{%url 'leave_types_page'%}" class="list-group-item">Manage leave types</a>
+                          <a href="{%url 'leave_records'%}" class="list-group-item">Leave Records</a>
+                        
                     </ul>
-                </li>
-
-                <li class="nav-item  {{ payroll_page }}" data-toggle="popover-payroll" title="Payroll" >
-                    <a class="nav-link" href="#">
-                        <i class="material-icons">library_books</i>
-                        <p>Payroll</p>
-                    </a>
-                    <ul id="popover-payroll" class="nav list-group" style="display: none">
-                        <a href="{%url 'manage_payroll_records_page'%}" class="list-group-item">Manage Payroll Records</a>
-                        <a href="{%url 'view_payroll_records_page'%}" class="list-group-item">View Payroll Records</a>
-                        <a href="{%url 'view_payslip_page' %}" class="list-group-item">View your payslip</a>
-                    </ul>
-                </li>
-
+                </li> 
                 <li class="nav-item {{overtime_page}}" data-toggle="popover-overtime" title="Overtime">
                     <a class="nav-link" href="#">
                         <i class="material-icons">hourglass_empty</i>

@@ -1,0 +1,23 @@
+id,name,module,full_auth,view_only,user_id
+1,Employees,,1,1,1
+2,Organisation,,1,1,1
+3,Leave,,1,1,1
+4,Payroll,,1,1,1
+5,Overtime,,1,1,1
+6,Holidays,,1,1,1
+7,Recruitment,,1,1,1
+8,Contracts,,1,1,1
+9,Training,,1,1,1
+10,Learning and Development,,1,1,1
+11,Leave,,1,1,1
+12,Employees,,1,1,2
+13,Organisation,,1,1,2
+14,Leave,,1,1,2
+15,Payroll,,1,1,2
+16,Overtime,,1,1,2
+17,Holidays,,1,1,2
+18,Recruitment,,1,1,2
+19,Contracts,,1,1,2
+20,Training,,1,1,2
+21,Learning and Development,,1,1,2
+22,Leave,,1,1,2
