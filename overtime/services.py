@@ -2,6 +2,7 @@ from django.template.loader import get_template
 
 from django.core.mail import EmailMultiAlternatives
 
+from organisation_details.selectors import get_is_supervisor_in_team
 from overtime.models import OvertimeApplication
 from overtime.selectors import get_hr_users, get_hod_users, get_cfo_users, get_ceo_users
 from SOLITONEMS.settings import BASE_DIR
@@ -110,8 +111,8 @@ def amend_overtime_service(request):
 
 
 def reject_overtime_application_service(rejecter, overtime_application):
-
-    if rejecter.is_supervisor:
+    is_supervisor = get_is_supervisor_in_team(rejecter)
+    if is_supervisor:
         rejected_overtime_application = supervisor_reject(overtime_application)
 
     elif rejecter.is_hod:
@@ -133,9 +134,10 @@ def reject_overtime_application_service(rejecter, overtime_application):
 
 
 def approve_overtime_application_service(approver, overtime_application):
+    """Changes overtime status to Approved and returns all approved overtime applications"""
     approved_overtime_application = None
-
-    if approver.is_supervisor:
+    is_supervisor = get_is_supervisor_in_team(approver)
+    if is_supervisor:
         approved_overtime_application = supervisor_approve(overtime_application)
 
     if approver.is_hod:
@@ -241,9 +243,11 @@ def send_overtime_application_approval_mail(overtime_application, domain=None):
         "server_url": domain
     }
 
-    
     subject, from_email, to = 'Overtime Application Approval', None, user,
     html_content = get_template("email/overtime_approved_notification.html").render(context)
     msg = EmailMultiAlternatives(subject, None, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
+
+
+
