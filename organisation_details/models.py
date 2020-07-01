@@ -6,7 +6,7 @@ from settings.models import Currency
 
 
 class Department(models.Model):
-    name = models.CharField(max_length=45)
+    name = models.CharField(max_length=45, unique=True)
     hod = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)
     status = models.CharField(max_length=15, default="Active")
 
@@ -15,7 +15,7 @@ class Department(models.Model):
 
 
 class Position(models.Model):
-    name = models.CharField(max_length=45)
+    name = models.CharField(max_length=45, unique=True)
     number_of_slots = models.IntegerField()
     type = models.CharField(max_length=20, default="Full Time")
     salary = models.IntegerField(default=0)
@@ -28,7 +28,7 @@ class Position(models.Model):
 
 class Team(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    name = models.CharField(max_length=45)
+    name = models.CharField(max_length=45, unique=True)
     supervisor = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(max_length=15, default="Active")
 
