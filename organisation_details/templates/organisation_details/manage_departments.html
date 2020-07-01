@@ -10,6 +10,18 @@ Manage Departments
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_add_new_depart">
             Add Department +
         </button>
+
+        <!-- Status Flash Messages -->
+        {% if messages %}
+            {% for msg in messages%}
+            <div class="alert alert-{{ msg.tags }} alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ msg }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        <!--End Status Flash Messages-->
+        
         <div class="col-md-12">
 
 
