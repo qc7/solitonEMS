@@ -36,6 +36,7 @@ import csv
 from .selectors import get_employee, get_active_employees
 from notification.selectors import get_user_notifications
 from .selectors import get_employee, get_active_employees, get_passive_employees, get_employee_contacts, get_contact
+from leave.selectors import get_leave_record
 
 
 
@@ -1133,20 +1134,34 @@ def delete_deduction(request, id):
 def edit_leave_details(request):
     if request.method == 'POST':
         # Fetching data from the edit leave' form
-
-        employee_id = request.POST['employee_id']
-        employee = Employee.objects.get(pk=employee_id)
-
+        employee = Employee.objects.get(pk=request.POST['employee_id'])
         entitlement = request.POST['entitlement']
         balance = request.POST['leave_balance']
-        last_year_balance = request.POST['balance_last_year']
+        residue = request.POST['residue']
         no_of_leaves = request.POST['no_of_leaves']
         total_taken = request.POST['total_taken']
 
-        leave_record = Leave_Records(employee=employee, leave_year=date.today().year, entitlement=entitlement, \
-                                     residue=last_year_balance, balance=balance, \
-                                     leave_applied=no_of_leaves, total_taken=total_taken)
-        leave_record.save()
+        leave_record = get_leave_record(employee)
+
+        if leave_record:
+            leave_record.entitlement=entitlement
+            leave_record.residue = residue
+            leave_record.leave_applied = no_of_leaves
+            leave_record.total_taken = total_taken
+            leave_record.balance = balance
+
+            leave_record.save()
+        else:
+            leave_record = Leave_Records(
+                employee=employee, 
+                leave_year=date.today().year, 
+                entitlement=entitlement,
+                residue=residue, balance=balance,
+                leave_applied=no_of_leaves, 
+                total_taken=total_taken
+                )
+
+            leave_record.save()
 
         context = {
             "employees_page": "active",

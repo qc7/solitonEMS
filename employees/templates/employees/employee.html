@@ -275,6 +275,12 @@
                                     <th scope="row">Leave Status</th>
                                     <td>{{employee.leave_status}}</td>
                                 </tr>
+                                <tr>
+                                    <td colspan=2>
+                                        <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
+                               data-target="#modal_add_leave_details"> <i class="fa fa-edit"></i>Edit</a>
+                                    </td>
+                                </tr>
                             </table>
                             {% else %}
                             <a href="#" class="btn btn-danger btn-round" data-toggle="modal"
@@ -1506,50 +1512,84 @@
                 <div class="modal-content">
                     <!--Header-->
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Leave Details</h4>
+                        <h4 class="modal-title" id="myModalLabel">{{employee.first_name}}'s Leave Details</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <!--Body-->
                     <div class="modal-body">
+                        {% if leave_record %}
                         <form method="POST" action="{% url 'edit_leave_details' %}"> {%csrf_token%}
                             <div class="form-group">
                                 <label>Entitlement: </label>
                                 <input type="text" class="form-control" placeholder="Entitlement" name="entitlement"
-                                       value="{{employee.annual_allowance}}" required>
+                                       value="{{leave_record.entitlement}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Residue: </label>
+                                <input type="text" class="form-control" placeholder="Residue"
+                                       value="{{leave_record.residue}}" name="residue" required>
                             </div>
                             <div class="form-group">
                                 <label>No. of Leaves: </label>
                                 <input type="text" class="form-control" placeholder="No. of Leaves"
-                                       value="0" name="no_of_leaves" required>
+                                value="{{leave_record.leave_applied}}" name="no_of_leaves" required>
                             </div>
                             <div class="form-group">
                                 <label>Total Taken: </label>
                                 <input type="text" class="form-control" placeholder="Total Taken"
-                                       value="0" name="total_taken" required>
+                                       value="{{leave_record.total_taken}}" name="total_taken" required>
                             </div>
                             <div class="form-group">
-                                <label>Current Balance: </label>
-                                <input type="text" class="form-control" placeholder="Leave Balance this Year:"
-                                       value="0" name="leave_balance" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Balance Last Year: </label>
-                                <input type="number" class="form-control" placeholder="Leave Balance last Year:"
-                                       name="balance_last_year" value="0" required>
+                                <label>Balance: </label>
+                                <input type="text" class="form-control" placeholder="Balance:"
+                                    value="{{leave_record.balance}}" name="leave_balance" required>
                             </div>
 
                             <input type="hidden" name="employee_id" value={{employee.id}}>
-                    </div>
-                    <!--Footer-->
-                    <div class="modal-footer">
-                        <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
-                                type="reset">Close</button>
-                        <button class="btn btn-danger" type="submit">Save</button>
-                    </div>
-                    </form>
+                            <!--Footer-->
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                                        type="reset">Close</button>
+                                <button class="btn btn-danger" type="submit">Save</button>
+                            </div>
+                        </form>
+                        {% else%}
+                            <form method="POST" action="{% url 'edit_leave_details' %}"> {%csrf_token%}
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Entitlement:" name="entitlement"
+                                     required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Residue:"
+                                    name="residue" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="No. of Leaves:"
+                                    name="no_of_leaves" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Total Taken:"
+                                    name="total_taken" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Balance:"
+                                    name="leave_balance" required>
+                            </div>
 
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                            <!--Footer-->
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                                        type="reset">Close</button>
+                                <button class="btn btn-danger" type="submit">Save</button>
+                            </div>
+                        </form> 
+                        {% endif%}
+
+                    </div>
+                    
                 </div>
             </div>
         </div>
