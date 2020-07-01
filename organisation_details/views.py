@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.db import IntegrityError
 
 # Create your views here.
 from employees.models import Employee
@@ -50,13 +51,20 @@ def add_new_team(request):
 
         supervisor = get_employee(supervisor_id)
         department = get_department(department_id)
-        team = Team(department=department, name=team_name, supervisor=supervisor)
-        team.save()
-        messages.success(request, f'Info Successfully Saved')
+        
+        team = Team.objects.filter(name=team_name)
 
-        messages.error(request, f'Info Not Saved, Check you inputs and try again!')
+        if team:
+            messages.warning(request, f'Team Already Exists')
 
-        return redirect('manage_teams_page')
+            return redirect('manage_teams_page')
+        else:
+            team = Team(department=department, name=team_name, supervisor=supervisor)
+            team.save()
+            messages.success(request, f'Team {team_name} added Successfully Saved')
+
+            return redirect('manage_teams_page')
+
     return redirect('manage_teams_page')
 
 
@@ -72,6 +80,8 @@ def edit_team_page(request, team_id):
         team.supervisor = supervisor
         team.name = team_name
         team.save()
+
+        messages.success(request, f'Team Info changed Successfully')
         return redirect('manage_teams_page')
 
     context = {
@@ -88,8 +98,8 @@ def delete_team(request, team_id):
     try:
         team = get_team(team_id)
         team.delete()
-        messages.success(request, f'Department Deleted Successfully')
-        return redirect('manage_departments_page')
+        messages.success(request, f'Team Deleted Successfully')
+        return redirect('manage_teams_page')
     except Team.DoesNotExist:
         messages.error(request, f'The team no longer exists on the system')
 
@@ -117,10 +127,18 @@ def add_new_department(request):
         department_name = request.POST["department_name"]
         employee_id = request.POST["employee_id"]
         employee = get_employee(employee_id)
-        department = Department(name=department_name, hod=employee)
-        department.save()
-        messages.success(request, f'Info Successfully Saved')
-        return redirect('manage_departments_page')
+
+        department = Department.objects.filter(name=department_name)
+
+        if department:
+            messages.warning(request, f'Department {department_name} Already Exists')
+
+            return redirect('manage_departments_page')
+        else:
+            department = Department(name=department_name, hod=employee)
+            department.save()
+            messages.success(request, f'Department {department_name} Successfully Saved')
+            return redirect('manage_departments_page')
 
     return redirect('manage_departments_page')
 
@@ -134,9 +152,11 @@ def edit_department(request):
         department.name = request.POST.get('department_name')
         department.hod = employee
         department.save()
+
+        messages.success(request, f'Department Info Changed Successfully')
         return redirect('manage_departments_page')
 
-    messages.error(request, f'Info Not Saved, Check you inputs and try again!')
+    messages.error(request, f'Changes Not Saved, Check your inputs and try again!')
     return redirect('manage_departments_page')
 
 
@@ -194,17 +214,23 @@ def add_new_job_position(request):
 
         currency = get_currency(currency_id)
 
-    try:
-        job = Position(name=job_title, number_of_slots=pos, type=type, salary=salary,
-                       currency=currency, description=description)
-        job.save()
-        messages.success(request, f'Info Successfully Saved')
-        return redirect('manage_job_positions_page')
+        job = Position.objects.filter(name=job_title)
 
-    except:
+        if job:
+            messages.warning(request, f'Position {job_title} Already Exists')
+
+            return redirect('manage_job_positions_page')
+        else:
+            job = Position(name=job_title, number_of_slots=pos, type=type, salary=salary,
+                        currency=currency, description=description)
+            job.save()
+
+            messages.success(request, f'Position {job_title} added Successfully')
+            return redirect('manage_job_positions_page')
+
         messages.error(request, f'Information Not Saved, Check you inputs and try again!')
 
-    return redirect('job_titles_page')
+    return redirect('manage_job_positions_page')
 
 
 def edit_job_position_page(request, position_id):
@@ -234,7 +260,7 @@ def edit_job_position(request):
     position.currency = currency
     position.description = request.POST.get('description')
     position.save()
-    messages.success(request, "Job Position successfully edited")
+    messages.success(request, "Changes successfully Saved")
     return redirect('manage_job_positions_page')
 
 

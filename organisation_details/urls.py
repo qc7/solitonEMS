@@ -16,10 +16,7 @@ urlpatterns = [
 
     # Teams
     path('add_new_team/', views.add_new_team, name="add_new_team"),
-    # path('teams/<int:id>/', views.teams_page, name="teams_page"),
     path('edit_team_page/<int:id>/', views.edit_team_page, name="edit_team_page"),
-    # path('edit_team/<int:id>/', views.edit_team, name="edit_team"),
-    path('delete_team/<int:id>/', views.delete_team, name="delete_team"),
     path('teams', views.manage_teams_page, name="manage_teams_page"),
     path('edit_team/<team_id>/', views.edit_team_page, name="edit_team_page"),
     path('delete_team/<team_id>/', views.delete_team, name="delete_team"),
