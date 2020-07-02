@@ -172,7 +172,7 @@ def view_payslip_page(request):
 
     return render(request, 'payroll/view_payslip.html', context)
 
-
+@
 @log_activity
 def your_payslip_page(request):
     # Get the payroll record from from
