@@ -58,7 +58,8 @@ def render_to_pdf(template_src, context_dict={}):
 
 def get_overtime_pay(applicant):
     current_month = datetime.datetime.today().month
-    overtime_applications = OvertimeApplication.objects.filter(date__month=current_month, applicant=applicant)
+    overtime_applications = OvertimeApplication.objects.filter(date__month=current_month, applicant=applicant,
+                                                               status="Approved")
 
     total_overtime_pay=0
     if not overtime_applications:
