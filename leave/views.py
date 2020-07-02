@@ -123,6 +123,8 @@ def edit_leave_type_page(request, id):
 
     leave = Leave_Types.objects.get(pk=id)
 
+    print("Description: ", leave.description)
+
     context = {
         "leave_page": "active",
         "leave": leave

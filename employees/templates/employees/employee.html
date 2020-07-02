@@ -123,6 +123,46 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Employee Contacts -->
+                <div class="card card-profile">
+                    <div class="card-header card-header-primary">
+                        <i class="material-icons" style="font-size: 3em; float:left; margin-right:20px">people</i>
+                        <h4 class="card-title ">
+                            Contacts</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-description">
+                            <table class="table">
+                                {% for contact in contacts%}
+                                    <tr>
+                                        <td>
+                                            {% if contact.contact_type == "Email"%}
+                                                <i class="fa fa-envelope"></i>
+                                            {% elif contact.contact_type == "Phone"%}
+                                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                            {% endif%}
+                                        </td>
+                                        <td>{{contact.contact}}</td>
+                                        <td>
+                                            {% comment %} <input type="hidden" name="contact_id" value={{contact.id}}> {% endcomment %}
+                                            <a id="id_contact" href="{% url 'delete_employee_contact' %}" data-id={{contact.id}} style="color:inherit">
+                                                <i id="remove_contact_btn" class="fa fa-times"></i>
+                                            </a> 
+                                        </td>
+                                    </tr>
+                                {% endfor%}
+                                <tr>
+                                    <td colspan=2>
+                                        <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
+                                data-target="#modal_add_contact"> <i class="fa fa-plus"></i></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Employee Contacts-->
                 <div class="card card-profile">
                     <div class="card-body">
                         <h4 class="card-title">Bank Details</h4>
@@ -234,6 +274,12 @@
                                 <tr>
                                     <th scope="row">Leave Status</th>
                                     <td>{{employee.leave_status}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan=2>
+                                        <a href="#" class="btn btn-primary btn-round" data-toggle="modal"
+                               data-target="#modal_add_leave_details"> <i class="fa fa-edit"></i>Edit</a>
+                                    </td>
                                 </tr>
                             </table>
                             {% else %}
@@ -1173,7 +1219,7 @@
                                     <option value="{{employee.organisationdetail.department.id}}">
                                         {{employee.organisationdetail.department}}</option>
                                     {% for dep in deps %}
-                                    <option value="{{dep.pk}}">{{dep.name }}</option>
+                                        <option value="{{dep.pk}}">{{dep.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -1466,54 +1512,131 @@
                 <div class="modal-content">
                     <!--Header-->
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Add {{employee.first_name}}'s Leave Details</h4>
+                        <h4 class="modal-title" id="myModalLabel">{{employee.first_name}}'s Leave Details</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <!--Body-->
                     <div class="modal-body">
+                        {% if leave_record %}
                         <form method="POST" action="{% url 'edit_leave_details' %}"> {%csrf_token%}
                             <div class="form-group">
                                 <label>Entitlement: </label>
                                 <input type="text" class="form-control" placeholder="Entitlement" name="entitlement"
-                                       value="{{employee.annual_allowance}}" required>
+                                       value="{{leave_record.entitlement}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Residue: </label>
+                                <input type="text" class="form-control" placeholder="Residue"
+                                       value="{{leave_record.residue}}" name="residue" required>
                             </div>
                             <div class="form-group">
                                 <label>No. of Leaves: </label>
                                 <input type="text" class="form-control" placeholder="No. of Leaves"
-                                       value="0" name="no_of_leaves" required>
+                                value="{{leave_record.leave_applied}}" name="no_of_leaves" required>
                             </div>
                             <div class="form-group">
                                 <label>Total Taken: </label>
                                 <input type="text" class="form-control" placeholder="Total Taken"
-                                       value="0" name="total_taken" required>
+                                       value="{{leave_record.total_taken}}" name="total_taken" required>
                             </div>
                             <div class="form-group">
-                                <label>Current Balance: </label>
-                                <input type="text" class="form-control" placeholder="Leave Balance this Year:"
-                                       value="0" name="leave_balance" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Balance Last Year: </label>
-                                <input type="number" class="form-control" placeholder="Leave Balance last Year:"
-                                       name="balance_last_year" value="0" required>
+                                <label>Balance: </label>
+                                <input type="text" class="form-control" placeholder="Balance:"
+                                    value="{{leave_record.balance}}" name="leave_balance" required>
                             </div>
 
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                            <!--Footer-->
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                                        type="reset">Close</button>
+                                <button class="btn btn-danger" type="submit">Save</button>
+                            </div>
+                        </form>
+                        {% else%}
+                            <form method="POST" action="{% url 'edit_leave_details' %}"> {%csrf_token%}
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Entitlement:" name="entitlement"
+                                     required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Residue:"
+                                    name="residue" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="No. of Leaves:"
+                                    name="no_of_leaves" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Total Taken:"
+                                    name="total_taken" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Balance:"
+                                    name="leave_balance" required>
+                            </div>
+
+                            <input type="hidden" name="employee_id" value={{employee.id}}>
+                            <!--Footer-->
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
+                                        type="reset">Close</button>
+                                <button class="btn btn-danger" type="submit">Save</button>
+                            </div>
+                        </form> 
+                        {% endif%}
+
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- modal Employee Contacts -->
+        <div class="modal fade" id="modal_add_contact" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: auto !important">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal_title">Add {{employee.first_name}}'s Contacts</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+                        <form method="POST" id="contact_form" action="{% url 'add_employee_contacts' %}"> 
+                            {%csrf_token%}
+                            <div class="form-group">
+                                <label>Type: </label>
+                                <select class="form-control" name="contact_type" required>
+                                    <option>===Choose==</option>
+                                    <option>Phone</option>
+                                    <option>Email</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <i class="fas fa-envelope prefix"></i>
+                                <input type="text" id="contact" name="contact" class="form-control" required>
+                            </div>
+                            
                             <input type="hidden" name="employee_id" value={{employee.id}}>
                     </div>
                     <!--Footer-->
                     <div class="modal-footer">
                         <button class="btn btn-outline-danger" data-dismiss="modal" aria-label="Close"
                                 type="reset">Close</button>
-                        <button class="btn btn-danger" type="submit">Save</button>
+                        <button class="btn btn-danger" type="submit" id="contact_submit">Save</button>
                     </div>
                     </form>
 
                 </div>
             </div>
         </div>
-
+        <!-- End Contacts Modal-->
     </div>
 </div>
 

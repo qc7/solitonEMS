@@ -1,5 +1,7 @@
-from django.urls import path
+from django.urls import path, reverse
 from . import views
+from django.contrib.auth import views as auth_views
+from django.conf.urls import url
 
 urlpatterns = [
     # Pages
@@ -36,6 +38,8 @@ urlpatterns = [
     path('add_dependant/', views.add_dependant, name="add_dependant"),
     path('edit_dependant/', views.edit_dependant, name="edit_dependant"),
     path('delete_dependant/<int:id>', views.delete_dependant, name="delete_dependant"),
+    path('add_employee_contacts/', views.add_employee_contacts, name="add_employee_contacts"),
+    path('delete_employee_contact/', views.delete_employee_contact, name="delete_employee_contact"),
 
 
 
@@ -58,3 +62,12 @@ urlpatterns = [
     path('activate_employees_page', views.activate_employees_page, name="activate_employees_page"),
     path('activate_employee/<int:employee_id>/', views.activate_employee, name="activate_employee"),
 ]
+
+# JS routes
+def javascript_settings():
+    js_conf = {
+        'add_employee_contacts': reverse('add_employee_contacts'),
+        'employee_page': reverse('employee_page'),
+    }
+
+    return js_conf

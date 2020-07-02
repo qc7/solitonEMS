@@ -26,6 +26,11 @@ def get_department(department_id):
     return Department.objects.get(pk=department_id)
 
 
+def get_team_instance(employee):
+    """Get employee team"""
+    return employee.organisationdetail.team
+
+
 def get_all_teams():
     return Team.objects.all()
 
@@ -36,3 +41,10 @@ def get_all_teams():
 
 def get_team(team_id):
     return Team.objects.get(pk=team_id)
+
+
+def get_is_supervisor_in_team(approver):
+    """Determine whether the approver is a supervisor"""
+    employee = approver.solitonuser.employee
+    team = get_team_instance(employee)
+    return employee.id is team.supervisor.id

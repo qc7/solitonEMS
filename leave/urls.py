@@ -34,6 +34,7 @@ urlpatterns = [
     
 ]
 
+# JS routes
 def javascript_settings():
     js_conf = {
         'get_end_date': reverse('get_end_date'),

@@ -8,12 +8,13 @@ from ems_admin.decorators import log_activity
 from ems_auth.decorators import ems_login_required, overtime_full_auth_required, hod_required
 from notification.services import create_notification
 from organisation_details.decorators import organisationdetail_required
+from organisation_details.selectors import get_is_supervisor_in_team
 
 from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
 from overtime.procedures import is_duration_valid
 from overtime.selectors import get_all_overtime_applications, get_pending_overtime_applications, \
     get_overtime_application, get_recent_overtime_applications, get_all_overtime_plans, get_most_recent_overtime_plans, \
-    get_overtime_plan, get_overtime_schedules, get_pending_overtime_plans, get_supervisor_users
+    get_overtime_plan, get_overtime_schedules, get_pending_overtime_plans, get_supervisor_users, get_supervisor_user
 from overtime.services import reject_overtime_application_service, approve_overtime_application_service, \
     update_overtime_application, reject_overtime_plan_service, approve_overtime_plan_service, \
     send_overtime_application_mail
@@ -37,17 +38,11 @@ def approve_overtime_page(request):
 @organisationdetail_required
 @log_activity
 def apply_for_overtime_page(request):
+    applicant = request.user.solitonuser.employee
     if request.POST:
         start_time = request.POST.get('start_time')
         end_time = request.POST.get('end_time')
         description = request.POST.get('description')
-
-        try:
-            applicant = request.user.solitonuser.employee
-        except:
-            messages.error(request, "The user has no employee associated with their account")
-            return HttpResponseRedirect(reverse("apply_for_overtime_page"))
-
         if not is_duration_valid(start_time, end_time):
             messages.error(request, "Duration for the overtime application is not valid")
             return HttpResponseRedirect(reverse("apply_for_overtime_page"))
@@ -58,16 +53,14 @@ def apply_for_overtime_page(request):
             description=description,
             applicant=applicant
         )
-
-        approvers = get_supervisor_users(applicant)
-        message = "You need to approve overtime from %s".format(applicant)
-        create_notification("Overtime", message, approvers)
-        send_overtime_application_mail(approvers, overtime_application)
-
+        approver = get_supervisor_user(applicant)
+        message = "You need to approve/reject overtime application from {}".format(applicant)
+        create_notification("Overtime", message, [approver])
+        approver = get_supervisor_user(applicant)
+        send_overtime_application_mail([approver], overtime_application)
         messages.success(request, "You have successfully submitted your overtime application")
-
         return HttpResponseRedirect(reverse('apply_for_overtime_page'))
-    applicant = request.user.solitonuser.employee
+
     recent_applications = get_recent_overtime_applications(limit=5, applicant=applicant)
     context = {
         "overtime_page": "active",

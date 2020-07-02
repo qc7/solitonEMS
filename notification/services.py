@@ -11,7 +11,7 @@ def create_notification(title, message, receivers):
         notification = Notification.objects.create(
             title=title,
             message=message,
-            date_time=datetime.date.today(),
+            date_time=datetime.datetime.now(),
             user=user
         )
 
