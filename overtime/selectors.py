@@ -3,7 +3,8 @@ from django.contrib.auth import get_user_model
 from employees.models import Employee
 from employees.selectors import get_active_employees
 from organisation_details.models import Department
-from organisation_details.selectors import get_team, get_team_instance, get_is_supervisor_in_team
+from organisation_details.selectors import get_team, get_team_instance, get_is_supervisor_in_team, \
+    get_is_hod_in_department
 from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
 
 User = get_user_model()
@@ -17,6 +18,7 @@ def get_hod_pending_overtime_applications(hod_department):
     # Get the pending overtime applications for the particular hod department
     pending_applications = OvertimeApplication.objects.filter(status="Pending", HOD_approval="Pending",
                                                               supervisor_approval="Approved")
+
     hod_pending_applications = []
     for pending_application in pending_applications:
         if pending_application.applicant.department == hod_department:
@@ -75,10 +77,16 @@ def get_hr_pending_overtime_applications():
     return pending_applications
 
 
+def get_hod_in_department(approver):
+    pass
+
+
 def get_pending_overtime_applications(approver):
     pending_applications = OvertimeApplication.objects.none()
     is_supervisor = get_is_supervisor_in_team(approver)
-    if approver.is_hod:
+    is_hod = get_is_hod_in_department(approver)
+
+    if is_hod:
         hod_department = approver.solitonuser.employee.department
         pending_applications = get_hod_pending_overtime_applications(hod_department)
 
