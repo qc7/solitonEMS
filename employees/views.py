@@ -454,6 +454,7 @@ def edit_organisation_details(request):
         organisation_detail = OrganisationDetail.objects.get(employee=employee)
         organisation_detail.department = department
         organisation_detail.position = position
+        organisation_detail.team = team
         # Saving the BankDetail instance
         organisation_detail.save()
         context = {
