@@ -1,4 +1,0 @@
-id,action_time,object_id,object_repr,change_message,content_type_id,user_id,action_flag
-1,2020-03-17 13:08:40.463555,1,UGX,"[{""added"": {}}]",27,1,1
-2,2020-03-17 13:09:05.460420,2,USD,"[{""added"": {}}]",27,1,1
-3,2020-03-18 09:55:50.785375,1,Bright Kanyange,"[{""added"": {}}]",3,1,1
