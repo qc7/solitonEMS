@@ -2,6 +2,16 @@
 {% load static %}
 {% block page_title %}
 Leave Types
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#leave_types tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -26,6 +36,10 @@ Leave Types
       <div class="card">
         <div class="card-body">
           <div class="table-responsive table-striped table-condensed">
+            <div class="form-group "> 
+                                <i class="fas fa-search " aria-hidden="true"></i>
+                                <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                            </div>
             <table class="table table-hover" id="types_tables">
               <thead class="thead">
               <th>ID</th>
@@ -34,7 +48,7 @@ Leave Types
               <th>Description</th>
               <th colspan=2>#</th>
               </thead>
-              <tbody>
+              <tbody id="leave_types">
               
               {% for typ in types %}
               <tr data-id="{{ typ.id }}" >
@@ -54,7 +68,7 @@ Leave Types
               {% endfor %}
               </tbody>
             </table>
-            <hr/>
+            {% comment %} <hr/>
             <table class="table table-hover" id="types_table">
               <thead class="thead">
               <th>ID</th>
@@ -73,7 +87,7 @@ Leave Types
                 <td>{{typ.description}}</td>
                 <td>
                   <a href="{% url 'edit_leave_type_page' typ.id %}" style="color:inherit">
-                    {% comment %} <button class="btn btn-success" data-toggle="modal"type="button">Edit</button> {% endcomment %}
+                    {% comment %} <button class="btn btn-success" data-toggle="modal"type="button">Edit</button>
                     <i class="fa fa-edit">Edit</i>
                   </a>
                   <a href="{% url 'delete_leave_type' typ.id %}" style="color: inherit" ...
@@ -83,7 +97,7 @@ Leave Types
               </tr>
               {% endfor %}
               </tbody>
-            </table>
+            </table> {% endcomment %}
           </div>
         </div>
 

@@ -1,6 +1,17 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
 User Contracts
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#contract_list tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -13,6 +24,10 @@ User Contracts
                     <h3 style="text-align:center;">Active Contracts</h3>
                     <hr>
                     <div class="table-responsive">
+                        <div class="form-group "> 
+                            <i class="fas fa-search " aria-hidden="true"></i>
+                            <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                        </div>
                         <table class="table table-hover">
                             <thead class="thead-dark">
                             <th>Reference Number</th>
@@ -23,7 +38,7 @@ User Contracts
                             <th>Status</th>
                             <th>Document</th>
                             </thead>
-                            <tbody>
+                            <tbody id="contract_list">
                             {% for contract in contracts %}
                             <tr>
                                 <td><a href="#" style="color: inherit">{{contract.reference_number}}</a></td>
