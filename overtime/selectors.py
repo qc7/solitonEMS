@@ -46,6 +46,7 @@ def get_cfo_pending_overtime_applications():
 def get_ceo_pending_overtime_applications():
     pending_applications = OvertimeApplication.objects.filter(status="Pending", cfo_approval="Approved",
                                                               ceo_approval="Pending")
+
     return pending_applications
 
 
@@ -207,3 +208,9 @@ def get_cfo_users():
 def get_ceo_users():
     all_ceo_users = User.objects.filter(is_ceo=True)
     return all_ceo_users
+
+
+def get_is_overtime_approver(approver_user: User) -> bool:
+    is_supervisor = get_is_supervisor_in_team(approver_user)
+    is_hod = get_is_hod_in_department(approver_user)
+    return is_hod or approver_user.is_hr or approver_user.is_cfo or approver_user.is_ceo or is_supervisor
