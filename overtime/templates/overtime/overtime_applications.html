@@ -43,7 +43,7 @@ Overtime Applications
                             <td>{{ overtime_application.end_time }}</td>
                             <td>{{ overtime_application.description }}</td>
                             <td>{{ overtime_application.status }}</td>
-                            <td>{{ overtime_application.overtime_pay }}</td>
+                            <td>{{overtime_application.applicant.currency}} {{ overtime_application.overtime_pay | intcomma }}</td>
                             <td>{{ overtime_application.number_of_hours }}</td>
                             <td>{{overtime_application.supervisor_approval}}</td>
                             <td>{{overtime_application.HOD_approval}}</td>
