@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from contracts.models import Contract
 from contracts.selectors import get_contract, get_terminated_contracts, get_active_contracts, get_employee_contracts
-from contracts.services import activate
+from contracts.services import activate, terminate
 from employees.selectors import get_employee, get_active_employees
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import contracts_full_auth_required, hr_required

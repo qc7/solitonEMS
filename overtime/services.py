@@ -2,9 +2,11 @@ from django.template.loader import get_template
 
 from django.core.mail import EmailMultiAlternatives
 
-from organisation_details.selectors import get_is_supervisor_in_team
+from organisation_details.selectors import get_is_supervisor_in_team, get_is_hod_in_department
 from overtime.models import OvertimeApplication
-from overtime.selectors import get_hr_users, get_hod_users, get_cfo_users, get_ceo_users
+
+from overtime.selectors import get_hr_users, get_hod_users, get_cfo_users, get_ceo_users, \
+    get_ceo_pending_overtime_applications
 
 
 def approve_overtime_application_finally(id):
@@ -82,6 +84,7 @@ def hod_approve(overtime_application):
 
 
 def cfo_approve(overtime_application):
+    """Tested works fine"""
     overtime_application.cfo_approval = 'Approved'
     overtime_application.save()
     approvers = get_ceo_users()
@@ -111,10 +114,12 @@ def amend_overtime_service(request):
 
 def reject_overtime_application_service(rejecter, overtime_application):
     is_supervisor = get_is_supervisor_in_team(rejecter)
+    is_hod = get_is_hod_in_department(rejecter)
+    
     if is_supervisor:
         rejected_overtime_application = supervisor_reject(overtime_application)
 
-    elif rejecter.is_hod:
+    elif is_hod:
         rejected_overtime_application = hod_reject(overtime_application)
 
     elif rejecter.is_hr:
@@ -136,10 +141,11 @@ def approve_overtime_application_service(approver, overtime_application):
     """Changes overtime status to Approved and returns all approved overtime applications"""
     approved_overtime_application = None
     is_supervisor = get_is_supervisor_in_team(approver)
+    is_hod = get_is_hod_in_department(approver)
     if is_supervisor:
         approved_overtime_application = supervisor_approve(overtime_application)
 
-    if approver.is_hod:
+    if is_hod:
         approved_overtime_application = hod_approve(overtime_application)
 
     if approver.is_hr:
@@ -247,6 +253,3 @@ def send_overtime_application_approval_mail(overtime_application, domain=None):
     msg = EmailMultiAlternatives(subject, None, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
-
-
-

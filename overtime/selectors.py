@@ -3,7 +3,8 @@ from django.contrib.auth import get_user_model
 from employees.models import Employee
 from employees.selectors import get_active_employees
 from organisation_details.models import Department
-from organisation_details.selectors import get_team, get_team_instance, get_is_supervisor_in_team
+from organisation_details.selectors import get_team, get_team_instance, get_is_supervisor_in_team, \
+    get_is_hod_in_department
 from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
 
 User = get_user_model()
@@ -17,6 +18,7 @@ def get_hod_pending_overtime_applications(hod_department):
     # Get the pending overtime applications for the particular hod department
     pending_applications = OvertimeApplication.objects.filter(status="Pending", HOD_approval="Pending",
                                                               supervisor_approval="Approved")
+
     hod_pending_applications = []
     for pending_application in pending_applications:
         if pending_application.applicant.department == hod_department:
@@ -44,6 +46,7 @@ def get_cfo_pending_overtime_applications():
 def get_ceo_pending_overtime_applications():
     pending_applications = OvertimeApplication.objects.filter(status="Pending", cfo_approval="Approved",
                                                               ceo_approval="Pending")
+
     return pending_applications
 
 
@@ -75,26 +78,44 @@ def get_hr_pending_overtime_applications():
     return pending_applications
 
 
-def get_pending_overtime_applications(approver):
-    pending_applications = OvertimeApplication.objects.none()
-    is_supervisor = get_is_supervisor_in_team(approver)
-    if approver.is_hod:
-        hod_department = approver.solitonuser.employee.department
-        pending_applications = get_hod_pending_overtime_applications(hod_department)
+def get_hod_in_department(approver):
+    pass
 
-    if approver.is_hr:
-        pending_applications = get_hr_pending_overtime_applications()
 
-    if approver.is_cfo:
-        pending_applications = get_cfo_pending_overtime_applications()
+def get_pending_overtime_applications(approver_user: User) -> dict:
+    """Return a dictionary of pending applications per user role"""
+    hod_pending_applications = OvertimeApplication.objects.none()
+    hr_pending_applications = OvertimeApplication.objects.none()
+    cfo_pending_applications = OvertimeApplication.objects.none()
+    ceo_pending_applications = OvertimeApplication.objects.none()
+    supervisor_pending_applications = OvertimeApplication.objects.none()
+    is_supervisor = get_is_supervisor_in_team(approver_user)
+    is_hod = get_is_hod_in_department(approver_user)
 
-    if approver.is_ceo:
-        pending_applications = get_ceo_pending_overtime_applications()
+    if is_hod:
+        hod_department = approver_user.solitonuser.employee.department
+        hod_pending_applications = get_hod_pending_overtime_applications(hod_department)
+
+    if approver_user.is_hr:
+        hr_pending_applications = get_hr_pending_overtime_applications()
+
+    if approver_user.is_cfo:
+        cfo_pending_applications = get_cfo_pending_overtime_applications()
+
+    if approver_user.is_ceo:
+        ceo_pending_applications = get_ceo_pending_overtime_applications()
 
     if is_supervisor:
-        supervisor = approver.solitonuser.employee
-        pending_applications = get_supervisor_pending_overtime_applications(supervisor)
+        supervisor = approver_user.solitonuser.employee
+        supervisor_pending_applications = get_supervisor_pending_overtime_applications(supervisor)
 
+    pending_applications = {
+        "supervisor_pending_applications": supervisor_pending_applications,
+        "hod_pending_applications": hod_pending_applications,
+        "hr_pending_applications": hr_pending_applications,
+        "cfo_pending_applications": cfo_pending_applications,
+        "ceo_pending_applications": ceo_pending_applications,
+    }
     return pending_applications
 
 
@@ -187,3 +208,9 @@ def get_cfo_users():
 def get_ceo_users():
     all_ceo_users = User.objects.filter(is_ceo=True)
     return all_ceo_users
+
+
+def get_is_overtime_approver(approver_user: User) -> bool:
+    is_supervisor = get_is_supervisor_in_team(approver_user)
+    is_hod = get_is_hod_in_department(approver_user)
+    return is_hod or approver_user.is_hr or approver_user.is_cfo or approver_user.is_ceo or is_supervisor

@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -8,13 +8,13 @@ from ems_admin.decorators import log_activity
 from ems_auth.decorators import ems_login_required, overtime_full_auth_required, hod_required
 from notification.services import create_notification
 from organisation_details.decorators import organisationdetail_required
-from organisation_details.selectors import get_is_supervisor_in_team
+
 
 from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
 from overtime.procedures import is_duration_valid
 from overtime.selectors import get_all_overtime_applications, get_pending_overtime_applications, \
-    get_overtime_application, get_recent_overtime_applications, get_all_overtime_plans, get_most_recent_overtime_plans, \
-    get_overtime_plan, get_overtime_schedules, get_pending_overtime_plans, get_supervisor_users, get_supervisor_user
+    get_overtime_application, get_recent_overtime_applications, get_most_recent_overtime_plans, \
+    get_overtime_plan, get_overtime_schedules, get_pending_overtime_plans, get_supervisor_user
 from overtime.services import reject_overtime_application_service, approve_overtime_application_service, \
     update_overtime_application, reject_overtime_plan_service, approve_overtime_plan_service, \
     send_overtime_application_mail
@@ -25,11 +25,16 @@ from overtime.services import reject_overtime_application_service, approve_overt
 @organisationdetail_required
 @log_activity
 def approve_overtime_page(request):
-    approver = request.user
-    pending_applications = get_pending_overtime_applications(approver)
+    approver_user = request.user
+    pending_applications = get_pending_overtime_applications(approver_user)
     context = {
         "overtime_page": "active",
-        "pending_applications": pending_applications
+        "supervisor_pending_applications": pending_applications["supervisor_pending_applications"],
+        "hod_pending_applications": pending_applications["hod_pending_applications"],
+        "hr_pending_applications": pending_applications["hr_pending_applications"],
+        "cfo_pending_applications": pending_applications["cfo_pending_applications"],
+        "ceo_pending_applications": pending_applications["ceo_pending_applications"],
+
     }
     return render(request, 'overtime/overtime_page.html', context)
 
