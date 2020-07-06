@@ -3,6 +3,17 @@
 
 {%block page_title %}
 Payroll Records (USD)
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#payroll_usd_list tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {%endblock%}
 
 {%block content%}
@@ -30,6 +41,10 @@ Payroll Records (USD)
                 <h3>No USD payslips</h3>
                 {%else%}
                 <div class="table-responsive">
+                    <div class="form-group "> 
+                        <i class="fas fa-search " aria-hidden="true"></i>
+                        <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                    </div>
                     <table class="table">
                         <thead class="thead-dark">
                         <th>Emp. ID</th>
@@ -43,6 +58,7 @@ Payroll Records (USD)
                         <th>NSSF Contribution(UGX)</th>
                         <th>Actions</th>
                         </thead>
+                        <tbody id="payroll_usd_list"
                         {%if usd_payslips%}
                         {%for payroll in usd_payslips%}
                         <tr>
@@ -70,6 +86,7 @@ Payroll Records (USD)
                             <td>UGX {{total_nssf_contribution_ugx | intcomma}}</td>
                         </tr>
                         {%endif%}
+                        </tbody>
                     </table>
                 </div>
                 <a href="{%url 'payroll_download_usd' payroll_record.id %}">

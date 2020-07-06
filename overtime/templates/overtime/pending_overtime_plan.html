@@ -2,6 +2,17 @@
 
 {%block page_title %}
 Pending Overtime Plan
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#pending_overtime_plan_list tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {%endblock%}
 {%block content%}
 <div class="content">
@@ -10,11 +21,16 @@ Pending Overtime Plan
             <div class="card-body">
                 <h3>Plan Details</h3>
                 <div class="table-responsive">
+                    <div class="form-group "> 
+                        <i class="fas fa-search " aria-hidden="true"></i>
+                        <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                    </div>
                     <table class="table table-hover">
                         <thead>
                         <th>ID</th>
                         <th>{{overtime_plan.id}}</th>
                         </thead>
+                        <tbody id="pending_overtime_plan_list">
                         <tr>
                             <td>Applicant</td>
                             <td>{{overtime_plan.applicant}}</td>
@@ -27,6 +43,7 @@ Pending Overtime Plan
                             <td>Date</td>
                             <td>{{overtime_plan.date}}</td>
                         </tr>
+                        </tbody>
                     </table>
                 </div>
                 {%if overtime_schedules%}

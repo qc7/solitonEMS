@@ -2,6 +2,17 @@
 
 {%block page_title %}
 Approve Overtime Applications
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#overtime_page tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {%endblock%}
 {%block content%}
 <div class="content">
@@ -17,6 +28,10 @@ Approve Overtime Applications
                 {%if pending_applications %}
                 <h3>Pending applications</h3>
                 <div class="table-responsive">
+                    <div class="form-group "> 
+                        <i class="fas fa-search " aria-hidden="true"></i>
+                        <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                    </div>
                     <table class="table">
                         <thead class="thead-dark">
                         <th>Name</th>
@@ -26,6 +41,7 @@ Approve Overtime Applications
                         <th>Description</th>
                         <th>Actions</th>
                         </thead>
+                        <tbody id="ovetime_page">
                         {%for pending_application in pending_applications %}
                         <tr>
                             <td>{{pending_application.applicant.first_name}} {{pending_application.applicant.last_name}}
@@ -45,6 +61,7 @@ Approve Overtime Applications
 
                         </tr>
                         {%endfor%}
+                        </tbody>
                     </table>
                 </div>
                 {%else%}

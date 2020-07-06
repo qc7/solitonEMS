@@ -3,6 +3,17 @@
 {% load static %}
 {% block page_title %}
 Overtime Applications
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#overtime_application tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {% endblock %}
 
 {%block content%}
@@ -16,6 +27,10 @@ Overtime Applications
             <div class="card-body">
                 {%if overtime_applications%}
                 <div class="table-responsive">
+                    <div class="form-group "> 
+                        <i class="fas fa-search " aria-hidden="true"></i>
+                        <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                    </div>
                     <table class="table">
                         <thead class="thead-dark">
                         <th>ID</th>
@@ -28,6 +43,7 @@ Overtime Applications
                         <th>Overtime Pay</th>
                         <th>Number of hours</th>
                         </thead>
+                        <tbody id="overtime_application">
                         {%for overtime_application in overtime_applications%}
                         <tr>
                             <td>{{overtime_application.id}}</td>
@@ -43,6 +59,7 @@ Overtime Applications
                             <td>{{ overtime_application.number_of_hours }}</td>
                         </tr>
                         {% endfor %}
+                        </tbody>
                     </table>
                 </div>
                 {% else %}
