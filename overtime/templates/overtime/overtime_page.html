@@ -25,8 +25,8 @@ $(document).ready(function(){
                 {% endfor %}
                 {% endif %}
 
-                {%if pending_applications %}
-                <h3>Pending applications</h3>
+                {%if supervisor_pending_applications %}
+                <h3>As Supervisor of {{request.user.solitonuser.employee.organisationdetail.team}} Team</h3>
                 <div class="table-responsive">
                     <div class="form-group "> 
                         <i class="fas fa-search " aria-hidden="true"></i>
@@ -42,7 +42,8 @@ $(document).ready(function(){
                         <th>Actions</th>
                         </thead>
                         <tbody id="ovetime_page">
-                        {%for pending_application in pending_applications %}
+                        {% comment %} {%for pending_application in pending_applications %} {% endcomment %}
+                        {%for pending_application in supervisor_pending_applications %}
                         <tr>
                             <td>{{pending_application.applicant.first_name}} {{pending_application.applicant.last_name}}
                             </td>
@@ -51,22 +52,142 @@ $(document).ready(function(){
                             <td>{{pending_application.end_time}}</td>
                             <td>{{pending_application.description}}</td>
                             <td>
-
                                 <a href="{%url 'pending_overtime_application_page' pending_application.id%}">
                                     <button>View Application</button>
                                 </a>
-
-
                             </td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                {%endif%}
 
+
+                {%if hod_pending_applications %}
+                <h3>As Head of {{request.user.solitonuser.employee.organisationdetail.department}} Department</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Start time</th>
+                        <th>End time</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                        </thead>
+                        {%for pending_application in hod_pending_applications %}
+                        <tr>
+                            <td>{{pending_application.applicant.first_name}} {{pending_application.applicant.last_name}}
+                            </td>
+                            <td>{{pending_application.date}}</td>
+                            <td>{{pending_application.start_time}}</td>
+                            <td>{{pending_application.end_time}}</td>
+                            <td>{{pending_application.description}}</td>
+                            <td>
+                                <a href="{%url 'pending_overtime_application_page' pending_application.id%}">
+                                    <button>View Application</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                {%endif%}
+
+                {%if hr_pending_applications %}
+                <h3>As Human Resource Officer</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Start time</th>
+                        <th>End time</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                        </thead>
+                        {%for pending_application in hr_pending_applications %}
+                        <tr>
+                            <td>{{pending_application.applicant.first_name}} {{pending_application.applicant.last_name}}
+                            </td>
+                            <td>{{pending_application.date}}</td>
+                            <td>{{pending_application.start_time}}</td>
+                            <td>{{pending_application.end_time}}</td>
+                            <td>{{pending_application.description}}</td>
+                            <td>
+                                <a href="{%url 'pending_overtime_application_page' pending_application.id%}">
+                                    <button>View Application</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                {%endif%}
+
+                {%if cfo_pending_applications %}
+                <h3>As Chief Finance Officer</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Start time</th>
+                        <th>End time</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                        </thead>
+                        {%for pending_application in cfo_pending_applications %}
+                        <tr>
+                            <td>{{pending_application.applicant.first_name}} {{pending_application.applicant.last_name}}
+                            </td>
+                            <td>{{pending_application.date}}</td>
+                            <td>{{pending_application.start_time}}</td>
+                            <td>{{pending_application.end_time}}</td>
+                            <td>{{pending_application.description}}</td>
+                            <td>
+                                <a href="{%url 'pending_overtime_application_page' pending_application.id%}">
+                                    <button>View Application</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                {%endif%}
+
+                {%if ceo_pending_applications %}
+                <h3>As Chief Executive Officer</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Start time</th>
+                        <th>End time</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                        </thead>
+                        {%for pending_application in ceo_pending_applications %}
+                        <tr>
+                            <td>{{pending_application.applicant.first_name}} {{pending_application.applicant.last_name}}
+                            </td>
+                            <td>{{pending_application.date}}</td>
+                            <td>{{pending_application.start_time}}</td>
+                            <td>{{pending_application.end_time}}</td>
+                            <td>{{pending_application.description}}</td>
+                            <td>
+                                <a href="{%url 'pending_overtime_application_page' pending_application.id%}">
+                                    <button>View Application</button>
+                                </a>
+                            </td>
                         </tr>
                         {%endfor%}
                         </tbody>
                     </table>
                 </div>
-                {%else%}
-                <h3>No pending applications</h3>
                 {%endif%}
+                <!--                End of tables-->
             </div>
         </div>
     </div>
