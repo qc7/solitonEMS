@@ -1,6 +1,17 @@
 {% extends './base.html' %}
 {% block page_title %}
 Manage Teams
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#teams tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -13,21 +24,26 @@ Manage Teams
 
         <!-- Status Flash Messages -->
         {% if messages %}
-            {% for msg in messages%}
-            <div class="alert alert-{{ msg.tags }} alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {{ msg }}
-            </div>
-            {% endfor %}
+        {% for msg in messages%}
+        <div class="alert alert-{{ msg.tags }} alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ msg }}
+        </div>
+        {% endfor %}
         {% endif %}
         <!--End Status Flash Messages-->
-        
+
         <div class="col-md-12">
 
             <div class="card">
                 <div class="card-body">
                     {%if teams%}
                     <div class="table-responsive">
+                        <div class="form-group ">
+                            <i class="fas fa-search " aria-hidden="true"></i>
+                            <input id="search_input" type="text" class="form-control" placeholder="Search....">
+                        </div>
+                        <br>
                         <table class="table table-hover">
                             <thead class="thead-dark">
                             <th>Name</th>
@@ -36,7 +52,7 @@ Manage Teams
                             <th>Status</th>
                             <th>Action</th>
                             </thead>
-                            <tbody>
+                            <tbody id="teams">
                             {% for team in teams %}
                             <tr>
                                 <td><a href="#" style="color: inherit">{{ team.name }}</a></td>
