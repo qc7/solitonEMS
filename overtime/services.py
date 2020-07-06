@@ -4,7 +4,8 @@ from django.core.mail import EmailMultiAlternatives
 
 from organisation_details.selectors import get_is_supervisor_in_team, get_is_hod_in_department
 from overtime.models import OvertimeApplication
-from overtime.selectors import get_hr_users, get_hod_users, get_cfo_users, get_ceo_users
+from overtime.selectors import get_hr_users, get_hod_users, get_cfo_users, get_ceo_users, \
+    get_ceo_pending_overtime_applications
 from SOLITONEMS.settings import BASE_DIR
 
 
@@ -83,6 +84,7 @@ def hod_approve(overtime_application):
 
 
 def cfo_approve(overtime_application):
+    """Tested works fine"""
     overtime_application.cfo_approval = 'Approved'
     overtime_application.save()
     approvers = get_ceo_users()

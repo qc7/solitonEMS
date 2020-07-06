@@ -27,6 +27,10 @@ Overtime Applications
                         <th>Status</th>
                         <th>Overtime Pay</th>
                         <th>Number of hours</th>
+                        <th>Supervisor Approval</th>
+                        <th>HOD Approval</th>
+                        <th>CFO Approval</th>
+                        <th>CEO Approval</th>
                         </thead>
                         {%for overtime_application in overtime_applications%}
                         <tr>
@@ -39,8 +43,12 @@ Overtime Applications
                             <td>{{ overtime_application.end_time }}</td>
                             <td>{{ overtime_application.description }}</td>
                             <td>{{ overtime_application.status }}</td>
-                            <td>{{ overtime_application.overtime_pay }}</td>
+                            <td>{{overtime_application.applicant.currency}} {{ overtime_application.overtime_pay | intcomma }}</td>
                             <td>{{ overtime_application.number_of_hours }}</td>
+                            <td>{{overtime_application.supervisor_approval}}</td>
+                            <td>{{overtime_application.HOD_approval}}</td>
+                            <td>{{overtime_application.cfo_approval}}</td>
+                            <td>{{overtime_application.ceo_approval}}</td>
                         </tr>
                         {% endfor %}
                     </table>
