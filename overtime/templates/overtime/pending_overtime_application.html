@@ -2,6 +2,17 @@
 
 {%block page_title %}
 Pending Overtime Application
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#pending_overtime_list tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {%endblock%}
 {%block content%}
 <div class="content">
@@ -9,11 +20,16 @@ Pending Overtime Application
         <div class="card animated fadeInUp">
             <div class="card-body">
                 <div class="table-responsive">
+                    <div class="form-group "> 
+                        <i class="fas fa-search " aria-hidden="true"></i>
+                        <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                    </div>
                     <table class="table table-hover">
                         <thead>
                         <th>Applicants Name</th>
                         <th>{{overtime_application.applicant}}</th>
                         </thead>
+                        </tbody id="pending_overtime_list">
                         <tr>
                             <td>Start Time</td>
                             <td>{{overtime_application.start_time}}</td>
@@ -66,6 +82,7 @@ Pending Overtime Application
                             <td>Date</td>
                             <td>{{overtime_application.date}}</td>
                         </tr>
+                        </tbody>
                     </table>
                 </div>
                 <a href="{%url 'reject_overtime_application' overtime_application.id%}"

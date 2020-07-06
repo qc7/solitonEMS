@@ -3,6 +3,16 @@
 
 {%block page_title %}
 Payroll Records (UGX)
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#payroll_record_list tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {%endblock%}
 
 {%block content%}
@@ -44,6 +54,10 @@ Payroll Records (UGX)
 
                 {%else%}
                 <div class="table-responsive">
+                    <div class="form-group "> 
+                        <i class="fas fa-search " aria-hidden="true"></i>
+                        <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                    </div>
                     <table class="table">
                         <thead class="thead-dark">
                         <th>Emp. ID</th>
@@ -55,6 +69,7 @@ Payroll Records (UGX)
                         <th>Net Pay</th>
                         <th>Actions</th>
                         </thead>
+                        <tbody id="payroll_record_list">
                         {%for payroll in ugx_payslips%}
                         <tr>
                             <td>{{payroll.employee.id}}</td>
@@ -76,6 +91,7 @@ Payroll Records (UGX)
                             <td>UGX {{total_basic_pay | intcomma}}</td>
                             <td>UGX {{total_net_pay | intcomma}}</td>
                         </tr>
+                        </tbody>
                     </table>
                 </div>
                 <a href="{%url 'payroll_download' payroll_record.id %}">

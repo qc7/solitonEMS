@@ -1,6 +1,17 @@
 {% extends './base.html' %}
 {% block page_title %}
 Positions
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#position_list tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -29,6 +40,10 @@ Positions
                 <div class="card-body">
                     {%if positions%}
                     <div class="table-responsive">
+                        <div class="form-group "> 
+                            <i class="fas fa-search " aria-hidden="true"></i>
+                            <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                        </div>
                         <table class="table table-hover">
                             <thead class="thead-dark">
                             <th>ID</th>
@@ -36,7 +51,7 @@ Positions
                             <th>Capacity</th>
                             <th>Actions</th>
                             </thead>
-                            <tbody>
+                            <tbody id="position_list">
                             {% for position in positions %}
                             <tr>
                                 <td>{{ position.id }}</td>
