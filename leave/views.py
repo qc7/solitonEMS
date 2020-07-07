@@ -481,7 +481,8 @@ def reject_leave(request):
         messages.success(request, 'Leave request rejected Successfully')
         return JsonResponse({'success': True, 'redirect': "leave_dashboard_page"})
 
-
+@hr_required
+@ems_login_required
 def leave_records(request):
     if not request.user.is_authenticated:
         return render(request, "ems_auth/login.html", {"message": None})
