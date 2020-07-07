@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from SOLITONEMS.settings import BASE_DIR
 from employees.selectors import get_employees_paid_in_usd, get_employees_paid_in_ugx
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import payroll_full_auth_required, hr_required
+from ems_auth.decorators import hr_required
 from ems_auth.models import SolitonUser
 from payroll.selectors import get_payroll_record_by_id, get_ugx_payslips, get_usd_payslips, \
     get_payslips
@@ -25,7 +25,7 @@ from .procedures import get_total_non_statutory_deductions, get_total_nssf, get_
     get_total_net_pay, render_to_pdf
 
 
-@payroll_full_auth_required
+@hr_required
 @log_activity
 def payroll_page(request):
     context = {
@@ -34,8 +34,6 @@ def payroll_page(request):
     return render(request, 'payroll/payroll_page.html', context)
 
 
-@hr_required
-@payroll_full_auth_required
 @hr_required
 @log_activity
 def manage_payroll_records_page(request):
@@ -54,7 +52,6 @@ def manage_payroll_records_page(request):
 
 
 @hr_required
-@payroll_full_auth_required
 @log_activity
 def view_payroll_records_page(request):
     context = {
@@ -65,7 +62,7 @@ def view_payroll_records_page(request):
     return render(request, 'payroll/payroll_records.html', context)
 
 
-@payroll_full_auth_required
+@hr_required
 @log_activity
 def payroll_record_page(request, id):
     # Get the payroll record
@@ -98,7 +95,7 @@ def payroll_record_page(request, id):
     return render(request, 'payroll/payroll_record.html', context)
 
 
-@payroll_full_auth_required
+@hr_required
 @log_activity
 def payroll_record_page_usd(request, id):
     # Get the payroll record
@@ -146,7 +143,7 @@ def edit_period_page(request, id):
     return render(request, 'payroll/edit_payroll.html', context)
 
 
-@payroll_full_auth_required
+@hr_required
 @log_activity
 def payslip_page(request, id):
     # Get the payroll
@@ -203,7 +200,7 @@ def your_payslip_page(request):
     return render(request, 'payroll/payslip.html', context)
 
 
-@payroll_full_auth_required
+@hr_required
 @log_activity
 def payslips_page(request, payroll_record_id):
     payroll_record = get_payroll_record_by_id(payroll_record_id)
@@ -278,7 +275,7 @@ def edit_period(request):
     return HttpResponseRedirect(reverse('manage_payroll_records_page'))
 
 
-@payroll_full_auth_required
+@hr_required
 def create_payroll_payslips(request, id):
     payroll_record = get_payroll_record_by_id(id)
     create_payslip_list_service(payroll_record)
@@ -435,7 +432,7 @@ def add_overtime(request):
     return HttpResponseRedirect(reverse('payslip_page', args=[payroll.id]))
 
 
-@payroll_full_auth_required
+@hr_required
 @log_activity
 def payroll_download(request, id):
     # Get the payroll record
@@ -467,7 +464,7 @@ def payroll_download(request, id):
     return response
 
 
-@payroll_full_auth_required
+@hr_required
 @log_activity
 def payroll_download_usd(request, id):
     # Get the payroll record
