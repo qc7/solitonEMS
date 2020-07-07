@@ -5,10 +5,9 @@ from django.urls import reverse
 
 from employees.selectors import get_active_employees, get_employee
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import ems_login_required, overtime_full_auth_required, hod_required
+from ems_auth.decorators import ems_login_required, overtime_full_auth_required, hod_required, hr_required
 from notification.services import create_notification
 from organisation_details.decorators import organisationdetail_required
-
 
 from overtime.models import OvertimeApplication, OvertimePlan, OvertimeSchedule
 from overtime.procedures import is_duration_valid
@@ -74,8 +73,8 @@ def apply_for_overtime_page(request):
     return render(request, 'overtime/apply_for_overtime.html', context)
 
 
+@hr_required
 @ems_login_required
-@overtime_full_auth_required
 @log_activity
 def overtime_applications_page(request):
     context = {
@@ -106,7 +105,6 @@ def amend_overtime_application_page(request, overtime_application_id):
         end_time = request.POST.get('end_time')
         description = request.POST.get('description')
         update_overtime_application(overtime_application.id, start_time, end_time, description)
-        print(overtime_application.is_on_sunday)
         messages.success(request, "Successfully amended the overtime application")
         return HttpResponseRedirect(reverse('approve_overtime_page'))
 
@@ -118,6 +116,7 @@ def amend_overtime_application_page(request, overtime_application_id):
     return render(request, 'overtime/amend_overtime_application.html', context)
 
 
+@hr_required
 @log_activity
 def pending_overtime_application_page(request, overtime_application_id):
     overtime_application = get_overtime_application(overtime_application_id)
@@ -167,7 +166,7 @@ def create_overtime_plan(request):
     )
     return HttpResponseRedirect(reverse(create_overtime_plan_page))
 
-
+@hod_required
 def add_overtime_schedule_page(request, overtime_plan_id):
     overtime_plan = get_overtime_plan(overtime_plan_id)
     if request.POST:
