@@ -220,13 +220,11 @@ def payslips_page(request, payroll_record_id):
     return render(request, 'payroll/payslips.html', context)
 
 
-@payroll_full_auth_required
 @log_activity
 def generate_payslip_pdf(request, id):
     # Get the payslip
     payslip = Payslip.objects.get(pk=id)
     user = request.user
-    print("The base directory is", BASE_DIR)
     context = {
         "payslip": payslip,
         "month": payslip.payroll_record.month,
