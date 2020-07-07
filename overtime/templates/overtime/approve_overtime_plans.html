@@ -2,6 +2,17 @@
 
 {%block page_title %}
 Approve Overtime Plans
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#overtime_approval_list tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {%endblock%}
 {%block content%}
 <div class="content">
@@ -17,6 +28,10 @@ Approve Overtime Plans
                 {%if pending_overtime_plans %}
                 <h3>Pending Overtime Plans</h3>
                 <div class="table-responsive">
+                    <div class="form-group "> 
+                        <i class="fas fa-search " aria-hidden="true"></i>
+                        <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                    </div>
                     <table class="table">
                         <thead class="thead-dark">
                         <th>ID</th>
@@ -26,6 +41,7 @@ Approve Overtime Plans
                         <th>Status</th>
                         <th>Actions</th>
                         </thead>
+                        <tbody id="overtime_approval_list">
                         {%for pending_overtime_plan in pending_overtime_plans %}
                         <tr>
                             <td>{{pending_overtime_plan.id}}
@@ -42,6 +58,7 @@ Approve Overtime Plans
 
                         </tr>
                         {%endfor%}
+                        </tbody>
                     </table>
                 </div>
                 {%else%}
