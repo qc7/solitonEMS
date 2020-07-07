@@ -116,7 +116,7 @@ def amend_overtime_application_page(request, overtime_application_id):
     return render(request, 'overtime/amend_overtime_application.html', context)
 
 
-@hr_required
+
 @log_activity
 def pending_overtime_application_page(request, overtime_application_id):
     overtime_application = get_overtime_application(overtime_application_id)
