@@ -1,6 +1,17 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
 Audit Trail
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#audit_trail tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -10,6 +21,10 @@ Audit Trail
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
+                        <div class="form-group "> 
+                                <i class="fas fa-search " aria-hidden="true"></i>
+                                <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                            </div>
                         <table class="table table-hover">
                             <thead class="thead-dark">
                             <th>ID</th>
@@ -19,7 +34,7 @@ Audit Trail
                             <th>Time</th>
                             <th>Last Login</th>
                             </thead>
-                            <tbody>
+                            <tbody id="audit_trail">
                             {% for audit_trail in audit_trails %}
                             <tr>
                                 <td>{{audit_trail.id}}</td>

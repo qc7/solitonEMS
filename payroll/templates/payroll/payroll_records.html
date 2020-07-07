@@ -2,6 +2,17 @@
 
 {%block page_title %}
 View Payroll Records
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#payroll_record_list tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {%endblock%}
 
 {%block content%}
@@ -12,6 +23,10 @@ View Payroll Records
                 <div class="card-body">
                     {%if payroll_records%}
                     <div class="table-responsive">
+                        <div class="form-group "> 
+                        <i class="fas fa-search " aria-hidden="true"></i>
+                        <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                    </div>
                         <table class="table">
                             <thead class="thead-dark">
                             <th>Payroll Record ID</th>
@@ -19,6 +34,7 @@ View Payroll Records
                             <th>Year</th>
                             <th>Actions</th>
                             </thead>
+                            <tbody id="payroll_record_list">
                             {%for payroll_record in payroll_records%}
                             <tr>
                                 <td>{{payroll_record.id}}</td>

@@ -3,6 +3,17 @@
 {% load static %}
 {% block page_title %}
 Manage Holidays
+
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#holidays tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {% endblock %}
 
 {%block content%}
@@ -25,12 +36,17 @@ Manage Holidays
                 {%if holidays%}
                 <h3>Holidays</h3>
                 <div>
+                    <div class="form-group "> 
+                                <i class="fas fa-search " aria-hidden="true"></i>
+                                <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                            </div>
                     <table class="table">
                         <thead class="thead-dark">
                         <th>Date</th>
                         <th>Name</th>
                         <th>Actions</th>
                         </thead>
+                        <tbody id="holidays">
                         {%for holiday in holidays%}
                         <tr>
                             <td>{{holiday.date}}</td>
@@ -43,6 +59,7 @@ Manage Holidays
 
                         </tr>
                         {%endfor%}
+                        </tbody>
                     </table>
                 </div>
                 {%else%}

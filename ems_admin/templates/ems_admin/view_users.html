@@ -1,6 +1,16 @@
 {% extends 'solitonems/base.html' %}
 {% block page_title %}
 Users
+<script>
+$(document).ready(function(){
+  $("#search_input").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#view_users tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -10,6 +20,10 @@ Users
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
+                        <div class="form-group "> 
+                                <i class="fas fa-search " aria-hidden="true"></i>
+                                <input id="search_input" type="text" class="form-control" placeholder="Search....">                      
+                            </div>
                         <table class="table table-hover">
                             <thead class="thead-dark">
                             <th>ID</th>
@@ -18,7 +32,7 @@ Users
                             <th>Last Login</th>
                             <th>Actions</th>
                             </thead>
-                            <tbody>
+                            <tbody id="view_users">
                             {% for user in users %}
                             <tr>
                                 <td>{{user.id}}</td>
