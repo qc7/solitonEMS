@@ -1,5 +1,6 @@
 {%extends './base.html'%}
 {% load humanize %}
+{%load custom_filter_tags%}
 
 {%block page_title %}
 Payroll Records (USD)
@@ -64,26 +65,26 @@ $(document).ready(function(){
                         <tr>
                             <td>{{payroll.employee.id}}</td>
                             <td>{{payroll.employee}}</td>
-                            <td>{{payroll.employee.currency}} {{payroll.total_nssf_contrib | intcomma}}</td>
-                            <td>{{payroll.employee.currency}} {{ payroll.paye| intcomma}}</td>
-                            <td>{{payroll.employee.currency}} {{payroll.gross_salary | intcomma}}</td>
-                            <td>{{payroll.employee.currency}} {{payroll.employee.basic_salary | intcomma}}</td>
-                            <td>{{payroll.employee.currency}} {{payroll.net_salary | intcomma }}</td>
-                            <td>UGX {{payroll.paye_ugx | intcomma}}</td>
-                            <td>UGX {{payroll.nssf_ugx | intcomma}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.total_nssf_contrib | currency_filter}}</td>
+                            <td>{{payroll.employee.currency}} {{ payroll.paye| currency_filter}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.gross_salary | currency_filter}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.employee.basic_salary | currency_filter}}</td>
+                            <td>{{payroll.employee.currency}} {{payroll.net_salary | currency_filter }}</td>
+                            <td>UGX {{payroll.paye_ugx | currency_filter}}</td>
+                            <td>UGX {{payroll.nssf_ugx | currency_filter}}</td>
                             <td><a href="{%url 'payslip_page' payroll.id%}"
                                    style="color: inherit"><button>View Payslip</button></a></td>
                         </tr>
                         {%endfor%}
                         <tr>
                             <td colspan="2">Total</td>
-                            <td>USD {{total_nssf_contribution | intcomma}}</td>
-                            <td>USD {{total_paye | intcomma}}</td>
-                            <td>USD {{total_gross_pay | intcomma}}</td>
-                            <td>USD {{total_basic_pay | intcomma}}</td>
-                            <td>USD {{total_net_pay | intcomma}}</td>
-                            <td>UGX {{total_paye_ugx | intcomma}}</td>
-                            <td>UGX {{total_nssf_contribution_ugx | intcomma}}</td>
+                            <td>USD {{total_nssf_contribution | currency_filter}}</td>
+                            <td>USD {{total_paye | currency_filter}}</td>
+                            <td>USD {{total_gross_pay | currency_filter}}</td>
+                            <td>USD {{total_basic_pay | currency_filter}}</td>
+                            <td>USD {{total_net_pay | currency_filter}}</td>
+                            <td>UGX {{total_paye_ugx | currency_filter}}</td>
+                            <td>UGX {{total_nssf_contribution_ugx | currency_filter}}</td>
                         </tr>
                         {%endif%}
                         </tbody>
