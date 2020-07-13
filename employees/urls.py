@@ -67,7 +67,7 @@ urlpatterns = [
 def javascript_settings():
     js_conf = {
         'add_employee_contacts': reverse('add_employee_contacts'),
-        'employee_page': reverse('employee_page'),
+        'delete_employee_contact': reverse('delete_employee_contact'),
     }
 
     return js_conf
