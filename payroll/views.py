@@ -450,14 +450,20 @@ def payroll_download(request, id):
     heading_text = "Payroll for " + month + " " + year
     writer.writerow([heading_text.upper()])
     writer.writerow(
-        ['Name', 'Employee NSSF Contribution', 'Employer NSSF contribution', 'PAYE', 'Bonus', 'Sacco Deduction',
-         'Damage Deduction', 'Basic Salary', 'Lunch Allowance', 'Overtime', 'Gross Salary', 'Net Salary'])
+        ['Name', 'Basic Salary', 'Gross Salary', 'Employee NSSF Contribution', 'Employer NSSF contribution',
+         'PAYE',
+         'Lunch Allowance', 'Overtime',
+         'Bonus',
+         'Sacco Deduction',
+         'Damage Deduction', 'Net Salary'])
     # Writing other rows
     for payroll in payrolls:
         name = payroll.employee.first_name + " " + payroll.employee.last_name
         writer.writerow(
-            [name, payroll.employee_nssf, payroll.employer_nssf, payroll.paye, payroll.bonus, payroll.sacco_deduction,
-             payroll.damage_deduction, payroll.employee.basic_salary, 150000, payroll.overtime, payroll.gross_salary,
+            [name, payroll.employee.basic_salary, payroll.gross_salary, payroll.employee_nssf, payroll.employer_nssf,
+             payroll.paye, payroll.employee.lunch_allowance, payroll.overtime,
+             payroll.bonus, payroll.sacco_deduction,
+             payroll.damage_deduction,
              payroll.net_salary, ])
 
     # Return the response
@@ -482,16 +488,22 @@ def payroll_download_usd(request, id):
     heading_text = "Payroll for " + month + " " + year + "(USD)"
     writer.writerow([heading_text.upper()])
     writer.writerow(
-        ['Name', 'Employee NSSF Contribution', 'Employer NSSF contribution', 'PAYE', 'Bonus', 'Sacco Deduction',
-         'Damage Deduction', 'Basic Salary', 'Lunch Allowance', 'Overtime', 'Gross Salary', 'Net Salary', 'PAYE(UGX)',
-         'Total NSSF Contribution(UGX)'])
+        ['Name', 'Basic Salary', 'Gross Salary', 'Employee NSSF Contribution', 'Employer NSSF contribution',
+         'PAYE(UGX)',
+         'Lunch Allowance', 'Overtime',
+         'Bonus',
+         'Sacco Deduction',
+         'Damage Deduction', 'Net Salary'])
     # Writing other rows
     for payroll in payrolls:
         name = payroll.employee.first_name + " " + payroll.employee.last_name
         writer.writerow(
-            [name, payroll.employee_nssf, payroll.employer_nssf, payroll.paye, payroll.bonus, payroll.sacco_deduction,
-             payroll.damage_deduction, payroll.employee.basic_salary, 150000, payroll.overtime, payroll.gross_salary,
-             payroll.net_salary, payroll.paye_ugx, payroll.nssf_ugx])
+            [name, payroll.employee.basic_salary, payroll.gross_salary, payroll.employee_nssf, payroll.employer_nssf,
+             payroll.paye_ugx,
+             payroll.employee.lunch_allowance, payroll.overtime,
+             payroll.bonus,
+             payroll.sacco_deduction,
+             payroll.damage_deduction, payroll.net_salary])
 
     # Return the response
     return response
