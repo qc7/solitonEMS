@@ -9,6 +9,7 @@ class Contract(models.Model):
     reference_number = models.IntegerField(unique=True)
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    type = models.CharField(max_length=40)
     effective_date = models.DateField()
     expiry_date = models.DateField()
     status = models.CharField(max_length=10, default="Active")

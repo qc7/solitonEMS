@@ -14,7 +14,6 @@ from organisation_details.selectors import get_position, get_all_positions
 
 
 @hr_required
-@contracts_full_auth_required
 @log_activity
 def manage_job_contracts(request):
     if request.POST and request.FILES:
@@ -24,6 +23,7 @@ def manage_job_contracts(request):
         effective_date = request.POST.get('effective_date')
         expiry_date = request.POST.get('expiry_date')
         risk = request.POST.get('risk')
+        contract_type = request.POST.get('contract_type')
         document = request.FILES.get('document')
 
         position = get_position(position_id)
@@ -36,6 +36,7 @@ def manage_job_contracts(request):
                 effective_date=effective_date,
                 expiry_date=expiry_date,
                 risk=risk,
+                type=contract_type,
                 document=document
             )
         except IntegrityError:
@@ -112,7 +113,7 @@ def terminated_contracts_page(request):
     return render(request, 'contracts/terminated_contracts.html', context)
 
 
-@contracts_full_auth_required
+@hr_required
 @log_activity
 def activate_contract(request, contract_id):
     contract = get_contract(contract_id)
@@ -122,7 +123,6 @@ def activate_contract(request, contract_id):
 
 
 @hr_required
-@contracts_full_auth_required
 @log_activity
 def user_contracts_page(request):
     user = request.user
