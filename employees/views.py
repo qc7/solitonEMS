@@ -1366,17 +1366,16 @@ def add_employee_contacts(request):
 
         messages.success(request, "Employee Contact Info saved Successfully")
 
-        return JsonResponse({'success': True, 'redirect': "employee_page"})
+        return JsonResponse({'success': True})
+        # , 'redirect': "employee_page"
 
-@log_activity
-def delete_employee_contact(request):
-    if request.method == "POST":
-        employee = get_employee(employee_id)
 
-        contact_id = request.POST.get('contact_id') 
-        contact = get_contact(contact_id)
-        contact.delete()
+def delete_employee_contact(request): 
+    print("Jst Here")
+    contact_id = request.POST.get('contact_id') 
+    contact = get_contact(contact_id)
+    contact.delete()
 
-        messages.success(request, 'Contact Deleted')
+    messages.success(request, 'Contact Deleted')
 
-        return JsonResponse({'success': True, 'redirect': "employee_page"})
+    return JsonResponse({'success': True})
