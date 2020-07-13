@@ -20,6 +20,8 @@ urlpatterns = [
     path('teams', views.manage_teams_page, name="manage_teams_page"),
     path('edit_team/<team_id>/', views.edit_team_page, name="edit_team_page"),
     path('delete_team/<team_id>/', views.delete_team, name="delete_team"),
+    path('team_employees/<team_id>/', views.team_employees, name="team_employees"),
+    path('department_employees/<department_id>/', views.department_employees, name="department_employees"),
 
     # Job Positions
     path('manage_job_positions/', views.manage_job_positions_page, name="manage_job_positions_page"),
