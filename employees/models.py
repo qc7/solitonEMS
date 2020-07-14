@@ -9,6 +9,7 @@ class Employee(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     basic_salary = models.IntegerField(default=1000000)
+    bonus = models.IntegerField(default=0)
     grade = models.CharField(max_length=3, default="")
     gender = models.CharField(max_length=10)
     start_date = models.DateField()

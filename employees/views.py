@@ -1,19 +1,19 @@
 from datetime import date
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.http import JsonResponse
 
-from employees.services import create_employee_instance, suspend, add_employee_contacts
+from employees.services import create_employee_instance, suspend
 from ems_admin.decorators import log_activity
 from ems_auth.decorators import ems_login_required, hr_required, first_login
 from ems_auth.models import User
 from organisation_details.models import Department, Position, Team, OrganisationDetail
 from organisation_details.selectors import get_all_positions
-from settings.selectors import get_all_currencies, get_currency
+from settings.selectors import get_all_currencies
 from .models import (
     Employee,
     HomeAddress,
@@ -293,6 +293,7 @@ def edit_employee(request, id):
         employee.residence_address = request.POST['residence_address']
         employee.dob = request.POST['dob']
         currency_id = request.POST['renumeration_currency']
+        employee.bonus = request.POST['bonus']
         employee.currency = Currency.objects.get(pk=currency_id)
 
         employee.status = request.POST['status']

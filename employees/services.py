@@ -10,6 +10,7 @@ def create_employee_instance(request):
     last_name = request.POST['last_name']
     grade = request.POST['grade']
     basic_salary = request.POST['basic_salary']
+    bonus = request.POST['bonus']
     lunch_allowance = request.POST['lunch_allowance']
     gender = request.POST['gender']
     marital_status = request.POST['marital_status']
@@ -34,7 +35,8 @@ def create_employee_instance(request):
                         ura_tin=ura_tin, national_id=national_id, telephone_no=telephone,
                         residence_address=residence_address, dob=dob, currency=currency, title=title,
                         work_station=work_station,
-                        lunch_allowance=lunch_allowance
+                        lunch_allowance=lunch_allowance,
+                        bonus=bonus
                         )
     # Saving the employee instance
     employee.save()
