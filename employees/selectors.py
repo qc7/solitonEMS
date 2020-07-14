@@ -28,4 +28,4 @@ def get_employee_contacts(employee):
     return Contacts.objects.filter(employee=employee).order_by('contact_type')
 
 def get_contact(contact_id):
-    return Contacts.object.get(pk=contact_id)
+    return Contacts.objects.get(pk=contact_id)

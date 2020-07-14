@@ -10,7 +10,7 @@ from ems_admin.decorators import log_activity
 from ems_auth.decorators import hr_required, ems_login_required, organisation_full_auth_required
 from organisation_details.models import Position, Department, Team
 from organisation_details.selectors import get_all_departments, get_department, get_position, get_all_positions, \
-    get_all_teams, get_team
+    get_all_teams, get_team, get_team_employees, get_department_employees
 from settings.selectors import get_all_currencies, get_currency
 
 
@@ -275,3 +275,27 @@ def delete_job_position(request, position_id):
         messages.error(request, f'The Job Position no longer exists on the system')
 
     return redirect('manage_job_positions_page')
+
+@log_activity
+def team_employees(request, team_id):
+    team_employees=get_team_employees(team_id)
+
+    team = get_team(team_id)
+    context={
+        "employees": team_employees,
+        "team": team
+    }
+
+    return render(request, "organisation_details/team_employees.html", context)
+
+@log_activity
+def department_employees(request, department_id):
+    department_employees=get_department_employees(department_id)
+
+    department = get_department(department_id)
+    context={
+        "employees": department_employees,
+        "department": department
+    }
+
+    return render(request, "organisation_details/department_employees.html", context)
