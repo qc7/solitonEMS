@@ -2,7 +2,7 @@ from employees.models import Employee
 from employees.selectors import get_active_employees
 from payroll.simple_payslip import SimplePayslip
 from payroll.models import Payslip
-from payroll.procedures import get_total_non_statutory_deductions, get_overtime_pay
+from payroll.procedures import get_overtime_pay
 
 
 def create_payslip_list_service(payroll_record, bonus=None):

@@ -49,7 +49,9 @@ class Employee(models.Model):
 
     @property
     def overtime_hourly_rate(self) -> float:
-        hourly_rate = (float(self.initial_gross_salary) / 26.0) / 8
+        """In policy they consider Gross salary in hourly rate.
+        In practice, they consider basic salary"""
+        hourly_rate = (float(self.basic_salary) / 26.0) / 8
         return hourly_rate
 
     def __str__(self):
