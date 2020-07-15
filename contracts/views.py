@@ -9,7 +9,7 @@ from contracts.selectors import get_contract, get_terminated_contracts, get_acti
 from contracts.services import activate, terminate
 from employees.selectors import get_employee, get_active_employees
 from ems_admin.decorators import log_activity
-from ems_auth.decorators import contracts_full_auth_required, hr_required
+from ems_auth.decorators import hr_required
 from organisation_details.selectors import get_position, get_all_positions
 
 
