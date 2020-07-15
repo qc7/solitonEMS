@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from ems_admin.models import EMSPermission
+
 from ems_admin.selectors import get_user
 from ems_auth.models import SolitonUser
 
@@ -20,6 +20,7 @@ def ems_login_required(function):
             return HttpResponseRedirect(reverse('login'))
 
     return wrapper
+
 
 
 def super_admin_required(function):
@@ -82,24 +83,25 @@ def first_login(function):
 
 
 def employees_full_auth_required(function):
-    def wrapper(request, **kw):
-        try:
-            user_id = request.user.id
-            user = get_user(user_id)
-            try:
-                ems_permission = EMSPermission.objects.filter(user=user, name="Employees")[0]
-            except IndexError:
-                ems_permission = None
-
-            if ems_permission and ems_permission.full_auth:
-                return function(request, **kw)
-            else:
-                return render(request, "ems_auth/full_auth_required.html")
-
-        except User.DoesNotExist:
-            return function(request, **kw)
-
-    return wrapper
+    # def wrapper(request, **kw):
+    #     try:
+    #         user_id = request.user.id
+    #         user = get_user(user_id)
+    #         try:
+    #             ems_permission = EMSPermission.objects.filter(user=user, name="Employees")[0]
+    #         except IndexError:
+    #             ems_permission = None
+    #
+    #         if ems_permission and ems_permission.full_auth:
+    #             return function(request, **kw)
+    #         else:
+    #             return render(request, "ems_auth/full_auth_required.html")
+    #
+    #     except User.DoesNotExist:
+    #         return function(request, **kw)
+    #
+    # return wrapper
+    pass
 
 
 def organisation_full_auth_required(function):
